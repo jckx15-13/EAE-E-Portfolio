@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Local Content Editor - EAE Portfolio</title>
+    <meta
+      name="description"
+      content="Local browser editor for the static EAE portfolio data file."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="data.js"></script>
+  </head>
+  <body class="admin-page">
+    <main class="admin-shell">
+      <header class="admin-header">
+        <div>
+          <p class="section-label">Local Editor</p>
+          <h1>Portfolio Content</h1>
+          <p class="section-lede">
+            Edit a draft locally, then export the updated content for
+            <code>data.js</code>.
+          </p>
+        </div>
+        <a class="button button-primary" href="index.html">View portfolio</a>
+      </header>
+
+      <section class="admin-grid" aria-label="Portfolio content editor">
+        <form id="quickForm" class="admin-panel admin-form">
+          <h2>Quick fields</h2>
+          <label class="field">
+            <span>Name</span>
+            <input data-path="profile.name" type="text" />
+          </label>
+          <label class="field">
+            <span>Headline</span>
+            <input data-path="profile.headline" type="text" />
+          </label>
+          <label class="field">
+            <span>Identity line</span>
+            <input data-path="profile.identityLine" type="text" />
+          </label>
+          <label class="field">
+            <span>Subheadline</span>
+            <textarea data-path="profile.subheadline"></textarea>
+          </label>
+          <label class="field">
+            <span>Intro</span>
+            <textarea data-path="profile.intro"></textarea>
+          </label>
+          <label class="field">
+            <span>Personal signature</span>
+            <textarea data-path="profile.personalSignature"></textarea>
+          </label>
+          <label class="field">
+            <span>How I want people to remember me</span>
+            <textarea data-path="profile.rememberMe"></textarea>
+          </label>
+          <label class="field">
+            <span>Photo caption</span>
+            <input data-path="profile.photoCaption" type="text" />
+          </label>
+          <label class="field">
+            <span>Brand statement</span>
+            <textarea data-path="profile.brandStatement"></textarea>
+          </label>
+
+          <h2>Personal journey</h2>
+          <label class="field">
+            <span>Life entry title</span>
+            <input data-path="lifeEntry.title" type="text" />
+          </label>
+          <label class="field">
+            <span>Life entry intro</span>
+            <textarea data-path="lifeEntry.intro"></textarea>
+          </label>
+          <label class="field">
+            <span>Life entry doorway line</span>
+            <textarea data-path="lifeEntry.doorway"></textarea>
+          </label>
+          <label class="field">
+            <span>Personal map title</span>
+            <input data-path="personalMap.title" type="text" />
+          </label>
+          <label class="field">
+            <span>Personal map intro</span>
+            <textarea data-path="personalMap.intro"></textarea>
+          </label>
+          <label class="field">
+            <span>Personal map note</span>
+            <textarea data-path="personalMap.note"></textarea>
+          </label>
+
+          <h2>Reader-facing summaries</h2>
+          <label class="field">
+            <span>Evidence deck intro</span>
+            <textarea data-path="evidenceDeck.intro"></textarea>
+          </label>
+          <label class="field">
+            <span>Interview cards intro</span>
+            <textarea data-path="interviewCards.intro"></textarea>
+          </label>
+
+          <div id="applicationFields" class="admin-form"></div>
+          <div id="projectFields" class="admin-form"></div>
+          <div id="achievementFields" class="admin-form"></div>
+
+          <div class="admin-actions">
+            <button class="button button-primary" type="submit">Apply quick edits</button>
+            <button id="saveDraft" class="button admin-secondary" type="button">
+              Save draft
+            </button>
+            <button id="loadDraft" class="button admin-secondary" type="button">
+              Load draft
+            </button>
+            <button id="resetData" class="button admin-secondary" type="button">
+              Reset to data.js
+            </button>
+          </div>
+          <p id="adminStatus" class="admin-status" role="status"></p>
+        </form>
+
+        <section class="admin-panel">
+          <h2>Full data</h2>
+          <label class="field">
+            <span>Editable JSON</span>
+            <textarea id="jsonEditor" class="json-editor" spellcheck="false"></textarea>
+          </label>
+          <div class="admin-actions">
+            <button id="formatJson" class="button admin-secondary" type="button">
+              Format JSON
+            </button>
+            <button id="exportData" class="button button-primary" type="button">
+              Export data.js
+            </button>
+            <button id="copyExport" class="button admin-secondary" type="button">
+              Copy export
+            </button>
+          </div>
+          <label class="field">
+            <span>Export output</span>
+            <textarea id="exportOutput" class="json-editor" spellcheck="false"></textarea>
+          </label>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        const draftKey = "eaePortfolioDataDraft";
+        const baseData = structuredClone(window.PORTFOLIO_DATA || {});
+        let currentData = loadDraft() || structuredClone(baseData);
+
+        const quickForm = document.querySelector("#quickForm");
+        const jsonEditor = document.querySelector("#jsonEditor");
+        const exportOutput = document.querySelector("#exportOutput");
+        const status = document.querySelector("#adminStatus");
+        const applicationFields = document.querySelector("#applicationFields");
+        const projectFields = document.querySelector("#projectFields");
+        const achievementFields = document.querySelector("#achievementFields");
+
+        function setStatus(message, isError) {
+          status.textContent = message;
+          status.style.color = isError ? "#9f1239" : "#475569";
+        }
+
+        function loadDraft() {
+          try {
+            const draft = localStorage.getItem(draftKey);
+            return draft ? JSON.parse(draft) : null;
+          } catch (error) {
+            return null;
+          }
+        }
+
+        function getByPath(object, path) {
+          return path.split(".").reduce((target, key) => target?.[key], object);
+        }
+
+        function setByPath(object, path, value) {
+          const keys = path.split(".");
+          const last = keys.pop();
+          const target = keys.reduce((cursor, key) => cursor[key], object);
+          target[last] = value;
+        }
+
+        function createField(label, path, value, multiline) {
+          const wrapper = document.createElement("label");
+          wrapper.className = "field";
+          const text = document.createElement("span");
+          text.textContent = label;
+          const input = document.createElement(multiline ? "textarea" : "input");
+          input.dataset.path = path;
+          input.value = value || "";
+          wrapper.append(text, input);
+          return wrapper;
+        }
+
+        function drawApplicationFields() {
+          applicationFields.replaceChildren();
+          const heading = document.createElement("h2");
+          heading.textContent = "Target applications";
+          applicationFields.append(heading);
+
+          (currentData.targetApplications || []).forEach((application, index) => {
+            const panel = document.createElement("section");
+            panel.className = "admin-panel nested-admin-panel";
+            const title = document.createElement("h3");
+            title.textContent = application.institution;
+            panel.append(title);
+            panel.append(
+              createField(
+                "Target course",
+                `targetApplications.${index}.targetCourse`,
+                application.targetCourse,
+                false
+              )
+            );
+            panel.append(
+              createField(
+                "Why this school/course",
+                `targetApplications.${index}.whyThisSchool`,
+                application.whyThisSchool,
+                true
+              )
+            );
+            applicationFields.append(panel);
+          });
+        }
+
+        function drawProjectFields() {
+          projectFields.replaceChildren();
+          const heading = document.createElement("h2");
+          heading.textContent = "Featured project signals";
+          projectFields.append(heading);
+
+          (currentData.projects || []).forEach((project, index) => {
+            const panel = document.createElement("section");
+            panel.className = "admin-panel nested-admin-panel";
+            const title = document.createElement("h3");
+            title.textContent = project.title;
+            panel.append(title);
+            panel.append(
+              createField(
+                "Portfolio signal",
+                `projects.${index}.portfolioSignal`,
+                project.portfolioSignal,
+                true
+              )
+            );
+            panel.append(
+              createField(
+                "EAE connection",
+                `projects.${index}.eaeConnection`,
+                project.eaeConnection,
+                true
+              )
+            );
+            panel.append(
+              createField(
+                "Evidence status",
+                `projects.${index}.evidenceStatus`,
+                project.evidenceStatus,
+                true
+              )
+            );
+            projectFields.append(panel);
+          });
+        }
+
+        function drawAchievementFields() {
+          achievementFields.replaceChildren();
+          const heading = document.createElement("h2");
+          heading.textContent = "Achievement EAE signals";
+          achievementFields.append(heading);
+
+          (currentData.achievements || []).forEach((achievement, index) => {
+            const panel = document.createElement("section");
+            panel.className = "admin-panel nested-admin-panel";
+            const title = document.createElement("h3");
+            title.textContent = achievement.title;
+            panel.append(title);
+            panel.append(
+              createField(
+                "What this shows about me",
+                `achievements.${index}.applicantSignal`,
+                achievement.applicantSignal,
+                true
+              )
+            );
+            panel.append(
+              createField(
+                "Why it matters for EAE",
+                `achievements.${index}.eaeRelevance`,
+                achievement.eaeRelevance,
+                true
+              )
+            );
+            achievementFields.append(panel);
+          });
+        }
+
+        function drawDynamicFields() {
+          drawApplicationFields();
+          drawProjectFields();
+          drawAchievementFields();
+        }
+
+        function populateQuickFields() {
+          quickForm.querySelectorAll("[data-path]").forEach((input) => {
+            input.value = getByPath(currentData, input.dataset.path) || "";
+          });
+        }
+
+        function syncQuickFieldsToData() {
+          quickForm.querySelectorAll("[data-path]").forEach((input) => {
+            setByPath(currentData, input.dataset.path, input.value);
+          });
+        }
+
+        function writeJson() {
+          jsonEditor.value = JSON.stringify(currentData, null, 2);
+        }
+
+        function readJson() {
+          currentData = JSON.parse(jsonEditor.value);
+          drawDynamicFields();
+          populateQuickFields();
+        }
+
+        function exportDataJs() {
+          readJson();
+          const json = JSON.stringify(currentData, null, 2);
+          exportOutput.value = `(function () {\n  window.PORTFOLIO_DATA = ${json};\n})();\n`;
+          setStatus("Export generated.", false);
+        }
+
+        quickForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          syncQuickFieldsToData();
+          writeJson();
+          setStatus("Quick edits applied to JSON.", false);
+        });
+
+        document.querySelector("#saveDraft").addEventListener("click", () => {
+          try {
+            readJson();
+            localStorage.setItem(draftKey, JSON.stringify(currentData));
+            setStatus("Draft saved in this browser.", false);
+          } catch (error) {
+            setStatus("Draft not saved: JSON is invalid.", true);
+          }
+        });
+
+        document.querySelector("#loadDraft").addEventListener("click", () => {
+          const draft = loadDraft();
+          if (!draft) {
+            setStatus("No saved draft found.", true);
+            return;
+          }
+          currentData = draft;
+          drawDynamicFields();
+          populateQuickFields();
+          writeJson();
+          setStatus("Saved draft loaded.", false);
+        });
+
+        document.querySelector("#resetData").addEventListener("click", () => {
+          currentData = structuredClone(baseData);
+          drawDynamicFields();
+          populateQuickFields();
+          writeJson();
+          setStatus("Reset to data.js content.", false);
+        });
+
+        document.querySelector("#formatJson").addEventListener("click", () => {
+          try {
+            readJson();
+            writeJson();
+            setStatus("JSON formatted.", false);
+          } catch (error) {
+            setStatus("Cannot format: JSON is invalid.", true);
+          }
+        });
+
+        document.querySelector("#exportData").addEventListener("click", () => {
+          try {
+            exportDataJs();
+          } catch (error) {
+            setStatus("Cannot export: JSON is invalid.", true);
+          }
+        });
+
+        document.querySelector("#copyExport").addEventListener("click", async () => {
+          if (!exportOutput.value) {
+            try {
+              exportDataJs();
+            } catch (error) {
+              setStatus("Cannot copy: JSON is invalid.", true);
+              return;
+            }
+          }
+
+          try {
+            await navigator.clipboard.writeText(exportOutput.value);
+            setStatus("Export copied to clipboard.", false);
+          } catch (error) {
+            exportOutput.focus();
+            exportOutput.select();
+            setStatus("Copy blocked by browser. Export output is selected.", true);
+          }
+        });
+
+        drawDynamicFields();
+        populateQuickFields();
+        writeJson();
+      })();
+    </script>
+  </body>
+</html>
