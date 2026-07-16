@@ -423,7 +423,7 @@
       "optionalVideo": "",
       "image": "Evidence added",
       "carriedForward": {
-        "fromProject": "PyCon Hackathon & SkillQuest",
+        "fromProject": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
         "lesson": "Used the data-driven design thinking from the hackathon to structure portfolio content as editable, schema-driven data"
       }
     },
@@ -524,7 +524,7 @@
       "optionalVideo": "",
       "image": "Evidence added",
       "carriedForward": {
-        "fromProject": "FLL 2026 Unearthed Robot Design",
+        "fromProject": "FLL 2026 Unearthed Robot Design & Planning",
         "lesson": "Extended engineering precision from robotics gear ratios into CAD tolerances and 3D print parameters"
       }
     }
@@ -621,7 +621,7 @@
       "category": "Competition",
       "summary": "Created Instagram filters using Spark AR visual scripting, including a Lucky Draw filter.",
       "applicantSignal": "Creative technology, interaction design, and visual scripting experience.",
-      "eaeRelevance": "This shows that Jaron's technical interests include how users interact with software, not only how code works internally.",
+      "eaeRelevance": "This shows that my technical interests include how users interact with software, not only how code works internally.",
       "fullDescription": "The featured Lucky Draw filter displayed a spinning prize selector that stopped when the user nodded.",
       "reflection": "Working with visual scripting and face trackers in Spark AR showed me how immersive tech can engage users. Integrating physical motion like nodding to control a lucky draw was a fun design challenge.",
       "learningOutcome": "Mastered 3D coordinate space placement, visual patch editing, face mesh tracking, and brand asset integration.",
