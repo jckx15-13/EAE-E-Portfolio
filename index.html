@@ -63,90 +63,7 @@
     </div>
 
     <main id="main">
-      <section id="top" class="hero section-dark">
-        <div class="hero-centerpiece">
-          <figure class="hero-person">
-            <img id="heroProfileImage" src="images/projects/carnival_water_activity.jpg" alt="" />
-            <figcaption id="heroPhotoCaption"></figcaption>
-          </figure>
-
-          <div class="hero-copy">
-            <p id="heroName" class="hero-name"></p>
-            <h1 id="heroTitle"></h1>
-            <p id="heroIdentityLine" class="hero-identity"></p>
-            <p id="heroSubtitle" class="hero-subtitle"></p>
-            <p id="heroIntro" class="hero-intro"></p>
-            <div id="focusAreas" class="focus-list" aria-label="Portfolio focus areas"></div>
-            <div class="hero-actions">
-              <a class="button button-primary" href="#projects">View projects</a>
-              <a class="button button-secondary" href="#achievements">View achievements</a>
-            </div>
-          </div>
-
-          <div id="journeyMarkers" class="journey-markers" aria-label="Journey markers"></div>
-        </div>
-      </section>
-
-      <section id="life" class="section life-entry-section section-astral-1">
-        <div class="life-entry-layout">
-          <div class="life-entry-intro">
-            <p class="section-label">Life Entry</p>
-            <h2 id="lifeEntryTitle"></h2>
-            <p id="lifeEntryIntro" class="section-lede"></p>
-            <blockquote id="lifeEntryDoorway" class="life-quote"></blockquote>
-          </div>
-          <div id="lifeChapters" class="life-chapters"></div>
-        </div>
-      </section>
-
-
-      <section id="evidence-overview" class="section section-astral-2 evidence-overview-section">
-        <div class="section-heading">
-          <p class="section-label">Evidence Overview</p>
-          <h2 id="evidenceOverviewTitle">My Evidence at a Glance</h2>
-          <p id="evidenceOverviewIntro" class="section-lede"></p>
-          <button class="hint-trigger" type="button" aria-label="What is this section?" data-hint="This section combines your personal map and evidence deck into one consolidated view, showing the key themes and proof points of your portfolio.">
-            <span aria-hidden="true">?</span>
-          </button>
-        </div>
-        <div class="evidence-overview-tabs" role="tablist" aria-label="Evidence view">
-          <button class="evidence-tab is-active" type="button" role="tab" data-tab="map" aria-selected="true">Personal Map</button>
-          <button class="evidence-tab" type="button" role="tab" data-tab="deck" aria-selected="false">Evidence Cards</button>
-        </div>
-        <div id="personalMapCards" class="personal-map-grid view-mode-section" data-tab-panel="map"></div>
-        <div id="evidenceDeckCards" class="evidence-deck-grid view-mode-section" data-tab-panel="deck" hidden></div>
-      </section>
-
-      <section id="about" class="section section-astral-3">
-        <div class="section-heading">
-          <p class="section-label">Personal Story</p>
-          <h2>Who I Am</h2>
-          <p id="brandStatement" class="section-lede"></p>
-        </div>
-        <div id="personalSnapshot" class="snapshot-grid"></div>
-        <div class="learning-pattern-block">
-          <div>
-            <p class="section-label">My Pattern</p>
-            <h3>How I usually approach difficult work</h3>
-          </div>
-          <div id="learningPattern" class="pattern-grid"></div>
-        </div>
-        <div class="about-layout">
-          <div class="profile-panel">
-            <img id="profileImage" src="images/projects/carnival_water_activity.jpg" alt="" />
-            <div>
-              <h3 id="profileName"></h3>
-              <p id="profileIntro"></p>
-            </div>
-          </div>
-          <div>
-            <h3 class="mini-heading">Personal qualities</h3>
-            <div id="valuesList" class="tag-grid"></div>
-            <div id="strengthsGrid" class="strength-grid"></div>
-          </div>
-        </div>
-      </section>
-
+      <!-- Shifted View-Mode Bar to the top of main -->
       <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
         <div class="view-mode-bar-inner">
           <div class="view-mode-indicator" aria-hidden="true"></div>
@@ -165,17 +82,84 @@
         </div>
       </div>
 
-      <section id="experience" class="section experience-section">
-        <div class="section-heading">
-          <p class="section-label">Beyond The Build</p>
-          <h2>Learning In Context</h2>
-          <p class="section-lede">
-            The people, presentations, and small moments behind the portfolio.
-          </p>
+      <!-- Unified introductory section merging Top/Hero and About -->
+      <section id="about" class="hero section-dark unified-about-section">
+        <div class="hero-centerpiece">
+          <figure class="hero-person">
+            <img id="heroProfileImage" src="images/projects/carnival_water_activity.jpg" alt="" />
+            <figcaption id="heroPhotoCaption"></figcaption>
+          </figure>
+
+          <div class="hero-copy">
+            <p id="heroName" class="hero-name"></p>
+            <h1 id="heroTitle"></h1>
+            <p id="heroIdentityLine" class="hero-identity"></p>
+            <p id="heroSubtitle" class="hero-subtitle"></p>
+            <p id="brandStatement" class="section-lede"></p>
+            <div id="focusAreas" class="focus-list" aria-label="Portfolio focus areas"></div>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#projects">View projects</a>
+              <a class="button button-secondary" href="#achievements">View achievements</a>
+            </div>
+          </div>
+
+          <div id="journeyMarkers" class="journey-markers" aria-label="Journey markers"></div>
         </div>
-        <div id="experienceGallery" class="experience-gallery"></div>
+
+        <!-- Personal Snapshot and Qualities flow right here -->
+        <div class="about-snapshot-container">
+          <div id="personalSnapshot" class="snapshot-grid"></div>
+          
+          <div class="learning-pattern-block">
+            <div>
+              <p class="section-label">My Pattern</p>
+              <h3>How I usually approach difficult work</h3>
+            </div>
+            <div id="learningPattern" class="pattern-grid"></div>
+          </div>
+          
+          <div class="about-layout">
+            <div>
+              <h3 class="mini-heading">Personal qualities</h3>
+              <div id="valuesList" class="tag-grid"></div>
+              <div id="strengthsGrid" class="strength-grid"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Life Entry (Journey) anchor within the unified flow -->
+        <div id="life" class="life-entry-wrapper">
+          <div class="life-entry-layout">
+            <div class="life-entry-intro">
+              <p class="section-label">Journey Milestones</p>
+              <h2 id="lifeEntryTitle"></h2>
+              <p id="lifeEntryIntro" class="section-lede"></p>
+              <blockquote id="lifeEntryDoorway" class="life-quote"></blockquote>
+            </div>
+            <div id="lifeChapters" class="life-chapters"></div>
+          </div>
+        </div>
+
+        <!-- Evidence Overview anchor within the unified flow -->
+        <div id="evidence-overview" class="evidence-overview-wrapper">
+          <div class="section-heading">
+            <p class="section-label">Evidence Overview</p>
+            <h2 id="evidenceOverviewTitle">My Evidence at a Glance</h2>
+            <p id="evidenceOverviewIntro" class="section-lede"></p>
+            <button class="hint-trigger" type="button" aria-label="What is this section?" data-hint="This section combines your personal map and evidence deck into one consolidated view, showing the key themes and proof points of your portfolio.">
+              <span aria-hidden="true">?</span>
+            </button>
+          </div>
+          <div class="evidence-overview-tabs" role="tablist" aria-label="Evidence view">
+            <button class="evidence-tab is-active" type="button" role="tab" data-tab="map" aria-selected="true">Personal Map</button>
+            <button class="evidence-tab" type="button" role="tab" data-tab="deck" aria-selected="false">Evidence Cards</button>
+          </div>
+          <div id="personalMapCards" class="personal-map-grid view-mode-section" data-tab-panel="map"></div>
+          <div id="evidenceDeckCards" class="evidence-deck-grid view-mode-section" data-tab-panel="deck" hidden></div>
+        </div>
       </section>
 
+      <!-- Achievement Flow -->
       <section id="achievement-flow" class="section section-astral-4 achievement-flow-section">
         <div class="section-heading flow-heading">
           <p class="section-label">Achievement Flow</p>
@@ -185,6 +169,7 @@
         <div id="achievementFlow" class="achievement-flow"></div>
       </section>
 
+      <!-- Featured Projects -->
       <section id="projects" class="section section-astral-5">
         <div class="section-heading">
           <p class="section-label">Work</p>
@@ -198,16 +183,8 @@
         <div id="projectsGrid" class="project-grid view-mode-section"></div>
         <div id="projectStoryConnectors" class="story-connectors" aria-hidden="true"></div>
       </section>
-      
-      
-      <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
- padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
- border-radius: 8px; will-change: transform;">
-  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
-    src="https://www.canva.com/design/DAHM4xnRXzo/dqwWK6e9zzf3GcKGTFlgSA/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
-  </iframe>
-</div>
-<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAHM4xnRXzo&#x2F;dqwWK6e9zzf3GcKGTFlgSA&#x2F;view?utm_content=DAHM4xnRXzo&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">SPD</a> by Lee En Chen (Dunmanss)
+
+      <!-- Achievement Story Grid -->
       <section id="achievements" class="section section-astral-6 compact-dark">
         <div class="section-heading">
           <p class="section-label">Evidence Library</p>
@@ -232,77 +209,7 @@
         </div>
       </section>
 
-      <!-- <section id="journey" class="section">
-        <div class="section-heading">
-          <p class="section-label">Competitions</p>
-          <h2>Competition Journey</h2>
-          <p class="section-lede">
-          
-          </p>
-        </div>
-        <div id="competitionList" class="journey-list"></div>
-      </section> -->
-      <!-- <section id="coding" class="section section-astral-3 coding-section">
-        <div class="section-heading">
-          <p class="section-label">Technical Interests</p>
-          <h2>Coding</h2>
-          <p id="codingSummary" class="section-lede"></p>
-        </div>
-        <div id="codingGrid" class="simple-grid view-mode-section"></div>
-        <div class="coding-subsection-heading">
-          <p class="section-label">Learning Path</p>
-          <h3>The Lab Coder: Foundation to Intermediate</h3>
-          <p>
-            A card view of the programme details extracted from the local pitchbook, written as evidence of learning progression rather than inflated claims.
-          </p>
-        </div>
-        <div id="coderProgrammeGrid" class="learning-card-grid view-mode-section"></div>
-        <div class="coding-subsection-heading">
-          <p class="section-label">Skills Alignment</p>
-          <h3>Relevant SkillsFuture Skills</h3>
-          <p>
-            Selected skills from the local SkillsFuture jobs-and-skills spreadsheets that connect to my projects, robotics work, and EAE direction.
-          </p>
-        </div>
-        <div id="skillsFutureGrid" class="learning-card-grid skillsfuture-grid view-mode-section"></div>
-      </section>
-
-      <section id="robotics" class="section two-column-section">
-        <div class="section-heading">
-          <p class="section-label">Engineering Thinking</p>
-          <h2>Robotics</h2>
-          <p id="roboticsSummary" class="section-lede"></p>
-        </div>
-        <div>
-          <div id="roboticsHighlights" class="check-list" style="margin-bottom: 1.5rem;"></div>
-          <div id="roboticsImageContainer"></div>
-        </div>
-      </section>
-
-      <section id="reflections" class="section section-astral-4">
-        <div class="section-heading">
-          <p class="section-label">Reflection</p>
-          <h2>Reflection Journal</h2>
-          <p class="section-lede">
-            Prompts are prepared for authentic reflection after each experience.
-          </p>
-        </div>
-        <div id="reflectionList" class="reflection-grid view-mode-section"></div>
-      </section>
-
-       <section id="certifications" class="section section-astral-5">
-        <div class="section-heading">
-          <p class="section-label">Records</p>
-          <h2>Certifications</h2>
-          <p class="section-lede">
-            Certification details are editable and should be updated only with
-            confirmed provider names, dates, and evidence.
-          </p>
-        </div>
-        <div id="certificationGrid" class="cert-grid badge-wall view-mode-section"></div>
-      </section>
-        -->
-
+      <!-- Future Goals -->
       <section id="goals" class="section section-astral-6 goals-section">
         <div class="section-heading">
           <p class="section-label">Direction</p>
@@ -320,18 +227,7 @@
         </div>
       </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
+      <!-- Target EAE Applications -->
       <section id="applications" class="section">
         <div class="section-heading">
           <p class="section-label">Applications</p>
@@ -343,29 +239,7 @@
           </p>
         </div>
         <div id="applicationsGrid" class="applications-grid"></div>
-      </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <section id="optionalSections" class="section optional-sections" hidden>
-        <div class="section-heading">
-          <p class="section-label">Additional Evidence</p>
-          <h2>Leadership and Community Service</h2>
-        </div>
-        <div id="optionalGrid" class="simple-grid"></div>
-      </section>
-    </main>
+      </section></main>
 
     <footer class="site-footer">
       <p>Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.</p>

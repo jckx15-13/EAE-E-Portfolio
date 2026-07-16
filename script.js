@@ -69,10 +69,6 @@
     ["Applications", "applications"],
     ["Journey", "life"],
     ["Evidence", "evidence-overview"],
-    ["Experience", "experience"],
-    ["Skills", "coding"],
-    ["Robotics", "robotics"],
-    ["Certifications", "certifications"],
     ["Goals", "goals"],
   ];
   const primaryNavIds = new Set([
@@ -237,25 +233,7 @@
     });
   }
 
-  function renderExperienceGallery() {
-    const gallery = $("#experienceGallery");
-    if (!gallery) return;
-    gallery.replaceChildren();
-    (data.experienceGallery || []).forEach((item) => {
-      const figure = create("figure", "experience-card reveal");
-      const image = document.createElement("img");
-      image.src = item.src;
-      image.alt = item.alt || item.title || "Portfolio experience";
-      image.loading = "lazy";
-      image.decoding = "async";
-      image.addEventListener("click", () => openFullImageModal(item.src, item.title || "Portfolio experience"));
-      const caption = create("figcaption", "");
-      caption.append(create("strong", "", item.title));
-      caption.append(create("span", "", item.caption));
-      figure.append(image, caption);
-      gallery.append(figure);
-    });
-  }
+
 
   function renderLifeEntry() {
     setText("#lifeEntryTitle", data.lifeEntry?.title || "");
@@ -583,49 +561,70 @@
           }
         }
 
+        const slidesEmbedUrl = project.slidesEmbedUrl;
         const videoPath = typeof project.optionalVideo === "string" ? project.optionalVideo.trim() : "";
         const hasEmbeddedVideo = /\.(webm|mp4|ogg)$/i.test(videoPath);
         const media = create("div", "project-media");
-        const mediaImages = projectMedia(project);
-        const leadImage = mediaImages[0];
-        if (leadImage) {
-          const image = document.createElement("img");
-          image.src = leadImage;
-          image.alt = `${project.title} project image`;
-          image.loading = "lazy";
-          image.decoding = "async";
-          image.className = "project-media-main";
-          media.append(image);
-          if (mediaImages.length > 1) {
-            const thumbnails = create("div", "project-media-thumbnails");
-            mediaImages.slice(1).forEach((src, imageIndex) => {
-              const button = create("button", "project-media-thumb");
-              button.type = "button";
-              button.setAttribute("aria-label", `View ${project.title} image ${imageIndex + 2}`);
-              const thumbnail = document.createElement("img");
-              thumbnail.src = src;
-              thumbnail.alt = "";
-              thumbnail.loading = "lazy";
-              thumbnail.decoding = "async";
-              button.append(thumbnail);
-              button.addEventListener("click", () => openFullImageModal(src, `${project.title} image ${imageIndex + 2}`));
-              thumbnails.append(button);
-            });
-            media.append(thumbnails);
+        
+        if (project.highlighted) {
+          article.classList.add("project-card--highlighted");
+          const highlightBadge = create("span", "project-highlight-badge", "Highlighted Project");
+          article.append(highlightBadge);
+        }
+
+        if (slidesEmbedUrl) {
+          const iframeContainer = create("div", "project-media-iframe-wrap");
+          iframeContainer.style = "position: relative; width: 100%; height: 0; padding-top: 56.25%; overflow: hidden; border-radius: 8px;";
+          const iframe = document.createElement("iframe");
+          iframe.src = slidesEmbedUrl;
+          iframe.loading = "lazy";
+          iframe.style = "position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;";
+          iframe.allowFullscreen = true;
+          iframe.allow = "fullscreen";
+          iframeContainer.append(iframe);
+          media.append(iframeContainer);
+        } else {
+          const mediaImages = projectMedia(project);
+          const leadImage = mediaImages[0];
+          if (leadImage) {
+            const image = document.createElement("img");
+            image.src = leadImage;
+            image.alt = `${project.title} project image`;
+            image.loading = "lazy";
+            image.decoding = "async";
+            image.className = "project-media-main";
+            media.append(image);
+            if (mediaImages.length > 1) {
+              const thumbnails = create("div", "project-media-thumbnails");
+              mediaImages.slice(1).forEach((src, imageIndex) => {
+                const button = create("button", "project-media-thumb");
+                button.type = "button";
+                button.setAttribute("aria-label", `View ${project.title} image ${imageIndex + 2}`);
+                const thumbnail = document.createElement("img");
+                thumbnail.src = src;
+                thumbnail.alt = "";
+                thumbnail.loading = "lazy";
+                thumbnail.decoding = "async";
+                button.append(thumbnail);
+                button.addEventListener("click", () => openFullImageModal(src, `${project.title} image ${imageIndex + 2}`));
+                thumbnails.append(button);
+              });
+              media.append(thumbnails);
+            }
           }
-        }
-        if (hasEmbeddedVideo) {
-          const video = document.createElement("video");
-          video.src = videoPath;
-          video.controls = true;
-          video.preload = "metadata";
-          video.muted = true;
-          video.playsInline = true;
-          video.setAttribute("aria-label", `${project.title} demo video`);
-          media.append(video);
-        }
-        if (!leadImage && !hasEmbeddedVideo) {
-          media.append(createProjectPlaceholder(project));
+          if (hasEmbeddedVideo) {
+            const video = document.createElement("video");
+            video.src = videoPath;
+            video.controls = true;
+            video.preload = "metadata";
+            video.muted = true;
+            video.playsInline = true;
+            video.setAttribute("aria-label", `${project.title} demo video`);
+            media.append(video);
+          }
+          if (!leadImage && !hasEmbeddedVideo) {
+            media.append(createProjectPlaceholder(project));
+          }
         }
         article.append(media);
 
@@ -1045,207 +1044,6 @@
     return detail;
   }
 
-  function renderCompetitionJourney() {
-    const list = $("#competitionList");
-    list.replaceChildren();
-    (data.competitionJourney || []).forEach((entry) => {
-      const item = create("article", "journey-item reveal");
-      item.append(create("p", "date-line", entry.date));
-      item.append(create("h3", "", entry.title));
-      item.append(create("p", "", entry.body));
-      list.append(item);
-    });
-  }
-
-  function renderCoding() {
-    setText("#codingSummary", data.coding?.summary || "");
-    const grid = $("#codingGrid");
-    grid.replaceChildren();
-    (data.coding?.areas || []).forEach((area) => {
-      const card = create("article", "small-card reveal");
-      card.append(create("h3", "", area.title));
-      card.append(create("p", "", area.body));
-      grid.append(card);
-    });
-
-    const programmeGrid = $("#coderProgrammeGrid");
-    programmeGrid?.replaceChildren();
-    (data.coding?.coderProgramme || []).forEach((item) => {
-      const card = create("article", "learning-path-card reveal");
-      const top = create("div", "learning-card-top");
-      top.append(create("span", "learning-level", item.level));
-      top.append(create("span", "learning-meta", item.levels));
-      card.append(top);
-      card.append(create("h3", "", item.level));
-      card.append(create("p", "", item.summary));
-
-      card.append(create("p", "learning-evidence", item.portfolioEvidence));
-      const details = create("details", "learning-details");
-      details.append(create("summary", "learning-details-summary", "View programme details"));
-      const detailBody = create("div", "learning-details-body");
-      appendChipSection(detailBody, "Focus", item.focus);
-      appendChipSection(detailBody, "Modules", item.modules);
-      appendChipSection(detailBody, "Programming", item.programmingConcepts);
-      appendChipSection(detailBody, "Problem solving", item.problemSolving);
-      details.append(detailBody);
-      card.append(details);
-      card.append(create("p", "source-note", item.source));
-      programmeGrid?.append(card);
-    });
-
-    const skillsGrid = $("#skillsFutureGrid");
-    skillsGrid?.replaceChildren();
-    (data.coding?.skillsFutureAlignment || []).forEach((skill) => {
-      const card = create("article", "skill-alignment-card reveal");
-      card.append(create("h3", "", skill.title));
-      card.append(create("p", "", skill.body));
-      const details = create("details", "learning-details");
-      details.append(create("summary", "learning-details-summary", "Why this fits my portfolio"));
-      const detailBody = create("div", "learning-details-body");
-      detailBody.append(create("p", "learning-evidence", skill.whyItFits));
-      details.append(detailBody);
-      card.append(details);
-      card.append(create("p", "source-note", skill.source));
-      skillsGrid?.append(card);
-    });
-  }
-
-  function appendChipSection(card, title, items) {
-    if (!items?.length) return;
-    const section = create("div", "learning-card-section");
-    section.append(create("h4", "", title));
-    const chips = create("div", "detail-chip-list");
-    items.forEach((item) => chips.append(create("span", "detail-chip", item)));
-    section.append(chips);
-    card.append(section);
-  }
-
-  function renderRobotics() {
-    setText("#roboticsSummary", data.robotics?.summary || "");
-    const list = $("#roboticsHighlights");
-    list.replaceChildren();
-    (data.robotics?.highlights || []).forEach((highlight) => {
-      const item = create("p", "check-item", highlight);
-      list.append(item);
-    });
-
-    const imgContainer = $("#roboticsImageContainer");
-    if (imgContainer) {
-      imgContainer.replaceChildren();
-      if (data.robotics?.roboticsImage) {
-        const figure = create("figure", "robotics-figure");
-        const img = create("img");
-        img.src = data.robotics.roboticsImage;
-        img.alt = "Robotics project flowchart or highlight";
-        img.style.maxWidth = "100%";
-        img.style.borderRadius = "var(--radius)";
-        img.style.marginTop = "1rem";
-        img.style.border = "1px solid var(--grey-300)";
-        figure.appendChild(img);
-        imgContainer.appendChild(figure);
-      }
-    }
-  }
-
-  function renderReflections() {
-    const grid = $("#reflectionList");
-    grid.replaceChildren();
-    (data.reflections || []).forEach((reflection) => {
-      const card = create("article", "reflection-card reveal");
-      card.append(create("h3", "", reflection.title));
-      card.append(create("p", "", reflection.body));
-      grid.append(card);
-    });
-  }
-
-  function renderCertifications() {
-    const grid = $("#certificationGrid");
-    if (!grid) return;
-    grid.replaceChildren();
-
-    // In story mode, add badge-wall layout.
-    if (currentViewMode === "story") {
-      grid.className = "cert-grid badge-wall view-mode-section";
-    } else {
-      grid.className = "cert-grid view-mode-section";
-    }
-
-    (data.certifications || []).forEach((certification) => {
-      let card;
-      if (currentViewMode === "story") {
-        card = create("article", "badge-item reveal");
-        const badgeInner = create("div", "badge-inner");
-        
-        if (certification.evidence) {
-          const img = document.createElement("img");
-          img.src = certification.evidence;
-          img.alt = certification.title;
-          img.className = "badge-img";
-          img.loading = "lazy";
-          img.addEventListener("click", () => {
-            openFullImageModal(certification.evidence, certification.title);
-          });
-          badgeInner.append(img);
-        } else {
-          badgeInner.append(create("span", "badge-placeholder-icon", "📜"));
-        }
-        
-        card.append(badgeInner);
-        card.append(create("h4", "badge-title", certification.title));
-        card.append(create("p", "badge-issuer", certification.issuer));
-      } else {
-        card = create("article", "cert-card reveal");
-        card.append(create("h3", "", certification.title));
-        card.append(create("p", "cert-issuer", certification.issuer));
-        card.append(create("p", "date-line", certification.date));
-        
-        if (certification.evidence || certification.supportingEvidence?.length) {
-          const evidenceItems = [certification.evidence, ...(certification.supportingEvidence || [])].filter(Boolean);
-          const wrapper = create("div", "cert-evidence-wrapper");
-          evidenceItems.forEach((source, index) => {
-            const img = document.createElement("img");
-            img.src = source;
-            img.alt = `${certification.title} certificate${index ? ` ${index + 1}` : ""}`;
-            img.className = "cert-thumbnail";
-            img.loading = "lazy";
-            img.decoding = "async";
-            img.addEventListener("click", () => {
-              openFullImageModal(source, certification.title);
-            });
-            wrapper.append(img);
-          });
-          card.append(wrapper);
-        }
-      }
-      grid.append(card);
-    });
-  }
-
-  function openFullImageModal(src, titleText) {
-    const dialog = $("#achievementModal");
-    const content = $("#modalContent");
-    content.replaceChildren();
-
-    const header = create("div", "modal-header");
-    header.append(create("h2", "", titleText));
-
-    const media = create("div", "modal-media-grid");
-    const block = create("figure", "media-block");
-    const img = document.createElement("img");
-    img.src = src;
-    img.alt = titleText;
-    block.append(img);
-    media.append(block);
-
-    content.append(header, media);
-
-    if (typeof dialog.showModal === "function") {
-      dialog.showModal();
-    } else {
-      dialog.setAttribute("open", "");
-    }
-  }
-
   function renderGoals() {
     renderGoalList("#shortTermGoals", data.futureGoals?.shortTerm || []);
     renderGoalList("#longTermGoals", data.futureGoals?.longTerm || []);
@@ -1489,24 +1287,289 @@
     });
   }
 
+  function applySectionOrder() {
+    const order = data.sectionOrder || ["about", "achievement-flow", "projects", "achievements", "goals", "applications"];
+    const main = $("#main");
+    if (!main) return;
+    const sections = Array.from(main.querySelectorAll("section"));
+    const sectionMap = {};
+    sections.forEach(sec => {
+      if (sec.id) {
+        sectionMap[sec.id] = sec;
+      }
+    });
+    order.forEach(id => {
+      const sec = sectionMap[id];
+      if (sec) {
+        main.appendChild(sec);
+      }
+    });
+    sections.forEach(sec => {
+      if (sec.id && !order.includes(sec.id)) {
+        main.appendChild(sec);
+      }
+    });
+  }
+
+  function setNestedValue(obj, path, value) {
+    const keys = path.split('.');
+    let current = obj;
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (current[keys[i]] === undefined) {
+        current[keys[i]] = {};
+      }
+      current = current[keys[i]];
+    }
+    current[keys[keys.length - 1]] = value;
+  }
+
+  function setupLiveEditor() {
+    if ($(".live-editor-panel")) return;
+    
+    const toggleBtn = create("button", "live-editor-toggle", "🛠️ Live Editor");
+    toggleBtn.style = "position: fixed; bottom: 24px; right: 24px; z-index: 1001; background: var(--blue-500); color: #fff; border: none; padding: 10px 16px; border-radius: 20px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(60, 169, 232, 0.4); transition: all 0.2s ease;";
+    document.body.appendChild(toggleBtn);
+
+    const panel = create("div", "live-editor-panel");
+    panel.style.display = "none"; // Start hidden
+    const title = create("span", "", "Live Editor");
+    title.style = "color: var(--blue-500); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;";
+    
+    const editTextBtn = create("button", "live-editor-btn", "Edit Text");
+    editTextBtn.id = "toggleEditModeBtn";
+    
+    const shiftSectionsBtn = create("button", "live-editor-btn", "Shift Sections");
+    shiftSectionsBtn.id = "toggleReorderModeBtn";
+    
+    const exportBtn = create("button", "live-editor-btn btn-action", "Export data.js");
+    exportBtn.id = "exportDataBtn";
+    exportBtn.style.display = "none";
+    
+    panel.append(title, editTextBtn, shiftSectionsBtn, exportBtn);
+    document.body.appendChild(panel);
+    
+    toggleBtn.addEventListener("click", () => {
+      if (panel.style.display === "none") {
+        panel.style.display = "flex";
+        toggleBtn.textContent = "✖ Close Editor";
+        toggleBtn.style.background = "var(--navy-800)";
+      } else {
+        panel.style.display = "none";
+        toggleBtn.textContent = "🛠️ Live Editor";
+        toggleBtn.style.background = "var(--blue-500)";
+      }
+    });
+    
+    let textEditingActive = false;
+    let sectionShiftingActive = false;
+    
+    editTextBtn.addEventListener("click", () => {
+      textEditingActive = !textEditingActive;
+      if (textEditingActive) {
+        editTextBtn.classList.add("btn-active");
+        document.body.classList.add("live-editing-active");
+        
+        document.querySelectorAll("[data-edit-path]").forEach(el => {
+          el.contentEditable = "true";
+          el.addEventListener("blur", handleTextBlur);
+        });
+      } else {
+        editTextBtn.classList.remove("btn-active");
+        if (!sectionShiftingActive) {
+          document.body.classList.remove("live-editing-active");
+        }
+        document.querySelectorAll("[data-edit-path]").forEach(el => {
+          el.removeAttribute("contenteditable");
+          el.removeEventListener("blur", handleTextBlur);
+        });
+      }
+    });
+    
+    shiftSectionsBtn.addEventListener("click", () => {
+      sectionShiftingActive = !sectionShiftingActive;
+      if (sectionShiftingActive) {
+        shiftSectionsBtn.classList.add("btn-active");
+        document.body.classList.add("live-editing-active");
+        
+        const main = $("#main");
+        if (main) {
+          const sections = Array.from(main.querySelectorAll("section"));
+          sections.forEach(sec => {
+            if (!sec.id) return;
+            let controls = sec.querySelector(".section-edit-controls");
+            if (!controls) {
+              controls = create("div", "section-edit-controls");
+              
+              const upBtn = create("button", "", "▲ Move Up");
+              upBtn.type = "button";
+              upBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const prev = sec.previousElementSibling;
+                if (prev && prev.tagName === "SECTION") {
+                  sec.parentNode.insertBefore(sec, prev);
+                  updateSectionOrder();
+                }
+              });
+              
+              const downBtn = create("button", "", "▼ Move Down");
+              downBtn.type = "button";
+              downBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const next = sec.nextElementSibling;
+                if (next && next.tagName === "SECTION") {
+                  sec.parentNode.insertBefore(next, sec);
+                  updateSectionOrder();
+                }
+              });
+              
+              controls.append(upBtn, downBtn);
+              sec.appendChild(controls);
+            }
+            controls.style.display = "flex";
+          });
+        }
+      } else {
+        shiftSectionsBtn.classList.remove("btn-active");
+        if (!textEditingActive) {
+          document.body.classList.remove("live-editing-active");
+        }
+        
+        document.querySelectorAll(".section-edit-controls").forEach(controls => {
+          controls.style.display = "none";
+        });
+      }
+    });
+    
+    exportBtn.addEventListener("click", showExportModal);
+    
+    function handleTextBlur(e) {
+      const el = e.target;
+      const path = el.dataset.editPath;
+      if (!path) return;
+      
+      const val = el.textContent.trim();
+      setNestedValue(data, path, val);
+      exportBtn.style.display = "block";
+      saveToServer("Text updated");
+    }
+    
+    function updateSectionOrder() {
+      const main = $("#main");
+      if (!main) return;
+      const sections = Array.from(main.querySelectorAll("section"));
+      data.sectionOrder = sections.map(sec => sec.id).filter(Boolean);
+      exportBtn.style.display = "block";
+      saveToServer("Section order updated");
+    }
+
+    function saveToServer(changeDesc) {
+      if (window.location.protocol === 'file:') {
+        console.log("Running via file protocol, auto-save to disk is disabled. Use the Export data.js button to manually save.");
+        return;
+      }
+      fetch('/api/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(resData => {
+        if (resData.success) {
+          console.log("Changes successfully saved to data.js!");
+          showSaveNotification(changeDesc ? `Saved: ${changeDesc}` : "Changes saved directly to disk");
+        } else {
+          console.error("Server failed to save:", resData.error);
+        }
+      })
+      .catch(err => {
+        console.error("Network error saving changes:", err);
+      });
+    }
+
+    function showSaveNotification(message) {
+      let toast = document.querySelector(".live-editor-toast");
+      if (!toast) {
+        toast = document.createElement("div");
+        toast.className = "live-editor-toast";
+        toast.style = "position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: rgba(60, 169, 232, 0.95); color: #070b16; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; z-index: 1001; transition: opacity 0.3s ease; pointer-events: none; box-shadow: 0 4px 12px rgba(60, 169, 232, 0.3);";
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.style.opacity = "1";
+      setTimeout(() => {
+        toast.style.opacity = "0";
+      }, 2000);
+    }
+  }
+
+  function showExportModal() {
+    const dialog = $("#achievementModal");
+    const content = $("#modalContent");
+    if (!dialog || !content) return;
+    
+    content.replaceChildren();
+    
+    const header = create("header", "modal-header");
+    header.append(create("h2", "", "Export data.js"));
+    
+    const intro = create("p", "section-lede", "Your live changes have been saved to memory. Copy the exported JavaScript code below and paste it into your data.js file, or click download to save it.");
+    
+    const textarea = create("textarea", "json-editor");
+    textarea.style = "width: 100%; height: 350px; font-family: monospace; font-size: 0.85rem; padding: 12px; margin-top: 12px; background: #0c1424; color: #fff; border: 1px solid var(--blue-500); border-radius: 6px;";
+    textarea.spellcheck = false;
+    
+    const exportedCode = `(function () {\n  window.PORTFOLIO_DATA = ${JSON.stringify(data, null, 2)};\n})();\n`;
+    textarea.value = exportedCode;
+    
+    const actions = create("div", "admin-actions");
+    actions.style = "display: flex; gap: 8px; margin-top: 12px;";
+    
+    const copyBtn = create("button", "button button-primary", "Copy to Clipboard");
+    copyBtn.addEventListener("click", () => {
+      textarea.select();
+      navigator.clipboard.writeText(textarea.value);
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => copyBtn.textContent = "Copy to Clipboard", 2000);
+    });
+    
+    const downloadBtn = create("button", "button button-secondary", "Download data.js");
+    downloadBtn.addEventListener("click", () => {
+      const blob = new Blob([textarea.value], { type: 'application/javascript' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'data.js';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+    
+    actions.append(copyBtn, downloadBtn);
+    content.append(header, intro, textarea, actions);
+    
+    if (typeof dialog.showModal === "function") {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute("open", "");
+    }
+  }
+
   function render() {
     setupViewModeToggleOnce();
     renderNav();
     applySectionVisibility();
+    applySectionOrder();
     renderHero();
     renderLifeEntry();
     renderEvidenceOverview();
     renderAbout();
-    renderExperienceGallery();
     renderAchievementFlow();
     renderProjects();
     renderApplications();
     renderAchievements();
-    renderCompetitionJourney();
-    renderCoding();
-    renderRobotics();
-    renderReflections();
-    renderCertifications();
     renderGoals();
     renderOptionalSections();
     setupModal();
@@ -1515,6 +1578,7 @@
     setupPrintMode();
     setupReveal();
     setupHintTooltips();
+    setupLiveEditor();
   }
 
   if (document.readyState === "loading") {

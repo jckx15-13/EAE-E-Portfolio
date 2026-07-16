@@ -49,67 +49,36 @@
       "deployment": "http://jaron-eae-portfolio.local"
     }
   },
-  "experienceGallery": [
-    {
-      "src": "images/projects/carnival_water_activity.jpg",
-      "alt": "Students presenting a carnival water activity",
-      "title": "Building with others",
-      "caption": "A school activity that reflects the teamwork and energy behind my learning journey."
-    },
-    {
-      "src": "images/projects/exhibition_pitch.jpg",
-      "alt": "Project exhibition pitch display",
-      "title": "Sharing work in public",
-      "caption": "Discussing project ideas at a Kodecoon showcase."
-    },
-    {
-      "src": "images/projects/group_lobby.jpg",
-      "alt": "Students gathered in a school lobby",
-      "title": "The details matter",
-      "caption": "A quiet reminder that steady preparation supports every technical project."
-    },
-    {
-      "src": "images/robots/fll-robot-design.png",
-      "alt": "FLL robot design and planning visual",
-      "title": "Turning plans into motion",
-      "caption": "Robot planning connects careful diagrams to real-world movement."
-    },
-    {
-      "src": "images/hero-technology.png",
-      "alt": "Technology and robotics illustration",
-      "title": "The direction I am building toward",
-      "caption": "A visual anchor for my interest in technology, coding, and engineering."
-    }
-  ],
+  "experienceGallery": [],
   "lifeEntry": {
-    "title": "Enter My Space",
-    "intro": "Before the projects and certificates, there is a path: curiosity, early coding, creative experiments, robotics, academic growth, and the direction I am working toward now.",
-    "doorway": "I want visitors to feel as though they are stepping into my life and following a trail of moments across a wide, open space.",
+    "title": "Technical & Academic Growth Journey",
+    "intro": "A structured outline of the foundational experiences, technical skills, and academic milestones that have shaped my focus on software engineering and cybersecurity.",
+    "doorway": "A systematic progression showing my transition from self-directed exploration into disciplined software development and robotics engineering.",
     "chapters": [
       {
-        "title": "The curious side of me",
-        "anchor": "Curiosity",
-        "body": "I enjoy understanding how things work and turning that curiosity into small projects, games, apps, and technical experiments."
+        "title": "Foundational Computational Logic",
+        "anchor": "Logic",
+        "body": "Discovered the fundamentals of programming structure through block-based coding, mastering loops, variables, and conditions in mobile app prototyping."
       },
       {
-        "title": "The part of me that keeps trying",
+        "title": "Object-Oriented Development & Game Systems",
+        "anchor": "Programming",
+        "body": "Progressed to text-based coding in Python, building complex OOP architectures, custom event-loops, and multi-level simulations in Pygame."
+      },
+      {
+        "title": "Precision Control & Robotics Engineering",
+        "anchor": "Robotics",
+        "body": "Programmed sensors and configured gears for FLL robotics, engineering physical systems that optimize torque-to-speed ratios under tight deadlines."
+      },
+      {
+        "title": "Applied Problem Solving & Gamified Security",
+        "anchor": "Application",
+        "body": "Built real-world applications under pressure, translating public jobs-and-skills datasets into analysis programs, and gamifying cybersecurity concepts."
+      },
+      {
+        "title": "Academic Resilience & Quantitative Improvement",
         "anchor": "Resilience",
-        "body": "My mathematics growth journey matters because it shows improvement through effort, reflection, and not giving up when something is difficult."
-      },
-      {
-        "title": "The builder side of me",
-        "anchor": "Making",
-        "body": "Coding courses, App Inventor projects, BSD Online work, Spark AR filters, and Roblox experiences show how I like to learn by making things."
-      },
-      {
-        "title": "The planner side of me",
-        "anchor": "Precision",
-        "body": "Robotics flowcharts and virtual robotics challenges pushed me to plan carefully, debug step by step, and think in sequences."
-      },
-      {
-        "title": "The future I am aiming for",
-        "anchor": "Direction",
-        "body": "My EAE applications to Singapore Polytechnic and Ngee Ann Polytechnic are connected to this journey: using technology and engineering to build practical solutions that help others."
+        "body": "Focused on persistent growth in quantitative logic and rigorous reasoning, achieving significant, structured performance gains in mathematics."
       }
     ]
   },
@@ -492,7 +461,6 @@
       "outcome": "Designed and prototyped a version 1 event-management portal, significantly reducing administrative overhead for community support reporting.",
       "lessonsLearned": "Realized that non-profit reporting relies heavily on structured output (attendance count, caregiver feedback). Prioritized a clean DB schema over future AI features to solve the immediate administrative strain first.",
       "slides": "https://canva.link/4kle5s5l7rnfxqc",
-      
       "images": [
         "images/projects/SPD_User_Flow_Flow_chart.jpg",
         "images/projects/SPD_User_Flow_Flow_chart_Page_2.jpg"
@@ -502,15 +470,9 @@
       "carriedForward": {
         "fromProject": "Personal Student Portfolio Website",
         "lesson": "Applied structured HTML/CSS/JS and user flow thinking to solve real-world NGO administrative challenges"
-      }
-    },
-    {
-      "optionalVideo": "",
-      "image": "Evidence added",
-      "carriedForward": {
-        "fromProject": "FLL 2026 Unearthed Robot Design & Planning",
-        "lesson": "Extended engineering precision from robotics gear ratios into CAD tolerances and 3D print parameters"
-      }
+      },
+      "highlighted": true,
+      "slidesEmbedUrl": "https://www.canva.com/design/DAHM4xnRXzo/dqwWK6e9zzf3GcKGTFlgSA/view?embed"
     }
   ],
   "achievements": [
@@ -598,7 +560,6 @@
       "image": "",
       "certificate": "images/certificates/App_Inventor_Appathon_Certificate.jpeg"
     },
-
     {
       "title": "Roblox Global Goal Challenge",
       "date": "December 2021",
@@ -670,15 +631,6 @@
       "certificate": "images/certificates/Jaron_Chew_Kai_Xin.png"
     }
   ],
-
-
-
-
-
-
-
-
-
   "competitionJourney": [
     {
       "title": "PyCon Hackathon - Jobs & Skills Track",
@@ -690,14 +642,7 @@
       "date": "May 2021 - August 2021",
       "organisation": "Kodecoon, ShopBack",
       "category": "Competition",
-      "body": "Created Instagram filters using Spark AR visual scripting, including a Lucky Draw filter.",
-      //"applicantSignal": "Creative technology, interaction design, and visual scripting experience.",
-      //"eaeRelevance": "This shows that my technical interests include how users interact with software, not only how code works internally.",
-      //"fullDescription": "The featured Lucky Draw filter displayed a spinning prize selector that stopped when the user nodded.",
-      //"reflection": "Working with visual scripting and face trackers in Spark AR showed me how immersive tech can engage users. Integrating physical motion like nodding to control a lucky draw was a fun design challenge.",
-      //"learningOutcome": "Mastered 3D coordinate space placement, visual patch editing, face mesh tracking, and brand asset integration.",
-      //"image": "",
-      //"certificate": "images/certificates/Shopback_Spark_AR_Competition_Certificate.jpeg"
+      "body": "Created Instagram filters using Spark AR visual scripting, including a Lucky Draw filter."
     },
     {
       "title": "BuildingBloCS Game Jam",
