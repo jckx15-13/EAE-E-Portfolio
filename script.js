@@ -203,28 +203,32 @@
 
   function renderAbout() {
     const patternGrid = $("#learningPattern");
-    patternGrid.replaceChildren();
-    (data.about?.learningPattern || []).forEach((item) => {
-      const card = create("article", "pattern-card reveal");
-      card.append(create("span", "pattern-index", item.title.slice(0, 1)));
-      card.append(create("h3", "", item.title));
-      card.append(create("p", "", item.body));
-      patternGrid.append(card);
-    });
+    if (patternGrid) {
+      patternGrid.replaceChildren();
+      (data.about?.learningPattern || []).forEach((item) => {
+        const card = create("article", "pattern-card reveal");
+        card.append(create("span", "pattern-index", item.title.slice(0, 1)));
+        card.append(create("h3", "", item.title));
+        card.append(create("p", "", item.body));
+        patternGrid.append(card);
+      });
+    }
 
     const snapshotGrid = $("#personalSnapshot");
-    snapshotGrid.replaceChildren();
-    (data.about?.snapshot || []).forEach((item) => {
-      const card = create("article", "snapshot-card reveal");
-      card.append(create("h2", "", item.title));
-      card.append(create("p", "", item.body));
-      snapshotGrid.append(card);
-    });
+    if (snapshotGrid) {
+      snapshotGrid.replaceChildren();
+      (data.about?.snapshot || []).forEach((item) => {
+        const card = create("article", "snapshot-card reveal");
+        card.append(create("h2", "", item.title));
+        card.append(create("p", "", item.body));
+        snapshotGrid.append(card);
+      });
+    }
 
     appendList($("#valuesList"), data.about?.values, "tag");
 
     const strengthsGrid = $("#strengthsGrid");
-    strengthsGrid.replaceChildren();
+    if (!strengthsGrid) return;
     (data.about?.strengths || []).forEach((strength) => {
       const card = create("article", "small-card");
       card.append(create("h3", "", strength.title));
@@ -466,9 +470,114 @@
     });
   }
 
+  function resolveSlidesEmbedUrl(project) {
+    if (project.slidesEmbedUrl) {
+      const embed = project.slidesEmbedUrl.trim();
+      if (embed.includes("canva.com/design/") && !embed.includes("embed")) {
+        return `${embed}${embed.includes("?") ? "&" : "?"}embed`;
+      }
+      return embed;
+    }
+    if (typeof project.slides === "string") {
+      const slides = project.slides.trim();
+      if (slides.includes("canva.com/design/")) {
+        return slides.includes("embed") ? slides : `${slides}${slides.includes("?") ? "&" : "?"}embed`;
+      }
+    }
+    return "";
+  }
+
+  function appendProjectSupportingImages(media, project, mediaImages) {
+    if (!mediaImages.length) return mediaImages[0];
+    const thumbnails = create("div", "project-media-thumbnails project-media-supporting");
+    mediaImages.forEach((src, imageIndex) => {
+      const button = create("button", "project-media-thumb");
+      button.type = "button";
+      button.setAttribute("aria-label", `View ${project.title} image ${imageIndex + 1}`);
+      const thumbnail = document.createElement("img");
+      thumbnail.src = src;
+      thumbnail.alt = `${project.title} supporting image ${imageIndex + 1}`;
+      thumbnail.loading = "lazy";
+      thumbnail.decoding = "async";
+      button.append(thumbnail);
+      button.addEventListener("click", () => openFullImageModal(src, `${project.title} image ${imageIndex + 1}`));
+      thumbnails.append(button);
+    });
+    media.append(thumbnails);
+    return mediaImages[0];
+  }
+
+  function openFullImageModal(src, alt) {
+    const dialog = $("#achievementModal");
+    const content = $("#modalContent");
+    if (!dialog || !content) return;
+
+    content.replaceChildren();
+    const header = create("div", "modal-header");
+    header.append(create("h2", "", alt || "Image preview"));
+    const media = create("div", "modal-media-grid");
+    media.append(createMediaBlock(src, alt || "Image preview", "Image unavailable"));
+    content.append(header, media);
+
+    if (typeof dialog.showModal === "function") {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute("open", "");
+    }
+  }
+
+  function setupChromeHeight() {
+    const chrome = document.querySelector(".site-chrome");
+    if (!chrome) return;
+
+    const syncChromeHeight = () => {
+      const height = Math.ceil(chrome.getBoundingClientRect().height);
+      document.documentElement.style.setProperty("--site-chrome-height", `${height}px`);
+    };
+
+    syncChromeHeight();
+    window.addEventListener("resize", syncChromeHeight, { passive: true });
+
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(syncChromeHeight).observe(chrome);
+    }
+  }
+
+  function appendProjectImageMedia(media, project, mediaImages) {
+    const leadImage = mediaImages[0];
+    if (leadImage) {
+      const image = document.createElement("img");
+      image.src = leadImage;
+      image.alt = `${project.title} project image`;
+      image.loading = "lazy";
+      image.decoding = "async";
+      image.className = "project-media-main";
+      media.append(image);
+      if (mediaImages.length > 1) {
+        const thumbnails = create("div", "project-media-thumbnails");
+        mediaImages.slice(1).forEach((src, imageIndex) => {
+          const button = create("button", "project-media-thumb");
+          button.type = "button";
+          button.setAttribute("aria-label", `View ${project.title} image ${imageIndex + 2}`);
+          const thumbnail = document.createElement("img");
+          thumbnail.src = src;
+          thumbnail.alt = "";
+          thumbnail.loading = "lazy";
+          thumbnail.decoding = "async";
+          button.append(thumbnail);
+          button.addEventListener("click", () => openFullImageModal(src, `${project.title} image ${imageIndex + 2}`));
+          thumbnails.append(button);
+        });
+        media.append(thumbnails);
+      }
+    }
+    return leadImage;
+  }
+
   function renderProjects() {
     const filters = $("#projectFilters");
     const grid = $("#projectsGrid");
+    if (!grid) return;
     const projects = data.projects || [];
     const categories = ["All", ...new Set(projects.map((project) => project.category))];
     let activeCategory = "All";
@@ -506,40 +615,38 @@
       let filteredProjects = projects.filter(
         (project) => activeCategory === "All" || project.category === activeCategory
       );
-      
-      if (currentViewMode === "story") {
-        const storyOrder = [
-          "Kodecoon Project Journey",
-          "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
-          "Personal Student Portfolio Website",
-          "SPD Caregiver & Admin Event Portal Prototype",
-          "FLL 2026 Unearthed Robot Design & Planning",
-          "3D Design & Mechanical Prototyping (Thingiverse Creations)"
-        ];
-        filteredProjects.sort((a, b) => {
-          let idxA = storyOrder.indexOf(a.title);
-          let idxB = storyOrder.indexOf(b.title);
-          if (idxA === -1) idxA = 99;
-          if (idxB === -1) idxB = 99;
-          return idxA - idxB;
-        });
-      } else if (currentViewMode === "timeline") {
-        const timelineOrder = [
-          "Kodecoon Project Journey",
-          "FLL 2026 Unearthed Robot Design & Planning",
-          "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
-          "Personal Student Portfolio Website",
-          "SPD Caregiver & Admin Event Portal Prototype",
-          "3D Design & Mechanical Prototyping (Thingiverse Creations)"
-        ];
-        filteredProjects.sort((a, b) => {
-          let idxA = timelineOrder.indexOf(a.title);
-          let idxB = timelineOrder.indexOf(b.title);
-          if (idxA === -1) idxA = 99;
-          if (idxB === -1) idxB = 99;
-          return idxA - idxB;
-        });
-      }
+
+      const modeOrder =
+        currentViewMode === "story"
+          ? [
+              "Kodecoon Project Journey",
+              "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
+              "Personal Student Portfolio Website",
+              "SPD Caregiver & Admin Event Portal Prototype",
+              "FLL 2026 Unearthed Robot Design & Planning",
+              "3D Design & Mechanical Prototyping (Thingiverse Creations)",
+            ]
+          : currentViewMode === "timeline"
+            ? [
+                "Kodecoon Project Journey",
+                "FLL 2026 Unearthed Robot Design & Planning",
+                "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
+                "Personal Student Portfolio Website",
+                "SPD Caregiver & Admin Event Portal Prototype",
+                "3D Design & Mechanical Prototyping (Thingiverse Creations)",
+              ]
+            : null;
+
+      filteredProjects.sort((a, b) => {
+        const highlightDiff = Number(Boolean(b.highlighted)) - Number(Boolean(a.highlighted));
+        if (highlightDiff !== 0) return highlightDiff;
+
+        if (!modeOrder) return 0;
+
+        const idxA = modeOrder.indexOf(a.title);
+        const idxB = modeOrder.indexOf(b.title);
+        return (idxA === -1 ? 99 : idxA) - (idxB === -1 ? 99 : idxB);
+      });
 
       filteredProjects.forEach((project, index) => {
         const originalIndex = data.projects.indexOf(project);
@@ -571,58 +678,46 @@
           }
         }
 
-        const slidesEmbedUrl = project.slidesEmbedUrl;
+        const slidesEmbedUrl = resolveSlidesEmbedUrl(project);
         const videoPath = typeof project.optionalVideo === "string" ? project.optionalVideo.trim() : "";
         const hasEmbeddedVideo = /\.(webm|mp4|ogg)$/i.test(videoPath);
         const media = create("div", "project-media");
         const mediaImages = projectMedia(project);
-        const leadImage = mediaImages[0];
+        let leadImage = mediaImages[0];
         
         if (project.highlighted) {
           article.classList.add("project-card--highlighted");
-          const highlightBadge = create("span", "project-highlight-badge", "Highlighted Project");
+          const highlightBadge = create("span", "project-highlight-badge", "Featured Project");
           article.append(highlightBadge);
         }
 
         if (slidesEmbedUrl) {
+          media.classList.add("has-slides");
           const iframeContainer = create("div", "project-media-iframe-wrap");
-          iframeContainer.style = "position: relative; width: 100%; height: 0; padding-top: 56.25%; overflow: hidden; border-radius: 8px;";
           const iframe = document.createElement("iframe");
           iframe.src = slidesEmbedUrl;
-          iframe.loading = "lazy";
-          iframe.style = "position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;";
+          iframe.loading = project.highlighted ? "eager" : "lazy";
           iframe.allowFullscreen = true;
-          iframe.allow = "fullscreen";
-          iframe.title = `${project.title} Slides Presentation`;
+          iframe.allow = "fullscreen; autoplay; encrypted-media";
+          iframe.referrerPolicy = "strict-origin-when-cross-origin";
+          iframe.setAttribute("allowfullscreen", "");
+          iframe.title = `${project.title} slides presentation`;
           iframeContainer.append(iframe);
           media.append(iframeContainer);
-        } else {
-          if (leadImage) {
-            const image = document.createElement("img");
-            image.src = leadImage;
-            image.alt = `${project.title} project image`;
-            image.loading = "lazy";
-            image.decoding = "async";
-            image.className = "project-media-main";
-            media.append(image);
-            if (mediaImages.length > 1) {
-              const thumbnails = create("div", "project-media-thumbnails");
-              mediaImages.slice(1).forEach((src, imageIndex) => {
-                const button = create("button", "project-media-thumb");
-                button.type = "button";
-                button.setAttribute("aria-label", `View ${project.title} image ${imageIndex + 2}`);
-                const thumbnail = document.createElement("img");
-                thumbnail.src = src;
-                thumbnail.alt = "";
-                thumbnail.loading = "lazy";
-                thumbnail.decoding = "async";
-                button.append(thumbnail);
-                button.addEventListener("click", () => openFullImageModal(src, `${project.title} image ${imageIndex + 2}`));
-                thumbnails.append(button);
-              });
-              media.append(thumbnails);
-            }
+          if (typeof project.slides === "string" && project.slides.startsWith("http")) {
+            const slidesLink = document.createElement("a");
+            slidesLink.className = "project-slides-link";
+            slidesLink.href = project.slides;
+            slidesLink.target = "_blank";
+            slidesLink.rel = "noopener noreferrer";
+            slidesLink.textContent = "Open slides in a new tab";
+            media.append(slidesLink);
           }
+          if (mediaImages.length) {
+            leadImage = appendProjectSupportingImages(media, project, mediaImages);
+          }
+        } else {
+          leadImage = appendProjectImageMedia(media, project, mediaImages);
           if (hasEmbeddedVideo) {
             const video = document.createElement("video");
             video.src = videoPath;
@@ -693,6 +788,8 @@
         article.append(body);
         grid.append(article);
       });
+
+      refreshReveal(grid);
     }
 
     drawFilters();
@@ -856,6 +953,8 @@
         }
         cards.append(card);
       });
+
+      refreshReveal(cards);
     }
 
     if (cards) cards.replaceChildren();
@@ -888,6 +987,8 @@
       }
       if (timeline) timeline.append(item);
     });
+
+    refreshReveal(timeline);
 
     drawFilters();
     drawCards();
@@ -1267,26 +1368,40 @@
     window.addEventListener("beforeprint", expandProjectDetails);
   }
 
-  function setupReveal() {
-    const revealItems = document.querySelectorAll(".reveal, .section-heading");
+  let revealObserver = null;
+
+  function refreshReveal(root = document) {
+    const scope = root === document ? document : root;
+    const revealItems = scope.querySelectorAll
+      ? scope.querySelectorAll(".reveal:not(.is-visible), .section-heading:not(.is-visible)")
+      : [];
+
+    if (!revealItems.length) return;
+
     if (!("IntersectionObserver" in window)) {
       revealItems.forEach((item) => item.classList.add("is-visible"));
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.14 }
-    );
+    if (!revealObserver) {
+      revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -5% 0px" }
+      );
+    }
 
-    revealItems.forEach((item) => observer.observe(item));
+    revealItems.forEach((item) => revealObserver.observe(item));
+  }
+
+  function setupReveal() {
+    refreshReveal();
   }
 
   function applySectionVisibility() {
@@ -1614,6 +1729,7 @@
     renderOptionalSections();
     setupModal();
     setupNavigation();
+    setupChromeHeight();
     setupScrollProgress();
     setupPrintMode();
     setupReveal();

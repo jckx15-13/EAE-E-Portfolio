@@ -14,7 +14,7 @@
 | 3 | Automated View-Mode Tests | Verify toggling Cards, Timeline, Story modes and validating CSS/DOM updates | M2 | DONE |
 | 4 | Accessibility Auditing | Inject Axe-core, perform WCAG 2.1 AA audit, write JSON report | M2 | DONE |
 | 5 | Accessibility Remediation | Fix HTML/CSS/JS issues to achieve zero high-severity violations | M4 | DONE |
-| 6 | E2E Verification & Audit | Final test pass of all verification suites via npm test, verified by auditor | M3, M5 | IN_PROGRESS |
+| 6 | E2E Verification & Audit | Final test pass of all verification suites via npm test, verified by auditor | M3, M5 | DONE |
 
 ## Interface Contracts
 ### Test Runner ↔ Portfolio Server
