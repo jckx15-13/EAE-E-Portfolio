@@ -1,7 +1,7 @@
 ---
 version: "alpha"
 name: "Jaron EAE Portfolio"
-description: "A minimalist, card-style EAE portfolio design system with a calm limitless-space opening and honest evidence-first content."
+description: "A minimalist, card-style EAE portfolio design system with an immersive astral space opening, honest evidence-first content, and adaptive view modes."
 colors:
   primary: "#0A1222"
   secondary: "#516070"
@@ -17,6 +17,13 @@ colors:
   muted: "#718093"
   warning: "#8A5B00"
   on-dark: "#FFFFFF"
+  astral-gradients:
+    - "linear-gradient(180deg, #070b16 0%, #0d1222 100%)"
+    - "linear-gradient(180deg, #0d1222 0%, #12162b 100%)"
+    - "linear-gradient(180deg, #12162b 0%, #161936 100%)"
+    - "linear-gradient(180deg, #161936 0%, #1a1b41 100%)"
+    - "linear-gradient(180deg, #1a1b41 0%, #131230 100%)"
+    - "linear-gradient(180deg, #131230 0%, #070b16 100%)"
 typography:
   display:
     fontFamily: "Space Grotesk"
@@ -73,11 +80,12 @@ components:
     textColor: "{colors.on-dark}"
     rounded: "{rounded.md}"
   card:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.primary}"
+    backgroundColor: "rgba(17, 27, 49, 0.45)"
+    textColor: "{colors.on-dark}"
     typography: "{typography.body}"
     rounded: "{rounded.md}"
     padding: "22px"
+    border: "1px solid rgba(109, 179, 240, 0.15)"
   card-muted:
     backgroundColor: "{colors.paper-soft}"
     textColor: "{colors.secondary}"
@@ -127,53 +135,37 @@ components:
 
 ## Overview
 
-This portfolio should feel like entering a calm, open personal space, then moving through clear evidence cards. The design should keep Jaron at the centre: his journey, his growth, his projects, and his direction toward EAE.
+This portfolio is designed to feel like entering a calm, open personal space, then moving through clear evidence cards. The design keeps Jaron at the center: his journey, his growth, his projects, and his direction toward EAE.
 
-The site is not a flashy showcase. It is a credible admissions portfolio with personality. Every design choice should help the reader understand the student behind the evidence.
+Rather than a static showcase, it is a credible admissions portfolio with personality, adapting to the reader's preferred viewing mode to optimize readability and engagement.
 
-## Colors
+## Global View Modes
 
-Use deep navy and space tones only where they create atmosphere: the hero, life entry, achievement flow, evidence library, and goals. Most evidence-heavy sections should stay light, soft, and readable.
+The portfolio features three viewing modes selectable via a sticky pill bar at the top:
+1. **Story View (Default)**: Combines structured cards with sequential growth-thread connectors showing the learning journey from coding basics into complex engineering.
+2. **Timeline View**: Organizes projects and achievements chronologically along a vertical axis with alternating left/right layout blocks.
+3. **Cards View**: A classic grid arrangement of detailed panels, perfect for quick search and filtration.
 
-Sky blue is the main interaction and evidence accent. Purple is a secondary depth color, used sparingly in gradients or supporting highlights. Placeholder content must remain visually distinct so unconfirmed facts are never hidden.
+## Colors & Astral Aesthetic
 
-## Typography
+The page uses a flowing "Astral Space" aesthetic:
+- **Nebula Gradients**: Linear gradients that blend seamlessly between sections (deep space black ↔ purple nebula ↔ deep blue ↔ navy) to eliminate hard color breaks.
+- **Star Fields**: CSS-driven, slowly drifting background particle fields that establish cosmic depth.
+- **Glowing Radiance**: Active components and cards feature a subtle ambient glow (`box-shadow`) that intensifies smoothly on hover.
 
-Use Space Grotesk for headings, card titles, navigation, labels, counters, and compact UI controls. Use Inter for longer reading text. Letter spacing should stay at zero.
+## Growth Threads ("Carried Forward" Links)
 
-Headings should feel confident but not oversized inside cards. Card text must stay readable on mobile and must wrap safely inside its container.
+In Story View, projects are connected by a vertical axis featuring **carried-forward callouts**. These elements specify how learnings from a previous project (e.g., variables, user interface flow, or tolerance precision) directly influenced the execution of the next build, providing a cohesive narrative of self-directed technical growth.
 
-## Layout
+## Consolidated Evidence Overview
 
-The preferred layout is card-based, but not cluttered. Use cards for evidence, projects, applications, interview prompts, achievements, and editable proof points. Keep sections full width with constrained inner content.
+To keep the scanning experience clean, the individual **Personal Map** and **Evidence Deck** are combined into a tabbed "Evidence Overview" container. This lets readers swap views instantly between high-level mapping and deep proof details.
 
-Long detail fields should use disclosure controls when they would make scanning difficult. The first visible layer of each card should answer: what is this, what does it show, and why does it matter for EAE?
-
-## Elevation & Depth
-
-Use soft shadows only. Avoid heavy floating panels, harsh glows, or over-decorated effects. Dark sections can use translucent panels and subtle star-like texture, but the reading experience must stay calm.
-
-## Shapes
-
-Cards use an 8px radius. Small controls use 6px. Pills are reserved for filters, chips, and compact status indicators.
-
-Avoid nested card stacks. If a section already sits inside a card, inner details should use dividers, disclosure rows, or light surfaces instead of another heavy card.
-
-## Components
-
-Project cards should show media or an honest placeholder, then the project signal, EAE connection, evidence status, and technologies before deeper case-study details.
-
-Achievement cards should show category, title, date, summary, applicant signal, and evidence chips. Detailed reflections and certificates belong in the modal.
-
-Application cards should support both Singapore Polytechnic and Ngee Ann Polytechnic without inventing school-specific claims. Course and school notes stay editable placeholders until confirmed.
-
-Admin editor fields should prioritise the content most likely to change before submission: personal copy, application notes, project signals, evidence status, and achievement relevance.
-
-## Do's and Don'ts
+## Do's and Don't's
 
 Do keep Jaron as the focus.
 Do use honest placeholders for missing facts, dates, awards, roles, images, and certificates.
-Do keep the portfolio calm, light on the eyes, and easy to scan.
+Do keep the portfolio calm, immersive, and easy to scan.
 Do use card summaries before long details.
 Do preserve both live-site and print/PDF readability.
 

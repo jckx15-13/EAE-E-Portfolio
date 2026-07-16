@@ -1,31 +1,85 @@
 (function () {
   const data = window.PORTFOLIO_DATA || {};
 
+  // Override with local uploads if available
+  (function overrideWithLocalUploads() {
+    const uploadStorageKey = 'eaePortfolioUploads';
+    try {
+      const uploads = JSON.parse(localStorage.getItem(uploadStorageKey)) || {};
+      
+      // 1. Profile image
+      if (uploads.profile) {
+        data.profile.profileImage = uploads.profile;
+      }
+      
+      // 2. Robotics image
+      if (uploads.robotics) {
+        data.robotics.roboticsImage = uploads.robotics;
+      }
+      
+      // 3. Achievements
+      if (uploads.achievements && data.achievements) {
+        data.achievements.forEach(ach => {
+          const up = uploads.achievements[ach.title];
+          if (up) {
+            if (up.image) ach.image = up.image;
+            if (up.certificate) ach.certificate = up.certificate;
+          }
+        });
+      }
+      
+      // 4. Projects
+      if (uploads.projects && data.projects) {
+        data.projects.forEach(proj => {
+          const upImage = uploads.projects[proj.title];
+          if (upImage) {
+            proj.images = [upImage];
+          }
+        });
+      }
+
+      // 5. Leadership
+      if (uploads.leadership && data.hiddenSections?.leadership?.entries) {
+        data.hiddenSections.leadership.entries.forEach(entry => {
+          const upImage = uploads.leadership[entry.title];
+          if (upImage) {
+            entry.imagePath = upImage;
+          }
+        });
+      }
+
+      // 6. Community Service
+      if (uploads.communityService && data.hiddenSections?.communityService?.entries) {
+        data.hiddenSections.communityService.entries.forEach(entry => {
+          const upImage = uploads.communityService[entry.title];
+          if (upImage) {
+            entry.imagePath = upImage;
+          }
+        });
+      }
+    } catch (e) {
+      console.warn("Failed to load local uploads", e);
+    }
+  })();
+
   const navItems = [
-    ["Life", "life"],
-    ["Guide", "reader-guide"],
-    ["Map", "personal-map"],
-    ["Proof", "evidence-deck"],
-    ["Ready", "readiness"],
     ["About", "about"],
-    ["Flow", "achievement-flow"],
     ["Projects", "projects"],
-    ["Applications", "applications"],
-    ["Interview", "interview"],
     ["Achievements", "achievements"],
-    ["Journey", "journey"],
-    ["Coding", "coding"],
+    ["Applications", "applications"],
+    ["Journey", "life"],
+    ["Evidence", "evidence-overview"],
+    ["Experience", "experience"],
+    ["Skills", "coding"],
     ["Robotics", "robotics"],
-    ["Reflections", "reflections"],
     ["Certifications", "certifications"],
     ["Goals", "goals"],
   ];
   const primaryNavIds = new Set([
-    "life",
-    "evidence-deck",
+    "about",
     "projects",
+    "achievements",
     "applications",
-    "interview",
   ]);
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -51,11 +105,14 @@
     }
   }
 
-  function setText(selector, value) {
+  function setText(selector, value, editPath = "") {
     const element = $(selector);
     if (!element) return;
     element.textContent = value || "";
     markPlaceholder(element, value || "");
+    if (editPath) {
+      element.dataset.editPath = editPath;
+    }
   }
 
   function appendList(container, items, className = "") {
@@ -68,12 +125,13 @@
 
   function renderNav() {
     const nav = $("#siteNav");
-    const rail = $("#journeyRailDots");
     nav.replaceChildren();
-    rail?.replaceChildren();
     const secondaryLinks = [];
+    const visibilityConfig = data.sectionVisibility || {};
 
     navItems.forEach(([label, id]) => {
+      if (visibilityConfig[id]) return;
+
       if (primaryNavIds.has(id)) {
         const link = create("a", "", label);
         link.href = `#${id}`;
@@ -83,14 +141,6 @@
         secondaryLinks.push([label, id]);
       }
 
-      if (rail) {
-        const dot = create("a", "journey-rail-dot");
-        dot.href = `#${id}`;
-        dot.setAttribute("aria-label", label);
-        dot.dataset.section = id;
-        dot.append(create("span", "journey-rail-label", label));
-        rail.appendChild(dot);
-      }
     });
 
     if (secondaryLinks.length) {
@@ -110,23 +160,24 @@
 
   function renderHero() {
     document.title = data.meta?.title || "Student EAE Portfolio";
-    setText("#brandName", data.profile?.shortName || "EAE Portfolio");
-    setText("#heroName", data.profile?.name || "");
-    setText("#heroTitle", data.profile?.headline || "");
-    setText("#heroIdentityLine", data.profile?.identityLine || "");
-    setText("#heroSubtitle", data.profile?.subheadline || "");
-    setText("#heroIntro", data.profile?.intro || "");
-    setText("#heroSignature", data.profile?.personalSignature || "");
-    setText("#heroRememberMe", data.profile?.rememberMe || "");
-    setText("#heroPhotoCaption", data.profile?.photoCaption || "");
-    setText("#brandStatement", data.profile?.brandStatement || "");
-    setText("#profileName", data.profile?.name || "");
-    setText("#profileIntro", data.profile?.intro || "");
+    setText("#brandName", data.profile?.shortName || "EAE Portfolio", "profile.shortName");
+    setText("#heroName", data.profile?.name || "", "profile.name");
+    setText("#heroTitle", data.profile?.headline || "", "profile.headline");
+    setText("#heroIdentityLine", data.profile?.identityLine || "", "profile.identityLine");
+    setText("#heroSubtitle", data.profile?.subheadline || "", "profile.subheadline");
+    setText("#heroIntro", data.profile?.intro || "", "profile.intro");
+    setText("#heroSignature", data.profile?.personalSignature || "", "profile.personalSignature");
+    setText("#heroRememberMe", data.profile?.rememberMe || "", "profile.rememberMe");
+    setText("#heroPhotoCaption", data.profile?.photoCaption || "", "profile.photoCaption");
+    setText("#brandStatement", data.profile?.brandStatement || "", "profile.brandStatement");
+    setText("#profileName", data.profile?.name || "", "profile.name");
+    setText("#profileIntro", data.profile?.intro || "", "profile.intro");
 
     const heroProfileImage = $("#heroProfileImage");
     if (heroProfileImage && data.profile?.profileImage) {
       heroProfileImage.src = data.profile.profileImage;
-      heroProfileImage.alt = "Profile placeholder";
+      heroProfileImage.alt = `Portrait of ${data.profile?.name || "Jaron Chew"}`;
+      heroProfileImage.fetchPriority = "high";
     }
 
     const heroImage = $("#heroImage");
@@ -138,7 +189,8 @@
     const profileImage = $("#profileImage");
     if (profileImage && data.profile?.profileImage) {
       profileImage.src = data.profile.profileImage;
-      profileImage.alt = "Profile placeholder";
+      profileImage.alt = `Portrait of ${data.profile?.name || "Jaron Chew"}`;
+      profileImage.loading = "lazy";
     }
 
     appendList($("#focusAreas"), data.profile?.focusAreas, "focus-item");
@@ -185,6 +237,26 @@
     });
   }
 
+  function renderExperienceGallery() {
+    const gallery = $("#experienceGallery");
+    if (!gallery) return;
+    gallery.replaceChildren();
+    (data.experienceGallery || []).forEach((item) => {
+      const figure = create("figure", "experience-card reveal");
+      const image = document.createElement("img");
+      image.src = item.src;
+      image.alt = item.alt || item.title || "Portfolio experience";
+      image.loading = "lazy";
+      image.decoding = "async";
+      image.addEventListener("click", () => openFullImageModal(item.src, item.title || "Portfolio experience"));
+      const caption = create("figcaption", "");
+      caption.append(create("strong", "", item.title));
+      caption.append(create("span", "", item.caption));
+      figure.append(image, caption);
+      gallery.append(figure);
+    });
+  }
+
   function renderLifeEntry() {
     setText("#lifeEntryTitle", data.lifeEntry?.title || "");
     setText("#lifeEntryIntro", data.lifeEntry?.intro || "");
@@ -202,149 +274,83 @@
     });
   }
 
-  function renderReaderGuide() {
-    setText("#readerGuideTitle", data.readerGuide?.title || "");
-    setText("#readerGuideIntro", data.readerGuide?.intro || "");
 
-    const grid = $("#readerGuideCards");
-    grid.replaceChildren();
-    (data.readerGuide?.cards || []).forEach((item, index) => {
-      const card = create("article", "reader-guide-card reveal");
-      card.append(create("span", "reader-guide-number", String(index + 1).padStart(2, "0")));
-      card.append(create("p", "card-kicker", item.label));
-      card.append(create("h3", "", item.title));
-      card.append(create("p", "", item.body));
-      if (item.linkTarget && item.linkLabel) {
-        const link = create("a", "reader-guide-link", item.linkLabel);
-        link.href = item.linkTarget;
-        card.append(link);
-      }
-      grid.append(card);
-    });
-  }
+  function renderEvidenceOverview() {
+    setText("#evidenceOverviewTitle", "My Evidence at a Glance");
+    const introText = "A consolidated view of my personal map (structured goals) and evidence deck (proof of capabilities). Use the tabs below to switch between them.";
+    setText("#evidenceOverviewIntro", introText);
 
-  function renderPersonalMap() {
-    setText("#personalMapTitle", data.personalMap?.title || "");
-    setText("#personalMapIntro", data.personalMap?.intro || "");
-    setText("#personalMapNote", data.personalMap?.note || "");
+    const mapGrid = $("#personalMapCards");
+    const deckGrid = $("#evidenceDeckCards");
 
-    const grid = $("#personalMapCards");
-    grid.replaceChildren();
-    (data.personalMap?.cards || []).forEach((item, index) => {
-      const card = create("article", "personal-map-card reveal");
-      const top = create("div", "personal-map-card-top");
-      top.append(create("span", "personal-map-index", String(index + 1).padStart(2, "0")));
-      top.append(create("p", "card-kicker", item.label));
-      card.append(top);
-      card.append(create("h3", "", item.title));
-      card.append(create("p", "", item.body));
-      card.append(create("p", "personal-map-evidence", item.evidence));
-      grid.append(card);
-    });
-  }
-
-  function renderEvidenceDeck() {
-    setText("#evidenceDeckTitle", data.evidenceDeck?.title || "");
-    setText("#evidenceDeckIntro", data.evidenceDeck?.intro || "");
-
-    const grid = $("#evidenceDeckCards");
-    grid.replaceChildren();
-    (data.evidenceDeck?.cards || []).forEach((item) => {
-      const card = create("article", "evidence-card reveal");
-      const top = create("div", "evidence-card-top");
-      top.append(create("p", "card-kicker", item.label));
-      card.append(top);
-      card.append(create("h3", "", item.title));
-      card.append(create("p", "evidence-summary", item.summary));
-
-      const list = create("ul", "evidence-proof-list");
-      (item.proofPoints || []).forEach((point) => {
-        list.append(create("li", "", point));
+    if (mapGrid) {
+      mapGrid.replaceChildren();
+      (data.personalMap?.cards || []).forEach((item, index) => {
+        const card = create("article", "personal-map-card reveal");
+        const top = create("div", "personal-map-card-top");
+        top.append(create("span", "personal-map-index", String(index + 1).padStart(2, "0")));
+        top.append(create("p", "card-kicker", item.label));
+        card.append(top);
+        card.append(create("h3", "", item.title));
+        card.append(create("p", "", item.body));
+        card.append(create("p", "personal-map-evidence", item.evidence));
+        mapGrid.append(card);
       });
-      card.append(list);
+    }
 
-      const next = create("p", "evidence-next", item.nextStep);
-      card.append(next);
+    if (deckGrid) {
+      deckGrid.replaceChildren();
+      (data.evidenceDeck?.cards || []).forEach((item) => {
+        const card = create("article", "evidence-card reveal");
+        const top = create("div", "evidence-card-top");
+        top.append(create("p", "card-kicker", item.label));
+        card.append(top);
+        card.append(create("h3", "", item.title));
+        card.append(create("p", "evidence-summary", item.summary));
 
-      if (item.linkTarget && item.linkLabel) {
-        const link = create("a", "evidence-link", item.linkLabel);
-        link.href = item.linkTarget;
-        card.append(link);
-      }
+        const list = create("ul", "evidence-proof-list");
+        (item.proofPoints || []).forEach((point) => {
+          list.append(create("li", "", point));
+        });
+        card.append(list);
 
-      grid.append(card);
-    });
-  }
+        const next = create("p", "evidence-next", item.nextStep);
+        card.append(next);
 
-  function renderReadiness() {
-    const grid = $("#readinessCards");
-    grid.replaceChildren();
+        if (item.linkTarget && item.linkLabel) {
+          const link = create("a", "evidence-link", item.linkLabel);
+          link.href = item.linkTarget;
+          card.append(link);
+        }
 
-    const projects = data.projects || [];
-    const achievements = data.achievements || [];
-    const certifications = data.certifications || [];
-    const applications = data.targetApplications || [];
-    const projectMediaReady = projects.filter((project) => {
-      const videoPath = typeof project.optionalVideo === "string" ? project.optionalVideo.trim() : "";
-      return Boolean(project.images?.[0]) || /\.(webm|mp4|ogg)$/i.test(videoPath);
-    }).length;
-    const achievementImagesReady = achievements.filter((achievement) => achievement.image).length;
-    const certificatesReady = achievements.filter((achievement) => achievement.certificate).length;
-    const certificationPlaceholders = certifications.filter((item) =>
-      hasPlaceholderText([item.issuer, item.date, item.evidence].join(" "))
-    ).length;
-    const applicationPlaceholders = applications.filter((application) =>
-      hasPlaceholderText(
-        [application.targetCourse, application.whyThisSchool, ...(application.evidenceToShow || [])].join(" ")
-      )
-    ).length;
+        deckGrid.append(card);
+      });
+    }
 
-    const cards = [
-      {
-        label: "Project media",
-        value: `${projectMediaReady}/${projects.length}`,
-        title: "Projects with visual evidence",
-        body:
-          projectMediaReady === projects.length
-            ? "Every featured project has visual media."
-            : "Add screenshots or demo media to projects that still rely on placeholder visuals.",
-      },
-      {
-        label: "Achievement images",
-        value: `${achievementImagesReady}/${achievements.length}`,
-        title: "Achievement photos added",
-        body:
-          achievementImagesReady === achievements.length
-            ? "Every achievement has an image attached."
-            : "Achievement cards are ready for photos, screenshots, or supporting visuals.",
-      },
-      {
-        label: "Certificates",
-        value: `${certificatesReady}/${achievements.length}`,
-        title: "Certificates attached",
-        body:
-          certificatesReady === achievements.length
-            ? "Every achievement has certificate evidence attached."
-            : "Certificate placeholders remain visible until the real files are added.",
-      },
-      {
-        label: "Confirm details",
-        value: `${certificationPlaceholders + applicationPlaceholders}`,
-        title: "Sections still needing confirmation",
-        body:
-          certificationPlaceholders + applicationPlaceholders === 0
-            ? "Certification and application details no longer contain placeholders."
-            : "Provider names, dates, exact course details, and school-specific reasons still need final checking.",
-      },
-    ];
+    // Tabs setup
+    const tabs = document.querySelectorAll(".evidence-tab");
+    tabs.forEach(tab => {
+      // Remove old listeners to avoid duplicates
+      const newTab = tab.cloneNode(true);
+      tab.parentNode.replaceChild(newTab, tab);
+      
+      newTab.addEventListener("click", () => {
+        document.querySelectorAll(".evidence-tab").forEach(t => {
+          t.classList.remove("is-active");
+          t.setAttribute("aria-selected", "false");
+        });
+        newTab.classList.add("is-active");
+        newTab.setAttribute("aria-selected", "true");
 
-    cards.forEach((item) => {
-      const card = create("article", "readiness-card reveal");
-      card.append(create("p", "card-kicker", item.label));
-      card.append(create("strong", "readiness-value", item.value));
-      card.append(create("h3", "", item.title));
-      card.append(create("p", "", item.body));
-      grid.append(card);
+        const targetTab = newTab.dataset.tab;
+        if (targetTab === "map") {
+          if (mapGrid) mapGrid.hidden = false;
+          if (deckGrid) deckGrid.hidden = true;
+        } else {
+          if (mapGrid) mapGrid.hidden = true;
+          if (deckGrid) deckGrid.hidden = false;
+        }
+      });
     });
   }
 
@@ -397,14 +403,100 @@
     });
   }
 
+  let viewModeInitialized = false;
+  let currentViewMode = "story";
+
+  function setupViewModeToggleOnce() {
+    if (viewModeInitialized) return;
+    viewModeInitialized = true;
+
+    const pills = document.querySelectorAll(".view-mode-pill");
+    currentViewMode = localStorage.getItem("eaePortfolioViewMode") || "story";
+    
+    pills.forEach(pill => {
+      const active = pill.dataset.mode === currentViewMode;
+      pill.classList.toggle("is-active", active);
+      pill.setAttribute("aria-selected", String(active));
+      
+      pill.addEventListener("click", () => {
+        const mode = pill.dataset.mode;
+        if (mode === currentViewMode) return;
+        currentViewMode = mode;
+        localStorage.setItem("eaePortfolioViewMode", mode);
+        
+        pills.forEach(p => {
+          const act = p.dataset.mode === mode;
+          p.classList.toggle("is-active", act);
+          p.setAttribute("aria-selected", String(act));
+        });
+        
+        document.body.dataset.viewMode = mode;
+        
+        // Re-render view-mode-aware sections
+        renderProjects();
+        renderAchievements();
+        renderCertifications();
+        renderCoding();
+      });
+    });
+    
+    document.body.dataset.viewMode = currentViewMode;
+  }
+
+  function setupHintTooltips() {
+    const triggers = document.querySelectorAll(".hint-trigger");
+    triggers.forEach(trigger => {
+      let tooltip = null;
+      
+      const showTooltip = () => {
+        if (tooltip) return;
+        const hintText = trigger.dataset.hint;
+        tooltip = create("div", "hint-tooltip", hintText);
+        document.body.appendChild(tooltip);
+        
+        const rect = trigger.getBoundingClientRect();
+        tooltip.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
+        tooltip.style.top = `${rect.bottom + window.scrollY + 8}px`;
+        
+        requestAnimationFrame(() => {
+          tooltip.classList.add("is-active");
+        });
+      };
+      
+      const hideTooltip = () => {
+        if (!tooltip) return;
+        const temp = tooltip;
+        tooltip = null;
+        temp.classList.remove("is-active");
+        setTimeout(() => temp.remove(), 200);
+      };
+      
+      trigger.addEventListener("mouseenter", showTooltip);
+      trigger.addEventListener("mouseleave", hideTooltip);
+      trigger.addEventListener("focus", showTooltip);
+      trigger.addEventListener("blur", hideTooltip);
+    });
+  }
+
   function renderProjects() {
     const filters = $("#projectFilters");
     const grid = $("#projectsGrid");
     const projects = data.projects || [];
     const categories = ["All", ...new Set(projects.map((project) => project.category))];
     let activeCategory = "All";
+    const projectText = (project, primary, fallback) =>
+      project[primary] ??
+      (fallback ? project[fallback] : undefined);
+    const projectTechs = (project) =>
+      Array.isArray(project.technologies) && project.technologies.length
+        ? project.technologies
+        : Array.isArray(project.technologiesUsed)
+        ? project.technologiesUsed
+        : [];
+    const projectMedia = (project) => Array.isArray(project.images) ? project.images : [];
 
     function drawFilters() {
+      if (!filters) return;
       filters.replaceChildren();
       categories.forEach((category) => {
         const button = create("button", "filter-button", category);
@@ -421,69 +513,175 @@
 
     function drawProjects() {
       grid.replaceChildren();
-      projects
-        .filter((project) => activeCategory === "All" || project.category === activeCategory)
-        .forEach((project) => {
-          const article = create("article", "project-card reveal");
-          const videoPath = typeof project.optionalVideo === "string" ? project.optionalVideo.trim() : "";
-          const hasEmbeddedVideo = /\.(webm|mp4|ogg)$/i.test(videoPath);
-          const media = create("div", "project-media");
-          if (project.images?.[0]) {
-            const image = document.createElement("img");
-            image.src = project.images[0];
-            image.alt = `${project.title} project image`;
-            media.append(image);
-          } else if (hasEmbeddedVideo) {
-            const video = document.createElement("video");
-            video.src = videoPath;
-            video.controls = true;
-            video.preload = "metadata";
-            video.muted = true;
-            video.playsInline = true;
-            video.setAttribute("aria-label", `${project.title} demo video`);
-            media.append(video);
-          } else {
-            media.append(createProjectPlaceholder(project));
-          }
-          article.append(media);
-
-          const body = create("div", "project-body");
-          const meta = create("div", "meta-row");
-          meta.append(create("span", "", project.category));
-          meta.append(create("span", "", project.status));
-          body.append(meta);
-          body.append(create("h3", "", project.title));
-          body.append(createProjectInsight(project));
-          body.append(createProjectTechStrip(project.technologiesUsed || []));
-
-          const fields = [
-            ["Problem", project.problem],
-            ["Proposed Solution", project.proposedSolution],
-            ["My Role", project.myRole],
-            ["Technologies Used", (project.technologiesUsed || []).join(", ")],
-            ["Development Journey", project.developmentJourney],
-            ["Outcome", project.outcome],
-            ["Lessons Learned", project.lessonsLearned],
-            ["Images", project.images?.length ? project.images.join(", ") : "Add project image here"],
-            ["Optional Video", hasEmbeddedVideo ? "Playable demo embedded above" : project.optionalVideo],
-          ];
-
-          const details = create("details", "project-details");
-          const summary = create("summary", "project-details-summary", "Read case study details");
-          details.append(summary);
-          const detailBody = create("div", "project-details-body");
-          fields.forEach(([label, value]) => {
-            const row = create("div", "case-row");
-            row.append(create("dt", "", label));
-            row.append(create("dd", "", value));
-            detailBody.append(row);
-          });
-          details.append(detailBody);
-          body.append(details);
-
-          article.append(body);
-          grid.append(article);
+      
+      let filteredProjects = projects.filter(
+        (project) => activeCategory === "All" || project.category === activeCategory
+      );
+      
+      if (currentViewMode === "story") {
+        const storyOrder = [
+          "Kodecoon Project Journey",
+          "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
+          "Personal Student Portfolio Website",
+          "SPD Caregiver & Admin Event Portal Prototype",
+          "FLL 2026 Unearthed Robot Design & Planning",
+          "3D Design & Mechanical Prototyping (Thingiverse Creations)"
+        ];
+        filteredProjects.sort((a, b) => {
+          let idxA = storyOrder.indexOf(a.title);
+          let idxB = storyOrder.indexOf(b.title);
+          if (idxA === -1) idxA = 99;
+          if (idxB === -1) idxB = 99;
+          return idxA - idxB;
         });
+      } else if (currentViewMode === "timeline") {
+        const timelineOrder = [
+          "Kodecoon Project Journey",
+          "FLL 2026 Unearthed Robot Design & Planning",
+          "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
+          "Personal Student Portfolio Website",
+          "SPD Caregiver & Admin Event Portal Prototype",
+          "3D Design & Mechanical Prototyping (Thingiverse Creations)"
+        ];
+        filteredProjects.sort((a, b) => {
+          let idxA = timelineOrder.indexOf(a.title);
+          let idxB = timelineOrder.indexOf(b.title);
+          if (idxA === -1) idxA = 99;
+          if (idxB === -1) idxB = 99;
+          return idxA - idxB;
+        });
+      }
+
+      filteredProjects.forEach((project, index) => {
+        const originalIndex = data.projects.indexOf(project);
+        const article = create("article", "project-card reveal");
+        
+        if (currentViewMode === "timeline") {
+          article.classList.add("timeline-card-node");
+        } else if (currentViewMode === "story") {
+          article.classList.add("story-card-node");
+          
+          if (index > 0) {
+            const prevProject = filteredProjects[index - 1];
+            if (project.carriedForward && project.carriedForward.fromProject === prevProject.title) {
+              const connector = create("div", "story-connector reveal");
+              connector.innerHTML = `
+                <div class="story-connector-line"></div>
+                <div class="carried-forward-callout">
+                  <span class="carried-forward-badge">What I carried forward</span>
+                  <p class="carried-forward-text">${project.carriedForward.lesson}</p>
+                </div>
+                <div class="story-connector-line"></div>
+              `;
+              grid.appendChild(connector);
+            } else {
+              const spacer = create("div", "story-track-spacer reveal");
+              spacer.innerHTML = `<span class="track-label">Next Track: Engineering & Prototyping</span>`;
+              grid.appendChild(spacer);
+            }
+          }
+        }
+
+        const videoPath = typeof project.optionalVideo === "string" ? project.optionalVideo.trim() : "";
+        const hasEmbeddedVideo = /\.(webm|mp4|ogg)$/i.test(videoPath);
+        const media = create("div", "project-media");
+        const mediaImages = projectMedia(project);
+        const leadImage = mediaImages[0];
+        if (leadImage) {
+          const image = document.createElement("img");
+          image.src = leadImage;
+          image.alt = `${project.title} project image`;
+          image.loading = "lazy";
+          image.decoding = "async";
+          image.className = "project-media-main";
+          media.append(image);
+          if (mediaImages.length > 1) {
+            const thumbnails = create("div", "project-media-thumbnails");
+            mediaImages.slice(1).forEach((src, imageIndex) => {
+              const button = create("button", "project-media-thumb");
+              button.type = "button";
+              button.setAttribute("aria-label", `View ${project.title} image ${imageIndex + 2}`);
+              const thumbnail = document.createElement("img");
+              thumbnail.src = src;
+              thumbnail.alt = "";
+              thumbnail.loading = "lazy";
+              thumbnail.decoding = "async";
+              button.append(thumbnail);
+              button.addEventListener("click", () => openFullImageModal(src, `${project.title} image ${imageIndex + 2}`));
+              thumbnails.append(button);
+            });
+            media.append(thumbnails);
+          }
+        }
+        if (hasEmbeddedVideo) {
+          const video = document.createElement("video");
+          video.src = videoPath;
+          video.controls = true;
+          video.preload = "metadata";
+          video.muted = true;
+          video.playsInline = true;
+          video.setAttribute("aria-label", `${project.title} demo video`);
+          media.append(video);
+        }
+        if (!leadImage && !hasEmbeddedVideo) {
+          media.append(createProjectPlaceholder(project));
+        }
+        article.append(media);
+
+        const body = create("div", "project-body");
+        const meta = create("div", "meta-row");
+        
+        const catSpan = create("span", "", project.category);
+        catSpan.dataset.editPath = `projects.${originalIndex}.category`;
+        meta.append(catSpan);
+        
+        const statusSpan = create("span", "", project.status);
+        statusSpan.dataset.editPath = `projects.${originalIndex}.status`;
+        meta.append(statusSpan);
+        
+        body.append(meta);
+        
+        const titleH3 = create("h3", "", project.title);
+        titleH3.dataset.editPath = `projects.${originalIndex}.title`;
+        body.append(titleH3);
+        
+        body.append(createProjectInsight(project));
+        body.append(createProjectTechStrip(projectTechs(project)));
+
+        const fields = [
+          ["Problem", projectText(project, "problem"), `projects.${originalIndex}.problem`],
+          ["Solution", projectText(project, "solution", "proposedSolution"), `projects.${originalIndex}.proposedSolution`],
+          ["Role", projectText(project, "role", "myRole"), `projects.${originalIndex}.myRole`],
+          [
+            "Technologies Used",
+            projectTechs(project).length ? projectTechs(project).join(", ") : "Add technologies here",
+            `projects.${originalIndex}.technologiesUsed`
+          ],
+          ["Journey", projectText(project, "journey", "developmentJourney"), `projects.${originalIndex}.developmentJourney`],
+          ["Outcome", project.outcome, `projects.${originalIndex}.outcome`],
+          ["Lessons Learned", projectText(project, "lessons", "lessonsLearned"), `projects.${originalIndex}.lessonsLearned`],
+          ["Images", leadImage ? "Evidence added" : "Add project image here", `projects.${originalIndex}.image`],
+          ["Optional Video", hasEmbeddedVideo ? "Playable demo embedded above" : project.optionalVideo, `projects.${originalIndex}.optionalVideo`],
+        ];
+
+        const details = create("details", "project-details");
+        const summary = create("summary", "project-details-summary", "Read case study details");
+        details.append(summary);
+        const detailBody = create("div", "project-details-body");
+        fields.forEach(([label, value, path]) => {
+          const row = create("div", "case-row");
+          row.append(create("dt", "", label));
+          const dd = create("dd", "", value);
+          if (path) dd.dataset.editPath = path;
+          row.append(dd);
+          detailBody.append(row);
+        });
+        details.append(detailBody);
+        body.append(details);
+
+        article.append(body);
+        grid.append(article);
+      });
     }
 
     drawFilters();
@@ -491,19 +689,27 @@
   }
 
   function createProjectInsight(project) {
+    const originalIndex = data.projects.indexOf(project);
     const insight = create("div", "project-insight");
     const signal = create("section", "project-insight-card");
     signal.append(create("h4", "", "What this proves"));
-    signal.append(create("p", "", project.portfolioSignal || "Add the strongest applicant signal for this project."));
+    
+    const signalP = create("p", "", project.portfolioSignal || "Add the strongest applicant signal for this project.");
+    signalP.dataset.editPath = `projects.${originalIndex}.portfolioSignal`;
+    signal.append(signalP);
     insight.append(signal);
 
     const connection = create("section", "project-insight-card");
     connection.append(create("h4", "", "EAE connection"));
-    connection.append(create("p", "", project.eaeConnection || "Add how this project connects to the target course or school."));
+    
+    const connectionP = create("p", "", project.eaeConnection || "Add how this project connects to the target course or school.");
+    connectionP.dataset.editPath = `projects.${originalIndex}.eaeConnection`;
+    connection.append(connectionP);
     insight.append(connection);
 
     if (project.evidenceStatus) {
       const status = create("p", "project-evidence-status", project.evidenceStatus);
+      status.dataset.editPath = `projects.${originalIndex}.evidenceStatus`;
       insight.append(status);
     }
 
@@ -546,7 +752,7 @@
       card.append(create("p", "", application.whyThisSchool));
 
       const list = create("ul", "compact-list");
-      (application.evidenceToShow || []).forEach((item) => {
+      (application.evidenceToShow || []).filter(Boolean).forEach((item) => {
         const li = create("li", "", item);
         list.append(li);
       });
@@ -554,32 +760,12 @@
       grid.append(card);
     });
   }
-
-  function renderInterviewCards() {
-    setText("#interviewTitle", data.interviewCards?.title || "");
-    setText("#interviewIntro", data.interviewCards?.intro || "");
-
-    const grid = $("#interviewCards");
-    grid.replaceChildren();
-    (data.interviewCards?.cards || []).forEach((item, index) => {
-      const card = create("article", "interview-card reveal");
-      const top = create("div", "interview-card-top");
-      top.append(create("span", "interview-index", String(index + 1).padStart(2, "0")));
-      top.append(create("p", "card-kicker", "Interview prompt"));
-      card.append(top);
-      card.append(create("h3", "", item.prompt));
-      card.append(create("p", "interview-answer", item.answer));
-      const evidence = create("div", "interview-evidence");
-      evidence.append(create("h4", "", "Evidence to point to"));
-      evidence.append(create("p", "", item.evidence));
-      card.append(evidence);
-      grid.append(card);
-    });
-  }
+  
 
   function renderAchievements() {
     const cards = $("#achievementCards");
     const timeline = $("#achievementTimeline");
+    const timelineWrap = $(".timeline-wrap");
     const filters = $("#achievementFilters");
     const search = $("#achievementSearch");
     const resultCount = $("#achievementResultCount");
@@ -587,7 +773,18 @@
     const categories = ["All", ...new Set(achievements.map((achievement) => achievement.category))];
     let activeCategory = "All";
 
+    if (cards && timelineWrap) {
+      if (currentViewMode === "timeline") {
+        cards.style.display = "none";
+        timelineWrap.style.display = "block";
+      } else {
+        cards.style.display = "";
+        timelineWrap.style.display = "none";
+      }
+    }
+
     function drawFilters() {
+      if (!filters) return;
       filters.replaceChildren();
       categories.forEach((category) => {
         const button = create("button", "filter-button", category);
@@ -620,6 +817,7 @@
     }
 
     function drawCards() {
+      if (!cards) return;
       cards.replaceChildren();
       const query = (search?.value || "").trim().toLowerCase();
       const visibleAchievements = achievements.filter((achievement) => {
@@ -649,33 +847,66 @@
       });
     }
 
-    cards.replaceChildren();
-    timeline.replaceChildren();
+    if (cards) cards.replaceChildren();
+    if (timeline) timeline.replaceChildren();
 
-    achievements.forEach((achievement) => {
+    achievements.forEach((achievement, index) => {
       const item = create("article", "timeline-item reveal");
+      item.setAttribute("role", "button");
+      item.tabIndex = 0;
+      item.setAttribute("aria-label", `Open ${achievement.title} evidence`);
+      item.addEventListener("click", () => openAchievementModal(achievement));
+      item.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openAchievementModal(achievement);
+        }
+      });
       item.append(create("span", "timeline-dot"));
       const content = create("div", "");
       content.append(create("p", "date-line", achievement.date));
       content.append(create("h4", "", achievement.title));
       content.append(create("p", "", achievement.summary));
       item.append(content);
-      timeline.append(item);
+      if (achievement.applicantSignal) {
+        const signal = create("p", "achievement-signal", achievement.applicantSignal);
+        signal.textContent = `${achievement.applicantSignal.substring(0, 130)}${
+          achievement.applicantSignal.length > 130 ? "..." : ""
+        }`;
+        content.append(signal);
+      }
+      if (timeline) timeline.append(item);
     });
 
     drawFilters();
     drawCards();
-    search?.addEventListener("input", drawCards);
+    if (search) search.oninput = drawCards;
   }
 
   function createAchievementCard(achievement) {
+    const originalIndex = data.achievements.indexOf(achievement);
     const card = create("article", "achievement-card reveal");
-    card.append(create("p", "card-kicker", achievement.category));
-    card.append(create("h3", "", achievement.title));
-    card.append(create("p", "date-line", achievement.date));
-    card.append(create("p", "", achievement.summary));
+    
+    const cat = create("p", "card-kicker", achievement.category);
+    cat.dataset.editPath = `achievements.${originalIndex}.category`;
+    card.append(cat);
+    
+    const title = create("h3", "", achievement.title);
+    title.dataset.editPath = `achievements.${originalIndex}.title`;
+    card.append(title);
+    
+    const date = create("p", "date-line", achievement.date);
+    date.dataset.editPath = `achievements.${originalIndex}.date`;
+    card.append(date);
+    
+    const summary = create("p", "", achievement.summary);
+    summary.dataset.editPath = `achievements.${originalIndex}.summary`;
+    card.append(summary);
+    
     if (achievement.applicantSignal) {
-      card.append(create("p", "achievement-signal", achievement.applicantSignal));
+      const sig = create("p", "achievement-signal", achievement.applicantSignal);
+      sig.dataset.editPath = `achievements.${originalIndex}.applicantSignal`;
+      card.append(sig);
     }
     card.append(createEvidenceStatusStrip(achievement));
 
@@ -706,35 +937,85 @@
   }
 
   function openAchievementModal(achievement) {
+    const originalIndex = data.achievements.indexOf(achievement);
     const dialog = $("#achievementModal");
     const content = $("#modalContent");
     content.replaceChildren();
 
     const header = create("div", "modal-header");
-    header.append(create("p", "card-kicker", achievement.category));
-    header.append(create("h2", "", achievement.title));
-    header.append(create("p", "date-line", achievement.date));
+    
+    const cat = create("p", "card-kicker", achievement.category);
+    cat.dataset.editPath = `achievements.${originalIndex}.category`;
+    header.append(cat);
+    
+    const title = create("h2", "", achievement.title);
+    title.dataset.editPath = `achievements.${originalIndex}.title`;
+    header.append(title);
+    
+    if (achievement.organisation) {
+      const org = create("p", "organisation-line", achievement.organisation);
+      org.dataset.editPath = `achievements.${originalIndex}.organisation`;
+      header.append(org);
+    }
+    
+    const date = create("p", "date-line", achievement.date);
+    date.dataset.editPath = `achievements.${originalIndex}.date`;
+    header.append(date);
 
     const summary = create("p", "modal-summary", achievement.summary);
+    summary.dataset.editPath = `achievements.${originalIndex}.summary`;
+    header.append(summary);
 
     const media = create("div", "modal-media-grid");
-    media.append(createMediaBlock(achievement.image, "Achievement image", "Add your photo here"));
-    media.append(
-      createMediaBlock(achievement.certificate, "Certificate image", "Certificate placeholder")
-    );
+    if (achievement.image && achievement.image.trim() !== "") {
+      media.append(createMediaBlock(achievement.image, "Achievement image", "Add your photo here"));
+    }
+    if (achievement.certificate && achievement.certificate.trim() !== "") {
+      media.append(
+        createMediaBlock(achievement.certificate, "Certificate image", "Certificate placeholder")
+      );
+    }
 
     const details = create("div", "modal-detail-grid");
     if (achievement.applicantSignal) {
-      details.append(createDetail("What this shows about me", achievement.applicantSignal, "modal-detail modal-detail-highlight"));
+      const sigDetail = createDetail("What this shows about me", achievement.applicantSignal, "modal-detail modal-detail-highlight");
+      const p = sigDetail.querySelector("p") || sigDetail;
+      p.dataset.editPath = `achievements.${originalIndex}.applicantSignal`;
+      details.append(sigDetail);
     }
     if (achievement.eaeRelevance) {
-      details.append(createDetail("Why it matters for EAE", achievement.eaeRelevance, "modal-detail modal-detail-highlight"));
+      const relevanceDetail = createDetail("Why it matters for EAE", achievement.eaeRelevance, "modal-detail modal-detail-highlight");
+      const p = relevanceDetail.querySelector("p") || relevanceDetail;
+      p.dataset.editPath = `achievements.${originalIndex}.eaeRelevance`;
+      details.append(relevanceDetail);
     }
-    details.append(createDetail("Full description", achievement.fullDescription));
-    details.append(createDetail("Reflection", achievement.reflection));
-    details.append(createDetail("Learning outcome", achievement.learningOutcome));
+    
+    const descDetail = createDetail("Full description", achievement.fullDescription);
+    const descP = descDetail.querySelector("p") || descDetail;
+    descP.dataset.editPath = `achievements.${originalIndex}.fullDescription`;
+    details.append(descDetail);
+    
+    const refDetail = createDetail("Reflection", achievement.reflection);
+    const refP = refDetail.querySelector("p") || refDetail;
+    refP.dataset.editPath = `achievements.${originalIndex}.reflection`;
+    details.append(refDetail);
+    
+    const outcomeDetail = createDetail("Learning outcome", achievement.learningOutcome);
+    const outcomeP = outcomeDetail.querySelector("p") || outcomeDetail;
+    outcomeP.dataset.editPath = `achievements.${originalIndex}.learningOutcome`;
+    details.append(outcomeDetail);
 
-    content.append(header, summary, media, details);
+    if (media.children.length > 0) {
+      content.append(header, summary, media, details);
+    } else {
+      content.append(header, summary, details);
+    }
+
+    if (document.body.classList.contains('live-editing-active')) {
+      content.querySelectorAll('[data-edit-path]').forEach(el => {
+        el.contentEditable = 'true';
+      });
+    }
 
     if (typeof dialog.showModal === "function") {
       dialog.showModal();
@@ -846,6 +1127,23 @@
       const item = create("p", "check-item", highlight);
       list.append(item);
     });
+
+    const imgContainer = $("#roboticsImageContainer");
+    if (imgContainer) {
+      imgContainer.replaceChildren();
+      if (data.robotics?.roboticsImage) {
+        const figure = create("figure", "robotics-figure");
+        const img = create("img");
+        img.src = data.robotics.roboticsImage;
+        img.alt = "Robotics project flowchart or highlight";
+        img.style.maxWidth = "100%";
+        img.style.borderRadius = "var(--radius)";
+        img.style.marginTop = "1rem";
+        img.style.border = "1px solid var(--grey-300)";
+        figure.appendChild(img);
+        imgContainer.appendChild(figure);
+      }
+    }
   }
 
   function renderReflections() {
@@ -861,15 +1159,90 @@
 
   function renderCertifications() {
     const grid = $("#certificationGrid");
+    if (!grid) return;
     grid.replaceChildren();
+
+    // In story mode, add badge-wall layout.
+    if (currentViewMode === "story") {
+      grid.className = "cert-grid badge-wall view-mode-section";
+    } else {
+      grid.className = "cert-grid view-mode-section";
+    }
+
     (data.certifications || []).forEach((certification) => {
-      const card = create("article", "cert-card reveal");
-      card.append(create("h3", "", certification.title));
-      card.append(create("p", "", certification.issuer));
-      card.append(create("p", "date-line", certification.date));
-      card.append(create("p", "", certification.evidence));
+      let card;
+      if (currentViewMode === "story") {
+        card = create("article", "badge-item reveal");
+        const badgeInner = create("div", "badge-inner");
+        
+        if (certification.evidence) {
+          const img = document.createElement("img");
+          img.src = certification.evidence;
+          img.alt = certification.title;
+          img.className = "badge-img";
+          img.loading = "lazy";
+          img.addEventListener("click", () => {
+            openFullImageModal(certification.evidence, certification.title);
+          });
+          badgeInner.append(img);
+        } else {
+          badgeInner.append(create("span", "badge-placeholder-icon", "📜"));
+        }
+        
+        card.append(badgeInner);
+        card.append(create("h4", "badge-title", certification.title));
+        card.append(create("p", "badge-issuer", certification.issuer));
+      } else {
+        card = create("article", "cert-card reveal");
+        card.append(create("h3", "", certification.title));
+        card.append(create("p", "cert-issuer", certification.issuer));
+        card.append(create("p", "date-line", certification.date));
+        
+        if (certification.evidence || certification.supportingEvidence?.length) {
+          const evidenceItems = [certification.evidence, ...(certification.supportingEvidence || [])].filter(Boolean);
+          const wrapper = create("div", "cert-evidence-wrapper");
+          evidenceItems.forEach((source, index) => {
+            const img = document.createElement("img");
+            img.src = source;
+            img.alt = `${certification.title} certificate${index ? ` ${index + 1}` : ""}`;
+            img.className = "cert-thumbnail";
+            img.loading = "lazy";
+            img.decoding = "async";
+            img.addEventListener("click", () => {
+              openFullImageModal(source, certification.title);
+            });
+            wrapper.append(img);
+          });
+          card.append(wrapper);
+        }
+      }
       grid.append(card);
     });
+  }
+
+  function openFullImageModal(src, titleText) {
+    const dialog = $("#achievementModal");
+    const content = $("#modalContent");
+    content.replaceChildren();
+
+    const header = create("div", "modal-header");
+    header.append(create("h2", "", titleText));
+
+    const media = create("div", "modal-media-grid");
+    const block = create("figure", "media-block");
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = titleText;
+    block.append(img);
+    media.append(block);
+
+    content.append(header, media);
+
+    if (typeof dialog.showModal === "function") {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute("open", "");
+    }
   }
 
   function renderGoals() {
@@ -902,9 +1275,56 @@
       const card = create("article", "small-card reveal");
       card.append(create("h3", "", section.title));
       const list = create("ul", "compact-list");
+      
       section.entries.forEach((entry) => {
-        list.append(create("li", "", entry));
+        if (typeof entry === "string") {
+          list.append(create("li", "", entry));
+        } else if (typeof entry === "object" && entry !== null) {
+          const li = create("li", "optional-entry");
+          
+          const header = create("div", "optional-entry-header");
+          const roleTitleStr = entry.role ? `${entry.role} — ${entry.title}` : entry.title;
+          const roleTitle = create("h4", "", roleTitleStr);
+          const dateSpan = create("span", "optional-entry-date", entry.date || entry.duration || "");
+          header.append(roleTitle, dateSpan);
+          li.append(header);
+
+          if (entry.organisation) {
+            li.append(create("p", "optional-entry-org", entry.organisation));
+          }
+
+          const desc = entry.description || entry.responsibilities;
+          if (desc) {
+            li.append(create("p", "optional-entry-desc", desc));
+          }
+
+          if (entry.impact) {
+            const impactPara = create("p", "optional-entry-impact");
+            impactPara.append(create("strong", "", "Impact:"), ` ${entry.impact}`);
+            li.append(impactPara);
+          }
+
+          if (entry.reflection) {
+            const reflectionPara = create("p", "optional-entry-reflection");
+            reflectionPara.append(create("strong", "", "Reflection:"), ` ${entry.reflection}`);
+            li.append(reflectionPara);
+          }
+
+          if (entry.imagePath) {
+            const img = create("img", "optional-entry-img cert-thumbnail");
+            img.src = entry.imagePath;
+            img.alt = entry.title;
+            img.loading = "lazy";
+            img.addEventListener("click", () => {
+              openFullImageModal(entry.imagePath, entry.role ? `${entry.role} — ${entry.title}` : entry.title);
+            });
+            li.append(img);
+          }
+
+          list.append(li);
+        }
       });
+      
       card.append(list);
       grid.append(card);
     });
@@ -944,8 +1364,7 @@
     const header = $(".site-header");
     const headerLinks = Array.from(nav.querySelectorAll("a[data-section]"));
     const more = $(".nav-more", nav);
-    const railLinks = Array.from(document.querySelectorAll(".journey-rail-dot"));
-    const railSections = railLinks
+    const navSections = headerLinks
       .map((link) => document.getElementById(link.dataset.section))
       .filter(Boolean);
 
@@ -958,20 +1377,10 @@
     const onScroll = () => {
       header.classList.toggle("is-elevated", window.scrollY > 8);
 
-      let activeId = railSections[0]?.id;
-      railSections.forEach((section) => {
+      let activeId = navSections[0]?.id;
+      navSections.forEach((section) => {
         const box = section.getBoundingClientRect();
         if (box.top <= 180 && box.bottom > 180) activeId = section.id;
-      });
-
-      railLinks.forEach((link) => {
-        const isActive = link.dataset.section === activeId;
-        link.classList.toggle("is-active", isActive);
-        if (isActive) {
-          link.setAttribute("aria-current", "location");
-        } else {
-          link.removeAttribute("aria-current");
-        }
       });
 
       headerLinks.forEach((link) => {
@@ -1054,19 +1463,29 @@
     revealItems.forEach((item) => observer.observe(item));
   }
 
+  function applySectionVisibility() {
+    const visibilityConfig = data.sectionVisibility || {};
+    document.querySelectorAll("section").forEach(sec => {
+      if (sec.id && visibilityConfig[sec.id]) {
+        sec.style.display = "none";
+      } else if (sec.id) {
+        sec.style.display = "";
+      }
+    });
+  }
+
   function render() {
+    setupViewModeToggleOnce();
     renderNav();
+    applySectionVisibility();
     renderHero();
     renderLifeEntry();
-    renderReaderGuide();
-    renderPersonalMap();
-    renderEvidenceDeck();
-    renderReadiness();
+    renderEvidenceOverview();
     renderAbout();
+    renderExperienceGallery();
     renderAchievementFlow();
     renderProjects();
     renderApplications();
-    renderInterviewCards();
     renderAchievements();
     renderCompetitionJourney();
     renderCoding();
@@ -1080,6 +1499,7 @@
     setupScrollProgress();
     setupPrintMode();
     setupReveal();
+    setupHintTooltips();
   }
 
   if (document.readyState === "loading") {

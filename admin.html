@@ -15,14 +15,16 @@
     <main class="admin-shell">
       <header class="admin-header">
         <div>
-          <p class="section-label">Local Editor</p>
+          <p class="section-label">Local Editing Tool</p>
           <h1>Portfolio Content</h1>
           <p class="section-lede">
             Edit a draft locally, then export the updated content for
             <code>data.js</code>.
           </p>
         </div>
-        <a class="button button-primary" href="index.html">View portfolio</a>
+        <div style="display: flex; gap: 8px;">
+          <a class="button button-primary" href="index.html">View portfolio</a>
+        </div>
       </header>
 
       <section class="admin-grid" aria-label="Portfolio content editor">
@@ -96,10 +98,7 @@
             <span>Evidence deck intro</span>
             <textarea data-path="evidenceDeck.intro"></textarea>
           </label>
-          <label class="field">
-            <span>Interview cards intro</span>
-            <textarea data-path="interviewCards.intro"></textarea>
-          </label>
+
 
           <div id="applicationFields" class="admin-form"></div>
           <div id="projectFields" class="admin-form"></div>
@@ -141,6 +140,15 @@
             <span>Export output</span>
             <textarea id="exportOutput" class="json-editor" spellcheck="false"></textarea>
           </label>
+        </section>
+
+        <section class="admin-panel admin-uploads" style="grid-column: 1 / -1; margin-top: 2rem;">
+          <h2>Image upload dashboard</h2>
+          <p class="section-lede">
+            Upload images for your profile, achievements, certificates, projects, and robotics. 
+            Draft uploads are stored only in this browser and can run into storage limits. For the published portfolio, place optimised image files in the correct folders (e.g. <code>images/achievements/</code>) and reference their paths in <code>data.js</code>.
+          </p>
+          <div id="uploadContainer" class="upload-sections"></div>
         </section>
       </section>
     </main>
@@ -304,6 +312,7 @@
           drawApplicationFields();
           drawProjectFields();
           drawAchievementFields();
+          drawUploadFields();
         }
 
         function populateQuickFields() {
@@ -410,6 +419,371 @@
             setStatus("Copy blocked by browser. Export output is selected.", true);
           }
         });
+
+        // --- Image Upload System ---
+        const uploadStorageKey = 'eaePortfolioUploads';
+
+        function getUploads() {
+          try { return JSON.parse(localStorage.getItem(uploadStorageKey)) || {}; }
+          catch { return {}; }
+        }
+
+        function saveUploads(uploads) {
+          try {
+            localStorage.setItem(uploadStorageKey, JSON.stringify(uploads));
+            return true;
+          } catch (error) {
+            setStatus("Image was not saved. Use a smaller image or add it directly to the images folder.", true);
+            return false;
+          }
+        }
+
+        function drawUploadFields() {
+          const uploadContainer = document.querySelector("#uploadContainer");
+          if (!uploadContainer) return;
+          uploadContainer.replaceChildren();
+
+          const uploads = getUploads();
+
+          // Helper to create a single upload card block
+          function createUploadBlock(title, hint, previewId, hasPreview, fileInputAttrs, removeBtnAttrs) {
+            const block = document.createElement("div");
+            block.className = "upload-block";
+            
+            const h3 = document.createElement("h3");
+            h3.textContent = title;
+            const pHint = document.createElement("p");
+            pHint.className = "upload-hint";
+            pHint.textContent = hint;
+            
+            const preview = document.createElement("div");
+            preview.className = "upload-preview";
+            preview.id = previewId;
+            if (hasPreview) {
+              const img = document.createElement("img");
+              img.src = hasPreview;
+              preview.appendChild(img);
+            }
+            
+            const actions = document.createElement("div");
+            actions.className = "upload-actions";
+            
+            const label = document.createElement("label");
+            label.className = "button admin-secondary upload-btn";
+            label.textContent = "Choose file";
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/png,image/jpeg,image/webp";
+            input.hidden = true;
+            for (const key in fileInputAttrs) {
+              input.setAttribute(key, fileInputAttrs[key]);
+            }
+            label.appendChild(input);
+            actions.appendChild(label);
+            
+            if (hasPreview) {
+              const removeBtn = document.createElement("button");
+              removeBtn.className = "button admin-secondary remove-btn";
+              removeBtn.type = "button";
+              removeBtn.textContent = "Remove";
+              for (const key in removeBtnAttrs) {
+                removeBtn.setAttribute(key, removeBtnAttrs[key]);
+              }
+              actions.appendChild(removeBtn);
+            }
+            
+            block.append(h3, pHint, preview, actions);
+            return block;
+          }
+
+          // 1. Profile photo
+          const profileBlock = createUploadBlock(
+            "Profile Photo",
+            "Used in the hero section and about section.",
+            "uploadPreviewProfile",
+            uploads.profile || '',
+            { "data-upload-target": "profile" },
+            { "data-remove-target": "profile" }
+          );
+          uploadContainer.appendChild(profileBlock);
+
+          // 2. Achievements (dynamic based on currentData)
+          if (currentData.achievements && currentData.achievements.length) {
+            const achHeaderBlock = document.createElement("div");
+            achHeaderBlock.className = "upload-block-full";
+            achHeaderBlock.style.gridColumn = "1 / -1";
+            achHeaderBlock.innerHTML = `<h3>Achievement Photos & Certificates</h3><p class="upload-hint">Upload photos and certificate images for each achievement.</p>`;
+            
+            const achList = document.createElement("div");
+            achList.className = "upload-list";
+            
+            currentData.achievements.forEach((ach, index) => {
+              const key = ach.title || `Achievement ${index + 1}`;
+              const imgVal = uploads.achievements?.[key]?.image || '';
+              const certVal = uploads.achievements?.[key]?.certificate || '';
+
+              const item = document.createElement("div");
+              item.className = "upload-item";
+              
+              const itemTitle = document.createElement("div");
+              itemTitle.className = "upload-item-title";
+              itemTitle.textContent = key;
+              
+              const itemFields = document.createElement("div");
+              itemFields.className = "upload-item-fields";
+
+              // Achievement photo group
+              const photoGroup = document.createElement("div");
+              photoGroup.className = "upload-field-group";
+              photoGroup.innerHTML = `
+                <span>Photo:</span>
+                <div class="upload-preview">${imgVal ? `<img src="${imgVal}" />` : ''}</div>
+                <label class="button admin-secondary upload-btn-sm">
+                  Upload
+                  <input type="file" accept="image/png,image/jpeg,image/webp" data-upload-type="achievement-image" data-item-key="${key}" hidden />
+                </label>
+                ${imgVal ? `<button class="button admin-secondary remove-btn-sm" data-remove-type="achievement-image" data-item-key="${key}" type="button">Remove</button>` : ''}
+              `;
+              
+              // Certificate photo group
+              const certGroup = document.createElement("div");
+              certGroup.className = "upload-field-group";
+              certGroup.innerHTML = `
+                <span>Certificate:</span>
+                <div class="upload-preview">${certVal ? `<img src="${certVal}" />` : ''}</div>
+                <label class="button admin-secondary upload-btn-sm">
+                  Upload
+                  <input type="file" accept="image/png,image/jpeg,image/webp" data-upload-type="achievement-certificate" data-item-key="${key}" hidden />
+                </label>
+                ${certVal ? `<button class="button admin-secondary remove-btn-sm" data-remove-type="achievement-certificate" data-item-key="${key}" type="button">Remove</button>` : ''}
+              `;
+              
+              itemFields.append(photoGroup, certGroup);
+              item.append(itemTitle, itemFields);
+              achList.appendChild(item);
+            });
+            
+            achHeaderBlock.appendChild(achList);
+            uploadContainer.appendChild(achHeaderBlock);
+          }
+
+          // 3. Projects (dynamic based on currentData)
+          if (currentData.projects && currentData.projects.length) {
+            const projHeaderBlock = document.createElement("div");
+            projHeaderBlock.className = "upload-block-full";
+            projHeaderBlock.style.gridColumn = "1 / -1";
+            projHeaderBlock.innerHTML = `<h3>Project Showcase Photos</h3><p class="upload-hint">Upload showcase screenshots for each project.</p>`;
+            
+            const projList = document.createElement("div");
+            projList.className = "upload-list";
+            
+            currentData.projects.forEach((proj, index) => {
+              const key = proj.title || `Project ${index + 1}`;
+              const imgVal = uploads.projects?.[key] || '';
+
+              const item = document.createElement("div");
+              item.className = "upload-item";
+              
+              const itemTitle = document.createElement("div");
+              itemTitle.className = "upload-item-title";
+              itemTitle.textContent = key;
+              
+              const itemFields = document.createElement("div");
+              itemFields.className = "upload-item-fields";
+
+              const photoGroup = document.createElement("div");
+              photoGroup.className = "upload-field-group";
+              photoGroup.innerHTML = `
+                <span>Showcase Photo:</span>
+                <div class="upload-preview">${imgVal ? `<img src="${imgVal}" />` : ''}</div>
+                <label class="button admin-secondary upload-btn-sm">
+                  Upload
+                  <input type="file" accept="image/png,image/jpeg,image/webp" data-upload-type="project-image" data-item-key="${key}" hidden />
+                </label>
+                ${imgVal ? `<button class="button admin-secondary remove-btn-sm" data-remove-type="project-image" data-item-key="${key}" type="button">Remove</button>` : ''}
+              `;
+              
+              itemFields.append(photoGroup);
+              item.append(itemTitle, itemFields);
+              projList.appendChild(item);
+            });
+            
+            projHeaderBlock.appendChild(projList);
+            uploadContainer.appendChild(projHeaderBlock);
+          }
+
+          // 4. Robotics
+          const robotBlock = createUploadBlock(
+            "Robotics Photo",
+            "Upload a robotics project screenshot or flowchart image.",
+            "uploadPreviewRobotics",
+            uploads.robotics || '',
+            { "data-upload-target": "robotics" },
+            { "data-remove-target": "robotics" }
+          );
+          uploadContainer.appendChild(robotBlock);
+
+          // 5. Leadership & Community Service (dynamic)
+          const hasLeadership = currentData.hiddenSections?.leadership?.entries?.length > 0;
+          const hasCommunity = currentData.hiddenSections?.communityService?.entries?.length > 0;
+          if (hasLeadership || hasCommunity) {
+            const hiddenHeaderBlock = document.createElement("div");
+            hiddenHeaderBlock.className = "upload-block-full";
+            hiddenHeaderBlock.style.gridColumn = "1 / -1";
+            hiddenHeaderBlock.innerHTML = `<h3>Leadership & Community Service Photos</h3><p class="upload-hint">Upload showcase photos for your leadership and volunteer roles.</p>`;
+            
+            const list = document.createElement("div");
+            list.className = "upload-list";
+            
+            if (hasLeadership) {
+              currentData.hiddenSections.leadership.entries.forEach((entry, index) => {
+                const key = entry.title || `Leadership Entry ${index + 1}`;
+                const imgVal = uploads.leadership?.[key] || '';
+                
+                const item = document.createElement("div");
+                item.className = "upload-item";
+                item.innerHTML = `
+                  <div class="upload-item-title">Leadership: ${key}</div>
+                  <div class="upload-item-fields">
+                    <div class="upload-field-group">
+                      <span>Photo:</span>
+                      <div class="upload-preview">${imgVal ? `<img src="${imgVal}" />` : ''}</div>
+                      <label class="button admin-secondary upload-btn-sm">
+                        Upload
+                        <input type="file" accept="image/png,image/jpeg,image/webp" data-upload-type="leadership-image" data-item-key="${key}" hidden />
+                      </label>
+                      ${imgVal ? `<button class="button admin-secondary remove-btn-sm" data-remove-type="leadership-image" data-item-key="${key}" type="button">Remove</button>` : ''}
+                    </div>
+                  </div>
+                `;
+                list.appendChild(item);
+              });
+            }
+
+            if (hasCommunity) {
+              currentData.hiddenSections.communityService.entries.forEach((entry, index) => {
+                const key = entry.title || `Volunteer Entry ${index + 1}`;
+                const imgVal = uploads.communityService?.[key] || '';
+                
+                const item = document.createElement("div");
+                item.className = "upload-item";
+                item.innerHTML = `
+                  <div class="upload-item-title">Volunteer: ${key}</div>
+                  <div class="upload-item-fields">
+                    <div class="upload-field-group">
+                      <span>Photo:</span>
+                      <div class="upload-preview">${imgVal ? `<img src="${imgVal}" />` : ''}</div>
+                      <label class="button admin-secondary upload-btn-sm">
+                        Upload
+                        <input type="file" accept="image/png,image/jpeg,image/webp" data-upload-type="community-image" data-item-key="${key}" hidden />
+                      </label>
+                      ${imgVal ? `<button class="button admin-secondary remove-btn-sm" data-remove-type="community-image" data-item-key="${key}" type="button">Remove</button>` : ''}
+                    </div>
+                  </div>
+                `;
+                list.appendChild(item);
+              });
+            }
+            
+            hiddenHeaderBlock.appendChild(list);
+            uploadContainer.appendChild(hiddenHeaderBlock);
+          }
+
+          // File Input Event Handler
+          uploadContainer.querySelectorAll("input[type='file']").forEach(input => {
+            input.addEventListener("change", (e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+              if (!file.type.startsWith("image/")) {
+                setStatus("Please choose a PNG, JPEG, or WebP image.", true);
+                input.value = "";
+                return;
+              }
+              if (file.size > 2 * 1024 * 1024) {
+                setStatus("Choose an image smaller than 2 MB for this browser-only draft tool.", true);
+                input.value = "";
+                return;
+              }
+
+              const reader = new FileReader();
+              reader.onload = () => {
+                const base64 = reader.result;
+                const ups = getUploads();
+
+                if (input.dataset.uploadTarget === "profile") {
+                  ups.profile = base64;
+                } else if (input.dataset.uploadTarget === "robotics") {
+                  ups.robotics = base64;
+                } else if (input.dataset.uploadType === "achievement-image") {
+                  const key = input.dataset.itemKey;
+                  if (!ups.achievements) ups.achievements = {};
+                  if (!ups.achievements[key]) ups.achievements[key] = {};
+                  ups.achievements[key].image = base64;
+                } else if (input.dataset.uploadType === "achievement-certificate") {
+                  const key = input.dataset.itemKey;
+                  if (!ups.achievements) ups.achievements = {};
+                  if (!ups.achievements[key]) ups.achievements[key] = {};
+                  ups.achievements[key].certificate = base64;
+                } else if (input.dataset.uploadType === "project-image") {
+                  const key = input.dataset.itemKey;
+                  if (!ups.projects) ups.projects = {};
+                  ups.projects[key] = base64;
+                } else if (input.dataset.uploadType === "leadership-image") {
+                  const key = input.dataset.itemKey;
+                  if (!ups.leadership) ups.leadership = {};
+                  ups.leadership[key] = base64;
+                } else if (input.dataset.uploadType === "community-image") {
+                  const key = input.dataset.itemKey;
+                  if (!ups.communityService) ups.communityService = {};
+                  ups.communityService[key] = base64;
+                }
+
+                if (!saveUploads(ups)) return;
+                drawUploadFields();
+                setStatus("Image uploaded successfully.", false);
+              };
+              reader.readAsDataURL(file);
+            });
+          });
+
+          // Remove Button Event Handler
+          uploadContainer.querySelectorAll("button.remove-btn, button.remove-btn-sm").forEach(btn => {
+            btn.addEventListener("click", () => {
+              const ups = getUploads();
+
+              if (btn.dataset.removeTarget === "profile") {
+                delete ups.profile;
+              } else if (btn.dataset.removeTarget === "robotics") {
+                delete ups.robotics;
+              } else if (btn.dataset.removeType === "achievement-image") {
+                const key = btn.dataset.itemKey;
+                if (ups.achievements?.[key]) {
+                  delete ups.achievements[key].image;
+                  if (Object.keys(ups.achievements[key]).length === 0) delete ups.achievements[key];
+                }
+              } else if (btn.dataset.removeType === "achievement-certificate") {
+                const key = btn.dataset.itemKey;
+                if (ups.achievements?.[key]) {
+                  delete ups.achievements[key].certificate;
+                  if (Object.keys(ups.achievements[key]).length === 0) delete ups.achievements[key];
+                }
+              } else if (btn.dataset.removeType === "project-image") {
+                const key = btn.dataset.itemKey;
+                if (ups.projects) delete ups.projects[key];
+              } else if (btn.dataset.removeType === "leadership-image") {
+                const key = btn.dataset.itemKey;
+                if (ups.leadership) delete ups.leadership[key];
+              } else if (btn.dataset.removeType === "community-image") {
+                const key = btn.dataset.itemKey;
+                if (ups.communityService) delete ups.communityService[key];
+              }
+
+              saveUploads(ups);
+              drawUploadFields();
+              setStatus("Image removed successfully.", false);
+            });
+          });
+        }
 
         drawDynamicFields();
         populateQuickFields();

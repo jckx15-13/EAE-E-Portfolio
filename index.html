@@ -9,29 +9,28 @@
       content="A personal EAE portfolio for Jaron Chew, focused on coding, robotics, cybersecurity, projects, evidence, and reflective growth."
     />
     <meta name="author" content="Jaron Chew" />
-    <meta name="theme-color" content="#070B16" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0a1222" />
     <meta property="og:title" content="Jaron Chew | EAE Portfolio" />
     <meta
       property="og:description"
       content="A personal EAE portfolio showing Jaron's coding, robotics, cybersecurity, project evidence, reflections, and target polytechnic applications."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="images/hero-technology.png" />
+    <meta property="og:image" content="images/projects/exhibition_pitch.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Jaron Chew | EAE Portfolio" />
     <meta
       name="twitter:description"
       content="A card-style EAE portfolio centred on Jaron's learning journey, projects, achievements, and evidence."
     />
-    <meta name="twitter:image" content="images/hero-technology.png" />
+    <meta name="twitter:image" content="images/projects/exhibition_pitch.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" href="images/hero-technology.png" as="image" />
+    <link rel="preload" href="images/projects/exhibition_pitch.jpg" as="image" />
     <link rel="stylesheet" href="style.css" />
     <script defer src="data.js"></script>
     <script defer src="script.js"></script>
@@ -63,10 +62,22 @@
       <span id="scrollProgressBar"></span>
     </div>
 
-    <nav class="journey-rail" aria-label="Journey section shortcuts">
-      <div class="journey-rail-line" aria-hidden="true"></div>
-      <div id="journeyRailDots" class="journey-rail-dots"></div>
-    </nav>
+    <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
+      <div class="view-mode-bar-inner">
+        <button class="view-mode-pill" type="button" role="tab" data-mode="cards" aria-selected="false" aria-controls="main">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+          Cards
+        </button>
+        <button class="view-mode-pill" type="button" role="tab" data-mode="timeline" aria-selected="false" aria-controls="main">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><line x1="4" y1="2" x2="4" y2="14" stroke="currentColor" stroke-width="1.5"/><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="10" r="2" fill="currentColor"/><line x1="7" y1="4" x2="14" y2="4" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="10" x2="14" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
+          Timeline
+        </button>
+        <button class="view-mode-pill is-active" type="button" role="tab" data-mode="story" aria-selected="true" aria-controls="main">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 2v12M3 4h4a2 2 0 012 2v0a2 2 0 01-2 2H3M3 8h5a2 2 0 012 2v0a2 2 0 01-2 2H3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Story
+        </button>
+      </div>
+    </div>
 
     <main id="main">
       <section id="top" class="hero section-dark">
@@ -82,15 +93,10 @@
             <p id="heroIdentityLine" class="hero-identity"></p>
             <p id="heroSubtitle" class="hero-subtitle"></p>
             <p id="heroIntro" class="hero-intro"></p>
-            <p id="heroSignature" class="hero-signature"></p>
-            <div class="hero-note">
-              <h2>How I want people to remember me</h2>
-              <p id="heroRememberMe"></p>
-            </div>
             <div id="focusAreas" class="focus-list" aria-label="Portfolio focus areas"></div>
             <div class="hero-actions">
-              <a class="button button-primary" href="#life">Begin the Walk</a>
-              <a class="button button-secondary" href="#projects">See What I Built</a>
+              <a class="button button-primary" href="#projects">View projects</a>
+              <a class="button button-secondary" href="#achievements">View achievements</a>
             </div>
           </div>
 
@@ -98,7 +104,7 @@
         </div>
       </section>
 
-      <section id="life" class="section life-entry-section">
+      <section id="life" class="section life-entry-section section-astral-1">
         <div class="life-entry-layout">
           <div class="life-entry-intro">
             <p class="section-label">Life Entry</p>
@@ -110,51 +116,25 @@
         </div>
       </section>
 
-      <section id="reader-guide" class="section reader-guide-section">
-        <div class="reader-guide-layout">
-          <div class="section-heading">
-            <p class="section-label">Reader Guide</p>
-            <h2 id="readerGuideTitle"></h2>
-            <p id="readerGuideIntro" class="section-lede"></p>
-          </div>
-          <div id="readerGuideCards" class="reader-guide-grid"></div>
-        </div>
-      </section>
 
-      <section id="personal-map" class="section personal-map-section">
-        <div class="personal-map-layout">
-          <div class="personal-map-intro">
-            <p class="section-label">Personal Map</p>
-            <h2 id="personalMapTitle"></h2>
-            <p id="personalMapIntro" class="section-lede"></p>
-            <p id="personalMapNote" class="personal-map-note"></p>
-          </div>
-          <div id="personalMapCards" class="personal-map-grid"></div>
-        </div>
-      </section>
-
-      <section id="evidence-deck" class="section evidence-deck-section">
+      <section id="evidence-overview" class="section section-astral-2 evidence-overview-section">
         <div class="section-heading">
-          <p class="section-label">Evidence Deck</p>
-          <h2 id="evidenceDeckTitle"></h2>
-          <p id="evidenceDeckIntro" class="section-lede"></p>
+          <p class="section-label">Evidence Overview</p>
+          <h2 id="evidenceOverviewTitle">My Evidence at a Glance</h2>
+          <p id="evidenceOverviewIntro" class="section-lede"></p>
+          <button class="hint-trigger" type="button" aria-label="What is this section?" data-hint="This section combines your personal map and evidence deck into one consolidated view, showing the key themes and proof points of your portfolio.">
+            <span aria-hidden="true">?</span>
+          </button>
         </div>
-        <div id="evidenceDeckCards" class="evidence-deck-grid"></div>
+        <div class="evidence-overview-tabs" role="tablist" aria-label="Evidence view">
+          <button class="evidence-tab is-active" type="button" role="tab" data-tab="map" aria-selected="true">Personal Map</button>
+          <button class="evidence-tab" type="button" role="tab" data-tab="deck" aria-selected="false">Evidence Cards</button>
+        </div>
+        <div id="personalMapCards" class="personal-map-grid view-mode-section" data-tab-panel="map"></div>
+        <div id="evidenceDeckCards" class="evidence-deck-grid view-mode-section" data-tab-panel="deck" hidden></div>
       </section>
 
-      <section id="readiness" class="section readiness-section">
-        <div class="section-heading">
-          <p class="section-label">Readiness</p>
-          <h2>Evidence Readiness Dashboard</h2>
-          <p class="section-lede">
-            A live snapshot of what is already supported and what still needs
-            confirmation before this portfolio is submitted.
-          </p>
-        </div>
-        <div id="readinessCards" class="readiness-grid"></div>
-      </section>
-
-      <section id="about" class="section">
+      <section id="about" class="section section-astral-3">
         <div class="section-heading">
           <p class="section-label">Personal Story</p>
           <h2>Who I Am</h2>
@@ -184,7 +164,18 @@
         </div>
       </section>
 
-      <section id="achievement-flow" class="section section-soft achievement-flow-section">
+      <section id="experience" class="section experience-section">
+        <div class="section-heading">
+          <p class="section-label">Beyond The Build</p>
+          <h2>Learning In Context</h2>
+          <p class="section-lede">
+            The people, presentations, and small moments behind the portfolio.
+          </p>
+        </div>
+        <div id="experienceGallery" class="experience-gallery"></div>
+      </section>
+
+      <section id="achievement-flow" class="section section-astral-4 achievement-flow-section">
         <div class="section-heading flow-heading">
           <p class="section-label">Achievement Flow</p>
           <h2>How Each Achievement Builds Into the Next</h2>
@@ -193,7 +184,7 @@
         <div id="achievementFlow" class="achievement-flow"></div>
       </section>
 
-      <section id="projects" class="section section-soft">
+      <section id="projects" class="section section-astral-5">
         <div class="section-heading">
           <p class="section-label">Work</p>
           <h2>Featured Projects</h2>
@@ -203,7 +194,8 @@
           </p>
         </div>
         <div id="projectFilters" class="filter-row" aria-label="Project filters"></div>
-        <div id="projectsGrid" class="project-grid"></div>
+        <div id="projectsGrid" class="project-grid view-mode-section"></div>
+        <div id="projectStoryConnectors" class="story-connectors" aria-hidden="true"></div>
       </section>
 
       <section id="applications" class="section">
@@ -219,19 +211,11 @@
         <div id="applicationsGrid" class="applications-grid"></div>
       </section>
 
-      <section id="interview" class="section interview-section">
-        <div class="section-heading">
-          <p class="section-label">Interview</p>
-          <h2 id="interviewTitle"></h2>
-          <p id="interviewIntro" class="section-lede"></p>
-        </div>
-        <div id="interviewCards" class="interview-grid"></div>
-      </section>
 
-      <section id="achievements" class="section section-dark compact-dark">
+      <section id="achievements" class="section section-astral-6 compact-dark">
         <div class="section-heading">
           <p class="section-label">Evidence Library</p>
-          <h2>Achievement Details</h2>
+          <h2>Achievement Story</h2>
           <p class="section-lede">
             These cards support the flow above. Open each one for the fuller
             description, reflection, learning outcome, images, and certificates.
@@ -243,9 +227,9 @@
             <span class="sr-only">Search achievements</span>
             <input id="achievementSearch" type="search" placeholder="Search achievements" />
           </label>
-          <p id="achievementResultCount" class="result-count"></p>
+          <p id="achievementResultCount" class="result-count" role="status" aria-live="polite"></p>
         </div>
-        <div id="achievementCards" class="achievement-grid"></div>
+        <div id="achievementCards" class="achievement-grid view-mode-section"></div>
         <div class="timeline-wrap">
           <h3 class="mini-heading">Timeline</h3>
           <div id="achievementTimeline" class="timeline"></div>
@@ -264,13 +248,13 @@
         <div id="competitionList" class="journey-list"></div>
       </section>
 
-      <section id="coding" class="section section-soft coding-section">
+      <section id="coding" class="section section-astral-3 coding-section">
         <div class="section-heading">
           <p class="section-label">Technical Interests</p>
           <h2>Coding</h2>
           <p id="codingSummary" class="section-lede"></p>
         </div>
-        <div id="codingGrid" class="simple-grid"></div>
+        <div id="codingGrid" class="simple-grid view-mode-section"></div>
         <div class="coding-subsection-heading">
           <p class="section-label">Learning Path</p>
           <h3>The Lab Coder: Foundation to Intermediate</h3>
@@ -278,7 +262,7 @@
             A card view of the programme details extracted from the local pitchbook, written as evidence of learning progression rather than inflated claims.
           </p>
         </div>
-        <div id="coderProgrammeGrid" class="learning-card-grid"></div>
+        <div id="coderProgrammeGrid" class="learning-card-grid view-mode-section"></div>
         <div class="coding-subsection-heading">
           <p class="section-label">Skills Alignment</p>
           <h3>Relevant SkillsFuture Skills</h3>
@@ -286,7 +270,7 @@
             Selected skills from the local SkillsFuture jobs-and-skills spreadsheets that connect to my projects, robotics work, and EAE direction.
           </p>
         </div>
-        <div id="skillsFutureGrid" class="learning-card-grid skillsfuture-grid"></div>
+        <div id="skillsFutureGrid" class="learning-card-grid skillsfuture-grid view-mode-section"></div>
       </section>
 
       <section id="robotics" class="section two-column-section">
@@ -295,10 +279,13 @@
           <h2>Robotics</h2>
           <p id="roboticsSummary" class="section-lede"></p>
         </div>
-        <div id="roboticsHighlights" class="check-list"></div>
+        <div>
+          <div id="roboticsHighlights" class="check-list" style="margin-bottom: 1.5rem;"></div>
+          <div id="roboticsImageContainer"></div>
+        </div>
       </section>
 
-      <section id="reflections" class="section section-soft">
+      <section id="reflections" class="section section-astral-4">
         <div class="section-heading">
           <p class="section-label">Reflection</p>
           <h2>Reflection Journal</h2>
@@ -306,10 +293,10 @@
             Prompts are prepared for authentic reflection after each experience.
           </p>
         </div>
-        <div id="reflectionList" class="reflection-grid"></div>
+        <div id="reflectionList" class="reflection-grid view-mode-section"></div>
       </section>
 
-      <section id="certifications" class="section">
+      <section id="certifications" class="section section-astral-5">
         <div class="section-heading">
           <p class="section-label">Records</p>
           <h2>Certifications</h2>
@@ -318,10 +305,10 @@
             confirmed provider names, dates, and evidence.
           </p>
         </div>
-        <div id="certificationGrid" class="cert-grid"></div>
+        <div id="certificationGrid" class="cert-grid badge-wall view-mode-section"></div>
       </section>
 
-      <section id="goals" class="section section-dark goals-section">
+      <section id="goals" class="section section-astral-6 goals-section">
         <div class="section-heading">
           <p class="section-label">Direction</p>
           <h2>Future Goals</h2>
@@ -348,13 +335,9 @@
     </main>
 
     <footer class="site-footer">
-      <p>
-        Content is editable in <code>data.js</code>. Unconfirmed information is
-        intentionally shown as placeholders.
-      </p>
+      <p>Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.</p>
       <div class="footer-actions">
         <button id="printPortfolio" class="footer-button" type="button">Print portfolio</button>
-        <a href="admin.html">Open local content editor</a>
       </div>
     </footer>
 
@@ -366,5 +349,6 @@
         <div id="modalContent"></div>
       </div>
     </dialog>
+
   </body>
 </html>
