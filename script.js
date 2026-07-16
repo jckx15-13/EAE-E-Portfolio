@@ -1414,14 +1414,27 @@
     const bar = $("#scrollProgressBar");
     if (!bar) return;
 
+    let ticking = false;
+
     const updateProgress = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const viewportHeight = window.innerHeight;
+      const maxScroll = Math.max(0, scrollHeight - viewportHeight);
       const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-      bar.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+      const clamped = Math.min(1, Math.max(0, progress));
+      bar.style.transform = `scaleX(${clamped})`;
+      bar.setAttribute("aria-valuenow", String(Math.round(clamped * 100)));
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateProgress);
     };
 
     updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", updateProgress);
   }
 

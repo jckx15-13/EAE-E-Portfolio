@@ -22,7 +22,7 @@
   --shadow-card: 0 6px 20px rgba(30, 42, 62, 0.05);
   --shadow-space: 0 16px 40px rgba(3, 8, 18, 0.12);
   --radius: 8px;
-  --max-width: 1160px;
+  --max-width: 1400px;
   --header-height: 72px;
 }
 
@@ -147,22 +147,24 @@ h4,
 .scroll-progress {
   position: fixed;
   z-index: 51;
-  top: calc(var(--header-height) - 2px);
+  top: var(--header-height);
   right: 0;
   left: 0;
-  height: 2px;
+  height: 3px;
   overflow: hidden;
   pointer-events: none;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .scroll-progress span {
   display: block;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #9ddcff, rgba(107, 91, 209, 0.7));
+  background: linear-gradient(90deg, var(--blue-500), var(--purple-700));
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 90ms linear;
+  will-change: transform;
+  transition: transform 80ms linear;
 }
 
 .brand {
@@ -392,7 +394,7 @@ h4,
 }
 
 .section-heading {
-  max-width: 760px;
+  max-width: 920px;
   margin-bottom: 36px;
 }
 
@@ -478,8 +480,15 @@ h4,
 
 .hero-centerpiece {
   display: grid;
-  justify-items: center;
-  gap: 26px;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  gap: 40px 56px;
+  align-items: center;
+  justify-items: stretch;
+  text-align: left;
+}
+
+.hero-centerpiece .journey-markers {
+  grid-column: 1 / -1;
 }
 
 .hero-person {
@@ -525,10 +534,10 @@ h4,
 
 .hero-copy {
   display: grid;
-  justify-items: center;
-  max-width: 820px;
+  justify-items: start;
+  max-width: none;
   min-width: 0;
-  margin-inline: auto;
+  margin-inline: 0;
 }
 
 .hero h1 {
@@ -602,7 +611,7 @@ h4,
 .focus-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.55rem;
   margin-top: 1.4rem;
 }
@@ -630,7 +639,7 @@ h4,
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.8rem;
   margin-top: 2rem;
 }
@@ -677,7 +686,7 @@ h4,
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  width: min(100%, 920px);
+  width: 100%;
 }
 
 .journey-marker {
@@ -945,7 +954,7 @@ h4,
 
 .personal-map-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -1655,7 +1664,7 @@ p {
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
 }
 
@@ -2780,27 +2789,6 @@ p {
   .section h2,
   .admin-header h1 {
     font-size: 2rem;
-  }
-
-  .project-grid,
-  .achievement-grid,
-  .journey-list,
-  .reader-guide-grid,
-  .personal-map-grid,
-  .evidence-deck-grid,
-  .readiness-grid,
-  .interview-grid,
-  .snapshot-grid,
-  .strength-grid,
-  .simple-grid,
-  .learning-card-grid,
-  .skillsfuture-grid,
-  .reflection-grid,
-  .cert-grid,
-  .applications-grid,
-  .experience-gallery,
-  .modal-media-grid {
-    grid-template-columns: 1fr;
   }
 
   .achievement-controls {
@@ -4419,7 +4407,7 @@ body[data-view-mode="story"] .view-mode-indicator {
 /* Cards View — standard grid (current behavior) */
 [data-view-mode="cards"] .view-mode-section {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
 }
 
@@ -4524,13 +4512,13 @@ body[data-view-mode="story"] .view-mode-indicator {
   }
 }
 
-/* Story View — single column with connectors */
+/* Story View — wider narrative column; multi-column for scannable grids */
 [data-view-mode="story"] .view-mode-section {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 0;
-  max-width: 740px;
+  max-width: min(100%, var(--max-width));
   margin: 0 auto;
 }
 
@@ -5019,4 +5007,187 @@ body[data-view-mode="story"] .view-mode-indicator {
 .parallax-section > *:not(.parallax-bg) {
   position: relative;
   z-index: 1;
+}
+
+/* ── Layout & contrast fixes (final pass) ── */
+
+@media (min-width: 1200px) {
+  .achievement-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .simple-grid,
+  .reflection-grid,
+  .applications-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .learning-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  [data-view-mode="story"] #achievementCards.view-mode-section,
+  [data-view-mode="story"] #reflectionList.view-mode-section,
+  [data-view-mode="story"] #codingGrid.view-mode-section,
+  [data-view-mode="story"] #coderProgrammeGrid.view-mode-section,
+  [data-view-mode="story"] #skillsFutureGrid.view-mode-section,
+  [data-view-mode="story"] #certificationGrid.view-mode-section:not(.badge-wall) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    align-items: start;
+  }
+
+  [data-view-mode="story"] #projectsGrid.view-mode-section {
+    max-width: 960px;
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero {
+    text-align: left;
+  }
+
+  .hero-person {
+    justify-self: center;
+  }
+}
+
+@media (max-width: 899px) {
+  .hero {
+    text-align: center;
+  }
+
+  .hero-centerpiece {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .hero-copy {
+    justify-items: center;
+    margin-inline: auto;
+  }
+
+  .focus-list,
+  .hero-actions {
+    justify-content: center;
+  }
+}
+
+/* Dark sections: readable text on gradient backgrounds */
+[class*="section-astral-"] h3,
+[class*="section-astral-"] h4,
+.compact-dark h3,
+.compact-dark h4,
+.compact-dark .mini-heading,
+.goals-section h3 {
+  color: var(--white);
+}
+
+[class*="section-astral-"] .coding-subsection-heading h3,
+.compact-dark .coding-subsection-heading h3 {
+  color: var(--white);
+}
+
+[class*="section-astral-"] .coding-subsection-heading p:not(.section-label),
+.compact-dark .section-lede {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+[class*="section-astral-"] .snapshot-card,
+[class*="section-astral-"] .learning-pattern-block,
+[class*="section-astral-"] .profile-panel {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 12px 32px rgba(3, 8, 18, 0.12);
+}
+
+[class*="section-astral-"] .snapshot-card h3,
+[class*="section-astral-"] .learning-pattern-block h3,
+[class*="section-astral-"] .profile-panel h3,
+[class*="section-astral-"] .profile-panel p {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+[class*="section-astral-"] .pattern-card {
+  border-left-color: rgba(74, 174, 222, 0.55);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.84);
+}
+
+[class*="section-astral-"] .pattern-card h4,
+[class*="section-astral-"] .pattern-card p {
+  color: rgba(255, 255, 255, 0.84);
+}
+
+[class*="section-astral-"] .check-item,
+.compact-dark .check-item {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.compact-dark .filter-button,
+[class*="section-astral-"] .filter-button {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.compact-dark .filter-button[aria-pressed="true"],
+[class*="section-astral-"] .filter-button[aria-pressed="true"] {
+  border-color: rgba(157, 220, 255, 0.55);
+  color: var(--navy-950);
+  background: #d9f3ff;
+}
+
+.compact-dark .section h2,
+.compact-dark h2,
+.compact-dark .section-label {
+  color: var(--white);
+}
+
+.compact-dark .section-label {
+  color: rgba(157, 220, 255, 0.82);
+}
+
+.compact-dark .timeline-wrap .mini-heading {
+  color: var(--white);
+}
+
+.compact-dark .timeline-item h4,
+.compact-dark .timeline-item p {
+  color: rgba(255, 255, 255, 0.84);
+}
+
+#robotics.two-column-section {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+@media (max-width: 680px) {
+  .project-grid,
+  .achievement-grid,
+  .personal-map-grid,
+  .evidence-deck-grid,
+  .simple-grid,
+  .reflection-grid,
+  .applications-grid,
+  .learning-card-grid,
+  .skillsfuture-grid,
+  .cert-grid,
+  .experience-gallery,
+  .journey-list,
+  .snapshot-grid,
+  .strength-grid,
+  .modal-media-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-markers,
+  .pattern-grid {
+    grid-template-columns: 1fr;
+  }
 }
