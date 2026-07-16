@@ -3489,6 +3489,7 @@ section {
 }
 
 .view-mode-bar-inner {
+  position: relative;
   display: flex;
   background: rgba(10, 18, 34, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -3496,7 +3497,33 @@ section {
   padding: 4px;
 }
 
+.view-mode-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 3);
+  border-radius: 99px;
+  background: linear-gradient(135deg, var(--purple-700), #5244b0);
+  box-shadow: 0 0 16px rgba(107, 91, 209, 0.4);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+/* Move the indicator absolutely depending on active view mode on body */
+body[data-view-mode="cards"] .view-mode-indicator {
+  transform: translateX(0);
+}
+body[data-view-mode="timeline"] .view-mode-indicator {
+  transform: translateX(100%);
+}
+body[data-view-mode="story"] .view-mode-indicator {
+  transform: translateX(200%);
+}
+
 .view-mode-pill {
+  position: relative;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -3509,7 +3536,7 @@ section {
   color: rgba(255, 255, 255, 0.64);
   background: transparent;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view-mode-pill svg {
@@ -3518,7 +3545,6 @@ section {
 
 .view-mode-pill:hover {
   color: var(--white);
-  background: rgba(255, 255, 255, 0.04);
 }
 
 .view-mode-pill:hover svg {
@@ -3527,8 +3553,8 @@ section {
 
 .view-mode-pill.is-active {
   color: var(--white);
-  background: linear-gradient(135deg, var(--purple-700), #5244b0);
-  box-shadow: 0 0 16px rgba(107, 91, 209, 0.4);
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 /* ── Astral/Interstellar Aesthetic ── */

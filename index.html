@@ -62,23 +62,6 @@
       <span id="scrollProgressBar"></span>
     </div>
 
-    <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
-      <div class="view-mode-bar-inner">
-        <button class="view-mode-pill" type="button" role="tab" data-mode="cards" aria-selected="false" aria-controls="main">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
-          Cards
-        </button>
-        <button class="view-mode-pill" type="button" role="tab" data-mode="timeline" aria-selected="false" aria-controls="main">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><line x1="4" y1="2" x2="4" y2="14" stroke="currentColor" stroke-width="1.5"/><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="10" r="2" fill="currentColor"/><line x1="7" y1="4" x2="14" y2="4" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="10" x2="14" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
-          Timeline
-        </button>
-        <button class="view-mode-pill is-active" type="button" role="tab" data-mode="story" aria-selected="true" aria-controls="main">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 2v12M3 4h4a2 2 0 012 2v0a2 2 0 01-2 2H3M3 8h5a2 2 0 012 2v0a2 2 0 01-2 2H3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          Story
-        </button>
-      </div>
-    </div>
-
     <main id="main">
       <section id="top" class="hero section-dark">
         <div class="hero-centerpiece">
@@ -163,6 +146,24 @@
           </div>
         </div>
       </section>
+
+      <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
+        <div class="view-mode-bar-inner">
+          <div class="view-mode-indicator" aria-hidden="true"></div>
+          <button class="view-mode-pill" type="button" role="tab" data-mode="cards" aria-selected="false" aria-controls="main">
+            <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            Cards
+          </button>
+          <button class="view-mode-pill" type="button" role="tab" data-mode="timeline" aria-selected="false" aria-controls="main">
+            <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="9" y1="5" x2="9" y2="19"></line><circle cx="9" cy="5" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="9" cy="19" r="1.5"></circle><line x1="14" y1="5" x2="20" y2="5"></line><line x1="14" y1="12" x2="20" y2="12"></line><line x1="14" y1="19" x2="20" y2="19"></line></svg>
+            Timeline
+          </button>
+          <button class="view-mode-pill is-active" type="button" role="tab" data-mode="story" aria-selected="true" aria-controls="main">
+            <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+            Story
+          </button>
+        </div>
+      </div>
 
       <section id="experience" class="section experience-section">
         <div class="section-heading">
