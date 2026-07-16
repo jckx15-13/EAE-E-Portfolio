@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "design:lint": "design.md lint DESIGN.md"
+    "design:lint": "design.md lint materials/DESIGN.md"
   },
   "dependencies": {
     "@google/design.md": "^0.3.0"

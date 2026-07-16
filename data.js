@@ -15,7 +15,8 @@
     "personalSignature": "I am still learning, but I keep showing up: noticing problems, building, testing, reflecting, and improving.",
     "rememberMe": "I am a curious and hardworking lifelong learner who enjoys coding, technology, engineering, and solving problems. I enjoy learning through projects and building useful solutions that improve people's experiences. I believe technology should create positive impact and help others.",
     "brandStatement": "This portfolio is a personal space, not only a record of activities. It shows how I think, how I build, how I respond to challenges, and why technology matters to me.",
-    "profileImage": "images/profile_option_1.jpg",
+    "profileImage": "images/projects/carnival_water_activity.jpg",
+    "profileImageAlt": "Students presenting a carnival water activity at Juying Secondary School",
     "heroImage": "images/projects/exhibition_pitch.jpg",
     "photoCaption": "Jaron Chew, Juying Secondary School",
     "focusAreas": [
@@ -50,34 +51,34 @@
   },
   "experienceGallery": [
     {
-      "src": "images/profile_option_1.jpg",
+      "src": "images/projects/carnival_water_activity.jpg",
       "alt": "Students presenting a carnival water activity",
       "title": "Building with others",
       "caption": "A school activity that reflects the teamwork and energy behind my learning journey."
     },
     {
-      "src": "images/profile_option_2.jpg",
-      "alt": "Student explaining project posters at a Kodecoon event",
+      "src": "images/projects/exhibition_pitch.jpg",
+      "alt": "Project exhibition pitch display",
       "title": "Sharing work in public",
       "caption": "Discussing project ideas at a Kodecoon showcase."
     },
     {
-      "src": "images/profile_option_3.jpg",
-      "alt": "Eyeglasses and notes on a study desk",
+      "src": "images/projects/group_lobby.jpg",
+      "alt": "Students gathered in a school lobby",
       "title": "The details matter",
       "caption": "A quiet reminder that steady preparation supports every technical project."
     },
     {
-      "src": "images/profile_option_4.jpg",
-      "alt": "Students at a group learning event",
-      "title": "Learning with a community",
-      "caption": "Technical progress is stronger when it is shared with peers and mentors."
+      "src": "images/robots/fll-robot-design.png",
+      "alt": "FLL robot design and planning visual",
+      "title": "Turning plans into motion",
+      "caption": "Robot planning connects careful diagrams to real-world movement."
     },
     {
-      "src": "images/projects/group_lobby.jpg",
-      "alt": "Students gathered in a school lobby",
-      "title": "Showing up together",
-      "caption": "The experiences around a project are part of the story too."
+      "src": "images/hero-technology.png",
+      "alt": "Technology and robotics illustration",
+      "title": "The direction I am building toward",
+      "caption": "A visual anchor for my interest in technology, coding, and engineering."
     }
   ],
   "lifeEntry": {
@@ -444,8 +445,7 @@
       "images": [
         "images/robots/fll-robot-design.png"
       ],
-      "evidenceVideo": "videos/Jaron Chew R3.MOV",
-      "optionalVideo": "videos/Jaron Chew R3.MOV",
+      "optionalVideo": "",
       "image": "Evidence added",
       "carriedForward": {
         "fromProject": "NRC Robotics Competition",
@@ -491,6 +491,8 @@
       "developmentJourney": "Analyzed SPD's calendar of 20+ programmes (including EIPIC, Therapy Hub, and the Ability Walk flagship event). Mapped a detailed user flow from registration confirmation to attendance tracking (via T-shirt/goodie bag proxy checks) and automated feedback collation.",
       "outcome": "Designed and prototyped a version 1 event-management portal, significantly reducing administrative overhead for community support reporting.",
       "lessonsLearned": "Realized that non-profit reporting relies heavily on structured output (attendance count, caregiver feedback). Prioritized a clean DB schema over future AI features to solve the immediate administrative strain first.",
+      "slides": "https://canva.link/4kle5s5l7rnfxqc",
+      
       "images": [
         "images/projects/SPD_User_Flow_Flow_chart.jpg",
         "images/projects/SPD_User_Flow_Flow_chart_Page_2.jpg"
@@ -503,24 +505,6 @@
       }
     },
     {
-      "title": "3D Design & Mechanical Prototyping (Thingiverse Creations)",
-      "category": "3D Printing / Engineering / Maker",
-      "status": "Completed and Published",
-      "portfolioSignal": "Demonstrates practical engineering skills, spatial thinking, precision tolerances, and CAD design using 3D printers.",
-      "eaeConnection": "Supports my engineering and problem-solving background, showing that I can transition from abstract physics/math models to physical objects.",
-      "evidenceStatus": "Functional, printed models, sliced build files, and photographs of final prints.",
-      "problem": "Many commercial items (like custom Samsung kickstands, balisong training knives, or headset hangers) are either overpriced, lack customization, or do not fit specific dimensional requirements.",
-      "proposedSolution": "Designed, sliced, and printed a collection of functional models (a customizable Samsung S22 kickstand case, a screwless Balisong butterfly training knife, and an adjustable headset hanger) with custom tolerances to ensure perfect friction fit and functionality.",
-      "myRole": "3D Modeler & Slicing Engineer",
-      "technologiesUsed": "CAD (Tinkercad/Fusion360), Creality Slicer, Thingiverse platform, 3D Printing (PLA)",
-      "developmentJourney": "Sourced and adapted open-source designs, adjusting tolerances to compensate for material shrinkage. Fine-tuned print parameters (infill density, layer height, support structures) to ensure durability.",
-      "outcome": "Successfully printed functional, daily-use prototypes including a headset hanger and a Samsung case with a working integrated kickstand.",
-      "lessonsLearned": "Taught me the importance of mechanical tolerances, how layer orientation affects structural shear strength, and how to calibrate physical hardware to match digital designs.",
-      "images": [
-        "images/projects/3d_headset_hanger.jpg",
-        "images/projects/3d_balisong.jpg",
-        "images/projects/3d_samsung_mod.jpg"
-      ],
       "optionalVideo": "",
       "image": "Evidence added",
       "carriedForward": {
@@ -614,20 +598,7 @@
       "image": "",
       "certificate": "images/certificates/App_Inventor_Appathon_Certificate.jpeg"
     },
-    {
-      "title": "Kodecoon x ShopBack Spark AR Competition",
-      "date": "May 2021 - August 2021",
-      "organisation": "Kodecoon, ShopBack",
-      "category": "Competition",
-      "summary": "Created Instagram filters using Spark AR visual scripting, including a Lucky Draw filter.",
-      "applicantSignal": "Creative technology, interaction design, and visual scripting experience.",
-      "eaeRelevance": "This shows that my technical interests include how users interact with software, not only how code works internally.",
-      "fullDescription": "The featured Lucky Draw filter displayed a spinning prize selector that stopped when the user nodded.",
-      "reflection": "Working with visual scripting and face trackers in Spark AR showed me how immersive tech can engage users. Integrating physical motion like nodding to control a lucky draw was a fun design challenge.",
-      "learningOutcome": "Mastered 3D coordinate space placement, visual patch editing, face mesh tracking, and brand asset integration.",
-      "image": "",
-      "certificate": "images/certificates/Shopback_Spark_AR_Competition_Certificate.jpeg"
-    },
+
     {
       "title": "Roblox Global Goal Challenge",
       "date": "December 2021",
@@ -699,6 +670,15 @@
       "certificate": "images/certificates/Jaron_Chew_Kai_Xin.png"
     }
   ],
+
+
+
+
+
+
+
+
+
   "competitionJourney": [
     {
       "title": "PyCon Hackathon - Jobs & Skills Track",
@@ -706,14 +686,28 @@
       "body": "Developed a career guidance portal using public datasets, providing skill-gap analysis and AI-driven upskilling paths."
     },
     {
+      "title": "Kodecoon x ShopBack Spark AR Competition",
+      "date": "May 2021 - August 2021",
+      "organisation": "Kodecoon, ShopBack",
+      "category": "Competition",
+      "body": "Created Instagram filters using Spark AR visual scripting, including a Lucky Draw filter.",
+      //"applicantSignal": "Creative technology, interaction design, and visual scripting experience.",
+      //"eaeRelevance": "This shows that my technical interests include how users interact with software, not only how code works internally.",
+      //"fullDescription": "The featured Lucky Draw filter displayed a spinning prize selector that stopped when the user nodded.",
+      //"reflection": "Working with visual scripting and face trackers in Spark AR showed me how immersive tech can engage users. Integrating physical motion like nodding to control a lucky draw was a fun design challenge.",
+      //"learningOutcome": "Mastered 3D coordinate space placement, visual patch editing, face mesh tracking, and brand asset integration.",
+      //"image": "",
+      //"certificate": "images/certificates/Shopback_Spark_AR_Competition_Certificate.jpeg"
+    },
+    {
       "title": "BuildingBloCS Game Jam",
       "date": "June 2026",
-      "body": "Collaboratively designed 'SkillQuest' in Unity using C# to gamify cybersecurity training for students."
+      "body": "Collaboratively designed 'Out of Sync' in Unity using C# to gamify cybersecurity training for students."
     },
     {
       "title": "MIT App Inventor Appathon",
       "date": "July 2020 - August 2020",
-      "body": "Developed Mpainter, a mobile Android canvas paint application with custom drawing utilities."
+      "body": "Developed Mpainter, a mobile Android canvas paint application with customized and integrated drawing utilities."
     },
     {
       "title": "Roblox Global Goal Challenge",

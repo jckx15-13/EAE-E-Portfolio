@@ -58,7 +58,7 @@
 
       <nav id="siteNav" class="site-nav" aria-label="Primary navigation"></nav>
     </header>
-    <div class="scroll-progress" aria-hidden="true">
+    <div class="scroll-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
       <span id="scrollProgressBar"></span>
     </div>
 
@@ -66,7 +66,7 @@
       <section id="top" class="hero section-dark">
         <div class="hero-centerpiece">
           <figure class="hero-person">
-            <img id="heroProfileImage" src="images/profile_option_1.jpg" alt="" />
+            <img id="heroProfileImage" src="images/projects/carnival_water_activity.jpg" alt="" />
             <figcaption id="heroPhotoCaption"></figcaption>
           </figure>
 
@@ -133,7 +133,7 @@
         </div>
         <div class="about-layout">
           <div class="profile-panel">
-            <img id="profileImage" src="images/profile_option_1.jpg" alt="" />
+            <img id="profileImage" src="images/projects/carnival_water_activity.jpg" alt="" />
             <div>
               <h3 id="profileName"></h3>
               <p id="profileIntro"></p>
@@ -150,7 +150,7 @@
       <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
         <div class="view-mode-bar-inner">
           <div class="view-mode-indicator" aria-hidden="true"></div>
-          <button class="view-mode-pill" type="button" role="tab" data-mode="cards" aria-selected="false" aria-controls="main">
+          <button class="view-mode-pill is-active" type="button" role="tab" data-mode="cards" aria-selected="true" aria-controls="main">
             <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
             Cards
           </button>
@@ -158,7 +158,7 @@
             <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="9" y1="5" x2="9" y2="19"></line><circle cx="9" cy="5" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="9" cy="19" r="1.5"></circle><line x1="14" y1="5" x2="20" y2="5"></line><line x1="14" y1="12" x2="20" y2="12"></line><line x1="14" y1="19" x2="20" y2="19"></line></svg>
             Timeline
           </button>
-          <button class="view-mode-pill is-active" type="button" role="tab" data-mode="story" aria-selected="true" aria-controls="main">
+          <button class="view-mode-pill" type="button" role="tab" data-mode="story" aria-selected="false" aria-controls="main">
             <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
             Story
           </button>
@@ -198,21 +198,16 @@
         <div id="projectsGrid" class="project-grid view-mode-section"></div>
         <div id="projectStoryConnectors" class="story-connectors" aria-hidden="true"></div>
       </section>
-
-      <section id="applications" class="section">
-        <div class="section-heading">
-          <p class="section-label">Applications</p>
-          <h2>Target EAE Applications</h2>
-          <p class="section-lede">
-            Institution-specific notes stay editable so the portfolio can support
-            both Singapore Polytechnic and Ngee Ann Polytechnic without making
-            unconfirmed course claims.
-          </p>
-        </div>
-        <div id="applicationsGrid" class="applications-grid"></div>
-      </section>
-
-
+      
+      
+      <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAHM4xnRXzo/dqwWK6e9zzf3GcKGTFlgSA/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
+<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAHM4xnRXzo&#x2F;dqwWK6e9zzf3GcKGTFlgSA&#x2F;view?utm_content=DAHM4xnRXzo&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">SPD</a> by Lee En Chen (Dunmanss)
       <section id="achievements" class="section section-astral-6 compact-dark">
         <div class="section-heading">
           <p class="section-label">Evidence Library</p>
@@ -237,19 +232,17 @@
         </div>
       </section>
 
-      <section id="journey" class="section">
+      <!-- <section id="journey" class="section">
         <div class="section-heading">
           <p class="section-label">Competitions</p>
           <h2>Competition Journey</h2>
           <p class="section-lede">
-            Competition entries use confirmed facts first and leave unverified
-            results, roles, dates, and reflections as editable placeholders.
+          
           </p>
         </div>
         <div id="competitionList" class="journey-list"></div>
-      </section>
-
-      <section id="coding" class="section section-astral-3 coding-section">
+      </section> -->
+      <!-- <section id="coding" class="section section-astral-3 coding-section">
         <div class="section-heading">
           <p class="section-label">Technical Interests</p>
           <h2>Coding</h2>
@@ -297,7 +290,7 @@
         <div id="reflectionList" class="reflection-grid view-mode-section"></div>
       </section>
 
-      <section id="certifications" class="section section-astral-5">
+       <section id="certifications" class="section section-astral-5">
         <div class="section-heading">
           <p class="section-label">Records</p>
           <h2>Certifications</h2>
@@ -308,6 +301,7 @@
         </div>
         <div id="certificationGrid" class="cert-grid badge-wall view-mode-section"></div>
       </section>
+        -->
 
       <section id="goals" class="section section-astral-6 goals-section">
         <div class="section-heading">
@@ -325,6 +319,44 @@
           </div>
         </div>
       </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <section id="applications" class="section">
+        <div class="section-heading">
+          <p class="section-label">Applications</p>
+          <h2>Target EAE Applications</h2>
+          <p class="section-lede">
+            Institution-specific notes stay editable so the portfolio can support
+            both Singapore Polytechnic and Ngee Ann Polytechnic without making
+            unconfirmed course claims.
+          </p>
+        </div>
+        <div id="applicationsGrid" class="applications-grid"></div>
+      </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <section id="optionalSections" class="section optional-sections" hidden>
         <div class="section-heading">

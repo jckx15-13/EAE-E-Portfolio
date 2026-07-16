@@ -3586,6 +3586,38 @@ body[data-view-mode="story"] .view-mode-indicator {
   color: rgba(255, 255, 255, 0.72) !important;
 }
 
+/* Light evidence cards retain a dark text hierarchy inside astral sections. */
+[class*="section-astral-"] .small-card,
+[class*="section-astral-"] .snapshot-card,
+[class*="section-astral-"] .pattern-card,
+[class*="section-astral-"] .profile-panel,
+[class*="section-astral-"] .project-card,
+[class*="section-astral-"] .evidence-card,
+[class*="section-astral-"] .personal-map-card,
+[class*="section-astral-"] .readiness-card,
+[class*="section-astral-"] .application-card,
+[class*="section-astral-"] .cert-card,
+[class*="section-astral-"] .learning-path-card,
+[class*="section-astral-"] .skill-alignment-card {
+  color: var(--grey-950) !important;
+}
+
+[class*="section-astral-"] .small-card h3,
+[class*="section-astral-"] .small-card h4,
+[class*="section-astral-"] .snapshot-card h3,
+[class*="section-astral-"] .pattern-card h4,
+[class*="section-astral-"] .profile-panel h3,
+[class*="section-astral-"] .project-card h3,
+[class*="section-astral-"] .evidence-card h3,
+[class*="section-astral-"] .personal-map-card h3,
+[class*="section-astral-"] .readiness-card h3,
+[class*="section-astral-"] .application-card h3,
+[class*="section-astral-"] .cert-card h3,
+[class*="section-astral-"] .learning-path-card h3,
+[class*="section-astral-"] .skill-alignment-card h3 {
+  color: var(--navy-950) !important;
+}
+
 /* Star field particle background */
 [class*="section-astral-"]::before {
   position: absolute;

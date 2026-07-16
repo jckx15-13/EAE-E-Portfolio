@@ -176,7 +176,7 @@
     const heroProfileImage = $("#heroProfileImage");
     if (heroProfileImage && data.profile?.profileImage) {
       heroProfileImage.src = data.profile.profileImage;
-      heroProfileImage.alt = `Portrait of ${data.profile?.name || "Jaron Chew"}`;
+      heroProfileImage.alt = data.profile?.profileImageAlt || `Photo related to ${data.profile?.name || "Jaron Chew"}`;
       heroProfileImage.fetchPriority = "high";
     }
 
@@ -189,7 +189,7 @@
     const profileImage = $("#profileImage");
     if (profileImage && data.profile?.profileImage) {
       profileImage.src = data.profile.profileImage;
-      profileImage.alt = `Portrait of ${data.profile?.name || "Jaron Chew"}`;
+      profileImage.alt = data.profile?.profileImageAlt || `Photo related to ${data.profile?.name || "Jaron Chew"}`;
       profileImage.loading = "lazy";
     }
 
@@ -411,7 +411,7 @@
     viewModeInitialized = true;
 
     const pills = document.querySelectorAll(".view-mode-pill");
-    currentViewMode = localStorage.getItem("eaePortfolioViewMode") || "story";
+    currentViewMode = localStorage.getItem("eaePortfolioViewModeV2") || "cards";
     
     pills.forEach(pill => {
       const active = pill.dataset.mode === currentViewMode;
@@ -422,7 +422,7 @@
         const mode = pill.dataset.mode;
         if (mode === currentViewMode) return;
         currentViewMode = mode;
-        localStorage.setItem("eaePortfolioViewMode", mode);
+        localStorage.setItem("eaePortfolioViewModeV2", mode);
         
         pills.forEach(p => {
           const act = p.dataset.mode === mode;
@@ -487,12 +487,13 @@
     const projectText = (project, primary, fallback) =>
       project[primary] ??
       (fallback ? project[fallback] : undefined);
-    const projectTechs = (project) =>
-      Array.isArray(project.technologies) && project.technologies.length
-        ? project.technologies
-        : Array.isArray(project.technologiesUsed)
-        ? project.technologiesUsed
+    const projectTechs = (project) => {
+      const technologies = project.technologies ?? project.technologiesUsed;
+      if (Array.isArray(technologies)) return technologies.filter(Boolean);
+      return typeof technologies === "string"
+        ? technologies.split(",").map((item) => item.trim()).filter(Boolean)
         : [];
+    };
     const projectMedia = (project) => Array.isArray(project.images) ? project.images : [];
 
     function drawFilters() {
@@ -1412,6 +1413,7 @@
 
   function setupScrollProgress() {
     const bar = $("#scrollProgressBar");
+    const container = $(".scroll-progress");
     if (!bar) return;
 
     let ticking = false;
@@ -1423,7 +1425,7 @@
       const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
       const clamped = Math.min(1, Math.max(0, progress));
       bar.style.transform = `scaleX(${clamped})`;
-      bar.setAttribute("aria-valuenow", String(Math.round(clamped * 100)));
+      container?.setAttribute("aria-valuenow", String(Math.round(clamped * 100)));
       ticking = false;
     };
 
