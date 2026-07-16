@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "@google/design.md": "^0.3.0",
-    "axe-core": "^4.12.1"
+    "axe-core": "^4.12.1",
+    "puppeteer": "^25.3.0"
   }
 }
