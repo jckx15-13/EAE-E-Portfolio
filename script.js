@@ -409,16 +409,18 @@
         });
         
         document.body.dataset.viewMode = mode;
+        document.body.classList.remove("story-mode", "timeline-mode", "cards-mode");
+        document.body.classList.add(`${mode}-mode`);
         
         // Re-render view-mode-aware sections
         renderProjects();
         renderAchievements();
-        renderCertifications();
-        renderCoding();
       });
     });
     
     document.body.dataset.viewMode = currentViewMode;
+    document.body.classList.remove("story-mode", "timeline-mode", "cards-mode");
+    document.body.classList.add(`${currentViewMode}-mode`);
   }
 
   function setupHintTooltips() {
@@ -1324,57 +1326,87 @@
   }
 
   function setupLiveEditor() {
-    if ($(".live-editor-panel")) return;
+    if ($(".live-editor-sidebar")) return;
     
-    const toggleBtn = create("button", "live-editor-toggle", "🛠️ Live Editor");
-    toggleBtn.style = "position: fixed; bottom: 24px; right: 24px; z-index: 1001; background: var(--blue-500); color: #fff; border: none; padding: 10px 16px; border-radius: 20px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(60, 169, 232, 0.4); transition: all 0.2s ease;";
-    document.body.appendChild(toggleBtn);
-
-    const panel = create("div", "live-editor-panel");
-    panel.style.display = "none"; // Start hidden
-    const title = create("span", "", "Live Editor");
-    title.style = "color: var(--blue-500); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;";
+    // Create FAB
+    const fab = create("button", "live-editor-fab", "🛠️");
+    fab.setAttribute("aria-label", "Open live portfolio editor");
+    document.body.appendChild(fab);
     
-    const editTextBtn = create("button", "live-editor-btn", "Edit Text");
-    editTextBtn.id = "toggleEditModeBtn";
+    // Create Sidebar
+    const sidebar = create("div", "live-editor-sidebar");
     
-    const shiftSectionsBtn = create("button", "live-editor-btn", "Shift Sections");
-    shiftSectionsBtn.id = "toggleReorderModeBtn";
+    const header = create("div", "sidebar-header");
+    header.append(create("h3", "", "Portfolio Editor"));
+    const closeBtn = create("button", "sidebar-close-btn", "✖");
+    closeBtn.setAttribute("aria-label", "Close editor panel");
+    header.append(closeBtn);
     
-    const exportBtn = create("button", "live-editor-btn btn-action", "Export data.js");
+    const content = create("div", "sidebar-content");
+    
+    // Switch 1: Edit Text
+    const group1 = create("div", "editor-control-group");
+    const label1 = create("label", "switch-container");
+    label1.append(create("span", "", "Edit Text Inline"));
+    const input1 = document.createElement("input");
+    input1.type = "checkbox";
+    input1.id = "toggleEditModeBtn";
+    const slider1 = create("span", "switch-slider");
+    label1.append(input1, slider1);
+    group1.append(label1);
+    group1.append(create("p", "control-description", "Click and edit text directly on the page. Changes save automatically when you click away."));
+    
+    // Switch 2: Shift Sections
+    const group2 = create("div", "editor-control-group");
+    const label2 = create("label", "switch-container");
+    label2.append(create("span", "", "Shift Sections"));
+    const input2 = document.createElement("input");
+    input2.type = "checkbox";
+    input2.id = "toggleReorderModeBtn";
+    const slider2 = create("span", "switch-slider");
+    label2.append(input2, slider2);
+    group2.append(label2);
+    group2.append(create("p", "control-description", "Use Up/Down controls on sections to swap their layout sequence."));
+    
+    // Actions Group
+    const actions = create("div", "editor-actions");
+    const exportBtn = create("button", "button button-primary", "Export data.js");
     exportBtn.id = "exportDataBtn";
     exportBtn.style.display = "none";
+    exportBtn.style.width = "100%";
+    exportBtn.style.marginTop = "12px";
+    actions.append(exportBtn);
     
-    panel.append(title, editTextBtn, shiftSectionsBtn, exportBtn);
-    document.body.appendChild(panel);
+    content.append(group1, group2, actions);
+    sidebar.append(header, content);
+    document.body.appendChild(sidebar);
     
-    toggleBtn.addEventListener("click", () => {
-      if (panel.style.display === "none") {
-        panel.style.display = "flex";
-        toggleBtn.textContent = "✖ Close Editor";
-        toggleBtn.style.background = "var(--navy-800)";
-      } else {
-        panel.style.display = "none";
-        toggleBtn.textContent = "🛠️ Live Editor";
-        toggleBtn.style.background = "var(--blue-500)";
-      }
+    // Open/Close toggle
+    fab.addEventListener("click", () => {
+      sidebar.classList.toggle("is-open");
+      fab.classList.toggle("is-active");
+      fab.textContent = sidebar.classList.contains("is-open") ? "✖" : "🛠️";
+    });
+    
+    closeBtn.addEventListener("click", () => {
+      sidebar.classList.remove("is-open");
+      fab.classList.remove("is-active");
+      fab.textContent = "🛠️";
     });
     
     let textEditingActive = false;
     let sectionShiftingActive = false;
     
-    editTextBtn.addEventListener("click", () => {
-      textEditingActive = !textEditingActive;
+    // Event listeners
+    input1.addEventListener("change", () => {
+      textEditingActive = input1.checked;
       if (textEditingActive) {
-        editTextBtn.classList.add("btn-active");
         document.body.classList.add("live-editing-active");
-        
         document.querySelectorAll("[data-edit-path]").forEach(el => {
           el.contentEditable = "true";
           el.addEventListener("blur", handleTextBlur);
         });
       } else {
-        editTextBtn.classList.remove("btn-active");
         if (!sectionShiftingActive) {
           document.body.classList.remove("live-editing-active");
         }
@@ -1385,12 +1417,10 @@
       }
     });
     
-    shiftSectionsBtn.addEventListener("click", () => {
-      sectionShiftingActive = !sectionShiftingActive;
+    input2.addEventListener("change", () => {
+      sectionShiftingActive = input2.checked;
       if (sectionShiftingActive) {
-        shiftSectionsBtn.classList.add("btn-active");
         document.body.classList.add("live-editing-active");
-        
         const main = $("#main");
         if (main) {
           const sections = Array.from(main.querySelectorAll("section"));
@@ -1429,11 +1459,9 @@
           });
         }
       } else {
-        shiftSectionsBtn.classList.remove("btn-active");
         if (!textEditingActive) {
           document.body.classList.remove("live-editing-active");
         }
-        
         document.querySelectorAll(".section-edit-controls").forEach(controls => {
           controls.style.display = "none";
         });
@@ -1467,7 +1495,7 @@
         console.log("Running via file protocol, auto-save to disk is disabled. Use the Export data.js button to manually save.");
         return;
       }
-      fetch('/api/save', {
+      fetch('http://localhost:3000/api/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
