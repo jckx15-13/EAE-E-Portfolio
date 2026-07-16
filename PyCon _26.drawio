@@ -1,0 +1,332 @@
+<mxfile host="app.diagrams.net" pages="2">
+  <diagram name="Page-1" id="oJ2kWG7a0bE_Oyc3Oo4d">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Xpscn0kR7vDA8vtcuW5P-1" parent="1" style="text;whiteSpace=wrap;html=1;" value="flowchart TB&#xa;START[App Shell UI&lt;br&gt;Top: Logo + Help + Theme&lt;br&gt;Center: Hero + CTA cards&lt;br&gt;Bottom: About Privacy Contact] --&amp;gt; MODE{Choose Journey&lt;br&gt;Two equal cards}&#xa;&#xa;MODE --&amp;gt; EXP[Explorer Mode Card&lt;br&gt;Left card&lt;br&gt;Icon: Compass&lt;br&gt;Text: I am still exploring]&#xa;MODE --&amp;gt; PATH[Pathfinder Mode Card&lt;br&gt;Right card&lt;br&gt;Icon: Sword&lt;br&gt;Text: I know my goal]&#xa;&#xa;EXP --&amp;gt; EXPUI[Explorer Home UI&lt;br&gt;Top: Search bar&lt;br&gt;Middle: Interest card grid&lt;br&gt;AI Data Business Tech Design Healthcare&lt;br&gt;Right: Mini profile preview&lt;br&gt;Bottom: Continue button]&#xa;&#xa;EXPUI --&amp;gt; TRIAL[Trial Quest UI&lt;br&gt;Top: Career title + timer&lt;br&gt;Center: Mini challenge card&lt;br&gt;Right: Confidence slider&lt;br&gt;Bottom: Submit + Skip]&#xa;&#xa;TRIAL --&amp;gt; PROFILE[Backend Hidden Profiling&lt;br&gt;Clicks time answers skips confidence&lt;br&gt;Output: interest profile]&#xa;&#xa;PATH --&amp;gt; PATHUI[Pathfinder Home UI&lt;br&gt;Top: Career search bar&lt;br&gt;Middle: Target role cards&lt;br&gt;Filters: industry salary mode&lt;br&gt;Bottom: Start scan button]&#xa;&#xa;PROFILE --&amp;gt; CAREER&#xa;PATHUI --&amp;gt; CAREER&#xa;&#xa;CAREER[Career Engine&lt;br&gt;Backend: role match + similarity&lt;br&gt;UI: Career cards grid&lt;br&gt;Each card: match readiness salary growth why-this] --&amp;gt; SKILL&#xa;&#xa;SKILL[Skill Gap Engine&lt;br&gt;Backend: compare current skills vs target skills&lt;br&gt;UI: Dashboard layout&lt;br&gt;Left: readiness ring&lt;br&gt;Center: missing skill list&lt;br&gt;Right: next action card] --&amp;gt; GAPDETAIL&#xa;&#xa;GAPDETAIL[Skill Detail UI&lt;br&gt;Header: skill name&lt;br&gt;Bars: current vs target level&lt;br&gt;Cards: why important prerequisite transferability&lt;br&gt;CTA: find course or start beta quest]&#xa;&#xa;GAPDETAIL --&amp;gt; COURSE&#xa;GAPDETAIL --&amp;gt; BETA&#xa;&#xa;COURSE[Course Decision Engine&lt;br&gt;UI: Course comparison page&lt;br&gt;Top: filters&lt;br&gt;Middle: course cards&lt;br&gt;Right: scoring panel] --&amp;gt; COURSEPARTS&#xa;&#xa;COURSEPARTS[Course Card UI&lt;br&gt;Time score&lt;br&gt;Cost score&lt;br&gt;Location score&lt;br&gt;Quality score&lt;br&gt;Funding eligibility&lt;br&gt;Buttons: compare save enroll]&#xa;&#xa;COURSEPARTS --&amp;gt; CAL[Calendar Integration UI&lt;br&gt;Connect Google Calendar&lt;br&gt;Conflict alert&lt;br&gt;Alternative slots&lt;br&gt;Reminders announcements schedule changes]&#xa;&#xa;subgraph BETA[Beta Features: Gamification + Learning]&#xa;Q[Quest Engine&lt;br&gt;UI: Quest log page&lt;br&gt;Tabs: Main Daily Weekly Boss&lt;br&gt;Cards: difficulty XP time progress start]&#xa;Q --&amp;gt; L[Learning Engine&lt;br&gt;UI: Learning arena&lt;br&gt;Tabs: Learn Practice Challenge&lt;br&gt;Cards: flashcards quiz practice project reflection]&#xa;end&#xa;&#xa;BETA --&amp;gt; MASTERY&#xa;&#xa;MASTERY[Mastery Engine&lt;br&gt;Backend: recall understanding application retention evidence&lt;br&gt;UI: mastery bar verified badge skill node color update] --&amp;gt; DASH&#xa;&#xa;DASH[Progress Dashboard UI&lt;br&gt;Top: career readiness ring&lt;br&gt;Left: skill tree&lt;br&gt;Center: active quests + portfolio&lt;br&gt;Right: AI mentor + upcoming calendar&lt;br&gt;Bottom: achievements + unlocks] --&amp;gt; AI&#xa;&#xa;AI[AI Mentor UI&lt;br&gt;Chat panel&lt;br&gt;Next best action&lt;br&gt;Weekly plan&lt;br&gt;Progress summary&lt;br&gt;Explanation box] --&amp;gt; GENOME&#xa;&#xa;GENOME[Personal Skill Genome Backend&lt;br&gt;Stores skills interests speed confidence time goals behavior projects] --&amp;gt; OUTCOME&#xa;&#xa;OUTCOME[User Acquires&lt;br&gt;Career roadmap&lt;br&gt;Verified skills&lt;br&gt;Portfolio proof&lt;br&gt;Course decisions&lt;br&gt;Readiness percentage&lt;br&gt;Specialization path]&#xa;&#xa;OUTCOME --&amp;gt; RETURN[Return Loop UI&lt;br&gt;Push reminders&lt;br&gt;Calendar alerts&lt;br&gt;New quest unlocks&lt;br&gt;Progress updates&lt;br&gt;AI mentor nudges]&#xa;&#xa;RETURN --&amp;gt; SKILL" vertex="1">
+          <mxGeometry height="1690" width="220" x="30" y="40" as="geometry" />
+        </mxCell>
+        <UserObject label="" mermaidData="{&#xa;  &quot;data&quot;: &quot;flowchart TB\n  START[\&quot;App Shell UI&lt;br/&gt;Top: Logo + Help + Theme&lt;br/&gt;Center: Hero + CTA cards&lt;br/&gt;Bottom: About Privacy Contact\&quot;] --&gt; MODE{\&quot;Choose Journey&lt;br/&gt;Two equal cards\&quot;}\n  MODE --&gt; EXP[\&quot;Explorer Mode Card&lt;br/&gt;Left card&lt;br/&gt;Icon: Compass&lt;br/&gt;Text: I am still exploring\&quot;]\n  MODE --&gt; PATH[\&quot;Pathfinder Mode Card&lt;br/&gt;Right card&lt;br/&gt;Icon: Sword&lt;br/&gt;Text: I know my goal\&quot;]\n  EXP --&gt; EXPUI[\&quot;Explorer Home UI&lt;br/&gt;Top: Search bar&lt;br/&gt;Middle: Interest card grid&lt;br/&gt;AI Data Business Tech Design Healthcare&lt;br/&gt;Right: Mini profile preview&lt;br/&gt;Bottom: Continue button\&quot;]\n  EXPUI --&gt; TRIAL[\&quot;Trial Quest UI&lt;br/&gt;Top: Career title + timer&lt;br/&gt;Center: Mini challenge card&lt;br/&gt;Right: Confidence slider&lt;br/&gt;Bottom: Submit + Skip\&quot;]\n  TRIAL --&gt; PROFILE[\&quot;Backend Hidden Profiling&lt;br/&gt;Clicks time answers skips confidence&lt;br/&gt;Output: interest profile\&quot;]\n  PATH --&gt; PATHUI[\&quot;Pathfinder Home UI&lt;br/&gt;Top: Career search bar&lt;br/&gt;Middle: Target role cards&lt;br/&gt;Filters: industry salary mode&lt;br/&gt;Bottom: Start scan button\&quot;]\n  PROFILE --&gt; CAREER\n  PATHUI --&gt; CAREER\n  CAREER[\&quot;Career Engine&lt;br/&gt;Backend: role match + similarity&lt;br/&gt;UI: Career cards grid&lt;br/&gt;Each card: match readiness salary growth why-this\&quot;] --&gt; SKILL\n  SKILL[\&quot;Skill Gap Engine&lt;br/&gt;Backend: compare current skills vs target skills&lt;br/&gt;UI: Dashboard layout&lt;br/&gt;Left: readiness ring&lt;br/&gt;Center: missing skill list&lt;br/&gt;Right: next action card\&quot;] --&gt; GAPDETAIL\n  GAPDETAIL[\&quot;Skill Detail UI&lt;br/&gt;Header: skill name&lt;br/&gt;Bars: current vs target level&lt;br/&gt;Cards: why important prerequisite transferability&lt;br/&gt;CTA: find course or start beta quest\&quot;]\n  GAPDETAIL --&gt; COURSE\n  GAPDETAIL --&gt; BETA\n  COURSE[\&quot;Course Decision Engine&lt;br/&gt;UI: Course comparison page&lt;br/&gt;Top: filters&lt;br/&gt;Middle: course cards&lt;br/&gt;Right: scoring panel\&quot;] --&gt; COURSEPARTS\n  COURSEPARTS[\&quot;Course Card UI&lt;br/&gt;Time score&lt;br/&gt;Cost score&lt;br/&gt;Location score&lt;br/&gt;Quality score&lt;br/&gt;Funding eligibility&lt;br/&gt;Buttons: compare save enroll\&quot;] --&gt; CAL[\&quot;Calendar Integration UI&lt;br/&gt;Connect Google Calendar&lt;br/&gt;Conflict alert&lt;br/&gt;Alternative slots&lt;br/&gt;Reminders announcements schedule changes\&quot;]\n  subgraph BETA[\&quot;Beta Features: Gamification + Learning\&quot;]\n    Q[\&quot;Quest Engine&lt;br/&gt;UI: Quest log page&lt;br/&gt;Tabs: Main Daily Weekly Boss&lt;br/&gt;Cards: difficulty XP time progress start\&quot;]\n    Q --&gt; L[\&quot;Learning Engine&lt;br/&gt;UI: Learning arena&lt;br/&gt;Tabs: Learn Practice Challenge&lt;br/&gt;Cards: flashcards quiz practice project reflection\&quot;]\n  end\n  BETA --&gt; MASTERY\n  MASTERY[\&quot;Mastery Engine&lt;br/&gt;Backend: recall understanding application retention evidence&lt;br/&gt;UI: mastery bar verified badge skill node color update\&quot;] --&gt; DASH\n  DASH[\&quot;Progress Dashboard UI&lt;br/&gt;Top: career readiness ring&lt;br/&gt;Left: skill tree&lt;br/&gt;Center: active quests + portfolio&lt;br/&gt;Right: AI mentor + upcoming calendar&lt;br/&gt;Bottom: achievements + unlocks\&quot;] --&gt; AI\n  AI[\&quot;AI Mentor UI&lt;br/&gt;Chat panel&lt;br/&gt;Next best action&lt;br/&gt;Weekly plan&lt;br/&gt;Progress summary&lt;br/&gt;Explanation box\&quot;] --&gt; GENOME\n  GENOME[\&quot;Personal Skill Genome Backend&lt;br/&gt;Stores skills interests speed confidence time goals behavior projects\&quot;] --&gt; OUTCOME\n  OUTCOME[\&quot;User Acquires&lt;br/&gt;Career roadmap&lt;br/&gt;Verified skills&lt;br/&gt;Portfolio proof&lt;br/&gt;Course decisions&lt;br/&gt;Readiness percentage&lt;br/&gt;Specialization path\&quot;] --&gt; RETURN[\&quot;Return Loop UI&lt;br/&gt;Push reminders&lt;br/&gt;Calendar alerts&lt;br/&gt;New quest unlocks&lt;br/&gt;Progress updates&lt;br/&gt;AI mentor nudges\&quot;]\n  RETURN --&gt; SKILL&quot;,&#xa;  &quot;config&quot;: null&#xa;}" id="Xpscn0kR7vDA8vtcuW5P-2">
+          <mxCell connectable="0" parent="1" style="group;transparentBounds=1;editIcon=1;lockedGroup=0;groupPadding=20;" vertex="1">
+            <mxGeometry height="1128" width="1041" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Beta Features: Gamification + Learning" mermaidId="n:BETA" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Beta Features: Gamification + Learning" id="Xpscn0kR7vDA8vtcuW5P-3">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="177" width="953" x="1000" y="-100" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Quest Engine&#xa;UI: Quest log page&#xa;Tabs: Main Daily Weekly Boss&#xa;Cards: difficulty XP time progress start" mermaidId="n:Q" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Quest Engine&#xa;UI: Quest log page&#xa;Tabs: Main Daily Weekly Boss&#xa;Cards: difficulty XP time progress start" id="Xpscn0kR7vDA8vtcuW5P-4">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-3" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="112" width="339" x="35" y="45" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Learning Engine&#xa;UI: Learning arena&#xa;Tabs: Learn Practice Challenge&#xa;Cards: flashcards quiz practice project reflection" mermaidId="n:L" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Learning Engine&#xa;UI: Learning arena&#xa;Tabs: Learn Practice Challenge&#xa;Cards: flashcards quiz practice project reflection" id="Xpscn0kR7vDA8vtcuW5P-5">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-3" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="112" width="414" x="504" y="45" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:Q-&gt;L#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0;entryY=0.5;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-6">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-3" source="Xpscn0kR7vDA8vtcuW5P-4" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0;entryY=0.5;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-5">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="App Shell UI&#xa;Top: Logo + Help + Theme&#xa;Center: Hero + CTA cards&#xa;Bottom: About Privacy Contact" mermaidId="n:START" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="App Shell UI&#xa;Top: Logo + Help + Theme&#xa;Center: Hero + CTA cards&#xa;Bottom: About Privacy Contact" id="Xpscn0kR7vDA8vtcuW5P-7">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="112" width="281" x="576" y="-67" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="Xpscn0kR7vDA8vtcuW5P-50" edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;" target="Xpscn0kR7vDA8vtcuW5P-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="888" y="277" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="Choose Journey&#xa;Two equal cards" mermaidId="n:MODE" mermaidBaseStyle="rhombus;html=1;strokeWidth=1;whiteSpace=wrap;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Choose Journey&#xa;Two equal cards" id="Xpscn0kR7vDA8vtcuW5P-8">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="rhombus;html=1;strokeWidth=1;whiteSpace=wrap;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="200" width="200" x="616" y="127" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Explorer Mode Card&#xa;Left card&#xa;Icon: Compass&#xa;Text: I am still exploring" mermaidId="n:EXP" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Explorer Mode Card&#xa;Left card&#xa;Icon: Compass&#xa;Text: I am still exploring" id="Xpscn0kR7vDA8vtcuW5P-9">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="112" width="235" x="427" y="396" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Pathfinder Mode Card&#xa;Right card&#xa;Icon: Sword&#xa;Text: I know my goal" mermaidId="n:PATH" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Pathfinder Mode Card&#xa;Right card&#xa;Icon: Sword&#xa;Text: I know my goal" id="Xpscn0kR7vDA8vtcuW5P-10">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="120" width="215" x="781" y="390" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Explorer Home UI&#xa;Top: Search bar&#xa;Middle: Interest card grid&#xa;AI Data Business Tech Design Healthcare&#xa;Right: Mini profile preview&#xa;Bottom: Continue button" mermaidId="n:EXPUI" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Explorer Home UI&#xa;Top: Search bar&#xa;Middle: Interest card grid&#xa;AI Data Business Tech Design Healthcare&#xa;Right: Mini profile preview&#xa;Bottom: Continue button" id="Xpscn0kR7vDA8vtcuW5P-11">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="150" width="348" x="370" y="577" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Trial Quest UI&#xa;Top: Career title + timer&#xa;Center: Mini challenge card&#xa;Right: Confidence slider&#xa;Bottom: Submit + Skip" mermaidId="n:TRIAL" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Trial Quest UI&#xa;Top: Career title + timer&#xa;Center: Mini challenge card&#xa;Right: Confidence slider&#xa;Bottom: Submit + Skip" id="Xpscn0kR7vDA8vtcuW5P-12">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="258" x="415" y="777" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Backend Hidden Profiling&#xa;Clicks time answers skips confidence&#xa;Output: interest profile" mermaidId="n:PROFILE" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Backend Hidden Profiling&#xa;Clicks time answers skips confidence&#xa;Output: interest profile" id="Xpscn0kR7vDA8vtcuW5P-13">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="93" width="324" x="382" y="996" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Pathfinder Home UI&#xa;Top: Career search bar&#xa;Middle: Target role cards&#xa;Filters: industry salary mode&#xa;Bottom: Start scan button" mermaidId="n:PATHUI" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Pathfinder Home UI&#xa;Top: Career search bar&#xa;Middle: Target role cards&#xa;Filters: industry salary mode&#xa;Bottom: Start scan button" id="Xpscn0kR7vDA8vtcuW5P-14">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="120" width="265" x="756" y="650" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Career Engine&#xa;Backend: role match + similarity&#xa;UI: Career cards grid&#xa;Each card: match readiness salary growth why-this" mermaidId="n:CAREER" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Career Engine&#xa;Backend: role match + similarity&#xa;UI: Career cards grid&#xa;Each card: match readiness salary growth why-this" id="Xpscn0kR7vDA8vtcuW5P-15">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="112" width="424" x="504" y="1196" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Skill Gap Engine&#xa;Backend: compare current skills vs target skills&#xa;UI: Dashboard layout&#xa;Left: readiness ring&#xa;Center: missing skill list&#xa;Right: next action card" mermaidId="n:SKILL" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Skill Gap Engine&#xa;Backend: compare current skills vs target skills&#xa;UI: Dashboard layout&#xa;Left: readiness ring&#xa;Center: missing skill list&#xa;Right: next action card" id="Xpscn0kR7vDA8vtcuW5P-16">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="150" width="398" x="734" y="1377" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Skill Detail UI&#xa;Header: skill name&#xa;Bars: current vs target level&#xa;Cards: why important prerequisite transferability&#xa;CTA: find course or start beta quest" mermaidId="n:GAPDETAIL" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Skill Detail UI&#xa;Header: skill name&#xa;Bars: current vs target level&#xa;Cards: why important prerequisite transferability&#xa;CTA: find course or start beta quest" id="Xpscn0kR7vDA8vtcuW5P-17">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="414" x="881" y="1577" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Course Decision Engine&#xa;UI: Course comparison page&#xa;Top: filters&#xa;Middle: course cards&#xa;Right: scoring panel" mermaidId="n:COURSE" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Course Decision Engine&#xa;UI: Course comparison page&#xa;Top: filters&#xa;Middle: course cards&#xa;Right: scoring panel" id="Xpscn0kR7vDA8vtcuW5P-18">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="259" x="959" y="1758" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Course Card UI&#xa;Time score&#xa;Cost score&#xa;Location score&#xa;Quality score&#xa;Funding eligibility&#xa;Buttons: compare save enroll" mermaidId="n:COURSEPARTS" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Course Card UI&#xa;Time score&#xa;Cost score&#xa;Location score&#xa;Quality score&#xa;Funding eligibility&#xa;Buttons: compare save enroll" id="Xpscn0kR7vDA8vtcuW5P-19">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="169" width="270" x="953" y="1939" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Calendar Integration UI&#xa;Connect Google Calendar&#xa;Conflict alert&#xa;Alternative slots&#xa;Reminders announcements schedule changes" mermaidId="n:CAL" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Calendar Integration UI&#xa;Connect Google Calendar&#xa;Conflict alert&#xa;Alternative slots&#xa;Reminders announcements schedule changes" id="Xpscn0kR7vDA8vtcuW5P-20">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="381" x="898" y="2158" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Mastery Engine&#xa;Backend: recall understanding application retention evidence&#xa;UI: mastery bar verified badge skill node color update" mermaidId="n:MASTERY" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Mastery Engine&#xa;Backend: recall understanding application retention evidence&#xa;UI: mastery bar verified badge skill node color update" id="Xpscn0kR7vDA8vtcuW5P-21">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="93" width="503" x="1070" y="181" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Progress Dashboard UI&#xa;Top: career readiness ring&#xa;Left: skill tree&#xa;Center: active quests + portfolio&#xa;Right: AI mentor + upcoming calendar&#xa;Bottom: achievements + unlocks" mermaidId="n:DASH" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Progress Dashboard UI&#xa;Top: career readiness ring&#xa;Left: skill tree&#xa;Center: active quests + portfolio&#xa;Right: AI mentor + upcoming calendar&#xa;Bottom: achievements + unlocks" id="Xpscn0kR7vDA8vtcuW5P-22">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="150" width="331" x="1156" y="377" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="AI Mentor UI&#xa;Chat panel&#xa;Next best action&#xa;Weekly plan&#xa;Progress summary&#xa;Explanation box" mermaidId="n:AI" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="AI Mentor UI&#xa;Chat panel&#xa;Next best action&#xa;Weekly plan&#xa;Progress summary&#xa;Explanation box" id="Xpscn0kR7vDA8vtcuW5P-23">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="150" width="188" x="1228" y="577" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Personal Skill Genome Backend&#xa;Stores skills interests speed confidence time goals behavior projects" mermaidId="n:GENOME" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Personal Skill Genome Backend&#xa;Stores skills interests speed confidence time goals behavior projects" id="Xpscn0kR7vDA8vtcuW5P-24">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="551" x="1046" y="806" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="User Acquires&#xa;Career roadmap&#xa;Verified skills&#xa;Portfolio proof&#xa;Course decisions&#xa;Readiness percentage&#xa;Specialization path" mermaidId="n:OUTCOME" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="User Acquires&#xa;Career roadmap&#xa;Verified skills&#xa;Portfolio proof&#xa;Course decisions&#xa;Readiness percentage&#xa;Specialization path" id="Xpscn0kR7vDA8vtcuW5P-25">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="169" width="215" x="1214" y="958" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Return Loop UI&#xa;Push reminders&#xa;Calendar alerts&#xa;New quest unlocks&#xa;Progress updates&#xa;AI mentor nudges" mermaidId="n:RETURN" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Return Loop UI&#xa;Push reminders&#xa;Calendar alerts&#xa;New quest unlocks&#xa;Progress updates&#xa;AI mentor nudges" id="Xpscn0kR7vDA8vtcuW5P-26">
+          <mxCell parent="Xpscn0kR7vDA8vtcuW5P-2" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="150" width="193" x="1225" y="1177" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:START-&gt;MODE#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-27">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-7" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-8">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:MODE-&gt;EXP#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0;exitY=0.87;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-28">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-8" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0;exitY=0.87;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-9">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="544" y="352" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:EXP-&gt;EXPUI#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-30">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-9" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-11">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:EXPUI-&gt;TRIAL#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-31">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-11" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-12">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:TRIAL-&gt;PROFILE#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-32">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-12" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-13">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:PATH-&gt;PATHUI#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-33">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-10" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-14">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:PROFILE-&gt;CAREER#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.27;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-34">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-13" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.27;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-15">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="544" y="1152" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:PATHUI-&gt;CAREER#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.73;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-35">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-14" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.73;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-15">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="889" y="1152" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:CAREER-&gt;SKILL#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.09;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-36">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-15" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.09;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-16">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="716" y="1352" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:SKILL-&gt;GAPDETAIL#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.23;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-37">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-16" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.23;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-17">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="933" y="1552" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:GAPDETAIL-&gt;COURSE#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-38">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-17" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-18">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:GAPDETAIL-&gt;BETA#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;curved=1;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.24;entryX=0.63;entryY=1;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-39">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-17" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.24;entryX=0.63;entryY=1;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-3">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1632" y="1552" />
+                <mxPoint x="1632" y="1452" />
+                <mxPoint x="1632" y="1352" />
+                <mxPoint x="1632" y="1252" />
+                <mxPoint x="1632" y="1152" />
+                <mxPoint x="1632" y="1043" />
+                <mxPoint x="1632" y="933" />
+                <mxPoint x="1632" y="843" />
+                <mxPoint x="1632" y="752" />
+                <mxPoint x="1632" y="652" />
+                <mxPoint x="1632" y="552" />
+                <mxPoint x="1632" y="452" />
+                <mxPoint x="1632" y="352" />
+                <mxPoint x="1632" y="227" />
+                <mxPoint x="1632" y="102" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:COURSE-&gt;COURSEPARTS#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-40">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-18" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-19">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:COURSEPARTS-&gt;CAL#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-41">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-19" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-20">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:BETA-&gt;MASTERY#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;curved=1;strokeColor=light-dark(#333333,#cccccc);exitX=0.37;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-42">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-3" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.37;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-21">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1322" y="102" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:MASTERY-&gt;DASH#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-43">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-21" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-22">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:DASH-&gt;AI#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-44">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-22" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-23">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:AI-&gt;GENOME#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-45">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-23" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-24">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:GENOME-&gt;OUTCOME#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-46">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-24" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-25">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:OUTCOME-&gt;RETURN#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-47">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-25" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-26">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:RETURN-&gt;SKILL#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.16;" mermaidBaseValue="" id="Xpscn0kR7vDA8vtcuW5P-48">
+          <mxCell edge="1" parent="Xpscn0kR7vDA8vtcuW5P-2" source="Xpscn0kR7vDA8vtcuW5P-26" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.16;rounded=0;" target="Xpscn0kR7vDA8vtcuW5P-16">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1322" y="1352" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="zGQt8JSx4SsgA-GuDuno" name="Page-2">
+    <mxGraphModel dx="1028" dy="528" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
