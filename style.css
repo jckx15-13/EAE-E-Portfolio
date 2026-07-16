@@ -3583,6 +3583,21 @@ body[data-view-mode="story"] .view-mode-indicator {
   position: relative;
 }
 
+/* Ensure text readability inside dark astral sections */
+[class*="section-astral-"] {
+  color: rgba(255, 255, 255, 0.86) !important;
+}
+[class*="section-astral-"] h2,
+[class*="section-astral-"] h3,
+[class*="section-astral-"] h4,
+[class*="section-astral-"] .mini-heading,
+[class*="section-astral-"] .about-layout h3 {
+  color: var(--white) !important;
+}
+[class*="section-astral-"] .section-lede {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
 /* Star field particle background */
 [class*="section-astral-"]::before {
   position: absolute;
@@ -3620,7 +3635,6 @@ body[data-view-mode="story"] .view-mode-indicator {
 .optional-entry {
   background: rgba(17, 27, 49, 0.45) !important;
   border: 1px solid rgba(109, 179, 240, 0.15) !important;
-  color: var(--white) !important;
   box-shadow: 
     0 10px 30px rgba(3, 8, 18, 0.15),
     0 0 20px rgba(107, 91, 209, 0.03) !important;
@@ -3644,6 +3658,12 @@ body[data-view-mode="story"] .view-mode-indicator {
     0 0 15px rgba(107, 91, 209, 0.1) !important;
 }
 
+/* Card Text Hierarchies - Color Theory Compliant */
+.project-card, .achievement-card, .evidence-card, .personal-map-card, .cert-card, .reflection-card, .small-card, .optional-entry {
+  color: rgba(255, 255, 255, 0.85); /* Comfortable readable body color */
+}
+
+/* Titles: High Contrast Pure White */
 .project-card h3,
 .achievement-card h3,
 .evidence-card h3,
@@ -3652,14 +3672,70 @@ body[data-view-mode="story"] .view-mode-indicator {
 .reflection-card h3,
 .small-card h3,
 .optional-entry h4 {
-  color: var(--white) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.section-lede,
-.case-row dd,
-.project-body p,
-.evidence-summary,
-.personal-map-card p {
+/* Paragraphs & Core Reading Content */
+.project-card p,
+.achievement-card p,
+.evidence-card p,
+.personal-map-card p,
+.cert-card p,
+.reflection-card p,
+.small-card p,
+.optional-entry p,
+.evidence-summary {
+  color: rgba(255, 255, 255, 0.82) !important;
+  line-height: 1.6;
+}
+
+/* Card Kickers & Category Tags: Vibrant Neon Accent Colors */
+.project-card .card-kicker,
+.achievement-card .card-kicker,
+.evidence-card .card-kicker,
+.personal-map-card .card-kicker,
+.cert-card .card-kicker,
+.reflection-card .card-kicker,
+.optional-entry-org,
+.section-label {
+  color: var(--blue-500) !important; /* Accent sky-blue */
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Dates, Sources & Muted Indicators */
+.project-card .date-line,
+.achievement-card .date-line,
+.cert-card .date-line,
+.optional-entry-date,
+.project-card .source-note,
+.case-row dt {
+  color: rgba(255, 255, 255, 0.55) !important;
+  font-size: 0.85rem;
+  font-weight: 550;
+}
+
+/* Placeholder warning texts: Amber Warning Color for 100% visibility on dark */
+.placeholder-text,
+.project-media-placeholder p,
+.evidence-next {
+  color: #f59e0b !important; /* Warning Amber */
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px dashed rgba(245, 158, 11, 0.22);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+/* Detail terms, lists, bullet points */
+.case-row dd {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.evidence-proof-list li,
+.compact-list li {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 

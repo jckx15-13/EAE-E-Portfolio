@@ -43,9 +43,9 @@
       }
     ],
     "contact": {
-      "email": "[Add email if appropriate]",
-      "github": "[jckx15-13 - add full GitHub link if available]",
-      "deployment": "[Add deployment link if available]"
+      "email": "jaron.chew.kx@gmail.com",
+      "github": "https://github.com/jckx15-13",
+      "deployment": "http://jaron-eae-portfolio.local"
     }
   },
   "experienceGallery": [
@@ -233,10 +233,10 @@
       "targetCourse": "Diploma in Cybersecurity & Digital Forensics",
       "whyThisSchool": "SP's Diploma in Cybersecurity & Digital Forensics stands out for its state-of-the-art Cyber Wargame Centre and its focus on real-world malware analysis and digital forensics. Its active collaborations with tech organizations align with my preference for project-based learning.",
       "evidenceToShow": [
-        "",
-        "",
-        "",
-        ""
+        "YCEP Bootcamp Certificate (Participation in SP's flagship security outreach)",
+        "PyCon Hackathon & SkillQuest Game (Gamified cybersecurity education product)",
+        "Python Advanced Coder Course (Advanced algorithms and OOP foundations)",
+        "FLL 2026 Robot Design & Gear Ratio Torque Analysis"
       ]
     },
     {
@@ -245,9 +245,9 @@
       "targetCourse": "Diploma in Cybersecurity & Digital Forensics",
       "whyThisSchool": "NP's course offers strong industry exposure through collaboration with security leaders like Palo Alto Networks and CSIT, providing deep training in network architecture and threat hunting. The student-centric learning environment fits my self-directed, builder mindset.",
       "evidenceToShow": [
-        "",
-        "",
-        ""
+        "SkillQuest Cybersecurity Game (Built under pressure at BuildingBloCS Hackathon)",
+        "Advanced Event-Driven Python/Pygame Projects (OOP architecture and asset pipelines)",
+        "The Lab Coder Programme (Intermediate) - Distinction"
       ]
     }
   ],
@@ -354,7 +354,7 @@
       {
         "stage": "Deeper coding",
         "title": "Python Learning Path",
-        "period": "[Dates to be confirmed]",
+        "period": "October 2021 - September 2022",
         "linkedAchievement": "Python Coder Course - Intermediate",
         "whatItShows": "I moved into Python, Pygame, Tkinter, GUI applications, and stronger programming foundations.",
         "personalMeaning": "Python helped me become more analytical and gave me a clearer path toward software and AI interests."
@@ -362,7 +362,7 @@
       {
         "stage": "Personal growth",
         "title": "Mathematics Growth Journey",
-        "period": "[Add school year]",
+        "period": "2021 - 2024",
         "linkedAchievement": "Mathematics Growth Journey",
         "whatItShows": "This is a growth story from struggling with mathematics in primary school to achieving an A1 in secondary school.",
         "personalMeaning": "It reminds me that improvement comes from discipline, reflection, and not giving up when something feels difficult."
