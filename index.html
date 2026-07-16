@@ -39,7 +39,7 @@
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header" data-elevates>
-      <a class="brand" href="#top" aria-label="Back to top">
+      <a class="brand" href="#top" aria-label="EAE Portfolio - Back to top">
         <span class="brand-mark" aria-hidden="true"></span>
         <span id="brandName">EAE Portfolio</span>
       </a>
@@ -57,12 +57,12 @@
       </button>
 
       <nav id="siteNav" class="site-nav" aria-label="Primary navigation"></nav>
+      <div class="scroll-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span id="scrollProgressBar"></span>
+      </div>
     </header>
-    <div class="scroll-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-      <span id="scrollProgressBar"></span>
-    </div>
 
-    <main id="main">
+    <main id="main" role="tabpanel" aria-labelledby="view-cards">
       <!-- Shifted View-Mode Bar to the top of main -->
       <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
         <div class="view-mode-bar-inner">
@@ -113,14 +113,14 @@
           <div class="learning-pattern-block">
             <div>
               <p class="section-label">My Pattern</p>
-              <h3>How I usually approach difficult work</h3>
+              <h2>How I usually approach difficult work</h2>
             </div>
             <div id="learningPattern" class="pattern-grid"></div>
           </div>
           
           <div class="about-layout">
             <div>
-              <h3 class="mini-heading">Personal qualities</h3>
+              <h2 class="mini-heading">Personal qualities</h2>
               <div id="valuesList" class="tag-grid"></div>
               <div id="strengthsGrid" class="strength-grid"></div>
             </div>

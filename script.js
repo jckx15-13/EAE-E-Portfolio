@@ -207,7 +207,7 @@
     (data.about?.learningPattern || []).forEach((item) => {
       const card = create("article", "pattern-card reveal");
       card.append(create("span", "pattern-index", item.title.slice(0, 1)));
-      card.append(create("h4", "", item.title));
+      card.append(create("h3", "", item.title));
       card.append(create("p", "", item.body));
       patternGrid.append(card);
     });
@@ -216,7 +216,7 @@
     snapshotGrid.replaceChildren();
     (data.about?.snapshot || []).forEach((item) => {
       const card = create("article", "snapshot-card reveal");
-      card.append(create("h3", "", item.title));
+      card.append(create("h2", "", item.title));
       card.append(create("p", "", item.body));
       snapshotGrid.append(card);
     });
@@ -227,7 +227,7 @@
     strengthsGrid.replaceChildren();
     (data.about?.strengths || []).forEach((strength) => {
       const card = create("article", "small-card");
-      card.append(create("h4", "", strength.title));
+      card.append(create("h3", "", strength.title));
       card.append(create("p", "", strength.body));
       strengthsGrid.append(card);
     });
@@ -412,6 +412,8 @@
         document.body.classList.remove("story-mode", "timeline-mode", "cards-mode");
         document.body.classList.add(`${mode}-mode`);
         
+        const mainEl = document.getElementById("main"); if (mainEl) mainEl.setAttribute("aria-labelledby", "view-" + mode);
+
         // Re-render view-mode-aware sections
         renderProjects();
         renderAchievements();
@@ -421,6 +423,7 @@
     document.body.dataset.viewMode = currentViewMode;
     document.body.classList.remove("story-mode", "timeline-mode", "cards-mode");
     document.body.classList.add(`${currentViewMode}-mode`);
+    const mainEl = document.getElementById("main"); if (mainEl) mainEl.setAttribute("aria-labelledby", "view-" + currentViewMode);
   }
 
   function setupHintTooltips() {
@@ -432,7 +435,11 @@
         if (tooltip) return;
         const hintText = trigger.dataset.hint;
         tooltip = create("div", "hint-tooltip", hintText);
+        const tooltipId = 'tooltip-' + Math.random().toString(36).substr(2, 9);
+        tooltip.id = tooltipId;
+        tooltip.setAttribute("role", "tooltip");
         document.body.appendChild(tooltip);
+        trigger.setAttribute("aria-describedby", tooltipId);
         
         const rect = trigger.getBoundingClientRect();
         tooltip.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
@@ -447,6 +454,7 @@
         if (!tooltip) return;
         const temp = tooltip;
         tooltip = null;
+        trigger.removeAttribute("aria-describedby");
         temp.classList.remove("is-active");
         setTimeout(() => temp.remove(), 200);
       };
@@ -567,6 +575,8 @@
         const videoPath = typeof project.optionalVideo === "string" ? project.optionalVideo.trim() : "";
         const hasEmbeddedVideo = /\.(webm|mp4|ogg)$/i.test(videoPath);
         const media = create("div", "project-media");
+        const mediaImages = projectMedia(project);
+        const leadImage = mediaImages[0];
         
         if (project.highlighted) {
           article.classList.add("project-card--highlighted");
@@ -583,11 +593,10 @@
           iframe.style = "position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;";
           iframe.allowFullscreen = true;
           iframe.allow = "fullscreen";
+          iframe.title = `${project.title} Slides Presentation`;
           iframeContainer.append(iframe);
           media.append(iframeContainer);
         } else {
-          const mediaImages = projectMedia(project);
-          const leadImage = mediaImages[0];
           if (leadImage) {
             const image = document.createElement("img");
             image.src = leadImage;
@@ -1062,6 +1071,8 @@
   function renderOptionalSections() {
     const wrapper = $("#optionalSections");
     const grid = $("#optionalGrid");
+    if (!wrapper || !grid) return;
+    
     const sections = data.hiddenSections || {};
     const visibleSections = Object.values(sections).filter((section) => section.entries?.length);
 
@@ -1334,7 +1345,8 @@
     document.body.appendChild(fab);
     
     // Create Sidebar
-    const sidebar = create("div", "live-editor-sidebar");
+    const sidebar = create("aside", "live-editor-sidebar");
+    sidebar.setAttribute("aria-label", "Live Portfolio Editor");
     
     const header = create("div", "sidebar-header");
     header.append(create("h3", "", "Portfolio Editor"));

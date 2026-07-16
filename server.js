@@ -20,6 +20,17 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
+  // CORS Headers to allow Live Server (port 5500) to hit this save endpoint
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
   // Save Endpoint
   if (req.method === 'POST' && req.url === '/api/save') {
     let body = '';

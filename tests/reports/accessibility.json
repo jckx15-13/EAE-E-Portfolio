@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-07-16T17:54:44.358Z",
+  "url": "http://127.0.0.1:3000/",
+  "violationCount": 3,
+  "violations": [
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensure role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "target": [
+            "#main"
+          ],
+          "html": "<main id=\"main\" role=\"tabpanel\" aria-labelledby=\"view-cards\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role tabpanel is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "landmark-one-main",
+      "impact": "moderate",
+      "description": "Ensure the document has a main landmark",
+      "help": "Document should have one main landmark",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-one-main?application=axeAPI",
+      "nodes": [
+        {
+          "target": [
+            "html"
+          ],
+          "html": "<html lang=\"en\">",
+          "failureSummary": "Fix all of the following:\n  Document does not have a main landmark"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=axeAPI",
+      "nodes": [
+        {
+          "target": [
+            "#main"
+          ],
+          "html": "<main id=\"main\" role=\"tabpanel\" aria-labelledby=\"view-cards\">",
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    }
+  ]
+}

@@ -51,11 +51,14 @@ Formulate a plan, write plan.md and progress.md, and coordinate the team to impl
 | Agent | Type | Work Item | Status | Conv ID |
 |-------|------|-----------|--------|---------|
 | explorer_m1 | teamwork_preview_explorer | Milestone 1: Exploration & Env Audit | completed | 92d733d9-57e6-4c39-bbf2-7f97a128c74f |
-| worker_m2 | teamwork_preview_worker | Milestone 2: Test Infra Setup | in-progress | df67b8e9-2516-4e26-9a0c-d4ae596796e3 |
+| worker_m2 | teamwork_preview_worker | Milestone 2: Test Infra Setup | completed | df67b8e9-2516-4e26-9a0c-d4ae596796e3 |
+| worker_m4 | teamwork_preview_worker | Milestone 4: Accessibility Auditing | completed | 82cd596d-75cf-4689-afa1-c715e19cb1f7 |
+| worker_m5 | teamwork_preview_worker | Milestone 5: Accessibility Remediation | completed | e125639d-a6b6-4e25-9570-a17e590805b8 |
+| worker_m6 | teamwork_preview_worker | Milestone 6: Final Tabpanel Landmark Refactoring | in-progress | c9d13b89-c639-4dae-9684-53ddbcb6ccba |
 
 ## Succession Status
-- Spawn count: 2 / 16
-- Pending subagents: df67b8e9-2516-4e26-9a0c-d4ae596796e3
+- Spawn count: 5 / 16
+- Pending subagents: c9d13b89-c639-4dae-9684-53ddbcb6ccba
 - Predecessor: none
 - Successor: not yet spawned
 

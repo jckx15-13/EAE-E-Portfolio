@@ -7,11 +7,11 @@
   --space-800: #17233a;
   --purple-700: #6b5bd1;
   --purple-100: #ebe7ff;
-  --blue-500: #3ca9e8;
+  --blue-500: #1b74ab;
   --blue-100: #ecf7ff;
   --grey-950: #1a2230;
   --grey-700: #506073;
-  --grey-500: #718093;
+  --grey-500: #607080;
   --grey-300: #dbe4ee;
   --grey-200: #e9eff6;
   --grey-100: #f7faff;
@@ -3516,6 +3516,7 @@ body[data-view-mode="story"] .view-mode-indicator {
   align-items: center;
   gap: 8px;
   padding: 8px 18px;
+  min-height: 48px;
   border: none;
   border-radius: 99px;
   font-family: "Space Grotesk", sans-serif;

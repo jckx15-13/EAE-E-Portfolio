@@ -1,8 +1,10 @@
 {
   "scripts": {
+    "test": "node tests/run_tests.js",
     "design:lint": "design.md lint materials/DESIGN.md"
   },
   "dependencies": {
-    "@google/design.md": "^0.3.0"
+    "@google/design.md": "^0.3.0",
+    "axe-core": "^4.12.1"
   }
 }
