@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jaron Chew | EAE Portfolio</title>
+    <meta
+      name="description"
+      content="A personal EAE portfolio for Jaron Chew, focused on coding, robotics, cybersecurity, projects, evidence, and reflective growth."
+    />
+    <meta name="author" content="Jaron Chew" />
+    <meta name="theme-color" content="#0a1222" />
+    <meta property="og:title" content="Jaron Chew | EAE Portfolio" />
+    <meta
+      property="og:description"
+      content="A personal EAE portfolio showing Jaron's coding, robotics, cybersecurity, project evidence, reflections, and target polytechnic applications."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="images/projects/exhibition_pitch.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jaron Chew | EAE Portfolio" />
+    <meta
+      name="twitter:description"
+      content="A card-style EAE portfolio centred on Jaron's learning journey, projects, achievements, and evidence."
+    />
+    <meta name="twitter:image" content="images/projects/exhibition_pitch.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" href="images/projects/exhibition_pitch.jpg" as="image" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="data.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-elevates>
+      <a class="brand" href="#top" aria-label="Back to top">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span id="brandName">EAE Portfolio</span>
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="siteNav"
+      >
+        <span class="sr-only">Toggle navigation</span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="siteNav" class="site-nav" aria-label="Primary navigation"></nav>
+    </header>
+    <div class="scroll-progress" aria-hidden="true">
+      <span id="scrollProgressBar"></span>
+    </div>
+
+    <main id="main">
+      <section id="top" class="hero section-dark">
+        <div class="hero-centerpiece">
+          <figure class="hero-person">
+            <img id="heroProfileImage" src="images/profile_option_1.jpg" alt="" />
+            <figcaption id="heroPhotoCaption"></figcaption>
+          </figure>
+
+          <div class="hero-copy">
+            <p id="heroName" class="hero-name"></p>
+            <h1 id="heroTitle"></h1>
+            <p id="heroIdentityLine" class="hero-identity"></p>
+            <p id="heroSubtitle" class="hero-subtitle"></p>
+            <p id="heroIntro" class="hero-intro"></p>
+            <div id="focusAreas" class="focus-list" aria-label="Portfolio focus areas"></div>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#projects">View projects</a>
+              <a class="button button-secondary" href="#achievements">View achievements</a>
+            </div>
+          </div>
+
+          <div id="journeyMarkers" class="journey-markers" aria-label="Journey markers"></div>
+        </div>
+      </section>
+
+      <section id="life" class="section life-entry-section section-astral-1">
+        <div class="life-entry-layout">
+          <div class="life-entry-intro">
+            <p class="section-label">Life Entry</p>
+            <h2 id="lifeEntryTitle"></h2>
+            <p id="lifeEntryIntro" class="section-lede"></p>
+            <blockquote id="lifeEntryDoorway" class="life-quote"></blockquote>
+          </div>
+          <div id="lifeChapters" class="life-chapters"></div>
+        </div>
+      </section>
+
+
+      <section id="evidence-overview" class="section section-astral-2 evidence-overview-section">
+        <div class="section-heading">
+          <p class="section-label">Evidence Overview</p>
+          <h2 id="evidenceOverviewTitle">My Evidence at a Glance</h2>
+          <p id="evidenceOverviewIntro" class="section-lede"></p>
+          <button class="hint-trigger" type="button" aria-label="What is this section?" data-hint="This section combines your personal map and evidence deck into one consolidated view, showing the key themes and proof points of your portfolio.">
+            <span aria-hidden="true">?</span>
+          </button>
+        </div>
+        <div class="evidence-overview-tabs" role="tablist" aria-label="Evidence view">
+          <button class="evidence-tab is-active" type="button" role="tab" data-tab="map" aria-selected="true">Personal Map</button>
+          <button class="evidence-tab" type="button" role="tab" data-tab="deck" aria-selected="false">Evidence Cards</button>
+        </div>
+        <div id="personalMapCards" class="personal-map-grid view-mode-section" data-tab-panel="map"></div>
+        <div id="evidenceDeckCards" class="evidence-deck-grid view-mode-section" data-tab-panel="deck" hidden></div>
+      </section>
+
+      <section id="about" class="section section-astral-3">
+        <div class="section-heading">
+          <p class="section-label">Personal Story</p>
+          <h2>Who I Am</h2>
+          <p id="brandStatement" class="section-lede"></p>
+        </div>
+        <div id="personalSnapshot" class="snapshot-grid"></div>
+        <div class="learning-pattern-block">
+          <div>
+            <p class="section-label">My Pattern</p>
+            <h3>How I usually approach difficult work</h3>
+          </div>
+          <div id="learningPattern" class="pattern-grid"></div>
+        </div>
+        <div class="about-layout">
+          <div class="profile-panel">
+            <img id="profileImage" src="images/profile_option_1.jpg" alt="" />
+            <div>
+              <h3 id="profileName"></h3>
+              <p id="profileIntro"></p>
+            </div>
+          </div>
+          <div>
+            <h3 class="mini-heading">Personal qualities</h3>
+            <div id="valuesList" class="tag-grid"></div>
+            <div id="strengthsGrid" class="strength-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
+        <div class="view-mode-bar-inner">
+          <div class="view-mode-indicator" aria-hidden="true"></div>
+          <button class="view-mode-pill" type="button" role="tab" data-mode="cards" aria-selected="false" aria-controls="main">
+            <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            Cards
+          </button>
+          <button class="view-mode-pill" type="button" role="tab" data-mode="timeline" aria-selected="false" aria-controls="main">
+            <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="9" y1="5" x2="9" y2="19"></line><circle cx="9" cy="5" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="9" cy="19" r="1.5"></circle><line x1="14" y1="5" x2="20" y2="5"></line><line x1="14" y1="12" x2="20" y2="12"></line><line x1="14" y1="19" x2="20" y2="19"></line></svg>
+            Timeline
+          </button>
+          <button class="view-mode-pill is-active" type="button" role="tab" data-mode="story" aria-selected="true" aria-controls="main">
+            <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+            Story
+          </button>
+        </div>
+      </div>
+
+      <section id="experience" class="section experience-section">
+        <div class="section-heading">
+          <p class="section-label">Beyond The Build</p>
+          <h2>Learning In Context</h2>
+          <p class="section-lede">
+            The people, presentations, and small moments behind the portfolio.
+          </p>
+        </div>
+        <div id="experienceGallery" class="experience-gallery"></div>
+      </section>
+
+      <section id="achievement-flow" class="section section-astral-4 achievement-flow-section">
+        <div class="section-heading flow-heading">
+          <p class="section-label">Achievement Flow</p>
+          <h2>How Each Achievement Builds Into the Next</h2>
+          <p id="achievementFlowIntro" class="section-lede"></p>
+        </div>
+        <div id="achievementFlow" class="achievement-flow"></div>
+      </section>
+
+      <section id="projects" class="section section-astral-5">
+        <div class="section-heading">
+          <p class="section-label">Work</p>
+          <h2>Featured Projects</h2>
+          <p class="section-lede">
+            Case studies are written to show the problem, approach, role,
+            technologies, development journey, outcome, and learning.
+          </p>
+        </div>
+        <div id="projectFilters" class="filter-row" aria-label="Project filters"></div>
+        <div id="projectsGrid" class="project-grid view-mode-section"></div>
+        <div id="projectStoryConnectors" class="story-connectors" aria-hidden="true"></div>
+      </section>
+
+      <section id="applications" class="section">
+        <div class="section-heading">
+          <p class="section-label">Applications</p>
+          <h2>Target EAE Applications</h2>
+          <p class="section-lede">
+            Institution-specific notes stay editable so the portfolio can support
+            both Singapore Polytechnic and Ngee Ann Polytechnic without making
+            unconfirmed course claims.
+          </p>
+        </div>
+        <div id="applicationsGrid" class="applications-grid"></div>
+      </section>
+
+
+      <section id="achievements" class="section section-astral-6 compact-dark">
+        <div class="section-heading">
+          <p class="section-label">Evidence Library</p>
+          <h2>Achievement Story</h2>
+          <p class="section-lede">
+            These cards support the flow above. Open each one for the fuller
+            description, reflection, learning outcome, images, and certificates.
+          </p>
+        </div>
+        <div class="achievement-controls" aria-label="Achievement filters">
+          <div id="achievementFilters" class="filter-row"></div>
+          <label class="achievement-search">
+            <span class="sr-only">Search achievements</span>
+            <input id="achievementSearch" type="search" placeholder="Search achievements" />
+          </label>
+          <p id="achievementResultCount" class="result-count" role="status" aria-live="polite"></p>
+        </div>
+        <div id="achievementCards" class="achievement-grid view-mode-section"></div>
+        <div class="timeline-wrap">
+          <h3 class="mini-heading">Timeline</h3>
+          <div id="achievementTimeline" class="timeline"></div>
+        </div>
+      </section>
+
+      <section id="journey" class="section">
+        <div class="section-heading">
+          <p class="section-label">Competitions</p>
+          <h2>Competition Journey</h2>
+          <p class="section-lede">
+            Competition entries use confirmed facts first and leave unverified
+            results, roles, dates, and reflections as editable placeholders.
+          </p>
+        </div>
+        <div id="competitionList" class="journey-list"></div>
+      </section>
+
+      <section id="coding" class="section section-astral-3 coding-section">
+        <div class="section-heading">
+          <p class="section-label">Technical Interests</p>
+          <h2>Coding</h2>
+          <p id="codingSummary" class="section-lede"></p>
+        </div>
+        <div id="codingGrid" class="simple-grid view-mode-section"></div>
+        <div class="coding-subsection-heading">
+          <p class="section-label">Learning Path</p>
+          <h3>The Lab Coder: Foundation to Intermediate</h3>
+          <p>
+            A card view of the programme details extracted from the local pitchbook, written as evidence of learning progression rather than inflated claims.
+          </p>
+        </div>
+        <div id="coderProgrammeGrid" class="learning-card-grid view-mode-section"></div>
+        <div class="coding-subsection-heading">
+          <p class="section-label">Skills Alignment</p>
+          <h3>Relevant SkillsFuture Skills</h3>
+          <p>
+            Selected skills from the local SkillsFuture jobs-and-skills spreadsheets that connect to my projects, robotics work, and EAE direction.
+          </p>
+        </div>
+        <div id="skillsFutureGrid" class="learning-card-grid skillsfuture-grid view-mode-section"></div>
+      </section>
+
+      <section id="robotics" class="section two-column-section">
+        <div class="section-heading">
+          <p class="section-label">Engineering Thinking</p>
+          <h2>Robotics</h2>
+          <p id="roboticsSummary" class="section-lede"></p>
+        </div>
+        <div>
+          <div id="roboticsHighlights" class="check-list" style="margin-bottom: 1.5rem;"></div>
+          <div id="roboticsImageContainer"></div>
+        </div>
+      </section>
+
+      <section id="reflections" class="section section-astral-4">
+        <div class="section-heading">
+          <p class="section-label">Reflection</p>
+          <h2>Reflection Journal</h2>
+          <p class="section-lede">
+            Prompts are prepared for authentic reflection after each experience.
+          </p>
+        </div>
+        <div id="reflectionList" class="reflection-grid view-mode-section"></div>
+      </section>
+
+      <section id="certifications" class="section section-astral-5">
+        <div class="section-heading">
+          <p class="section-label">Records</p>
+          <h2>Certifications</h2>
+          <p class="section-lede">
+            Certification details are editable and should be updated only with
+            confirmed provider names, dates, and evidence.
+          </p>
+        </div>
+        <div id="certificationGrid" class="cert-grid badge-wall view-mode-section"></div>
+      </section>
+
+      <section id="goals" class="section section-astral-6 goals-section">
+        <div class="section-heading">
+          <p class="section-label">Direction</p>
+          <h2>Future Goals</h2>
+        </div>
+        <div class="goals-layout">
+          <div>
+            <h3>Short-term</h3>
+            <ul id="shortTermGoals"></ul>
+          </div>
+          <div>
+            <h3>Long-term</h3>
+            <ul id="longTermGoals"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="optionalSections" class="section optional-sections" hidden>
+        <div class="section-heading">
+          <p class="section-label">Additional Evidence</p>
+          <h2>Leadership and Community Service</h2>
+        </div>
+        <div id="optionalGrid" class="simple-grid"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.</p>
+      <div class="footer-actions">
+        <button id="printPortfolio" class="footer-button" type="button">Print portfolio</button>
+      </div>
+    </footer>
+
+    <dialog id="achievementModal" class="modal">
+      <div class="modal-card">
+        <button class="modal-close" type="button" aria-label="Close achievement details">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div id="modalContent"></div>
+      </div>
+    </dialog>
+
+  </body>
+</html>
