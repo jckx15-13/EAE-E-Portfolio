@@ -588,6 +588,18 @@
     });
   }
 
+  function renderReflections() {
+    const grid = document.getElementById('reflectionList');
+    if (!grid) return;
+    grid.replaceChildren();
+    (data.reflections || []).forEach((reflection) => {
+      const card = create('article', 'reflection-card reveal');
+      card.append(create('h3', '', reflection.title));
+      card.append(create('p', '', reflection.body));
+      grid.append(card);
+    });
+  }
+
   let viewModeInitialized = false;
   let currentViewMode = "story";
 
@@ -631,6 +643,60 @@
     document.body.classList.remove('story-mode', 'timeline-mode', 'cards-mode');
     document.body.classList.add(`${currentViewMode}-mode`);
     const mainEl = document.getElementById('main'); if (mainEl) mainEl.setAttribute('aria-labelledby', 'view-' + currentViewMode);
+  }
+
+  let viewModeBarObserver = null;
+  let viewModeBarSections = [];
+  function updateViewModeBarVisibility(isVisible) {
+    const bar = document.querySelector('.view-mode-bar');
+    if (!bar) return;
+    bar.classList.toggle('is-active', Boolean(isVisible));
+    bar.setAttribute('aria-hidden', String(!isVisible));
+    bar.querySelectorAll('.view-mode-pill').forEach((pill) => {
+      if (isVisible) {
+        pill.removeAttribute('tabindex');
+      } else {
+        pill.setAttribute('tabindex', '-1');
+      }
+    });
+  }
+
+  function setupViewModeBarVisibility() {
+    if (viewModeBarObserver) return;
+    const bar = document.querySelector('.view-mode-bar');
+    if (!bar) return;
+    const selectors = ['#projects', '#achievements', '#reflections'];
+    viewModeBarSections = selectors.map((sel) => document.querySelector(sel)).filter(Boolean);
+    if (!viewModeBarSections.length) {
+      updateViewModeBarVisibility(false);
+      return;
+    }
+
+    viewModeBarObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.dataset.viewModeSectionVisible = String(
+            entry.isIntersecting && entry.intersectionRatio > 0.1
+          );
+        });
+        const anyVisible = viewModeBarSections.some(
+          (section) => section.dataset.viewModeSectionVisible === 'true'
+        );
+        updateViewModeBarVisibility(anyVisible);
+      },
+      {
+        root: null,
+        rootMargin: '-84px 0px -20px 0px',
+        threshold: [0.1],
+      }
+    );
+    viewModeBarSections.forEach((section) => viewModeBarObserver.observe(section));
+    updateViewModeBarVisibility(
+      viewModeBarSections.some((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+      })
+    );
   }
 
   function setupHintTooltips() {
@@ -2717,6 +2783,7 @@
 
   function render() {
     setupViewModeToggleOnce();
+    setupViewModeBarVisibility();
     renderNav();
     applySectionVisibility();
     renderCustomSections();
@@ -2727,6 +2794,7 @@
     renderEvidenceOverview();
     renderAbout();
     renderAchievementFlow();
+    renderReflections();
     renderProjects();
     renderApplications();
     renderAchievements();
@@ -2735,6 +2803,7 @@
     setupModal();
     setupNavigation();
     setupChromeHeight();
+    setupViewModeBarVisibility();
     setupScrollProgress();
     setupPrintMode();
     setupReveal();

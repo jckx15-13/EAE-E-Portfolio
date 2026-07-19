@@ -3947,9 +3947,10 @@ section {
 
 /* ── View-Mode Bar ── */
 .view-mode-bar {
-  position: relative;
-  z-index: 2;
-  top: auto;
+  position: fixed;
+  z-index: 90;
+  top: var(--header-height);
+  left: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -3959,6 +3960,10 @@ section {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   border-bottom: 1px solid var(--grey-300);
   transition: background 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition: background 0.3s ease, opacity 0.24s ease, transform 0.24s ease;
 }
 
 .view-mode-bar-inner {
@@ -4029,6 +4034,12 @@ body[data-view-mode="story"] .view-mode-indicator {
   color: var(--white);
   background: transparent !important;
   box-shadow: none !important;
+}
+
+.view-mode-bar.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
 }
 
 /* ── Astral/Interstellar Aesthetic ── */
@@ -5313,6 +5324,21 @@ body.live-editing-active .section-edit-controls {
 #achievementTimeline .timeline-item.left { grid-column: 1 / 2; justify-self: end; text-align: right; }
 #achievementTimeline .timeline-item.right { grid-column: 3 / 4; justify-self: start; text-align: left; }
 #achievementTimeline .timeline-item .date-line { font-weight: 700; opacity: 0.9; margin-bottom: 8px; }
+
+#achievementTimeline .timeline-item::after {
+  content: "";
+  position: absolute;
+  top: 32px;
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(109, 179, 240, 0.7), transparent);
+}
+#achievementTimeline .timeline-item.left::after {
+  right: -20px;
+}
+#achievementTimeline .timeline-item.right::after {
+  left: -20px;
+}
 
 @media (max-width: 820px) {
   #achievementTimeline.timeline {
