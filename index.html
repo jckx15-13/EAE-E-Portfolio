@@ -63,26 +63,28 @@
       </div>
     </header>
 
-    <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
-      <div class="view-mode-bar-inner">
-        <div class="view-mode-indicator" aria-hidden="true"></div>
-        <button id="view-cards" class="view-mode-pill is-active" type="button" role="tab" data-mode="cards" aria-selected="true" aria-controls="main">
-          <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-          Cards
-        </button>
-        <button id="view-timeline" class="view-mode-pill" type="button" role="tab" data-mode="timeline" aria-selected="false" aria-controls="main">
-          <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="9" y1="5" x2="9" y2="19"></line><circle cx="9" cy="5" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="9" cy="19" r="1.5"></circle><line x1="14" y1="5" x2="20" y2="5"></line><line x1="14" y1="12" x2="20" y2="12"></line><line x1="14" y1="19" x2="20" y2="19"></line></svg>
-          Timeline
-        </button>
-        <button id="view-story" class="view-mode-pill" type="button" role="tab" data-mode="story" aria-selected="false" aria-controls="main">
-          <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-          Story
-        </button>
+    <nav aria-label="View mode selection">
+      <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
+        <div class="view-mode-bar-inner">
+          <div class="view-mode-indicator" aria-hidden="true"></div>
+          <button id="view-cards" class="view-mode-pill is-active" type="button" role="tab" data-mode="cards" aria-selected="true" aria-controls="main">
+            <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            Cards
+          </button>
+          <button id="view-timeline" class="view-mode-pill" type="button" role="tab" data-mode="timeline" aria-selected="false" aria-controls="main">
+            <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="9" y1="5" x2="9" y2="19"></line><circle cx="9" cy="5" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="9" cy="19" r="1.5"></circle><line x1="14" y1="5" x2="20" y2="5"></line><line x1="14" y1="12" x2="20" y2="12"></line><line x1="14" y1="19" x2="20" y2="19"></line></svg>
+            Timeline
+          </button>
+          <button id="view-story" class="view-mode-pill" type="button" role="tab" data-mode="story" aria-selected="false" aria-controls="main">
+            <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+            Story
+          </button>
+        </div>
       </div>
-    </div>
+    </nav>
     </div>
 
-    <main id="main" role="tabpanel" aria-labelledby="view-cards">
+    <main id="main">
       <!-- Unified introductory section merging Top/Hero and About -->
       <section id="about" class="hero section-dark unified-about-section">
         <div class="hero-centerpiece">
@@ -97,14 +99,14 @@
             <p id="heroIdentityLine" class="hero-identity"></p>
             <p id="heroSubtitle" class="hero-subtitle"></p>
             <p id="brandStatement" class="section-lede"></p>
-            <div id="focusAreas" class="focus-list" aria-label="Portfolio focus areas"></div>
+            <section id="focusAreas" class="focus-list" aria-label="Portfolio focus areas"></section>
             <div class="hero-actions">
-              <a class="button button-primary" href="#projects">View projects</a>
-              <a class="button button-secondary" href="#achievements">View achievements</a>
+              <a id="heroBtnPrimary" class="button button-primary" href="#projects">View projects</a>
+              <a id="heroBtnSecondary" class="button button-secondary" href="#achievements">View achievements</a>
             </div>
           </div>
 
-          <div id="journeyMarkers" class="journey-markers" aria-label="Journey markers"></div>
+          <section id="journeyMarkers" class="journey-markers" aria-label="Journey markers"></section>
         </div>
 
         <!-- Personal Snapshot and Qualities flow right here -->
@@ -113,7 +115,7 @@
 
           <div class="about-layout">
             <div>
-              <h2 class="mini-heading">Personal qualities</h2>
+              <h2 id="personalQualitiesTitle" class="mini-heading">Personal qualities</h2>
               <div id="valuesList" class="tag-grid"></div>
               <div id="strengthsGrid" class="strength-grid"></div>
             </div>
@@ -124,7 +126,7 @@
         <div id="life" class="life-entry-wrapper">
           <div class="life-entry-layout">
             <div class="life-entry-intro">
-              <p class="section-label">Journey Milestones</p>
+              <p id="journeyMilestonesLabel" class="section-label">Journey Milestones</p>
               <h2 id="lifeEntryTitle"></h2>
               <p id="lifeEntryIntro" class="section-lede"></p>
               <blockquote id="lifeEntryDoorway" class="life-quote"></blockquote>
@@ -136,7 +138,7 @@
         <!-- Evidence Overview anchor within the unified flow -->
         <div id="evidence-overview" class="evidence-overview-wrapper">
           <div class="section-heading">
-            <p class="section-label">Evidence Overview</p>
+            <p id="evidenceOverviewLabel" class="section-label">Evidence Overview</p>
             <h2 id="evidenceOverviewTitle">My Evidence at a Glance</h2>
             <p id="evidenceOverviewIntro" class="section-lede"></p>
             <button class="hint-trigger" type="button" aria-label="What is this section?" data-hint="This section combines your personal map and evidence deck into one consolidated view, showing the key themes and proof points of your portfolio.">
@@ -155,8 +157,8 @@
       <!-- Achievement Flow -->
       <section id="achievement-flow" class="section section-astral-4 achievement-flow-section">
         <div class="section-heading flow-heading">
-          <p class="section-label">Achievement Flow</p>
-          <h2>How Each Achievement Builds Into the Next</h2>
+          <p id="achievementFlowLabel" class="section-label">Achievement Flow</p>
+          <h2 id="achievementFlowTitle">How Each Achievement Builds Into the Next</h2>
           <p id="achievementFlowIntro" class="section-lede"></p>
         </div>
         <div id="achievementFlow" class="achievement-flow"></div>
@@ -165,9 +167,9 @@
       <!-- Featured Projects -->
       <section id="projects" class="section section-astral-5">
         <div class="section-heading">
-          <p class="section-label">Work</p>
-          <h2>Featured Projects</h2>
-          <p class="section-lede">
+          <p id="workLabel" class="section-label">Work</p>
+          <h2 id="projectsTitle">Featured Projects</h2>
+          <p id="projectsLede" class="section-lede">
             Case studies are written to show the problem, approach, role,
             technologies, development journey, outcome, and learning.
           </p>
@@ -180,9 +182,9 @@
       <!-- Achievement Story Grid -->
       <section id="achievements" class="section section-astral-6 compact-dark">
         <div class="section-heading">
-          <p class="section-label">Evidence Library</p>
-          <h2>Achievement Story</h2>
-          <p class="section-lede">
+          <p id="evidenceLibraryLabel" class="section-label">Evidence Library</p>
+          <h2 id="achievementStoryTitle">Achievement Story</h2>
+          <p id="achievementStoryLede" class="section-lede">
             These cards support the flow above. Open each one for the fuller
             description, reflection, learning outcome, images, and certificates.
           </p>
@@ -197,7 +199,7 @@
         </div>
         <div id="achievementCards" class="achievement-grid view-mode-section"></div>
         <div class="timeline-wrap">
-          <h3 class="mini-heading">Timeline</h3>
+          <h3 id="timelineTitle" class="mini-heading">Timeline</h3>
           <div id="achievementTimeline" class="timeline"></div>
         </div>
       </section>
@@ -205,16 +207,16 @@
       <!-- Future Goals -->
       <section id="goals" class="section section-astral-6 goals-section">
         <div class="section-heading">
-          <p class="section-label">Direction</p>
-          <h2>Future Goals</h2>
+          <p id="directionLabel" class="section-label">Direction</p>
+          <h2 id="goalsTitle">Future Goals</h2>
         </div>
         <div class="goals-layout">
           <div>
-            <h3>Short-term</h3>
+            <h3 id="goalsShortTerm">Short-term</h3>
             <ul id="shortTermGoals"></ul>
           </div>
           <div>
-            <h3>Long-term</h3>
+            <h3 id="goalsLongTerm">Long-term</h3>
             <ul id="longTermGoals"></ul>
           </div>
         </div>
@@ -223,9 +225,9 @@
       <!-- Target EAE Applications -->
       <section id="applications" class="section">
         <div class="section-heading">
-          <p class="section-label">Applications</p>
-          <h2>Target EAE Applications</h2>
-          <p class="section-lede">
+          <p id="applicationsLabel" class="section-label">Applications</p>
+          <h2 id="applicationsTitle">Target EAE Applications</h2>
+          <p id="applicationsLede" class="section-lede">
             Institution-specific notes stay editable so the portfolio can support
             both Singapore Polytechnic and Ngee Ann Polytechnic without making
             unconfirmed course claims.
@@ -235,14 +237,14 @@
       </section></main>
 
     <footer class="site-footer">
-      <p>Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.</p>
+      <p id="footerText">Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.</p>
       <div class="footer-actions">
         <button id="printPortfolio" class="footer-button" type="button">Print portfolio</button>
       </div>
     </footer>
 
     <dialog id="achievementModal" class="modal">
-      <div class="modal-card">
+      <div class="modal-card theme-admin">
         <button class="modal-close" type="button" aria-label="Close achievement details">
           <span aria-hidden="true">&times;</span>
         </button>

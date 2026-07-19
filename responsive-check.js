@@ -5,7 +5,7 @@ const puppeteer = require('./node_modules/puppeteer');
   const results = [];
   for (const viewport of [{width: 1280,height:800},{width:820,height:900},{width:520,height:900},{width:380,height:900}]) {
     await page.setViewport(viewport);
-    await page.goto('http://127.0.0.1:8001', { waitUntil: 'networkidle2' });
+    await page.goto('http://127.0.0.1:3000', { waitUntil: 'networkidle2' });
     const bodyRect = await page.evaluate(() => {
       const body = document.body;
       const html = document.documentElement;

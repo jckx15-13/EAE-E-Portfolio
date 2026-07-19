@@ -2,6 +2,38 @@
 
 A static, card-style Early Admission Exercise (EAE) portfolio for Jaron Chew. It presents projects, achievements, certifications, reflections, and target polytechnic applications in a responsive single-page site with three view modes (Cards, Timeline, Story).
 
+## For EAE Evaluators: How to Read This Portfolio
+
+**Start here** → Recommended viewing order:
+
+1. **Load the homepage** — You'll see Jaron's identity and a quick personal snapshot. Pay attention to the focus areas and personal qualities listed.
+
+2. **Featured Projects** (first 3 are strongest evidence):
+   - **#1 — SPD Caregiver & Admin Event Portal** — Shows real-world system design for a non-profit organization. Demonstrates UX thinking, user role architecture (admin vs. caregiver), accessibility, and problem-solving for community impact.
+   - **#2 — FLL 2026 Unearthed Robot Design** — Shows precision engineering, multi-axis systems thinking, sensor-based feedback loops, and structured planning via flowcharts. These skills transfer directly to cybersecurity infrastructure design.
+   - **#3 — PyCon Hackathon & SkillQuest** — Shows ability to gamify cybersecurity education and deliver under pressure. Direct evidence of cybersecurity interest and software engineering teamwork.
+
+3. **View the achievements** — Look for:
+   - **SP YCEP Bootcamp Certificate** — Direct evidence of participation in Singapore Polytechnic's flagship cybersecurity outreach program.
+   - **Python progression (Basic → Intermediate → Advanced)** — Shows disciplined, long-term technical foundation.
+   - **The Lab Coder Programme (Intermediate) — Distinction** — Evidence of systems thinking and structured problem-solving.
+
+4. **Target Applications** — Check why Jaron is applying to Singapore Polytechnic and Ngee Ann Polytechnic.
+
+**View Modes**:
+- **Cards** (default) — Fast scan. All projects and achievements in a grid. Use filters to focus on categories.
+- **Timeline** — Chronological view of Jaron's journey from 2019 to present. Shows progression over time.
+- **Story** — Connected narrative view. Shows how skills from one project directly influenced the next (via "carried forward" threads).
+
+**Key Evidence to Look For**:
+- Multi-axis robotics design (systems thinking)
+- User flow diagrams for SPD (UX and accessibility)
+- Cybersecurity game mechanics (education approach)
+- Math growth journey (resilience and discipline)
+- 3+ years of consistent technical learning
+
+---
+
 ## Quick start
 
 Open `index.html` in a browser, or serve the folder locally:
@@ -21,7 +53,7 @@ Then visit `http://localhost:3000` (with `npm start`) or the port shown by your 
 | Path | Purpose |
 |------|---------|
 | `index.html` | Main portfolio page |
-| `admin.html` | Local content editor (draft + export to `data.js`) |
+
 | `data.js` | All portfolio content as `window.PORTFOLIO_DATA` |
 | `script.js` | Rendering, navigation, view modes, modals |
 | `style.css` | Layout, astral theme, fixed chrome, responsive grids |
@@ -43,8 +75,9 @@ Both sit in a fixed header shell (`position: fixed`, full width, high z-index). 
 
 ## Editing content
 
-1. **Admin tool** — Open `admin.html`, edit fields or JSON, then export and replace `data.js`.
-2. **Direct edit** — Change `data.js` in any text editor. Content is plain JSON inside an IIFE.
+1. **Advanced Admin Editor** — Open `index.html` in your browser, click the 🛠️ Live Editor FAB in the bottom right, and select "Advanced Admin Editor" to modify form fields or the raw JSON directly. Click "Apply Form Edits", and then click "Export data.js" to save changes.
+2. **Inline Live Edit** — Open `index.html` in your browser, click the 🛠️ Live Editor FAB, and toggle "Edit Text Inline". Click on any text to modify it. When you click away, your changes are tracked in memory. Click "Export data.js" from the Live Editor sidebar to download your changes.
+3. **Direct edit** — Change `data.js` in any text editor. Content is plain JSON inside an IIFE.
 3. **Images** — Add files under `images/` (e.g. `images/projects/`, `images/certificates/`) and set paths in `data.js`.
 4. **Slides** — For embedded presentations, set `slidesEmbedUrl` on a project (Canva embed URLs work best). Optional `slides` can hold the public view link.
 

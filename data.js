@@ -25,24 +25,7 @@
       "What I built",
       "Where I am going"
     ],
-    "journeyMarkers": [
-      {
-        "value": "25+",
-        "label": "MIT App Inventor applications"
-      },
-      {
-        "value": "22+",
-        "label": "BSD Online web projects"
-      },
-      {
-        "value": "3 months",
-        "label": "Robotics flowchart refinement"
-      },
-      {
-        "value": "A1",
-        "label": "Mathematics growth journey"
-      }
-    ],
+    "journeyMarkers": [],
     "contact": {
       "email": "jaron.chew.kx@gmail.com",
       "github": "https://github.com/jckx15-13",
@@ -122,6 +105,36 @@
         "title": "I am building toward polytechnic through evidence",
         "body": "My EAE direction is supported by projects, coding foundations, robotics planning, reflections, and honest placeholders where details still need confirmation.",
         "evidence": "Singapore Polytechnic and Ngee Ann Polytechnic target applications"
+      }
+    ]
+  },
+  "eaeSnapshot": {
+    "title": "Top Evidence",
+    "intro": "Quick view of my strongest EAE evidence for Singapore Polytechnic and Ngee Ann Polytechnic.",
+    "cards": [
+      {
+        "label": "Systems",
+        "title": "SPD Caregiver & Admin Portal",
+        "body": "Accessible admin + caregiver flows, reporting dashboards, and pragmatic NGO UX solutions.",
+        "image": "images/projects/SPD_User_Flow_Flow_chart.jpg",
+        "linkTarget": "#projects",
+        "projectTitle": "SPD Caregiver & Admin Event Portal Prototype"
+      },
+      {
+        "label": "Engineering",
+        "title": "FLL 2026 Unearthed Robot Design",
+        "body": "Multi-axis robot, gear-ratio planning, and mission flowcharts showing systems-level engineering.",
+        "image": "images/robots/fll-robot-design.png",
+        "linkTarget": "#projects",
+        "projectTitle": "FLL 2026 Unearthed Robot Design & Planning"
+      },
+      {
+        "label": "Cyber",
+        "title": "PyCon SkillQuest (Hackathon)",
+        "body": "Gamified cybersecurity education and a hackathon prototype demonstrating security teaching mechanics.",
+        "image": "images/projects/group_lobby.jpg",
+        "linkTarget": "#projects",
+        "projectTitle": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)"
       }
     ]
   },
@@ -349,109 +362,11 @@
   },
   "projects": [
     {
-      "title": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
-      "category": "Hackathon / Game Jam / Cybersecurity & AI",
-      "status": "Completed (June 2026)",
-      "portfolioSignal": "Shows that I can build interactive applications that address social problems—specifically connecting data-driven career planning and cybersecurity education.",
-      "eaeConnection": "Directly aligns with my interest in cybersecurity, AI, and software engineering by gamifying technical and career learning paths.",
-      "evidenceStatus": "Functional prototype video demo completed. Hackathon participation certificate linked.",
-      "problem": "Technical topics like cybersecurity attacks (phishing, SQL injection, XSS, DDoS) and career mappings are often difficult and disengaging for users to learn.",
-      "proposedSolution": "A unified collection of educational tools including a roguelike game inspired by Rogue to teach cybersecurity, and a data-driven career navigation system using jobs-and-skills datasets with an AI upskilling planner.",
-      "myRole": "Lead Software Engineer & UI Designer",
-      "technologiesUsed": "Python, Unity, C#, SkillsFuture jobs-and-skills datasets",
-      "developmentJourney": "A combined development effort: (1) exploring gamified rogue-like loops for cybersecurity education (phishing, SQL injection, XSS, denial of service) and (2) parsing public datasets for career analysis (skill-gap analysis, role-to-skill mapping, AI planners) for the PyCon jobs-and-skills challenge.",
-      "outcome": "Successfully built and pitched 'CareerNavigator', which maps local career pathways and generates custom Python data structures for gap analysis.",
-      "lessonsLearned": "Taught me how to work under tight hackathon timelines, collaborate in a multi-disciplinary team, and turn raw public APIs/datasets into practical user features.",
-      "images": [
-        "images/certificates/Jaron_Chew_Kai_Xin_Hackathon.png",
-        "images/projects/group_lobby.jpg"
-      ],
-      "optionalVideo": "videos/SkillQuest-demo.webm",
-      "image": "Evidence added",
-      "carriedForward": {
-        "fromProject": "Kodecoon Project Journey",
-        "lesson": "Applied years of coding foundation (Python, OOP, Pygame) to build a real hackathon product under deadline pressure"
-      }
-    },
-    {
-      "title": "Personal Student Portfolio Website",
-      "category": "Web Development / EAE Portfolio",
-      "status": "Built as a static portfolio",
-      "portfolioSignal": "Shows that I can design, structure, and build a working web product with editable data and a clear audience.",
-      "eaeConnection": "This portfolio itself is evidence of web development, information design, and honest technical presentation.",
-      "evidenceStatus": "Built locally as a static website. Served using Node.js.",
-      "problem": "An EAE application needs a clear, credible way to show projects, technical interests, growth, and future goals without overstating unconfirmed achievements.",
-      "proposedSolution": "A responsive website with editable content in data.js, project case studies, achievement details, reflections, and target application notes for SP and NP.",
-      "myRole": "Designer and developer of this portfolio",
-      "technologiesUsed": "Add technologies here",
-      "developmentJourney": "Designed the web page layout using clean, semantic HTML5, modern vanilla CSS3 grid/flexbox styles, and dynamic JS state management. Iterated on content structure to focus on authentic builder experiences.",
-      "outcome": "Static portfolio website created and served locally via Node.js.",
-      "lessonsLearned": "Taught me how to design accessible user interfaces, manage dynamic state via vanilla JavaScript arrays, and organize structured project schemas.",
-      "images": [
-        "images/projects/portfolio_preview.png"
-      ],
-      "optionalVideo": "",
-      "image": "Evidence added",
-      "carriedForward": {
-        "fromProject": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
-        "lesson": "Used the data-driven design thinking from the hackathon to structure portfolio content as editable, schema-driven data"
-      }
-    },
-    {
-      "title": "FLL 2026 Unearthed Robot Design & Planning",
-      "category": "Robotics / Engineering & Planning",
-      "status": "Participated in FLL 2026 Unearthed",
-      "portfolioSignal": "Shows simultaneous multi-axis movement planning, gear ratio control (torque vs speed), and detailed flowchart-based sequencing.",
-      "eaeConnection": "Connects programmatic logic to physical mechanical engineering, proving system design skills for robotics.",
-      "evidenceStatus": "Presentation slides, field mission flowcharts, and robot run video demo completed.",
-      "problem": "Navigating complex competitive terrain in FLL 2026 Unearthed and performing delicate missions requires high movement versatility and torque adjustment under strict time limits.",
-      "proposedSolution": "A modular 4-motor robot design with multi-directional drive, 3-axis gear rotation (X, Y, Z simultaneously), and strategic gear ratios (16T, 24T, 40T gears) to toggle between Speed Mode (1:1) and Torque Mode (1:2.5).",
-      "myRole": "Lead Robot Designer & Flowchart Planner",
-      "technologiesUsed": "LEGO Mindstorms / SPIKE Prime, Draw.io flowchart planning, Gear Ratio Control (16T, 24T, 40T), Dual Color Sensors & Gyro Sensor, Multi-Axis Axle Systems",
-      "developmentJourney": "Engineered a modular chassis with independent axle control. Created detailed movement flowcharts to plan arced turns and diagonal cornering without stopping. Programmed specific routines to execute the following missions: (1) M01: Surface Brushing & M02: Map Reveal (lateral sweeps for topsoil pieces); (2) M03: Mineshaft Explorer & M04: Careful Recovery (precise forward alignment to extract the precious artifact without collapsing the upright supports); (3) M07: Heavy Lifting & M12: Salvage Operation (torque-driven arm lift with a 1:2.5 gear ratio to lift the millstone and raise the ship); and (4) M13: Forum (a carry-and-place collection sequence to transport fossils, brushes, and scale pans back to the Forum). Tested and calibrated ultrasonic sensor thresholds to avoid collisions and preserve all 6 Precision Tokens.",
-      "outcome": "Developed a high-efficiency robot capable of simultaneous drive and arm action, reducing steps per mission and lowering failure rates under load.",
-      "lessonsLearned": "Discovered that planning movement sequences with detailed flowcharts reduces trial-and-error debugging, and mechanical gear adjustments are more consistent than simple motor speed controls.",
-      "images": [
-        "images/robots/fll-robot-design.png"
-      ],
-      "optionalVideo": "",
-      "image": "Evidence added",
-      "carriedForward": {
-        "fromProject": "NRC Robotics Competition",
-        "lesson": "Evolved from basic virtual robot pathing into complex multi-axis physical robot design with gear ratio engineering"
-      }
-    },
-    {
-      "title": "Kodecoon Project Journey",
-      "category": "Coding Journey / App and Web Projects",
-      "status": "Completed and Curated",
-      "portfolioSignal": "Shows long-term consistency across many small builds rather than one isolated project.",
-      "eaeConnection": "Serves as a diverse technical repository showcasing fundamental blocks, game engines, AR interactions, and OOP structures.",
-      "evidenceStatus": "Curated portfolio of Pygame screenshots, App Inventor packages, and Roblox Studio configurations.",
-      "problem": "A long learning journey can become hard to understand if every small project is shown at once.",
-      "proposedSolution": "Curated selection of 5 key milestone projects (Mpainter app, ShopBack AR filters, UNSDG 14 Roblox obby, Space Attack and Treasure Hunting Pygame builds) to show progressive coding growth.",
-      "myRole": "Lead programmer and designer",
-      "technologiesUsed": "MIT App Inventor, Spark AR Visual Scripting, Roblox Studio (Lua), Python (Tkinter & Pygame)",
-      "developmentJourney": "Built a robust foundation of 50+ projects spanning 2019-2022. Curated highlights include: 1) Mpainter (MIT App Inventor Appathon 2020) - a mobile drawing utility; 2) ShopBack Lucky Draw Filter (Spark AR Competition 2021) - an interactive nodding-based filter; 3) UNSDG 14 Life Below Water Obby (Roblox Challenge 2021); 4) Space Attack (Pygame) - a fully structured multi-level shooter; and 5) Treasure Hunting (Pygame) - a keyboard-controlled collection game.",
-      "outcome": "Developed technical versatility across mobile, AR, gaming, and UI frameworks, culminating in intermediate-level OOP game architecture in Python.",
-      "lessonsLearned": "Discovered how to transition logic structures from block-based programming to object-oriented programming (classes, functions, events), which accelerated my learning of newer languages.",
-      "images": [
-        "images/projects/exhibition_pitch.jpg",
-        "images/projects/space_attack_preview.png"
-      ],
-      "optionalVideo": "",
-      "image": "Evidence added",
-      "carriedForward": {
-        "fromProject": "Scratch Coder Course",
-        "lesson": "Grew from block-based Scratch projects into text-based Python, Pygame, and AR — building technical versatility over 3 years"
-      }
-    },
-    {
       "title": "SPD Caregiver & Admin Event Portal Prototype",
       "category": "Web & App Development / Social Impact",
       "status": "Version 1 Prototype Completed",
       "portfolioSignal": "Shows the ability to translate real-world NGO challenges into a full system architecture with customized user roles (admin and caregiver), databases, and analytics dashboards.",
-      "eaeConnection": "Directly aligns with software engineering and user experience (UX) tracks by focusing on streamlining manual admin operations and creating accessible mobile forms.",
+      "eaeConnection": "Directly aligns with software engineering and UX design by demonstrating how to build accessible systems that solve real community problems—a core strength for cybersecurity infrastructure and user-centered design.",
       "evidenceStatus": "User flow flowcharts completed. Functional prototype logic mapped out.",
       "problem": "SPD faced severe administrative bottlenecks from manual registration, WhatsApp confirmation lists, and spreadsheet-based reporting for MSF/NCSS funding audits.",
       "proposedSolution": "A secure Version 1 portal splitting views between Admins (Event/Feedback dashboard, report export, check-in log) and Caregivers (accessible registrations, feedback submit) with NRIC validation.",
@@ -466,13 +381,111 @@
         "images/projects/SPD_User_Flow_Flow_chart_Page_2.jpg"
       ],
       "optionalVideo": "",
-      "image": "Evidence added",
+      "image": "",
       "carriedForward": {
         "fromProject": "Personal Student Portfolio Website",
         "lesson": "Applied structured HTML/CSS/JS and user flow thinking to solve real-world NGO administrative challenges"
       },
       "highlighted": true,
       "slidesEmbedUrl": "https://www.canva.com/design/DAHM4xnRXzo/dqwWK6e9zzf3GcKGTFlgSA/view?embed"
+    },
+    {
+      "title": "FLL 2026 Unearthed Robot Design & Planning",
+      "category": "Robotics / Engineering & Planning",
+      "status": "Participated in FLL 2026 Unearthed",
+      "portfolioSignal": "Shows simultaneous multi-axis movement planning, gear ratio control (torque vs speed), and detailed flowchart-based sequencing. Demonstrates precision engineering and sensor-based feedback systems.",
+      "eaeConnection": "Robotics systems thinking directly translates to cybersecurity: both require detailed planning, precision execution, sensor monitoring, and rapid debugging under pressure. Proves I can design complex interconnected systems.",
+      "evidenceStatus": "Presentation slides, field mission flowcharts, and robot run video demo completed.",
+      "problem": "Navigating complex competitive terrain in FLL 2026 Unearthed and performing delicate missions requires high movement versatility and torque adjustment under strict time limits.",
+      "proposedSolution": "A modular 4-motor robot design with multi-directional drive, 3-axis gear rotation (X, Y, Z simultaneously), and strategic gear ratios (16T, 24T, 40T gears) to toggle between Speed Mode (1:1) and Torque Mode (1:2.5).",
+      "myRole": "Lead Robot Designer & Flowchart Planner",
+      "technologiesUsed": "LEGO Mindstorms / SPIKE Prime, Draw.io flowchart planning, Gear Ratio Control (16T, 24T, 40T), Dual Color Sensors & Gyro Sensor, Multi-Axis Axle Systems",
+      "developmentJourney": "Engineered a modular chassis with independent axle control. Created detailed movement flowcharts to plan arced turns and diagonal cornering without stopping. Programmed specific routines to execute the following missions: (1) M01: Surface Brushing & M02: Map Reveal (lateral sweeps for topsoil pieces); (2) M03: Mineshaft Explorer & M04: Careful Recovery (precise forward alignment to extract the precious artifact without collapsing the upright supports); (3) M07: Heavy Lifting & M12: Salvage Operation (torque-driven arm lift with a 1:2.5 gear ratio to lift the millstone and raise the ship); and (4) M13: Forum (a carry-and-place collection sequence to transport fossils, brushes, and scale pans back to the Forum). Tested and calibrated ultrasonic sensor thresholds to avoid collisions and preserve all 6 Precision Tokens.",
+      "outcome": "Developed a high-efficiency robot capable of simultaneous drive and arm action, reducing steps per mission and lowering failure rates under load.",
+      "lessonsLearned": "Discovered that planning movement sequences with detailed flowcharts reduces trial-and-error debugging, and mechanical gear adjustments are more consistent than simple motor speed controls.",
+      "images": [
+        "images/robots/fll-robot-design.png"
+      ],
+      "optionalVideo": "",
+      "image": "",
+      "carriedForward": {
+        "fromProject": "NRC Robotics Competition",
+        "lesson": "Evolved from basic virtual robot pathing into complex multi-axis physical robot design with gear ratio engineering"
+      }
+    },
+    {
+      "title": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
+      "category": "Hackathon / Game Jam / Cybersecurity & AI",
+      "status": "Completed (June 2026)",
+      "portfolioSignal": "Shows the ability to build interactive applications that teach complex cybersecurity attacks (phishing, SQL injection, XSS, DDoS) through engaging game mechanics under hackathon pressure.",
+      "eaeConnection": "Directly demonstrates interest in cybersecurity education and software engineering. Proves ability to gamify security concepts—a strength that differentiates me for cybersecurity tracks.",
+      "evidenceStatus": "Functional prototype video demo completed. Hackathon participation certificate linked.",
+      "problem": "Technical topics like cybersecurity attacks (phishing, SQL injection, XSS, DDoS) and career mappings are often difficult and disengaging for users to learn.",
+      "proposedSolution": "A unified collection of educational tools including a roguelike game inspired by Rogue to teach cybersecurity, and a data-driven career navigation system using jobs-and-skills datasets with an AI upskilling planner.",
+      "myRole": "Lead Software Engineer & UI Designer",
+      "technologiesUsed": "Python, Unity, C#, SkillsFuture jobs-and-skills datasets",
+      "developmentJourney": "A combined development effort: (1) exploring gamified rogue-like loops for cybersecurity education (phishing, SQL injection, XSS, denial of service) and (2) parsing public datasets for career analysis (skill-gap analysis, role-to-skill mapping, AI planners) for the PyCon jobs-and-skills challenge.",
+      "outcome": "Successfully built and pitched 'CareerNavigator', which maps local career pathways and generates custom Python data structures for gap analysis.",
+      "lessonsLearned": "Taught me how to work under tight hackathon timelines, collaborate in a multi-disciplinary team, and turn raw public APIs/datasets into practical user features.",
+      "images": [
+        "images/certificates/Jaron_Chew_Kai_Xin_Hackathon.png",
+        "images/projects/group_lobby.jpg"
+      ],
+      "optionalVideo": "videos/SkillQuest-demo.webm",
+      "image": "",
+      "carriedForward": {
+        "fromProject": "Kodecoon Project Journey",
+        "lesson": "Applied years of coding foundation (Python, OOP, Pygame) to build a real hackathon product under deadline pressure"
+      }
+    },
+    {
+      "title": "Personal Student Portfolio Website",
+      "category": "Web Development / EAE Portfolio",
+      "status": "Built as a static portfolio",
+      "portfolioSignal": "Shows that I can design, structure, and build a working web product with editable data and a clear audience. Demonstrates accessible, responsive web design and honest technical presentation.",
+      "eaeConnection": "This portfolio itself is evidence of web development, information design, and responsible technical communication—key skills for software engineering and cybersecurity roles.",
+      "evidenceStatus": "Built locally as a static website. Served using Node.js.",
+      "problem": "An EAE application needs a clear, credible way to show projects, technical interests, growth, and future goals without overstating unconfirmed achievements.",
+      "proposedSolution": "A responsive website with editable content in data.js, project case studies, achievement details, reflections, and target application notes for SP and NP.",
+      "myRole": "Designer and developer of this portfolio",
+      "technologiesUsed": "HTML5, CSS3, JavaScript (Vanilla), Node.js, semantic markup, CSS Grid/Flexbox",
+      "developmentJourney": "Designed the web page layout using clean, semantic HTML5, modern vanilla CSS3 grid/flexbox styles, and dynamic JS state management. Iterated on content structure to focus on authentic builder experiences.",
+      "outcome": "Static portfolio website created and served locally via Node.js.",
+      "lessonsLearned": "Taught me how to design accessible user interfaces, manage dynamic state via vanilla JavaScript arrays, and organize structured project schemas.",
+      "images": [
+        "images/projects/portfolio_preview.png"
+      ],
+      "optionalVideo": "",
+      "image": "",
+      "carriedForward": {
+        "fromProject": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
+        "lesson": "Used the data-driven design thinking from the hackathon to structure portfolio content as editable, schema-driven data"
+      }
+    },
+    {
+      "title": "Kodecoon Project Journey",
+      "category": "Coding Journey / App and Web Projects",
+      "status": "Completed and Curated",
+      "portfolioSignal": "Shows long-term consistency across many small builds rather than one isolated project. Demonstrates breadth across multiple platforms and frameworks.",
+      "eaeConnection": "Serves as a foundation for all later work, showing progression from block-based logic into OOP systems design. Critical evidence of disciplined, sustained learning over 3+ years.",
+      "evidenceStatus": "Curated portfolio of Pygame screenshots, App Inventor packages, and Roblox Studio configurations.",
+      "problem": "A long learning journey can become hard to understand if every small project is shown at once.",
+      "proposedSolution": "Curated selection of 5 key milestone projects (Mpainter app, ShopBack AR filters, UNSDG 14 Roblox obby, Space Attack and Treasure Hunting Pygame builds) to show progressive coding growth.",
+      "myRole": "Lead programmer and designer",
+      "technologiesUsed": "MIT App Inventor, Spark AR Visual Scripting, Roblox Studio (Lua), Python (Tkinter & Pygame)",
+      "developmentJourney": "Built a robust foundation of 50+ projects spanning 2019-2022. Curated highlights include: 1) Mpainter (MIT App Inventor Appathon 2020) - a mobile drawing utility; 2) ShopBack Lucky Draw Filter (Spark AR Competition 2021) - an interactive nodding-based filter; 3) UNSDG 14 Life Below Water Obby (Roblox Challenge 2021); 4) Space Attack (Pygame) - a fully structured multi-level shooter; and 5) Treasure Hunting (Pygame) - a keyboard-controlled collection game.",
+      "outcome": "Developed technical versatility across mobile, AR, gaming, and UI frameworks, culminating in intermediate-level OOP game architecture in Python.",
+      "lessonsLearned": "Discovered how to transition logic structures from block-based programming to object-oriented programming (classes, functions, events), which accelerated my learning of newer languages.",
+      "images": [
+        "images/projects/exhibition_pitch.jpg",
+        "images/projects/space_attack_preview.png"
+      ],
+      "optionalVideo": "",
+      "image": "",
+      "carriedForward": {
+        "fromProject": "Scratch Coder Course",
+        "lesson": "Grew from block-based Scratch projects into text-based Python, Pygame, and AR — building technical versatility over 3 years"
+      }
     }
   ],
   "achievements": [
@@ -999,6 +1012,84 @@
       "entries": []
     }
   },
-  "sectionVisibility": {}
+  "sectionVisibility": {},
+  "uiLabels": {
+    "navAbout": "About",
+    "navEvidence": "Evidence",
+    "navProjects": "Projects",
+    "navAchievements": "Achievements",
+    "navApplications": "Goals",
+    "navMore": "More",
+    "heroCta": "Explore my work",
+    "lifeEntryDoorwayStart": "At first it was about...",
+    "lifeEntryDoorwayEnd": "...but now it's about so much more.",
+    "evidenceOverviewTitle": "My Evidence at a Glance",
+    "evidenceOverviewIntro": "A consolidated view of my personal map (structured goals) and evidence deck (proof of capabilities). Use the tabs below to switch between them.",
+    "tabPersonalMap": "Personal Map",
+    "tabEvidenceDeck": "Evidence Deck",
+    "mapTitle": "What I stand for",
+    "deckTitle": "Key activities and proof",
+    "aboutTitle": "Who I am",
+    "aboutStrengthSubtitle": "What I am good at",
+    "aboutPhilosophySubtitle": "How I approach things",
+    "achievementFlowTitle": "How Each Achievement Builds Into the Next",
+    "projectsTitle": "Featured Projects",
+    "projectsIntro": "Curiosity turned into practical, working systems. These projects demonstrate my hands-on problem solving skills.",
+    "projectCategoryLabel": "Category",
+    "projectStatusLabel": "Status",
+    "projectViewLiveBtn": "View live project",
+    "projectSourceBtn": "View source code",
+    "projectVideoBtn": "Watch video",
+    "projectSlidesBtn": "Open slides in a new tab",
+    "projectEvidenceBtn": "View certificate / proof",
+    "projectSignalLabel": "What this shows:",
+    "projectEaeLabel": "EAE relevance:",
+    "projectEvidenceStatusLabel": "Evidence:",
+    "applicationsTitle": "Target EAE Applications",
+    "applicationsIntro": "How my skills align with my goals.",
+    "applicationCourseLabel": "Course:",
+    "applicationWhyLabel": "Why this course:",
+    "achievementsTitle": "What I've done",
+    "achievementsIntro": "Extracurricular proof of my drive and competence.",
+    "achievementCategoryLabel": "Type",
+    "achievementOrgLabel": "Organisation",
+    "achievementSignalLabel": "What this shows about me",
+    "achievementEaeLabel": "Why this matters for EAE",
+    "achievementReflectionTitle": "My Reflection",
+    "achievementOutcomeTitle": "Learning Outcome",
+    "footerCopyright": "EAE Portfolio. Built with curiosity.",
+    "footerBackToTop": "Back to top",
+    "liveEditorBtn": "🛠️",
+    "liveEditorTitle": "Portfolio Editor",
+    "liveEditorTextInline": "Edit Text Inline",
+    "liveEditorTextDesc": "Click and edit text directly on the page. Changes save automatically when you click away.",
+    "liveEditorShift": "Shift Sections",
+    "liveEditorShiftDesc": "Use Up/Down controls on sections to swap their layout sequence.",
+    "liveEditorExport": "Export data.js",
+    "skipLink": "Skip to content",
+    "viewCards": "Cards",
+    "viewTimeline": "Timeline",
+    "viewStory": "Story",
+    "heroBtnPrimary": "View projects",
+    "heroBtnSecondary": "View achievements",
+    "personalQualitiesTitle": "Personal qualities",
+    "journeyMilestonesLabel": "Journey Milestones",
+    "evidenceOverviewLabel": "Evidence Overview",
+    "achievementFlowLabel": "Achievement Flow",
+    "workLabel": "Work",
+    "projectsLede": "Case studies are written to show the problem, approach, role, technologies, development journey, outcome, and learning.",
+    "evidenceLibraryLabel": "Evidence Library",
+    "achievementStoryTitle": "Achievement Story",
+    "achievementStoryLede": "These cards support the flow above. Open each one for the fuller description, reflection, learning outcome, images, and certificates.",
+    "timelineTitle": "Timeline",
+    "directionLabel": "Direction",
+    "goalsTitle": "Future Goals",
+    "goalsShortTerm": "Short-term",
+    "goalsLongTerm": "Long-term",
+    "applicationsLabel": "Applications",
+    "applicationsLede": "Institution-specific notes stay editable so the portfolio can support both Singapore Polytechnic and Ngee Ann Polytechnic without making unconfirmed course claims.",
+    "footerText": "Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.",
+    "footerPrintBtn": "Print portfolio"
+  }
 };
 })();
