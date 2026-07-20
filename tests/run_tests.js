@@ -135,8 +135,8 @@ async function run() {
     await send('Page.enable');
     await send('Runtime.enable');
     
-    console.log("Navigating to http://127.0.0.1:3000/...");
-    await send('Page.navigate', { url: 'http://127.0.0.1:3000/' });
+    console.log("Navigating to http://127.0.0.1:3000/?admin=true...");
+    await send('Page.navigate', { url: 'http://127.0.0.1:3000/?admin=true' });
     
     // Wait for load event
     await new Promise((resolve) => {

@@ -200,20 +200,27 @@
 
   const navItems = [
     ["About", "about"],
-    ["Projects", "projects"],
-    ["Achievements", "achievements"],
-    ["Reflections", "reflections"],
-    ["Applications", "applications"],
-    ["Journey", "life"],
-    ["Evidence", "evidence-overview"],
+    ["Mindset", "philosophy"],
+    ["Cybersecurity", "why-cybersecurity"],
+    ["Best Projects", "best-projects"],
+    ["Journey", "timeline"],
+    ["Reflection", "reflections"],
+    ["Gallery", "projects"],
+    ["Library", "achievements"],
+    ["Course Fit", "applications"],
     ["Goals", "goals"],
   ];
   const primaryNavIds = new Set([
     "about",
-    "projects",
-    "achievements",
+    "philosophy",
+    "why-cybersecurity",
+    "best-projects",
+    "timeline",
     "reflections",
+    "gallery",
+    "library",
     "applications",
+    "goals",
   ]);
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -385,8 +392,17 @@
     setText("#view-cards", data.uiLabels?.viewCards || "Cards", "uiLabels.viewCards");
     setText("#view-timeline", data.uiLabels?.viewTimeline || "Timeline", "uiLabels.viewTimeline");
     setText("#view-story", data.uiLabels?.viewStory || "Story", "uiLabels.viewStory");
-    setText("#heroBtnPrimary", data.uiLabels?.heroBtnPrimary || "View projects", "uiLabels.heroBtnPrimary");
-    setText("#heroBtnSecondary", data.uiLabels?.heroBtnSecondary || "View achievements", "uiLabels.heroBtnSecondary");
+    setText("#heroBtnPrimary", data.uiLabels?.heroBtnPrimary || "View strongest projects", "uiLabels.heroBtnPrimary");
+    setText("#heroBtnSecondary", data.uiLabels?.heroBtnSecondary || "View evidence timeline", "uiLabels.heroBtnSecondary");
+    setText("#heroBtnApplications", data.uiLabels?.heroBtnApplications || "View EAE direction", "uiLabels.heroBtnApplications");
+    
+    const heroBtnPrimary = $("#heroBtnPrimary");
+    if (heroBtnPrimary) heroBtnPrimary.href = "#best-projects";
+    const heroBtnSecondary = $("#heroBtnSecondary");
+    if (heroBtnSecondary) heroBtnSecondary.href = "#timeline";
+    const heroBtnApplications = $("#heroBtnApplications");
+    if (heroBtnApplications) heroBtnApplications.href = "#applications";
+
     setText("#personalQualitiesTitle", data.uiLabels?.personalQualitiesTitle || "Personal qualities", "uiLabels.personalQualitiesTitle");
     setText("#journeyMilestonesLabel", data.uiLabels?.journeyMilestonesLabel || "Journey Milestones", "uiLabels.journeyMilestonesLabel");
     setText("#evidenceOverviewLabel", data.uiLabels?.evidenceOverviewLabel || "Evidence Overview", "uiLabels.evidenceOverviewLabel");
@@ -442,35 +458,53 @@
     });
   }
 
-  function renderAbout() {
-    buildCards($("#learningPattern"), data.about?.learningPattern, "about.learningPattern", {
-      cardClass: "pattern-card reveal",
-      elements: [
-        { tag: "span", className: "pattern-index", value: item => item.title ? item.title.slice(0, 1) : "" },
-        { tag: "h3", key: "title", hasEditPath: true },
-        { tag: "p", key: "body", hasEditPath: true }
-      ]
-    });
-
-    if (!data.eaeSnapshot || !Array.isArray(data.eaeSnapshot.cards) || !data.eaeSnapshot.cards.length) {
-      buildCards($("#personalSnapshot"), data.about?.snapshot, "about.snapshot", {
-        cardClass: "snapshot-card reveal",
-        elements: [
-          { tag: "h2", key: "title", hasEditPath: true },
-          { tag: "p", key: "body", hasEditPath: true }
-        ]
+  function renderPhilosophy() {
+    setText("#philosophyIntro", data.philosophy?.intro || "", "philosophy.intro");
+    
+    // Render snapshot/mindset cards
+    const snapshotGrid = $("#personalSnapshot");
+    if (snapshotGrid) {
+      snapshotGrid.replaceChildren();
+      (data.philosophy?.mindset || []).forEach((item, index) => {
+        const card = create("article", "snapshot-card reveal");
+        card.append(create("h3", "", item.title, `philosophy.mindset.${index}.title`));
+        card.append(create("p", "", item.body, `philosophy.mindset.${index}.body`));
+        snapshotGrid.append(card);
       });
     }
 
-    appendList($("#valuesList"), data.about?.values, "tag");
+    // Render personal map cards
+    const mapGrid = $("#personalMapCards");
+    if (mapGrid) {
+      mapGrid.replaceChildren();
+      (data.personalMap?.cards || []).forEach((item, index) => {
+        const card = create("article", "personal-map-card reveal");
+        const top = create("div", "personal-map-card-top");
+        top.append(create("span", "personal-map-index", String(index + 1).padStart(2, "0")));
+        top.append(create("p", "card-kicker", item.label, `personalMap.cards.${index}.label`));
+        card.append(top);
+        card.append(create("h3", "", item.title, `personalMap.cards.${index}.title`));
+        card.append(create("p", "", item.body, `personalMap.cards.${index}.body`));
+        if (item.evidence) {
+          card.append(create("p", "personal-map-evidence", item.evidence));
+        }
+        mapGrid.append(card);
+      });
+    }
+  }
 
-    buildCards($("#strengthsGrid"), data.about?.strengths, "about.strengths", {
-      cardClass: "small-card",
-      elements: [
-        { tag: "h3", key: "title", hasEditPath: true },
-        { tag: "p", key: "body", hasEditPath: true }
-      ]
-    });
+  function renderWhyCybersecurity() {
+    setText("#whyCyberIntro", data.whyCybersecurity?.intro || "", "whyCybersecurity.intro");
+    const grid = $("#cybersecurityReasons");
+    if (grid) {
+      grid.replaceChildren();
+      (data.whyCybersecurity?.reasons || []).forEach((item, index) => {
+        const card = create("article", "strength-card small-card reveal");
+        card.append(create("h3", "", item.title, `whyCybersecurity.reasons.${index}.title`));
+        card.append(create("p", "", item.body, `whyCybersecurity.reasons.${index}.body`));
+        grid.append(card);
+      });
+    }
   }
 
 
@@ -937,7 +971,10 @@
     }
 
     function drawProjects() {
-      grid.replaceChildren();
+      const grid = $('#projectsGrid');
+      const featuredGrid = $('#featuredProjectsGrid');
+      if (grid) grid.replaceChildren();
+      if (featuredGrid) featuredGrid.replaceChildren();
 
       let filteredProjects = projects.filter(
         (project) => activeCategory === 'All' || project.category === activeCategory
@@ -959,9 +996,16 @@
       filteredProjects.forEach((project, index) => {
         const originalIndex = data.projects.indexOf(project);
         const article = create('article', 'project-card reveal');
+        
+        // Featured projects specifically go to the featured grid if they are highlighted
+        const targetGrid = (project.highlighted && featuredGrid) ? featuredGrid : grid;
+        if (!targetGrid) return;
 
         if (currentViewMode === 'timeline') {
-          article.classList.add('timeline-card-node');
+          // Featured projects in "Best Projects" section should NOT have timeline markers
+          if (targetGrid !== featuredGrid) {
+            article.classList.add('timeline-card-node');
+          }
         } else if (currentViewMode === 'story') {
           article.classList.add('story-card-node');
 
@@ -1088,10 +1132,11 @@
         body.append(details);
 
         article.append(body);
-        grid.append(article);
+        if (targetGrid) targetGrid.append(article);
       });
 
-      refreshReveal(grid);
+      if (grid) refreshReveal(grid);
+      if (featuredGrid) refreshReveal(featuredGrid);
     }
 
     drawFilters();
@@ -1284,15 +1329,34 @@
       const content = create("div", "");
       content.append(create("p", "date-line", achievement.date));
       content.append(create("h4", "", achievement.title));
-      content.append(create("p", "", achievement.summary));
-      item.append(content);
-      if (achievement.applicantSignal) {
+      
+      if (achievement.summary) {
+        content.append(create("p", "", achievement.summary));
+      }
+
+      // Merge data from achievementFlow if matches by title
+      const flowStep = (data.achievementFlow?.steps || []).find(s => s.linkedAchievement === achievement.title || s.title === achievement.title);
+      if (flowStep) {
+        if (flowStep.whatItShows) {
+          const proof = create("div", "flow-copy-block");
+          proof.append(create("h5", "", "What it shows"));
+          proof.append(create("p", "", flowStep.whatItShows));
+          content.append(proof);
+        }
+        if (flowStep.personalMeaning) {
+          const meaning = create("div", "flow-copy-block flow-meaning");
+          meaning.append(create("h5", "", "What it means to me"));
+          meaning.append(create("p", "", flowStep.personalMeaning));
+          content.append(meaning);
+        }
+      } else if (achievement.applicantSignal) {
         const signal = create("p", "achievement-signal", achievement.applicantSignal);
         signal.textContent = `${achievement.applicantSignal.substring(0, 130)}${
           achievement.applicantSignal.length > 130 ? "..." : ""
         }`;
         content.append(signal);
       }
+      item.append(content);
       if (timeline) timeline.append(item);
     });
 
@@ -2172,6 +2236,12 @@
   }
 
   function setupLiveEditor() {
+    // Hide editor from public view unless admin=true is in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.has('admin')) return;
+    
+    document.body.classList.add('admin-mode');
+
     if ($(".live-editor-sidebar")) return;
 
     // Create FAB
@@ -2184,12 +2254,44 @@
     sidebar.setAttribute("aria-label", "Live Portfolio Editor");
 
     const header = create("div", "sidebar-header");
-    header.append(create("h3", "", "Portfolio Editor"));
+    header.append(create("h3", "", "No-code editor"));
     const closeBtn = create("button", "sidebar-close-btn", "✖");
     closeBtn.setAttribute("aria-label", "Close editor panel");
     header.append(closeBtn);
 
     const content = create("div", "sidebar-content");
+
+    const introBlock = create("div", "editor-control-group");
+    introBlock.append(create("h4", "", "No-code editor"));
+    introBlock.append(create("p", "control-description", "Jump to the sections that matter most, then edit content inline without touching the source files."));
+    content.append(introBlock);
+
+    const workflowSummary = create("div", "editor-workflow-card");
+    const statusPill = create("span", "editor-status-pill", "Admin mode ready");
+    statusPill.id = "editorStatusPill";
+    workflowSummary.append(statusPill);
+    workflowSummary.append(create("p", "control-description", "Use the workflow shortcuts below to edit copy, reorder sections, add content blocks, and preview the layout."));
+    content.append(workflowSummary);
+
+    const quickNavGroup = create("div", "editor-control-group");
+    quickNavGroup.append(create("h4", "", "Quick jumps"));
+    [
+      ["Hero", "#about"],
+      ["Best projects", "#best-projects"],
+      ["Technical journey", "#timeline"],
+      ["Course fit", "#applications"]
+    ].forEach(([label, target]) => {
+      const jumpBtn = create("button", "button button-secondary quick-jump-btn", label);
+      jumpBtn.type = "button";
+      jumpBtn.addEventListener("click", () => {
+        const targetEl = document.querySelector(target);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+      quickNavGroup.append(jumpBtn);
+    });
+    content.append(quickNavGroup);
 
     // Switch 1: Edit Text
     const group1 = create("div", "editor-control-group");
@@ -2302,11 +2404,21 @@
     let textEditingActive = false;
     let sectionShiftingActive = false;
 
+    function setEditorStatus(message, tone = "ready") {
+      const pill = document.getElementById("editorStatusPill");
+      if (!pill) return;
+      pill.textContent = message;
+      pill.dataset.tone = tone;
+    }
+
+    setEditorStatus("Admin mode ready • choose a workflow", "ready");
+
     // Event listeners
     input1.addEventListener("change", () => {
       textEditingActive = input1.checked;
       if (textEditingActive) {
         document.body.classList.add("live-editing-active");
+        setEditorStatus("Inline editing active • click any editable text", "active");
         document.querySelectorAll("[data-edit-path]").forEach(el => {
           el.contentEditable = "true";
           el.addEventListener("blur", handleTextBlur);
@@ -2314,6 +2426,7 @@
       } else {
         if (!sectionShiftingActive) {
           document.body.classList.remove("live-editing-active");
+          setEditorStatus("Admin mode ready • choose a workflow", "ready");
         }
         document.querySelectorAll("[data-edit-path]").forEach(el => {
           el.removeAttribute("contenteditable");
@@ -2326,6 +2439,7 @@
       sectionShiftingActive = input2.checked;
       if (sectionShiftingActive) {
         document.body.classList.add("live-editing-active");
+        setEditorStatus("Section reorder mode active • use the move buttons", "active");
         const main = $("#main");
         if (main) {
           const sections = Array.from(main.querySelectorAll("section"));
@@ -2366,6 +2480,7 @@
       } else {
         if (!textEditingActive) {
           document.body.classList.remove("live-editing-active");
+          setEditorStatus("Admin mode ready • choose a workflow", "ready");
         }
         document.querySelectorAll(".section-edit-controls").forEach(controls => {
           controls.style.display = "none";
@@ -2414,6 +2529,7 @@
       else data.sectionOrder.splice(idx + 1, 0, newSection.id);
       render();
       exportBtn.style.display = 'block';
+      setEditorStatus('New section added • personalize it next', 'success');
       saveToServer('Added custom section');
       createVersionSnapshot('Added custom section');
     });
@@ -2563,11 +2679,13 @@
         localStorage.setItem(STORAGE_KEYS.publishedSnapshot, JSON.stringify({ ts: new Date().toISOString(), data: data }));
         publishBtn.textContent = 'Unpublish';
         showSaveNotification('Site published (local snapshot)');
+        setEditorStatus('Published locally • share the snapshot when ready', 'success');
         saveToServer('Published site snapshot');
       } else {
         localStorage.removeItem(STORAGE_KEYS.publishedSnapshot);
         publishBtn.textContent = 'Publish';
         showSaveNotification('Site unpublished');
+        setEditorStatus('Draft mode • edits stay local until you publish', 'ready');
         saveToServer('Unpublished site');
       }
       createVersionSnapshot(data.sitePublished ? 'Published site' : 'Unpublished site');
@@ -2820,11 +2938,8 @@
     renderCustomSections();
     applySectionOrder();
     renderHero();
-    renderEaeSnapshot();
-    renderLifeEntry();
-    renderEvidenceOverview();
-    renderAbout();
-    renderAchievementFlow();
+    renderPhilosophy();
+    renderWhyCybersecurity();
     renderReflections();
     renderProjects();
     renderApplications();

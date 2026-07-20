@@ -5,6 +5,50 @@
     "description": "A personal EAE portfolio for Jaron Chew, focused on coding, robotics, cybersecurity, projects, evidence, and reflective growth.",
     "author": "Jaron Chew"
   },
+  "philosophy": {
+    "intro": "I believe technology should be more than just code; it should be a way to understand, help, and protect. My journey is driven by a curiosity that doesn't wait to be told what to learn.",
+    "quote": "Any sufficiently advanced technology is indistinguishable from magic.",
+    "quoteAuthor": "Arthur C. Clarke",
+    "mindset": [
+      {
+        "title": "Curiosity First",
+        "body": "I learn because I want to know how things work, from the logic of a robot to the vulnerabilities in a network."
+      },
+      {
+        "title": "Lifelong Learning",
+        "body": "Technology never stops moving, and neither do I. I am committed to continuous growth and adapting to new challenges."
+      },
+      {
+        "title": "Stepping Out of Comfort Zone",
+        "body": "The best learning happens when things are difficult. I actively seek projects that push my boundaries."
+      },
+      {
+        "title": "Risk-Aware Experimentation",
+        "body": "I explore systems carefully and ethically, understanding that with power comes responsibility."
+      }
+    ]
+  },
+  "whyCybersecurity": {
+    "intro": "Cybersecurity is the natural destination for my building and debugging mindset. It combines technical rigor with the mission to protect and defend digital environments.",
+    "reasons": [
+      {
+        "title": "Systems Thinking",
+        "body": "My experience in robotics and app development taught me to see how parts connect. Cybersecurity is about understanding those connections to find where they might be weak."
+      },
+      {
+        "title": "Debugging Mindset",
+        "body": "I enjoy the challenge of finding why something isn't working. In security, this helps me identify logic flaws and potential exploits before they are used."
+      },
+      {
+        "title": "How Systems Fail",
+        "body": "I'm fascinated by the edge cases—what happens when a system is pushed beyond its intended use. This 'attacker mindset' is essential for strong defense."
+      },
+      {
+        "title": "Protecting People",
+        "body": "Building the SPD portal showed me how much people rely on technology. I want to ensure the systems they use are safe, private, and resilient."
+      }
+    ]
+  },
   "profile": {
     "name": "Jaron Chew",
     "shortName": "Jaron EAE Portfolio",
@@ -278,8 +322,8 @@
     ],
     "strengths": [
       {
-        "title": "Socially Enthusiastic",
-        "body": "I connect with people easily in competitions and group work. In cybersecurity, collaboration is crucial because it's rarely a one-man job; we need teams to audit, test, and implement solutions effectively."
+        "title": "Collaborative",
+        "body": "I connect well with teammates during competitions and group work. In cybersecurity, collaboration matters because security is rarely handled alone; teams need to test, audit, defend, and improve systems together."
       },
       {
         "title": "Resourceful",
@@ -366,15 +410,15 @@
       "category": "Web & App Development / Social Impact",
       "status": "Version 1 Prototype Completed",
       "portfolioSignal": "Shows the ability to translate real-world NGO challenges into a full system architecture with customized user roles (admin and caregiver), databases, and analytics dashboards.",
-      "eaeConnection": "Directly aligns with software engineering and UX design by demonstrating how to build accessible systems that solve real community problems—a core strength for cybersecurity infrastructure and user-centered design.",
+      "eaeConnection": "Directly aligns with software engineering and cybersecurity by demonstrating how to build secure, accessible systems that manage sensitive data—focusing on role-based access control (RBAC) and data privacy.",
       "evidenceStatus": "User flow flowcharts completed. Functional prototype logic mapped out.",
-      "problem": "SPD faced severe administrative bottlenecks from manual registration, WhatsApp confirmation lists, and spreadsheet-based reporting for MSF/NCSS funding audits.",
-      "proposedSolution": "A secure Version 1 portal splitting views between Admins (Event/Feedback dashboard, report export, check-in log) and Caregivers (accessible registrations, feedback submit) with NRIC validation.",
+      "problem": "SPD faced severe administrative bottlenecks from manual registration and spreadsheet-based reporting, leading to risks in data integrity and administrative transparency.",
+      "proposedSolution": "A secure Version 1 portal splitting views between Admins (Event/Feedback dashboard, RBAC, report export) and Caregivers (accessible registrations) with NRIC validation and encrypted data handling logic.",
       "myRole": "System Designer and Lead Developer",
-      "technologiesUsed": "HTML5, CSS3, JavaScript, Draw.io User Flows, JSON Database Schema",
-      "developmentJourney": "Analyzed SPD's calendar of 20+ programmes (including EIPIC, Therapy Hub, and the Ability Walk flagship event). Mapped a detailed user flow from registration confirmation to attendance tracking (via T-shirt/goodie bag proxy checks) and automated feedback collation.",
-      "outcome": "Designed and prototyped a version 1 event-management portal, significantly reducing administrative overhead for community support reporting.",
-      "lessonsLearned": "Realized that non-profit reporting relies heavily on structured output (attendance count, caregiver feedback). Prioritized a clean DB schema over future AI features to solve the immediate administrative strain first.",
+      "technologiesUsed": "HTML5, CSS3, JavaScript, Draw.io User Flows, RBAC (Role-Based Access Control) Design",
+      "developmentJourney": "Analyzed SPD's calendar of 20+ programmes. Mapped a detailed user flow focusing on data privacy: ensuring caregivers only see their relevant sessions while admins have full visibility. Designed the database schema to handle personally identifiable information (PII) responsibly.",
+      "outcome": "Designed and prototyped a version 1 event-management portal, emphasizing data security and role-based privacy for community support reporting.",
+      "lessonsLearned": "Realized that security is not just an add-on; it must be built into the architecture. Prioritizing role-based access control early prevents unauthorized data exposure in community-facing portals.",
       "slides": "https://canva.link/4kle5s5l7rnfxqc",
       "images": [
         "images/projects/SPD_User_Flow_Flow_chart.jpg",
@@ -394,7 +438,7 @@
       "category": "Robotics / Engineering & Planning",
       "status": "Participated in FLL 2026 Unearthed",
       "portfolioSignal": "Shows simultaneous multi-axis movement planning, gear ratio control (torque vs speed), and detailed flowchart-based sequencing. Demonstrates precision engineering and sensor-based feedback systems.",
-      "eaeConnection": "Robotics systems thinking directly translates to cybersecurity: both require detailed planning, precision execution, sensor monitoring, and rapid debugging under pressure. Proves I can design complex interconnected systems.",
+      "eaeConnection": "Robotics trained me to debug under strict constraints, similar to cybersecurity troubleshooting where small errors affect the whole system. Proves I can design, monitor, and defend complex interconnected systems.",
       "evidenceStatus": "Presentation slides, field mission flowcharts, and robot run video demo completed.",
       "problem": "Navigating complex competitive terrain in FLL 2026 Unearthed and performing delicate missions requires high movement versatility and torque adjustment under strict time limits.",
       "proposedSolution": "A modular 4-motor robot design with multi-directional drive, 3-axis gear rotation (X, Y, Z simultaneously), and strategic gear ratios (16T, 24T, 40T gears) to toggle between Speed Mode (1:1) and Torque Mode (1:2.5).",
@@ -417,16 +461,16 @@
       "title": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
       "category": "Hackathon / Game Jam / Cybersecurity & AI",
       "status": "Completed (June 2026)",
-      "portfolioSignal": "Shows the ability to build interactive applications that teach complex cybersecurity attacks (phishing, SQL injection, XSS, DDoS) through engaging game mechanics under hackathon pressure.",
-      "eaeConnection": "Directly demonstrates interest in cybersecurity education and software engineering. Proves ability to gamify security concepts—a strength that differentiates me for cybersecurity tracks.",
+      "portfolioSignal": "Demonstrates technical curiosity in cybersecurity by translating complex attacks (phishing, SQLi, XSS, DDoS) into playable game mechanics, showing a deep understanding of threat vectors.",
+      "eaeConnection": "Directly supports the Cybersecurity & Digital Forensics track. It proves I can analyze security risks and communicate them effectively, which is essential for security auditing and education.",
       "evidenceStatus": "Functional prototype video demo completed. Hackathon participation certificate linked.",
-      "problem": "Technical topics like cybersecurity attacks (phishing, SQL injection, XSS, DDoS) and career mappings are often difficult and disengaging for users to learn.",
-      "proposedSolution": "A unified collection of educational tools including a roguelike game inspired by Rogue to teach cybersecurity, and a data-driven career navigation system using jobs-and-skills datasets with an AI upskilling planner.",
-      "myRole": "Lead Software Engineer & UI Designer",
-      "technologiesUsed": "Python, Unity, C#, SkillsFuture jobs-and-skills datasets",
-      "developmentJourney": "A combined development effort: (1) exploring gamified rogue-like loops for cybersecurity education (phishing, SQL injection, XSS, denial of service) and (2) parsing public datasets for career analysis (skill-gap analysis, role-to-skill mapping, AI planners) for the PyCon jobs-and-skills challenge.",
-      "outcome": "Successfully built and pitched 'CareerNavigator', which maps local career pathways and generates custom Python data structures for gap analysis.",
-      "lessonsLearned": "Taught me how to work under tight hackathon timelines, collaborate in a multi-disciplinary team, and turn raw public APIs/datasets into practical user features.",
+      "problem": "Technical concepts like SQL Injection, Cross-Site Scripting (XSS), and DDoS are often abstract and hard for beginners to grasp without interactive models.",
+      "proposedSolution": "A unified educational toolset: (1) SkillQuest, a roguelike where levels represent security challenges (e.g., bypassing a 'Firewall' guardian or patching a 'Vulnerable DB'); and (2) an AI-driven career pathing tool.",
+      "myRole": "Lead Software Engineer (Security Mechanics)",
+      "technologiesUsed": "Python, Unity, C#, Security Attack Simulation (XSS, SQLi, DDoS)",
+      "developmentJourney": "Built game loops that simulate real-world cyber threats. For example, the 'SQLi' mechanic requires players to identify unescaped inputs to progress, while 'Phishing' levels teach users to spot suspicious metadata. Integrated jobs-and-skills datasets to show how these skills map to real cybersecurity roles.",
+      "outcome": "Successfully pitched a product that turns cybersecurity education into an interactive experience, earning positive feedback for technical clarity.",
+      "lessonsLearned": "Discovered that the best way to understand security is to think like an attacker. Building the game required me to research how these attacks actually work at the code level so I could model them correctly.",
       "images": [
         "images/certificates/Jaron_Chew_Kai_Xin_Hackathon.png",
         "images/projects/group_lobby.jpg"
@@ -443,7 +487,7 @@
       "category": "Web Development / EAE Portfolio",
       "status": "Built as a static portfolio",
       "portfolioSignal": "Shows that I can design, structure, and build a working web product with editable data and a clear audience. Demonstrates accessible, responsive web design and honest technical presentation.",
-      "eaeConnection": "This portfolio itself is evidence of web development, information design, and responsible technical communication—key skills for software engineering and cybersecurity roles.",
+      "eaeConnection": "Building this site helped me practice responsible technical communication, clear documentation, and information design—all critical skills for cybersecurity reporting and security auditing.",
       "evidenceStatus": "Built locally as a static website. Served using Node.js.",
       "problem": "An EAE application needs a clear, credible way to show projects, technical interests, growth, and future goals without overstating unconfirmed achievements.",
       "proposedSolution": "A responsive website with editable content in data.js, project case studies, achievement details, reflections, and target application notes for SP and NP.",
@@ -1014,6 +1058,9 @@
   },
   "sectionVisibility": {},
   "uiLabels": {
+    "heroBtnPrimary": "View strongest projects",
+    "heroBtnSecondary": "View evidence timeline",
+    "heroBtnApplications": "View EAE direction",
     "navAbout": "About",
     "navEvidence": "Evidence",
     "navProjects": "Projects",
