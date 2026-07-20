@@ -4042,6 +4042,16 @@ body[data-view-mode="story"] .view-mode-indicator {
   transform: translate(-50%, 0);
 }
 
+.bullet-list {
+  margin: 0.75rem 0 0 1.1rem;
+  padding-left: 1rem;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.65;
+}
+.bullet-list li {
+  margin-bottom: 0.55rem;
+}
+
 /* ── Astral/Interstellar Aesthetic ── */
 .section-astral-1 {
   background: linear-gradient(180deg, #070b16 0%, #0d1222 100%);
@@ -5332,12 +5342,30 @@ body.live-editing-active .section-edit-controls {
   width: 20px;
   height: 2px;
   background: linear-gradient(90deg, transparent, rgba(109, 179, 240, 0.7), transparent);
+  border-radius: 999px;
 }
 #achievementTimeline .timeline-item.left::after {
   right: -20px;
 }
 #achievementTimeline .timeline-item.right::after {
   left: -20px;
+}
+ #achievementTimeline .timeline-item::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(109, 179, 240, 0.9);
+  box-shadow: 0 0 6px rgba(109, 179, 240, 0.45);
+}
+ #achievementTimeline .timeline-item.left::before {
+  right: -28px;
+  top: 28px;
+}
+ #achievementTimeline .timeline-item.right::before {
+  left: -28px;
+  top: 28px;
 }
 
 @media (max-width: 820px) {

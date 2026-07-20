@@ -202,6 +202,7 @@
     ["About", "about"],
     ["Projects", "projects"],
     ["Achievements", "achievements"],
+    ["Reflections", "reflections"],
     ["Applications", "applications"],
     ["Journey", "life"],
     ["Evidence", "evidence-overview"],
@@ -211,6 +212,7 @@
     "about",
     "projects",
     "achievements",
+    "reflections",
     "applications",
   ]);
 
@@ -267,10 +269,39 @@
     }
   }
 
+  function renderBulletText(element, value) {
+    const lines = String(value)
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+    if (!lines.length) {
+      element.textContent = "";
+      return;
+    }
+    const usesBullets = lines.every((line) => line.startsWith("•") || line.startsWith("- "));
+    if (!usesBullets) {
+      element.textContent = lines.join(' ');
+      return;
+    }
+    const list = document.createElement('ul');
+    list.className = 'bullet-list';
+    lines.forEach((line) => {
+      const cleaned = line.replace(/^\u2022\s*|^-\s*/g, '').trim();
+      const li = document.createElement('li');
+      li.textContent = cleaned;
+      list.append(li);
+    });
+    element.replaceChildren(list);
+  }
+
   function setText(selector, value, editPath = "") {
     const element = $(selector);
     if (!element) return;
-    element.textContent = value || "";
+    if (typeof value === 'string' && value.includes('\n') && value.match(/^[\s\S]*[•\-]\s+/)) {
+      renderBulletText(element, value);
+    } else {
+      element.textContent = value || "";
+    }
     markPlaceholder(element, value || "");
     if (editPath) {
       element.dataset.editPath = editPath;
