@@ -2155,7 +2155,7 @@
   }
 
   function applySectionOrder() {
-    const order = data.sectionOrder || ["about", "achievement-flow", "projects", "achievements", "goals", "applications"];
+    const order = data.sectionOrder || ["about", "philosophy", "why-cybersecurity", "best-projects", "timeline", "reflections", "projects", "achievements", "applications", "goals"];
     const main = $("#main");
     if (!main) return;
     const sections = Array.from(main.querySelectorAll("section"));
