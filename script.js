@@ -7,6 +7,7 @@
   const STORAGE_KEYS = {
     uploads: 'eaePortfolioUploads',
     viewMode: 'eaePortfolioViewModeV2',
+    theme: 'eaePortfolioTheme',
     versions: 'eaePortfolioVersions',
     publishedSnapshot: 'eaePublishedSnapshot',
   };
@@ -18,6 +19,7 @@
     siteHeader: '.site-header',
     navToggle: '.nav-toggle',
     siteNav: '#siteNav',
+    themeToggle: '#themeToggle',
     scrollProgressBar: '#scrollProgressBar',
     scrollProgress: '.scroll-progress',
     printPortfolio: '#printPortfolio',
@@ -2939,10 +2941,27 @@
     openModalDialog(dialog);
   }
 
+  function setupThemeToggle() {
+    const btn = $(SELECTORS.themeToggle);
+    if (!btn) return;
+
+    // Load saved theme or default to dark
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.theme) || 'dark';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    btn.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme') || 'dark';
+      const nextTheme = current === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', nextTheme);
+      localStorage.setItem(STORAGE_KEYS.theme, nextTheme);
+    });
+  }
+
   /* ==========================================================================
    * SECTION 4: DOM INITIALIZATION & APPLICATION LIFECYCLE RENDER
    * ========================================================================== */
   function render() {
+    setupThemeToggle();
     setupViewModeToggleOnce();
     setupViewModeBarVisibility();
     renderNav();
