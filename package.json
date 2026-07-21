@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "node tests/run_tests.js",
-    "design:lint": "design.md lint materials/DESIGN.md"
+    "design:lint": "design.md lint docs/design_system/DESIGN_GUIDELINES.md"
   },
   "dependencies": {
     "@google/design.md": "^0.3.0",

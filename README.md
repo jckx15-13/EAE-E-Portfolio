@@ -60,9 +60,9 @@ Then visit `http://localhost:3000` (with `npm start`) or the port shown by your 
 | `server.js` | Local Node server on port 3000 |
 | `images/` | Profile, project, certificate, and robot images |
 | `videos/` | Embedded demo videos (e.g. SkillQuest) |
-| `materials/` | Source documents, diagrams, and reference files (not used at runtime) |
+| `docs/source_materials/raw_materials/` | Source documents, diagrams, and reference files (not used at runtime) |
 | `tests/` | Automated view-mode and accessibility checks |
-| `materials/DESIGN.md` | Design system notes |
+| `docs/design_system/DESIGN_GUIDELINES.md` | Design system notes |
 
 ## Fixed navigation chrome
 
@@ -97,7 +97,7 @@ Projects with `"highlighted": true` in `data.js` appear first in every view mode
 
 ## Design & accessibility
 
-The site uses an astral space theme with readable contrast: light text on dark section backgrounds, dark text on light cards and form controls, and accent colours reserved for labels and actions. The top navigation bar and Cards/Timeline/Story bar stay fixed while scrolling; content is offset by `--site-chrome-height`, which updates automatically when the header wraps. Typography: Space Grotesk (headings) and Inter (body). See [materials/DESIGN.md](materials/DESIGN.md).
+The site uses an astral space theme with readable contrast: light text on dark section backgrounds, dark text on light cards and form controls, and accent colours reserved for labels and actions. The top navigation bar and Cards/Timeline/Story bar stay fixed while scrolling; content is offset by `--site-chrome-height`, which updates automatically when the header wraps. Typography: Space Grotesk (headings) and Inter (body). See [docs/design_system/DESIGN_GUIDELINES.md](docs/design_system/DESIGN_GUIDELINES.md).
 
 Run automated checks:
 
