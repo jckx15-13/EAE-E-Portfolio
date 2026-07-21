@@ -57,21 +57,25 @@ eae-portfolio/
 ├── .agents/                 # Orchestrator and agent metadata
 ├── images/                  # Profile, project, and certificate images
 ├── videos/                  # Embedded demo videos
-├── materials/               # Source documents and design system guidelines
-│   └── DESIGN.md            # Styling tokens, colors, and typography rules
+├── docs/                    # Documentation, reports, design system & raw materials
+│   ├── design_system/       # Styling tokens, colors, and typography rules
+│   │   └── DESIGN_GUIDELINES.md
+│   ├── developer_guides/    # Technical guide & architectural documentation
+│   │   └── DEVELOPER_GUIDE.md
+│   ├── project_reports/     # Unified architecture, implementation & audit report
+│   │   └── PROJECT_DOCUMENTATION.md
+│   └── source_materials/    # Source documents and raw reference files
+│       └── raw_materials/
 ├── tests/                   # Automated browser testing suites
 │   ├── reports/             # Generated accessibility and testing reports
 │   │   └── accessibility.json
-│   ├── run_tests.js         # Puppeteer and Axe-Core execution script
-│   ├── verify-all-grids.js  # flex/grid alignment audit tool
-│   └── verify-cards.js      # Card stretch verification test
+│   └── run_tests.js         # Puppeteer and Axe-Core execution script
 ├── index.html               # Main single-page portfolio layout
 ├── style.css                # Astral theme CSS and responsive grid styles
 ├── script.js                # View-mode navigation, modals, and dynamic offsets
 ├── data.js                  # Structured portfolio database (window.PORTFOLIO_DATA)
 ├── server.js                # HTTP static server and JSON save API
-├── package.json             # Scripts, linter rules, and dependencies
-└── CLAUDE.md                # This essay and developer instructions
+└── package.json             # Scripts, linter rules, and dependencies
 ```
 
 ### 3.2 Required Portfolio Sections or Pages

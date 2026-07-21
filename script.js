@@ -1,4 +1,7 @@
 (function () {
+  /* ==========================================================================
+   * SECTION 1: CONSTANTS, SELECTORS & CONFIGURATION
+   * ========================================================================== */
   const data = window.PORTFOLIO_DATA || {};
   const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
   const STORAGE_KEYS = {
@@ -49,6 +52,9 @@
   let chromeHeightSetupDone = false;
   let chromeHeightObserver = null;
 
+  /* ==========================================================================
+   * SECTION 2: ACCESSIBILITY & MODAL HELPER FUNCTIONS
+   * ========================================================================== */
   function rememberModalFocusOrigin() {
     const active = document.activeElement;
     if (active && active !== document.body) {
@@ -137,6 +143,9 @@
     undoStack: []
   };
 
+  /* ==========================================================================
+   * SECTION 3: STATE MANAGEMENT & LOCAL STORAGE UPLOAD OVERRIDES
+   * ========================================================================== */
   // Override with local uploads if available
   (function overrideWithLocalUploads() {
     const uploadStorageKey = STORAGE_KEYS.uploads;
@@ -2930,6 +2939,9 @@
     openModalDialog(dialog);
   }
 
+  /* ==========================================================================
+   * SECTION 4: DOM INITIALIZATION & APPLICATION LIFECYCLE RENDER
+   * ========================================================================== */
   function render() {
     setupViewModeToggleOnce();
     setupViewModeBarVisibility();
