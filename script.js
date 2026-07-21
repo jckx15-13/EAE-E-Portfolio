@@ -1006,144 +1006,150 @@
 
       filteredProjects.forEach((project, index) => {
         const originalIndex = data.projects.indexOf(project);
-        const article = create('article', 'project-card reveal');
         
-        // Featured projects specifically go to the featured grid if they are highlighted
-        const targetGrid = (project.highlighted && featuredGrid) ? featuredGrid : grid;
-        if (!targetGrid) return;
+        // Helper to render a project card instance into a specified grid
+        const renderCardInstance = (targetGrid, isFeaturedSection) => {
+          if (!targetGrid) return;
+          const article = create('article', 'project-card reveal');
 
-        if (currentViewMode === 'timeline') {
-          // Featured projects in "Best Projects" section should NOT have timeline markers
-          if (targetGrid !== featuredGrid) {
-            article.classList.add('timeline-card-node');
-          }
-        } else if (currentViewMode === 'story') {
-          article.classList.add('story-card-node');
+          if (currentViewMode === 'timeline') {
+            if (!isFeaturedSection) {
+              article.classList.add('timeline-card-node');
+            }
+          } else if (currentViewMode === 'story' && !isFeaturedSection) {
+            article.classList.add('story-card-node');
 
-          if (index > 0) {
-            const prevProject = filteredProjects[index - 1];
-            if (project.carriedForward && project.carriedForward.fromProject === prevProject.title) {
-              const connector = create('div', 'story-connector reveal');
-              connector.innerHTML = `
-                <div class="story-connector-line"></div>
-                <div class="carried-forward-callout">
-                  <span class="carried-forward-badge">What I carried forward</span>
-                  <p class="carried-forward-text">${project.carriedForward.lesson}</p>
-                </div>
-                <div class="story-connector-line"></div>
-              `;
-              grid.appendChild(connector);
-            } else {
-              const spacer = create('div', 'story-track-spacer reveal');
-              spacer.innerHTML = `<span class="track-label">Next Track: Engineering & Prototyping</span>`;
-              grid.appendChild(spacer);
+            if (index > 0) {
+              const prevProject = filteredProjects[index - 1];
+              if (project.carriedForward && project.carriedForward.fromProject === prevProject.title) {
+                const connector = create('div', 'story-connector reveal');
+                connector.innerHTML = `
+                  <div class="story-connector-line"></div>
+                  <div class="carried-forward-callout">
+                    <span class="carried-forward-badge">What I carried forward</span>
+                    <p class="carried-forward-text">${project.carriedForward.lesson}</p>
+                  </div>
+                  <div class="story-connector-line"></div>
+                `;
+                targetGrid.appendChild(connector);
+              } else {
+                const spacer = create('div', 'story-track-spacer reveal');
+                spacer.innerHTML = `<span class="track-label">Next Track: Engineering & Prototyping</span>`;
+                targetGrid.appendChild(spacer);
+              }
             }
           }
-        }
 
-        const slidesEmbedUrl = resolveSlidesEmbedUrl(project);
-        const videoPath = typeof project.optionalVideo === 'string' ? project.optionalVideo.trim() : '';
-        const hasEmbeddedVideo = /\.(webm|mp4|ogg)$/i.test(videoPath);
-        const media = create('div', 'project-media');
-        const mediaImages = projectMedia(project);
-        let leadImage = mediaImages[0];
+          const slidesEmbedUrl = resolveSlidesEmbedUrl(project);
+          const videoPath = typeof project.optionalVideo === 'string' ? project.optionalVideo.trim() : '';
+          const hasEmbeddedVideo = /\.(webm|mp4|ogg)$/i.test(videoPath);
+          const media = create('div', 'project-media');
+          const mediaImages = projectMedia(project);
+          let leadImage = mediaImages[0];
 
-        if (project.highlighted) {
-          article.classList.add('project-card--highlighted');
-          const highlightBadge = create('span', 'project-highlight-badge', LABELS.featuredProject);
-          article.append(highlightBadge);
-        }
-
-        if (slidesEmbedUrl) {
-          media.classList.add('has-slides');
-          const iframeContainer = create('div', 'project-media-iframe-wrap');
-          const iframe = document.createElement('iframe');
-          iframe.src = slidesEmbedUrl;
-          iframe.loading = project.highlighted ? 'eager' : 'lazy';
-          iframe.allowFullscreen = true;
-          iframe.allow = 'fullscreen; autoplay; encrypted-media';
-          iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-          iframe.setAttribute('allowfullscreen', '');
-          iframe.title = `${project.title} slides presentation`;
-          iframeContainer.append(iframe);
-          media.append(iframeContainer);
-          if (typeof project.slides === 'string' && project.slides.startsWith('http')) {
-            const slidesLink = document.createElement('a');
-            slidesLink.className = 'project-slides-link';
-            slidesLink.href = project.slides;
-            slidesLink.target = '_blank';
-            slidesLink.rel = 'noopener noreferrer';
-            slidesLink.textContent = data.uiLabels?.projectSlidesBtn || 'Open slides in a new tab';
-          slidesLink.dataset.editPath = 'uiLabels.projectSlidesBtn';
-            media.append(slidesLink);
+          if (project.highlighted) {
+            article.classList.add('project-card--highlighted');
+            const highlightBadge = create('span', 'project-highlight-badge', LABELS.featuredProject);
+            article.append(highlightBadge);
           }
-          if (mediaImages.length) {
-            leadImage = appendProjectSupportingImages(media, project, mediaImages);
+
+          if (slidesEmbedUrl) {
+            media.classList.add('has-slides');
+            const iframeContainer = create('div', 'project-media-iframe-wrap');
+            const iframe = document.createElement('iframe');
+            iframe.src = slidesEmbedUrl;
+            iframe.loading = project.highlighted ? 'eager' : 'lazy';
+            iframe.allowFullscreen = true;
+            iframe.allow = 'fullscreen; autoplay; encrypted-media';
+            iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+            iframe.setAttribute('allowfullscreen', '');
+            iframe.title = `${project.title} slides presentation`;
+            iframeContainer.append(iframe);
+            media.append(iframeContainer);
+            if (typeof project.slides === 'string' && project.slides.startsWith('http')) {
+              const slidesLink = document.createElement('a');
+              slidesLink.className = 'project-slides-link';
+              slidesLink.href = project.slides;
+              slidesLink.target = '_blank';
+              slidesLink.rel = 'noopener noreferrer';
+              slidesLink.textContent = data.uiLabels?.projectSlidesBtn || 'Open slides in a new tab';
+              slidesLink.dataset.editPath = 'uiLabels.projectSlidesBtn';
+              media.append(slidesLink);
+            }
+            if (mediaImages.length) {
+              leadImage = appendProjectSupportingImages(media, project, mediaImages);
+            }
+          } else {
+            leadImage = appendProjectImageMedia(media, project, mediaImages);
+            if (hasEmbeddedVideo) {
+              const video = document.createElement('video');
+              video.src = videoPath;
+              video.controls = true;
+              video.preload = 'metadata';
+              video.muted = true;
+              video.playsInline = true;
+              video.setAttribute('aria-label', `${project.title} demo video`);
+              media.append(video);
+            }
+            if (!leadImage && !hasEmbeddedVideo) {
+              media.append(createProjectPlaceholder(project));
+            }
           }
-        } else {
-          leadImage = appendProjectImageMedia(media, project, mediaImages);
-          if (hasEmbeddedVideo) {
-            const video = document.createElement('video');
-            video.src = videoPath;
-            video.controls = true;
-            video.preload = 'metadata';
-            video.muted = true;
-            video.playsInline = true;
-            video.setAttribute('aria-label', `${project.title} demo video`);
-            media.append(video);
+          article.append(media);
+
+          // Append card details and actions
+          const body = create('div', 'project-body');
+          body.append(create('p', 'card-kicker', project.category || 'Portfolio Project'));
+          body.append(create('h3', '', project.title));
+          
+          if (project.status) {
+            body.append(create('p', 'date-line', project.status));
           }
-          if (!leadImage && !hasEmbeddedVideo) {
-            media.append(createProjectPlaceholder(project));
+
+          if (project.portfolioSignal) {
+            const signalBlock = create('div', 'project-insight-card');
+            signalBlock.append(create('h4', '', 'Portfolio Signal'));
+            signalBlock.append(create('p', '', project.portfolioSignal));
+            body.append(signalBlock);
           }
-        }
-        article.append(media);
 
-        const body = create('div', 'project-body');
-        const meta = create('div', 'meta-row');
+          if (project.eaeConnection) {
+            const eaeBlock = create('div', 'project-insight-card project-evidence-status');
+            eaeBlock.append(create('h4', '', 'EAE Connection'));
+            eaeBlock.append(create('p', '', project.eaeConnection));
+            body.append(eaeBlock);
+          }
 
-        const catSpan = create('span', '', project.category);
-        catSpan.dataset.editPath = `projects.${originalIndex}.category`;
-        meta.append(catSpan);
+          const techs = projectTechs(project);
+          if (techs.length) {
+            const techWrap = create('div', 'tag-grid');
+            techs.forEach(t => techWrap.append(create('span', 'project-tech-chip', t)));
+            body.append(techWrap);
+          }
 
-        const statusSpan = create('span', '', project.status);
-        statusSpan.dataset.editPath = `projects.${originalIndex}.status`;
-        meta.append(statusSpan);
+          const details = create('details', 'project-details');
+          const summary = create('summary', 'project-details-summary', LABELS.readCaseStudyDetails);
+          details.append(summary);
 
-        body.append(meta);
+          const caseFields = [
+            ['Problem', project.problem],
+            ['Proposed Solution', project.proposedSolution],
+            ['My Role', project.myRole],
+            ['Development Journey', project.developmentJourney],
+            ['Outcome', project.outcome],
+            ['Lessons Learned', project.lessonsLearned],
+          ].filter(([, val]) => Boolean(val));
 
-        const titleH3 = create('h3', '', project.title);
-        titleH3.dataset.editPath = `projects.${originalIndex}.title`;
-        body.append(titleH3);
+          appendCaseRows(details, caseFields);
+          body.append(details);
+          article.append(body);
+          targetGrid.append(article);
+        };
 
-        body.append(createProjectInsight(project));
-        body.append(createProjectTechStrip(projectTechs(project)));
-
-        const fields = [
-          ['Problem', projectText(project, 'problem'), `projects.${originalIndex}.problem`],
-          ['Solution', projectText(project, 'solution', 'proposedSolution'), `projects.${originalIndex}.proposedSolution`],
-          ['Role', projectText(project, 'role', 'myRole'), `projects.${originalIndex}.myRole`],
-          [
-            'Technologies Used',
-            projectTechs(project).length ? projectTechs(project).join(', ') : 'Add technologies here',
-            `projects.${originalIndex}.technologiesUsed`
-          ],
-          ['Journey', projectText(project, 'journey', 'developmentJourney'), `projects.${originalIndex}.developmentJourney`],
-          ['Outcome', project.outcome, `projects.${originalIndex}.outcome`],
-          ['Lessons Learned', projectText(project, 'lessons', 'lessonsLearned'), `projects.${originalIndex}.lessonsLearned`],
-          ['Images', leadImage ? 'Evidence added' : 'Add project image here', `projects.${originalIndex}.image`],
-          ['Optional Video', hasEmbeddedVideo ? 'Playable demo embedded above' : project.optionalVideo, `projects.${originalIndex}.optionalVideo`],
-        ];
-
-        const details = create('details', 'project-details');
-        const summary = create('summary', 'project-details-summary', LABELS.readCaseStudyDetails);
-        details.append(summary);
-        const detailBody = create('div', 'project-details-body');
-        appendCaseRows(detailBody, fields);
-        details.append(detailBody);
-        body.append(details);
-
-        article.append(body);
-        if (targetGrid) targetGrid.append(article);
+        // Always render in the main gallery
+        if (grid) renderCardInstance(grid, false);
+        // Also render in featured section if highlighted
+        if (project.highlighted && featuredGrid) renderCardInstance(featuredGrid, true);
       });
 
       if (grid) refreshReveal(grid);
