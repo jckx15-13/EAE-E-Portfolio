@@ -219,18 +219,53 @@ async function run() {
     
     console.log("Theme toggle tests PASSED successfully!");
     
-    console.log("Running 2.5D SRT Style Verification Suite...");
+    console.log("Running 2.5D SRT Style & Layout Verification Suite...");
     const srtResult = await send('Runtime.evaluate', {
       expression: `(async () => {
         await new Promise(r => setTimeout(r, 300));
-        const button = document.querySelector('.theme-toggle-btn, .view-mode-pill, .button');
+        const button = document.querySelector('.theme-toggle-btn, .view-mode-pill, .button, .a11y-toggle-fab');
         if (!button) throw new Error("No button element found to test 2.5D styling");
         
         const buttonStyle = window.getComputedStyle(button);
         if (!buttonStyle) throw new Error("Could not retrieve computed style for button");
         
-        const card = document.querySelector('.snapshot-card, .project-card, .achievement-card, .personal-map-card, .card-base');
+        const card = document.querySelector('.snapshot-card, .project-card, .achievement-card, .personal-map-card, .evidence-card');
         if (!card) throw new Error("No card element found on rendered page");
+        const cardStyle = window.getComputedStyle(card);
+        
+        // Assert 2.5D SRT border or extrusion shadow is present
+        const hasExtrusionBorder = parseFloat(buttonStyle.borderBottomWidth) >= 2 || buttonStyle.boxShadow.includes('0px 4px 0px') || buttonStyle.boxShadow.includes('0px 3px 0px') || cardStyle.boxShadow.includes('0px 4px 0px');
+        if (!hasExtrusionBorder) {
+          throw new Error("2.5D SRT extrusion style missing on button/card");
+        }
+        
+        // Assert Light Mode Section Background Coherence
+        const themeToggle = document.querySelector('#themeToggle');
+        if (themeToggle) {
+          const initialTheme = document.body.getAttribute('data-theme') || 'dark';
+          if (initialTheme !== 'light') {
+            themeToggle.click(); // Ensure switched to light mode
+            await new Promise(r => setTimeout(r, 100));
+          }
+          
+          const section = document.querySelector('.section') || document.body;
+          if (section) {
+            const sectionBg = window.getComputedStyle(section).backgroundColor;
+            const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+            const bgToUse = (sectionBg && sectionBg !== 'rgba(0, 0, 0, 0)' && sectionBg !== 'transparent') ? sectionBg : bodyBg;
+            const rgb = bgToUse.replace(/[^0-9,]/g, '').split(',').map(Number);
+            if (rgb.length >= 3) {
+              const r = rgb[0], g = rgb[1], b = rgb[2];
+              if (r < 180 || g < 180 || b < 180) {
+                throw new Error("Light mode background is not cohesive light theme! sectionBg=" + sectionBg + ", bodyBg=" + bodyBg + ", bgToUse=" + bgToUse + ", rgb=[" + r + "," + g + "," + b + "]");
+              }
+            }
+          }
+          
+          if (initialTheme !== 'light') {
+            themeToggle.click(); // Restore initial theme
+          }
+        }
         
         return "SUCCESS";
       })()`,
@@ -239,10 +274,11 @@ async function run() {
     });
     
     if (srtResult.exceptionDetails) {
-      throw new Error("2.5D SRT Style evaluation failed: " + srtResult.exceptionDetails.text);
+      const exMsg = srtResult.exceptionDetails.exception ? (srtResult.exceptionDetails.exception.description || srtResult.exceptionDetails.exception.value) : srtResult.exceptionDetails.text;
+      throw new Error("2.5D SRT Style evaluation failed: " + exMsg);
     }
     
-    console.log("2.5D SRT Style tests PASSED successfully!");
+    console.log("2.5D SRT Style & Layout tests PASSED successfully!");
     
     console.log("Running Left Accessibility Sidebar & OpenDyslexic Toggle Suite...");
     const a11yResult = await send('Runtime.evaluate', {
@@ -266,6 +302,21 @@ async function run() {
         toggle.click();
         if (!document.body.classList.contains('dyslexic-mode')) {
           throw new Error("Expected body to have class 'dyslexic-mode' after checking toggle");
+        }
+        
+        // STAGE 2.1: Strict computed font assertion across multiple DOM elements
+        const bodyFont = window.getComputedStyle(document.body).fontFamily;
+        const headingFont = window.getComputedStyle(document.querySelector('h1, h2, h3') || document.body).fontFamily;
+        const pFont = window.getComputedStyle(document.querySelector('p') || document.body).fontFamily;
+        
+        if (!bodyFont.includes('OpenDyslexic')) {
+          throw new Error("Computed body font-family does not contain OpenDyslexic: " + bodyFont);
+        }
+        if (!headingFont.includes('OpenDyslexic')) {
+          throw new Error("Computed heading font-family does not contain OpenDyslexic: " + headingFont);
+        }
+        if (!pFont.includes('OpenDyslexic')) {
+          throw new Error("Computed paragraph font-family does not contain OpenDyslexic: " + pFont);
         }
         
         // 3. Toggle back
