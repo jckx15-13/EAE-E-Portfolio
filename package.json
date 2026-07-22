@@ -1,6 +1,12 @@
 {
   "scripts": {
     "test": "node tests/run_tests.js",
+    "test:data": "node tests/run_tests.js --suite=data",
+    "test:ui": "node tests/run_tests.js --suite=ui",
+    "test:a11y": "node tests/run_tests.js --suite=a11y",
+    "test:e2e": "node tests/run_tests.js --suite=e2e",
+    "test:security": "node tests/run_tests.js --suite=security",
+    "test:responsive": "node tests/run_tests.js --suite=responsive",
     "design:lint": "design.md lint docs/design_system/DESIGN_GUIDELINES.md"
   },
   "dependencies": {
