@@ -3930,6 +3930,7 @@
     // Load saved theme or default to dark
     const savedTheme = localStorage.getItem(STORAGE_KEYS.theme) || 'dark';
     document.body.setAttribute('data-theme', savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
     syncEditorOppositeTheme();
 
     if (btn) {
@@ -3937,6 +3938,7 @@
         const current = document.body.getAttribute('data-theme') || 'dark';
         const nextTheme = current === 'dark' ? 'light' : 'dark';
         document.body.setAttribute('data-theme', nextTheme);
+        document.documentElement.setAttribute('data-theme', nextTheme);
         localStorage.setItem(STORAGE_KEYS.theme, nextTheme);
         syncEditorOppositeTheme();
       });

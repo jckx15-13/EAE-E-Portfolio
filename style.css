@@ -71,7 +71,28 @@
   --theme-accent-purple: #a78bfa;
 }
 
+/* Dark Theme Color Profile — Astral Navy & Glass */
+html[data-theme="dark"],
+body[data-theme="dark"] {
+  background-color: #0b1525;
+  color: #ffffff;
+  --theme-bg: #0b1525;
+  --theme-surface: #111b31;
+  --theme-surface-soft: rgba(255, 255, 255, 0.05);
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: rgba(255, 255, 255, 0.84);
+  --theme-text-muted: rgba(255, 255, 255, 0.62);
+  --theme-border: rgba(109, 179, 240, 0.2);
+  --theme-card-bg: rgba(17, 27, 49, 0.65);
+  --theme-card-border: rgba(109, 179, 240, 0.18);
+  --theme-card-shadow: 0 10px 30px rgba(3, 8, 18, 0.28);
+  --theme-chrome-bg: rgba(13, 22, 40, 0.96);
+  --theme-accent-cyan: #38bdf8;
+  --theme-accent-purple: #a78bfa;
+}
+
 /* Light Theme Color Profile — Organic Warm Paper & Crisp Daylight */
+html[data-theme="light"],
 body[data-theme="light"] {
   background: #f4f8fc !important;
   background-color: #f4f8fc !important;
