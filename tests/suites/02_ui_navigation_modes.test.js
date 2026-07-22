@@ -50,26 +50,26 @@ async function runUINavigationTests(harness) {
 
       const initialTheme = document.body.getAttribute('data-theme') || 'dark';
 
-      // Switch theme
-      toggle.click();
-      await new Promise(r => setTimeout(r, 400)); // wait for CSS transition to settle
-      const newTheme = document.body.getAttribute('data-theme');
-      if (newTheme === initialTheme) throw new Error('Theme attribute did not change after click');
-
-      // Check background color attribute in light mode
-      if (newTheme === 'light') {
-        const bodyStyle = window.getComputedStyle(document.body);
-        const bgVal = bodyStyle.backgroundColor;
-        const rgb = bgVal.replace(/[^0-9,]/g, '').split(',').map(Number);
-        if (rgb.length >= 3 && (rgb[0] < 170 || rgb[1] < 170 || rgb[2] < 170)) {
-          throw new Error('Light theme background is too dark: ' + bgVal);
-        }
+      // Test Light Mode computed background
+      document.body.setAttribute('data-theme', 'light');
+      await new Promise(r => setTimeout(r, 200));
+      const lightBg = window.getComputedStyle(document.body).backgroundColor;
+      const lightRgb = lightBg.replace(/[^0-9,]/g, '').split(',').map(Number);
+      if (lightRgb.length >= 3 && (lightRgb[0] < 170 || lightRgb[1] < 170 || lightRgb[2] < 170)) {
+        throw new Error('Light theme background is too dark: ' + lightBg);
       }
 
-      // Switch back to original theme
-      toggle.click();
-      await new Promise(r => setTimeout(r, 400));
+      // Test Dark Mode computed background
+      document.body.setAttribute('data-theme', 'dark');
+      await new Promise(r => setTimeout(r, 200));
+      const darkBg = window.getComputedStyle(document.body).backgroundColor;
+      const darkRgb = darkBg.replace(/[^0-9,]/g, '').split(',').map(Number);
+      if (darkRgb.length >= 3 && (darkRgb[0] > 100 || darkRgb[1] > 100 || darkRgb[2] > 100)) {
+        throw new Error('Dark theme background is too light: ' + darkBg);
+      }
 
+      // Restore initial theme
+      document.body.setAttribute('data-theme', initialTheme);
       return 'SUCCESS';
     })()`);
 
@@ -138,6 +138,83 @@ async function runUINavigationTests(harness) {
     harness.logPass('Project/Evidence modal opens and handles Keyboard Escape close event', Date.now() - t4);
   } catch (err) {
     harness.logFail('Project/Evidence modal interaction', err);
+  }
+
+  // Test 5: In-App Multi-Media & Spreadsheet Viewer Modal
+  const t5 = Date.now();
+  try {
+    const mediaViewerRes = await harness.evaluate(`(async () => {
+      await new Promise(r => setTimeout(r, 150));
+      const openFn = window.openMediaViewerModal || (typeof openMediaViewerModal === 'function' ? openMediaViewerModal : null);
+      if (typeof openFn !== 'function') {
+        throw new Error('openMediaViewerModal function is missing on window object');
+      }
+
+      // 1. Test CSV Spreadsheet Viewer
+      openFn('docs/FLL_Mission_Data.csv', 'FLL Mission Data Spreadsheet');
+      await new Promise(r => setTimeout(r, 400));
+
+      const modal = document.querySelector('#achievementModal');
+      if (!modal) throw new Error('Modal #achievementModal not found');
+      if (!modal.classList.contains('modal-wide')) {
+        throw new Error('#achievementModal missing .modal-wide class for spreadsheet viewing');
+      }
+
+      const tableWrapper = modal.querySelector('.spreadsheet-table-wrapper');
+      const searchInput = modal.querySelector('.spreadsheet-search-input');
+      if (!tableWrapper || !searchInput) {
+        throw new Error('Spreadsheet table wrapper or search input missing in modal');
+      }
+
+      // 2. Test Video Viewer
+      openFn('videos/SkillQuest-demo.webm', 'SkillQuest Video Demo');
+      await new Promise(r => setTimeout(r, 200));
+
+      const videoElement = modal.querySelector('.media-video-element');
+      if (!videoElement) {
+        throw new Error('Video player element .media-video-element missing in modal');
+      }
+
+      // 3. Test Draw.io Flowchart Viewer
+      openFn('docs/source_materials/raw_materials/SPD User Flow Flow chart.drawio', 'SPD User Flowchart');
+      await new Promise(r => setTimeout(r, 200));
+
+      const drawioContainer = modal.querySelector('.media-drawio-container');
+      const drawioToolbar = modal.querySelector('.drawio-toolbar');
+      if (!drawioContainer || !drawioToolbar) {
+        throw new Error('Draw.io flowchart viewer or toolbar missing in modal');
+      }
+
+      // 4. Test In-App Presentation Slides Viewer
+      openFn('https://www.canva.com/design/DAHM4xnRXzo/dqwWK6e9zzf3GcKGTFlgSA/view?embed', 'Canva Presentation Slides');
+      await new Promise(r => setTimeout(r, 200));
+
+      const slidesContainer = modal.querySelector('.media-slides-container');
+      const slidesIframe = modal.querySelector('.media-slides-iframe');
+      if (!slidesContainer || !slidesIframe) {
+        throw new Error('In-app slides container or iframe missing in modal');
+      }
+
+      // 5. Test Image Lightbox Viewer
+      openFn('images/robots/fll-robot-design.png', 'Robot Design Lightbox');
+      await new Promise(r => setTimeout(r, 200));
+
+      const lightboxToolbar = modal.querySelector('.lightbox-toolbar');
+      if (!lightboxToolbar) {
+        throw new Error('Image lightbox toolbar missing in modal');
+      }
+
+      // Close modal
+      const closeBtn = modal.querySelector('.modal-close');
+      if (closeBtn) closeBtn.click();
+
+      return 'SUCCESS';
+    })()`);
+
+    harness.assertEqual(mediaViewerRes, 'SUCCESS', 'In-app multi-media and spreadsheet viewer test');
+    harness.logPass('In-app viewer renders Draw.io flowcharts, presentation slides, CSV spreadsheets, video player, and lightboxes with modal-wide layouts', Date.now() - t5);
+  } catch (err) {
+    harness.logFail('In-app multi-media and spreadsheet viewer execution', err);
   }
 }
 

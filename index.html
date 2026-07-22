@@ -44,7 +44,6 @@
       <a class="brand" href="#top" aria-label="EAE Portfolio - Back to top">
         <span class="brand-mark" aria-hidden="true"></span>
         <span id="brandName">EAE Portfolio</span>
-        <a class="button button-outline" href="DRAFT/Home.html" style="margin-left: 12px;">Secondary Portfolio</a>
       </a>
 
       <button
@@ -181,7 +180,7 @@
           <h2>Technical Growth Journey</h2>
           <p id="timelineIntro" class="section-lede"></p>
         </div>
-        <div class="timeline-container">
+        <div class="timeline-container timeline-wrap">
           <div id="achievementTimeline" class="timeline"></div>
         </div>
       </section>
@@ -202,12 +201,25 @@
       <section id="projects" class="section section-astral-6">
         <div class="section-heading">
           <p class="section-label">Gallery</p>
-          <h2>Browse All Projects</h2>
+          <h2>All Projects</h2>
           <p class="section-lede">
-            A complete record of my technical experiments and coding milestones.
+            Use the filters to browse my coding, robotics, and innovation projects. Each card highlights the problem, my role, the technologies used, and the evidence behind the work.
           </p>
         </div>
-        <div id="projectFilters" class="filter-row" aria-label="Project filters"></div>
+        <div class="gallery-toolbar">
+          <div id="projectFilters" class="filter-row" aria-label="Project filters"></div>
+          <div class="gallery-meta">
+            <span id="projectResultCount" class="result-count" aria-live="polite">Showing all projects</span>
+            <label class="gallery-sort">
+              <span class="sr-only">Sort projects</span>
+              <select id="projectSort" class="gallery-sort-select" aria-label="Sort projects">
+                <option value="featured">Featured first</option>
+                <option value="alpha">A–Z</option>
+                <option value="category">By Category</option>
+              </select>
+            </label>
+          </div>
+        </div>
         <div id="projectsGrid" class="project-grid view-mode-section"></div>
       </section>
 

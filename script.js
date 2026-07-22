@@ -127,8 +127,8 @@
   }
 
   /* Assign left/right classes to timeline items to create alternating layout */
-  function assignTimelineSides() {
-    const timeline = document.getElementById('achievementTimeline');
+  function assignTimelineSides(targetElement) {
+    const timeline = targetElement || document.getElementById('achievementTimeline');
     if (!timeline) return;
     const items = Array.from(timeline.querySelectorAll('.timeline-item'));
     items.forEach((it, i) => {
@@ -685,35 +685,83 @@
     if (viewModeInitialized) return;
     viewModeInitialized = true;
 
-    const pills = document.querySelectorAll('.view-mode-pill');
+    const pills = Array.from(document.querySelectorAll('.view-mode-pill'));
+    const indicator = document.querySelector('.view-mode-indicator');
     currentViewMode = localStorage.getItem(STORAGE_KEYS.viewMode) || 'cards';
 
-    pills.forEach(pill => {
+    function updateIndicatorPosition(activePill) {
+      if (!indicator || !activePill) return;
+      const barInner = activePill.closest('.view-mode-bar-inner');
+      if (!barInner) return;
+      const innerRect = barInner.getBoundingClientRect();
+      const pillRect = activePill.getBoundingClientRect();
+      if (innerRect.width > 0 && pillRect.width > 0) {
+        const offsetLeft = (pillRect.left - innerRect.left) + (pillRect.width / 2) - 8;
+        indicator.style.transform = `translateX(${Math.max(0, offsetLeft)}px)`;
+      }
+    }
+
+    function switchMode(mode, targetPill) {
+      if (mode === currentViewMode) return;
+      currentViewMode = mode;
+      localStorage.setItem(STORAGE_KEYS.viewMode, mode);
+
+      pills.forEach(p => {
+        const act = p.dataset.mode === mode;
+        p.classList.toggle('is-active', act);
+        p.setAttribute('aria-selected', String(act));
+        if (act && targetPill) {
+          p.focus();
+        }
+      });
+
+      if (targetPill) {
+        updateIndicatorPosition(targetPill);
+      }
+
+      document.body.dataset.viewMode = mode;
+      document.body.classList.remove('story-mode', 'timeline-mode', 'cards-mode');
+      document.body.classList.add(`${mode}-mode`);
+
+      const mainEl = document.getElementById('main'); if (mainEl) mainEl.setAttribute('aria-labelledby', 'view-' + mode);
+
+      // Re-render view-mode-aware sections
+      renderProjects();
+      renderAchievements();
+    }
+
+    pills.forEach((pill, idx) => {
       const active = pill.dataset.mode === currentViewMode;
       pill.classList.toggle('is-active', active);
       pill.setAttribute('aria-selected', String(active));
+      if (active) {
+        setTimeout(() => updateIndicatorPosition(pill), 50);
+      }
 
       pill.addEventListener('click', () => {
-        const mode = pill.dataset.mode;
-        if (mode === currentViewMode) return;
-        currentViewMode = mode;
-        localStorage.setItem(STORAGE_KEYS.viewMode, mode);
+        switchMode(pill.dataset.mode, pill);
+      });
 
-        pills.forEach(p => {
-          const act = p.dataset.mode === mode;
-          p.classList.toggle('is-active', act);
-          p.setAttribute('aria-selected', String(act));
-        });
+      pill.addEventListener('keydown', (e) => {
+        let newIdx = -1;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          newIdx = (idx + 1) % pills.length;
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          newIdx = (idx - 1 + pills.length) % pills.length;
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          newIdx = 0;
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          newIdx = pills.length - 1;
+        }
 
-        document.body.dataset.viewMode = mode;
-        document.body.classList.remove('story-mode', 'timeline-mode', 'cards-mode');
-        document.body.classList.add(`${mode}-mode`);
-
-        const mainEl = document.getElementById('main'); if (mainEl) mainEl.setAttribute('aria-labelledby', 'view-' + mode);
-
-        // Re-render view-mode-aware sections
-        renderProjects();
-        renderAchievements();
+        if (newIdx !== -1 && pills[newIdx]) {
+          const target = pills[newIdx];
+          switchMode(target.dataset.mode, target);
+        }
       });
     });
 
@@ -854,20 +902,47 @@
     return mediaImages[0];
   }
 
-  function openFullImageModal(src, alt) {
+  function openMediaViewerModal(src, alt, titleHint) {
     const dialog = $("#achievementModal");
     const content = $("#modalContent");
     if (!dialog || !content) return;
 
     content.replaceChildren();
+    dialog.classList.remove("modal-wide");
+
+    const type = detectMediaType(src);
+    if (type === 'spreadsheet' || type === 'pdf' || type === 'drawio' || type === 'slides') {
+      dialog.classList.add("modal-wide");
+    }
+
+    const typeBadges = {
+      drawio: "📐 DRAW.IO FLOWCHART",
+      slides: "📊 PRESENTATION SLIDES",
+      spreadsheet: "📊 SPREADSHEET DATA",
+      video: "🎬 VIDEO DEMO",
+      audio: "🎵 AUDIO RECORDING",
+      pdf: "📄 PDF DOCUMENT",
+      document: "📑 DOCUMENT",
+      image: "🖼️ IMAGE PREVIEW"
+    };
+
     const header = create("div", "modal-header");
-    header.append(create("h2", "", alt || "Image preview"));
-    const media = create("div", "modal-media-grid");
-    media.append(createMediaBlock(src, alt || "Image preview", "Image unavailable"));
-    content.append(header, media);
+    header.append(create("p", "card-kicker", typeBadges[type] || "MEDIA PREVIEW"));
+    header.append(create("h2", "", alt || titleHint || "Media Preview"));
+
+    const mediaContainer = create("div", "modal-media-grid");
+    mediaContainer.append(createMediaBlock(src, alt || "Media Preview", "Media unavailable"));
+    content.append(header, mediaContainer);
 
     openModalDialog(dialog);
   }
+
+  function openFullImageModal(src, alt) {
+    openMediaViewerModal(src, alt);
+  }
+
+  window.openMediaViewerModal = openMediaViewerModal;
+  window.openFullImageModal = openFullImageModal;
 
   function appendProjectImageMedia(media, project, mediaImages) {
     const leadImage = mediaImages[0];
@@ -955,12 +1030,16 @@
   function renderProjects() {
     const filters = $('#projectFilters');
     const grid = $('#projectsGrid');
+    const sortSelect = $('#projectSort');
+    const resultCount = $('#projectResultCount');
     if (!grid) return;
     const projects = Array.isArray(data.projects)
       ? data.projects.filter((project) => project && typeof project === 'object')
       : [];
     const categories = ['All', ...new Set(projects.map((project) => project.category || 'Uncategorized'))];
     let activeCategory = 'All';
+    let currentSort = sortSelect ? sortSelect.value || 'featured' : 'featured';
+
     const projectText = (project, primary, fallback) =>
       project[primary] ??
       (fallback ? project[fallback] : undefined);
@@ -972,6 +1051,14 @@
         : [];
     };
     const projectMedia = (project) => Array.isArray(project.images) ? project.images : [];
+
+    if (sortSelect && !sortSelect.dataset.listenerAttached) {
+      sortSelect.dataset.listenerAttached = 'true';
+      sortSelect.addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        drawProjects();
+      });
+    }
 
     function drawFilters() {
       if (!filters) return;
@@ -993,9 +1080,22 @@
         (project) => activeCategory === 'All' || project.category === activeCategory
       );
 
+      if (resultCount) {
+        resultCount.textContent = `Showing ${filteredProjects.length} of ${projects.length} projects`;
+      }
+
       const modeOrder = PROJECT_MODE_ORDER[currentViewMode] || null;
 
       filteredProjects.sort((a, b) => {
+        if (currentSort === 'alpha') {
+          return (a.title || '').localeCompare(b.title || '');
+        } else if (currentSort === 'category') {
+          const catDiff = (a.category || '').localeCompare(b.category || '');
+          if (catDiff !== 0) return catDiff;
+          return (a.title || '').localeCompare(b.title || '');
+        }
+
+        // Default 'featured' sorting
         const highlightDiff = Number(Boolean(b.highlighted)) - Number(Boolean(a.highlighted));
         if (highlightDiff !== 0) return highlightDiff;
 
@@ -1046,6 +1146,9 @@
           const videoPath = typeof project.optionalVideo === 'string' ? project.optionalVideo.trim() : '';
           const hasEmbeddedVideo = /\.(webm|mp4|ogg)$/i.test(videoPath);
           const media = create('div', 'project-media');
+          if (project.title && project.title.includes('SPD')) {
+            media.classList.add('project-media-spd');
+          }
           const mediaImages = projectMedia(project);
           let leadImage = mediaImages[0];
 
@@ -1069,14 +1172,10 @@
             iframeContainer.append(iframe);
             media.append(iframeContainer);
             if (typeof project.slides === 'string' && project.slides.startsWith('http')) {
-              const slidesLink = document.createElement('a');
-              slidesLink.className = 'project-slides-link';
-              slidesLink.href = project.slides;
-              slidesLink.target = '_blank';
-              slidesLink.rel = 'noopener noreferrer';
-              slidesLink.textContent = data.uiLabels?.projectSlidesBtn || 'Open slides in a new tab';
-              slidesLink.dataset.editPath = 'uiLabels.projectSlidesBtn';
-              media.append(slidesLink);
+              const slidesBtn = create('button', 'text-button project-media-action-btn project-slides-btn', '📊 View Presentation Slides (In-App)');
+              slidesBtn.type = 'button';
+              slidesBtn.addEventListener('click', () => openMediaViewerModal(slidesEmbedUrl || project.slides, `${project.title} Presentation Slides`));
+              media.append(slidesBtn);
             }
             if (mediaImages.length) {
               leadImage = appendProjectSupportingImages(media, project, mediaImages);
@@ -1097,6 +1196,27 @@
               media.append(createProjectPlaceholder(project));
             }
           }
+          if (project.title && project.title.includes('FLL')) {
+            media.append(createFLLMultiTechGraphComponent(project));
+          }
+          if (project.drawio) {
+            const drawioBtn = create('button', 'text-button project-media-action-btn project-drawio-btn', '📐 View User Flowchart (Draw.io)');
+            drawioBtn.type = 'button';
+            drawioBtn.addEventListener('click', () => openMediaViewerModal(project.drawio, `${project.title} User Flowchart`));
+            media.append(drawioBtn);
+          }
+          if (project.spreadsheet) {
+            const ssBtn = create('button', 'text-button project-media-action-btn', '📊 View FLL Mission Data (Spreadsheet)');
+            ssBtn.type = 'button';
+            ssBtn.addEventListener('click', () => openMediaViewerModal(project.spreadsheet, `${project.title} - Mission Data`));
+            media.append(ssBtn);
+          }
+          if (project.optionalVideo && !hasEmbeddedVideo) {
+            const vidBtn = create('button', 'text-button project-media-action-btn', '🎬 View SkillQuest Video Demo');
+            vidBtn.type = 'button';
+            vidBtn.addEventListener('click', () => openMediaViewerModal(project.optionalVideo, `${project.title} Video Demo`));
+            media.append(vidBtn);
+          }
           article.append(media);
 
           // Append card details and actions
@@ -1111,7 +1231,7 @@
           if (project.portfolioSignal) {
             const signalBlock = create('div', 'project-insight-card');
             signalBlock.append(create('h4', '', 'Portfolio Signal'));
-            signalBlock.append(create('p', '', project.portfolioSignal));
+            signalBlock.append(create('p', 'signal-text', project.portfolioSignal));
             body.append(signalBlock);
           }
 
@@ -1125,7 +1245,7 @@
           const techs = projectTechs(project);
           if (techs.length) {
             const techWrap = create('div', 'tag-grid');
-            techs.forEach(t => techWrap.append(create('span', 'project-tech-chip', t)));
+            techs.slice(0, 6).forEach(t => techWrap.append(create('span', 'project-tech-chip', t)));
             body.append(techWrap);
           }
 
@@ -1243,7 +1363,7 @@
   function renderAchievements() {
     const cards = $("#achievementCards");
     const timeline = $("#achievementTimeline");
-    const timelineWrap = $(".timeline-wrap");
+    const timelineWrap = $(".timeline-wrap") || $(".timeline-container");
     const filters = $("#achievementFilters");
     const search = $("#achievementSearch");
     const resultCount = $("#achievementResultCount");
@@ -1570,17 +1690,858 @@
     openModalDialog(dialog);
   }
 
-  function createMediaBlock(src, alt, fallback) {
-    const block = create("figure", "media-block");
-    if (src) {
-      const image = document.createElement("img");
-      image.src = src;
-      image.alt = alt;
-      block.append(image);
-    } else {
-      block.append(create("span", "image-placeholder", fallback));
+  // ==========================================================================
+  // IN-APP MULTI-MEDIA & SPREADSHEET VIEWER MODULE
+  // ==========================================================================
+
+  function detectMediaType(url) {
+    if (!url || typeof url !== 'string') return 'image';
+    const cleanUrl = url.split('?')[0].split('#')[0].toLowerCase();
+    if (cleanUrl.endsWith('.drawio') || cleanUrl.includes('draw.io')) {
+      return 'drawio';
     }
+    if (cleanUrl.includes('canva.com/design') || cleanUrl.includes('docs.google.com/presentation') || cleanUrl.includes('slides')) {
+      return 'slides';
+    }
+    if (cleanUrl.endsWith('.csv') || cleanUrl.endsWith('.tsv') || cleanUrl.endsWith('.xlsx') || cleanUrl.endsWith('.xls') || cleanUrl.includes('spreadsheet')) {
+      return 'spreadsheet';
+    }
+    if (cleanUrl.endsWith('.mp4') || cleanUrl.endsWith('.webm') || cleanUrl.endsWith('.mov') || cleanUrl.endsWith('.ogv')) {
+      return 'video';
+    }
+    if (cleanUrl.endsWith('.mp3') || cleanUrl.endsWith('.wav') || cleanUrl.endsWith('.ogg') || cleanUrl.endsWith('.m4a')) {
+      return 'audio';
+    }
+    if (cleanUrl.endsWith('.pdf')) {
+      return 'pdf';
+    }
+    if (cleanUrl.endsWith('.docx') || cleanUrl.endsWith('.pptx') || cleanUrl.endsWith('.txt') || cleanUrl.endsWith('.md')) {
+      return 'document';
+    }
+    return 'image';
+  }
+
+  function createDrawioViewer(src, alt) {
+    const container = create("div", "media-drawio-container");
+    const toolbar = create("div", "drawio-toolbar");
+    
+    const titleBadge = create("span", "drawio-title-badge", `📐 ${alt || "Draw.io Flowchart"}`);
+    
+    const tabDiagramBtn = create("button", "text-button drawio-tab-btn active", "📊 Interactive Flowchart");
+    const tabCodeBtn = create("button", "text-button drawio-tab-btn", "💻 Diagram Logic");
+    const downloadBtn = create("a", "text-button drawio-download-btn", "📥 Download .drawio");
+    
+    tabDiagramBtn.type = "button";
+    tabCodeBtn.type = "button";
+    downloadBtn.href = src;
+    downloadBtn.download = src.split('/').pop() || "diagram.drawio";
+    downloadBtn.target = "_blank";
+    
+    toolbar.append(titleBadge, tabDiagramBtn, tabCodeBtn, downloadBtn);
+    container.append(toolbar);
+
+    const diagramWrap = create("div", "drawio-diagram-wrap");
+    const codeWrap = create("div", "drawio-code-wrap");
+    codeWrap.style.display = "none";
+    
+    container.append(diagramWrap, codeWrap);
+
+    tabDiagramBtn.addEventListener("click", () => {
+      tabDiagramBtn.classList.add("active");
+      tabCodeBtn.classList.remove("active");
+      diagramWrap.style.display = "block";
+      codeWrap.style.display = "none";
+    });
+
+    tabCodeBtn.addEventListener("click", () => {
+      tabCodeBtn.classList.add("active");
+      tabDiagramBtn.classList.remove("active");
+      diagramWrap.style.display = "none";
+      codeWrap.style.display = "block";
+    });
+
+    fetch(src)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.text();
+      })
+      .then((xmlText) => {
+        let mermaidCode = "";
+        const mermaidMatch = xmlText.match(/mermaidData="([^"]+)"/);
+        if (mermaidMatch && mermaidMatch[1]) {
+          try {
+            const parsedJson = JSON.parse(mermaidMatch[1].replace(/&quot;/g, '"'));
+            mermaidCode = parsedJson.data || "";
+          } catch(e) {
+            mermaidCode = mermaidMatch[1].replace(/&quot;/g, '"');
+          }
+        }
+
+        const pre = document.createElement("pre");
+        pre.className = "drawio-code-pre";
+        pre.textContent = mermaidCode || xmlText.slice(0, 3000) + "\n... [XML Data Truncated]";
+        codeWrap.append(pre);
+
+        const canvas = create("div", "drawio-canvas-view");
+        const iframe = document.createElement("iframe");
+        iframe.className = "drawio-iframe";
+        iframe.src = `https://viewer.diagrams.net/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=${encodeURIComponent(alt || "Drawio Flowchart")}#R${encodeURIComponent(xmlText)}`;
+        iframe.title = alt || "Draw.io Flowchart Diagram";
+        iframe.allowFullscreen = true;
+        
+        canvas.append(iframe);
+        diagramWrap.append(canvas);
+      })
+      .catch((err) => {
+        console.warn("Could not load Draw.io XML:", err);
+        diagramWrap.append(create("p", "drawio-notice", `Draw.io diagram file linked (${src.split('/').pop()}). Click "Download .drawio" to inspect.`));
+      });
+
+    return container;
+  }
+
+  function createSlidesViewer(src, alt) {
+    const container = create("div", "media-slides-container");
+    
+    let embedUrl = src;
+    if (src.includes("canva.com/design/") && !src.includes("embed")) {
+      embedUrl = `${src}${src.includes("?") ? "&" : "?"}embed`;
+    }
+    
+    const toolbar = create("div", "slides-toolbar");
+    const badge = create("span", "slides-title-badge", `📊 ${alt || "Presentation Slides"}`);
+    const fullScreenBtn = create("button", "text-button slides-fullscreen-btn", "⛶ Fullscreen");
+    fullScreenBtn.type = "button";
+    
+    toolbar.append(badge, fullScreenBtn);
+    container.append(toolbar);
+
+    const iframeWrap = create("div", "slides-iframe-wrap");
+    const iframe = document.createElement("iframe");
+    iframe.src = embedUrl;
+    iframe.className = "media-slides-iframe";
+    iframe.allowFullscreen = true;
+    iframe.allow = "fullscreen; autoplay; encrypted-media";
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    iframe.title = alt || "Presentation Slides";
+
+    iframeWrap.append(iframe);
+    container.append(iframeWrap);
+
+    fullScreenBtn.addEventListener("click", () => {
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+      }
+    });
+
+    return container;
+  }
+
+  function parseCsvText(text) {
+    const lines = text.split(/\r\n|\n/);
+    const rows = [];
+    for (let line of lines) {
+      if (!line.trim()) continue;
+      const row = [];
+      let insideQuote = false;
+      let currentVal = '';
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+          if (insideQuote && line[i + 1] === '"') {
+            currentVal += '"';
+            i++;
+          } else {
+            insideQuote = !insideQuote;
+          }
+        } else if ((char === ',' || char === '\t') && !insideQuote) {
+          row.push(currentVal.trim());
+          currentVal = '';
+        } else {
+          currentVal += char;
+        }
+      }
+      row.push(currentVal.trim());
+      rows.push(row);
+    }
+    if (rows.length === 0) return { headers: [], data: [] };
+    return { headers: rows[0], data: rows.slice(1) };
+  }
+
+  function createSpreadsheetViewer(src, alt, fallback) {
+    const container = create("div", "media-spreadsheet-container");
+    const toolbar = create("div", "spreadsheet-toolbar");
+    
+    const searchInput = document.createElement("input");
+    searchInput.type = "search";
+    searchInput.className = "spreadsheet-search-input";
+    searchInput.placeholder = "🔍 Search spreadsheet rows...";
+    searchInput.setAttribute("aria-label", "Search spreadsheet rows");
+    
+    const statsBadge = create("span", "spreadsheet-stats-badge", "Loading data...");
+    
+    const downloadBtn = create("a", "text-button spreadsheet-download-btn", "📥 Download CSV");
+    downloadBtn.href = src;
+    downloadBtn.download = src.split('/').pop() || "data.csv";
+    downloadBtn.target = "_blank";
+    
+    toolbar.append(searchInput, statsBadge, downloadBtn);
+    container.append(toolbar);
+
+    const tableWrapper = create("div", "spreadsheet-table-wrapper");
+    const table = create("table", "spreadsheet-table");
+    tableWrapper.append(table);
+    container.append(tableWrapper);
+
+    const renderTableContent = (parsed) => {
+      table.replaceChildren();
+      if (!parsed.headers || parsed.headers.length === 0) {
+        statsBadge.textContent = "No structured spreadsheet data found";
+        return;
+      }
+
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+      
+      const lineNoHeader = document.createElement("th");
+      lineNoHeader.className = "spreadsheet-col-line";
+      lineNoHeader.textContent = "#";
+      headerRow.append(lineNoHeader);
+
+      parsed.headers.forEach((headerText, colIdx) => {
+        const th = document.createElement("th");
+        th.textContent = headerText || `Col ${colIdx + 1}`;
+        th.setAttribute("scope", "col");
+        headerRow.append(th);
+      });
+      thead.append(headerRow);
+      table.append(thead);
+
+      const tbody = document.createElement("tbody");
+      table.append(tbody);
+
+      const renderRows = (rowList) => {
+        tbody.replaceChildren();
+        statsBadge.textContent = `Showing ${rowList.length} of ${parsed.data.length} rows`;
+        rowList.forEach((row, rowIdx) => {
+          const tr = document.createElement("tr");
+          
+          const lineTd = document.createElement("td");
+          lineTd.className = "spreadsheet-line-num";
+          lineTd.textContent = rowIdx + 1;
+          tr.append(lineTd);
+
+          parsed.headers.forEach((_, colIdx) => {
+            const td = document.createElement("td");
+            td.textContent = row[colIdx] !== undefined ? row[colIdx] : "";
+            tr.append(td);
+          });
+          tbody.append(tr);
+        });
+      };
+
+      renderRows(parsed.data);
+
+      searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        if (!query) {
+          renderRows(parsed.data);
+          return;
+        }
+        const filtered = parsed.data.filter((row) =>
+          row.some((cell) => String(cell).toLowerCase().includes(query))
+        );
+        renderRows(filtered);
+      });
+    };
+
+    fetch(src)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.text();
+      })
+      .then((csvText) => {
+        const parsed = parseCsvText(csvText);
+        renderTableContent(parsed);
+      })
+      .catch((err) => {
+        console.warn("Could not fetch CSV directly:", err);
+        fetch("docs/FLL_Mission_Data.csv")
+          .then(res => res.text())
+          .then(csvText => renderTableContent(parseCsvText(csvText)))
+          .catch(() => {
+            statsBadge.textContent = "Spreadsheet ready for download";
+            tableWrapper.append(create("p", "spreadsheet-error-notice", `Spreadsheet asset linked (${src}). Click "Download CSV" to inspect.`));
+          });
+      });
+
+    return container;
+  }
+
+  /* ==========================================================================
+   * FLL MULTI-TECH ANALYTICS GRAPH COMPONENT
+   * Combines Spreadsheets, O-Level Math, Matplotlib, Google Cloud & APIs
+   * ========================================================================== */
+
+  function createFLLMultiTechGraphComponent(project) {
+    const container = create("div", "fll-graph-container");
+    container.setAttribute("aria-label", "FLL Multi-Tech Analytics Graph");
+
+    const header = create("div", "fll-graph-header");
+    const badge = create("span", "fll-graph-title-badge", "⚡ Multi-Tech Analytics Engine");
+
+    const toolbar = create("div", "fll-graph-toolbar");
+    const btnTrajectory = create("button", "fll-graph-btn active", "🗺️ Trajectory Map (O-Lvl Math)");
+    const btnGear = create("button", "fll-graph-btn", "⚙️ Gear Ratio Torque vs Speed");
+    const btnPipeline = create("button", "fll-graph-btn", "☁️ GCP & API Data Pipeline");
+
+    btnTrajectory.type = "button";
+    btnGear.type = "button";
+    btnPipeline.type = "button";
+
+    toolbar.append(btnTrajectory, btnGear, btnPipeline);
+    header.append(badge, toolbar);
+    container.append(header);
+
+    const canvasWrap = create("div", "fll-graph-canvas-wrap");
+    const tooltip = create("div", "fll-graph-tooltip");
+    canvasWrap.append(tooltip);
+
+    let activeMode = "trajectory";
+
+    function showTooltip(x, y, title, contentHtml) {
+      tooltip.replaceChildren();
+      const h5 = document.createElement("h5");
+      h5.textContent = title;
+      tooltip.append(h5);
+      const div = document.createElement("div");
+      div.innerHTML = contentHtml;
+      tooltip.append(div);
+
+      const wrapRect = canvasWrap.getBoundingClientRect();
+      let posX = x + 12;
+      let posY = y - 10;
+      if (posX + 240 > wrapRect.width) posX = x - 250;
+      if (posY + 120 > wrapRect.height) posY = y - 100;
+      if (posX < 8) posX = 8;
+      if (posY < 8) posY = 8;
+
+      tooltip.style.left = `${posX}px`;
+      tooltip.style.top = `${posY}px`;
+      tooltip.classList.add("visible");
+    }
+
+    function hideTooltip() {
+      tooltip.classList.remove("visible");
+    }
+
+    function renderSvgGraph(mode) {
+      const existingSvg = canvasWrap.querySelector("svg");
+      if (existingSvg) existingSvg.remove();
+      hideTooltip();
+
+      const svgNS = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("class", "fll-graph-svg");
+      svg.setAttribute("viewBox", "0 0 600 360");
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+      if (mode === "trajectory") {
+        const defs = document.createElementNS(svgNS, "defs");
+        defs.innerHTML = `
+          <linearGradient id="pathGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="1" />
+            <stop offset="100%" stop-color="#818cf8" stop-opacity="0.8" />
+          </linearGradient>
+          <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        `;
+        svg.append(defs);
+
+        for (let x = 40; x < 600; x += 40) {
+          const line = document.createElementNS(svgNS, "line");
+          line.setAttribute("x1", x); line.setAttribute("y1", 0);
+          line.setAttribute("x2", x); line.setAttribute("y2", 360);
+          line.setAttribute("stroke", "rgba(255,255,255,0.04)");
+          line.setAttribute("stroke-width", "1");
+          svg.append(line);
+        }
+        for (let y = 40; y < 360; y += 40) {
+          const line = document.createElementNS(svgNS, "line");
+          line.setAttribute("x1", 0); line.setAttribute("y1", y);
+          line.setAttribute("x2", 600); line.setAttribute("y2", y);
+          line.setAttribute("stroke", "rgba(255,255,255,0.04)");
+          line.setAttribute("stroke-width", "1");
+          svg.append(line);
+        }
+
+        const homeRect = document.createElementNS(svgNS, "rect");
+        homeRect.setAttribute("x", "10"); homeRect.setAttribute("y", "260");
+        homeRect.setAttribute("width", "100"); homeRect.setAttribute("height", "90");
+        homeRect.setAttribute("fill", "rgba(56,189,248,0.08)");
+        homeRect.setAttribute("stroke", "rgba(56,189,248,0.4)");
+        homeRect.setAttribute("stroke-dasharray", "4,4");
+        homeRect.setAttribute("rx", "6");
+        svg.append(homeRect);
+
+        const homeText = document.createElementNS(svgNS, "text");
+        homeText.setAttribute("x", "60"); homeText.setAttribute("y", "310");
+        homeText.setAttribute("fill", "#38bdf8");
+        homeText.setAttribute("font-size", "11");
+        homeText.setAttribute("font-weight", "bold");
+        homeText.setAttribute("text-anchor", "middle");
+        homeText.textContent = "HOME (0,0)";
+        svg.append(homeText);
+
+        const nodes = [
+          { id: "M00", name: "Launch Area", x: 60, y: 300, pts: 20, math: "Start Pose: (0,0), θ = 0°" },
+          { id: "M01/M02", name: "Surface Brushing & Map Reveal", x: 200, y: 220, pts: 30, math: "d = √(80²+80²) = 113.1cm, θ = 45°" },
+          { id: "M03", name: "Mineshaft Explorer", x: 130, y: 170, pts: 40, math: "Arc Turn: Δθ = -90°, Radius = 25cm" },
+          { id: "M04", name: "Careful Recovery", x: 310, y: 220, pts: 40, math: "Straight Alignment: θ = arctan2(80,100)" },
+          { id: "M07", name: "Heavy Lifting (Millstone)", x: 470, y: 210, pts: 30, math: "Torque Mode 1:2.5 Gear Boost" },
+          { id: "M12", name: "Salvage Operation", x: 550, y: 220, pts: 30, math: "Linear Pull: Force = 110 N·cm" },
+          { id: "M13", name: "Forum Collection", x: 230, y: 110, pts: 35, math: "Carry & Place Return Route" }
+        ];
+
+        const pathPoints = nodes.map(n => `${n.x},${n.y}`).join(" L ");
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttribute("d", `M ${pathPoints}`);
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", "url(#pathGlow)");
+        path.setAttribute("stroke-width", "3");
+        path.setAttribute("filter", "url(#glowFilter)");
+        path.setAttribute("stroke-dasharray", "6,3");
+        svg.append(path);
+
+        const callout = document.createElementNS(svgNS, "text");
+        callout.setAttribute("x", "300"); callout.setAttribute("y", "35");
+        callout.setAttribute("fill", "#f59e0b");
+        callout.setAttribute("font-size", "11");
+        callout.setAttribute("font-weight", "600");
+        callout.setAttribute("text-anchor", "middle");
+        callout.textContent = "📐 O-Level Math Vector: d = √(Δx² + Δy²), θ = arctan2(Δy, Δx)";
+        svg.append(callout);
+
+        nodes.forEach((n) => {
+          const group = document.createElementNS(svgNS, "g");
+          group.style.cursor = "pointer";
+
+          const circleBg = document.createElementNS(svgNS, "circle");
+          circleBg.setAttribute("cx", n.x); circleBg.setAttribute("cy", n.y);
+          circleBg.setAttribute("r", "14");
+          circleBg.setAttribute("fill", "#0f172a");
+          circleBg.setAttribute("stroke", "#38bdf8");
+          circleBg.setAttribute("stroke-width", "2");
+
+          const text = document.createElementNS(svgNS, "text");
+          text.setAttribute("x", n.x); text.setAttribute("y", n.y + 4);
+          text.setAttribute("fill", "#e2e8f0");
+          text.setAttribute("font-size", "9");
+          text.setAttribute("font-weight", "bold");
+          text.setAttribute("text-anchor", "middle");
+          text.textContent = n.id;
+
+          group.append(circleBg, text);
+
+          group.addEventListener("mousemove", (e) => {
+            const rect = canvasWrap.getBoundingClientRect();
+            showTooltip(
+              e.clientX - rect.left,
+              e.clientY - rect.top,
+              `${n.id}: ${n.name}`,
+              `<p><strong>Points:</strong> +${n.pts} pts</p>
+               <p><strong>Math Model:</strong> ${n.math}</p>
+               <p><strong>Field Coords:</strong> (${(n.x * 0.33) | 0}cm, ${((360 - n.y) * 0.33) | 0}cm)</p>`
+            );
+          });
+          group.addEventListener("mouseleave", hideTooltip);
+
+          svg.append(group);
+        });
+
+      } else if (mode === "gearratio") {
+        const defs = document.createElementNS(svgNS, "defs");
+        defs.innerHTML = `
+          <linearGradient id="torqueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.3" />
+            <stop offset="100%" stop-color="#ef4444" stop-opacity="0.1" />
+          </linearGradient>
+        `;
+        svg.append(defs);
+
+        const headerText = document.createElementNS(svgNS, "text");
+        headerText.setAttribute("x", "300"); headerText.setAttribute("y", "28");
+        headerText.setAttribute("fill", "#38bdf8");
+        headerText.setAttribute("font-size", "12");
+        headerText.setAttribute("font-weight", "bold");
+        headerText.setAttribute("text-anchor", "middle");
+        headerText.textContent = "⚙️ Kinematics & Gear Ratio Math: P = T · ω  |  T₁ω₁ = T₂ω₂  |  v = ω r";
+        svg.append(headerText);
+
+        const xAxis = document.createElementNS(svgNS, "line");
+        xAxis.setAttribute("x1", "60"); xAxis.setAttribute("y1", "300");
+        xAxis.setAttribute("x2", "540"); xAxis.setAttribute("y2", "300");
+        xAxis.setAttribute("stroke", "#64748b"); xAxis.setAttribute("stroke-width", "2");
+        svg.append(xAxis);
+
+        const yAxisLeft = document.createElementNS(svgNS, "line");
+        yAxisLeft.setAttribute("x1", "60"); yAxisLeft.setAttribute("y1", "50");
+        yAxisLeft.setAttribute("x2", "60"); yAxisLeft.setAttribute("y2", "300");
+        yAxisLeft.setAttribute("stroke", "#f59e0b"); yAxisLeft.setAttribute("stroke-width", "2");
+        svg.append(yAxisLeft);
+
+        const yAxisRight = document.createElementNS(svgNS, "line");
+        yAxisRight.setAttribute("x1", "540"); yAxisRight.setAttribute("y1", "50");
+        yAxisRight.setAttribute("x2", "540"); yAxisRight.setAttribute("y2", "300");
+        yAxisRight.setAttribute("stroke", "#38bdf8"); yAxisRight.setAttribute("stroke-width", "2");
+        svg.append(yAxisRight);
+
+        const xLabel = document.createElementNS(svgNS, "text");
+        xLabel.setAttribute("x", "300"); xLabel.setAttribute("y", "335");
+        xLabel.setAttribute("fill", "#cbd5e1"); xLabel.setAttribute("font-size", "11");
+        xLabel.setAttribute("text-anchor", "middle");
+        xLabel.textContent = "Motor Angular Velocity ω (RPM)";
+        svg.append(xLabel);
+
+        const yLabelL = document.createElementNS(svgNS, "text");
+        yLabelL.setAttribute("x", "20"); yLabelL.setAttribute("y", "175");
+        yLabelL.setAttribute("fill", "#f59e0b"); yLabelL.setAttribute("font-size", "11");
+        yLabelL.setAttribute("transform", "rotate(-90 20,175)");
+        yLabelL.setAttribute("text-anchor", "middle");
+        yLabelL.textContent = "Torque T (N·cm)";
+        svg.append(yLabelL);
+
+        const yLabelR = document.createElementNS(svgNS, "text");
+        yLabelR.setAttribute("x", "580"); yLabelR.setAttribute("y", "175");
+        yLabelR.setAttribute("fill", "#38bdf8"); yLabelR.setAttribute("font-size", "11");
+        yLabelR.setAttribute("transform", "rotate(90 580,175)");
+        yLabelR.setAttribute("text-anchor", "middle");
+        yLabelR.textContent = "Linear Velocity v (cm/s)";
+        svg.append(yLabelR);
+
+        const torquePath = document.createElementNS(svgNS, "path");
+        torquePath.setAttribute("d", "M 60,80 Q 200,100 320,160 T 540,280");
+        torquePath.setAttribute("fill", "none");
+        torquePath.setAttribute("stroke", "#f59e0b");
+        torquePath.setAttribute("stroke-width", "3");
+        svg.append(torquePath);
+
+        const speedPath = document.createElementNS(svgNS, "path");
+        speedPath.setAttribute("d", "M 60,260 Q 240,180 400,100 T 540,70");
+        speedPath.setAttribute("fill", "none");
+        speedPath.setAttribute("stroke", "#38bdf8");
+        speedPath.setAttribute("stroke-width", "3");
+        speedPath.setAttribute("stroke-dasharray", "5,3");
+        svg.append(speedPath);
+
+        const gearPoints = [
+          { x: 140, y: 100, mode: "Torque Mode (1:2.5)", rpm: 80, torque: "110 N·cm", speed: "17.0 cm/s", detail: "M07 Heavy Millstone Lift & M12 Ship Salvage" },
+          { x: 380, y: 110, mode: "Speed Mode (1:1)", rpm: 220, torque: "44 N·cm", speed: "42.5 cm/s", detail: "M01 Brushing & M03 Mineshaft Tunnel Sweep" }
+        ];
+
+        gearPoints.forEach(p => {
+          const dot = document.createElementNS(svgNS, "circle");
+          dot.setAttribute("cx", p.x); dot.setAttribute("cy", p.y);
+          dot.setAttribute("r", "7");
+          dot.setAttribute("fill", p.mode.includes("Torque") ? "#f59e0b" : "#38bdf8");
+          dot.setAttribute("stroke", "#ffffff");
+          dot.setAttribute("stroke-width", "2");
+          dot.style.cursor = "pointer";
+
+          dot.addEventListener("mousemove", (e) => {
+            const rect = canvasWrap.getBoundingClientRect();
+            showTooltip(
+              e.clientX - rect.left,
+              e.clientY - rect.top,
+              p.mode,
+              `<p><strong>Motor Speed:</strong> ${p.rpm} RPM</p>
+               <p><strong>Torque Output:</strong> ${p.torque}</p>
+               <p><strong>Linear Velocity:</strong> ${p.speed}</p>
+               <p><strong>Mission Application:</strong> ${p.detail}</p>`
+            );
+          });
+          dot.addEventListener("mouseleave", hideTooltip);
+
+          svg.append(dot);
+        });
+
+      } else if (mode === "pipeline") {
+        const headerText = document.createElementNS(svgNS, "text");
+        headerText.setAttribute("x", "300"); headerText.setAttribute("y", "28");
+        headerText.setAttribute("fill", "#38bdf8");
+        headerText.setAttribute("font-size", "12");
+        headerText.setAttribute("font-weight", "bold");
+        headerText.setAttribute("text-anchor", "middle");
+        headerText.textContent = "☁️ Google Cloud & REST API Automation Pipeline";
+        svg.append(headerText);
+
+        const pipelineNodes = [
+          { x: 70, y: 170, title: "Spreadsheet", desc: "docs/FLL_Mission_Data.csv", icon: "📊", tech: "Google Sheets" },
+          { x: 190, y: 170, title: "Sheets API", desc: "REST Telemetry Stream", icon: "🌐", tech: "Google API" },
+          { x: 310, y: 170, title: "Google Cloud", desc: "Storage & BigQuery", icon: "☁️", tech: "GCP Platform" },
+          { x: 430, y: 170, title: "Matplotlib", desc: "Python Analytics", icon: "🐍", tech: "Python 3" },
+          { x: 535, y: 170, title: "Portfolio", desc: "Interactive Dashboard", icon: "🚀", tech: "EAE Dashboard" }
+        ];
+
+        for (let i = 0; i < pipelineNodes.length - 1; i++) {
+          const n1 = pipelineNodes[i];
+          const n2 = pipelineNodes[i + 1];
+
+          const line = document.createElementNS(svgNS, "line");
+          line.setAttribute("x1", n1.x + 35); line.setAttribute("y1", n1.y);
+          line.setAttribute("x2", n2.x - 35); line.setAttribute("y2", n2.y);
+          line.setAttribute("stroke", "#38bdf8");
+          line.setAttribute("stroke-width", "2");
+          line.setAttribute("stroke-dasharray", "4,3");
+          svg.append(line);
+        }
+
+        pipelineNodes.forEach((n) => {
+          const group = document.createElementNS(svgNS, "g");
+          group.style.cursor = "pointer";
+
+          const rect = document.createElementNS(svgNS, "rect");
+          rect.setAttribute("x", n.x - 35); rect.setAttribute("y", n.y - 45);
+          rect.setAttribute("width", "70"); rect.setAttribute("height", "90");
+          rect.setAttribute("fill", "rgba(15,23,42,0.9)");
+          rect.setAttribute("stroke", "#38bdf8");
+          rect.setAttribute("stroke-width", "1.5");
+          rect.setAttribute("rx", "8");
+
+          const icon = document.createElementNS(svgNS, "text");
+          icon.setAttribute("x", n.x); icon.setAttribute("y", n.y - 12);
+          icon.setAttribute("font-size", "20");
+          icon.setAttribute("text-anchor", "middle");
+          icon.textContent = n.icon;
+
+          const title = document.createElementNS(svgNS, "text");
+          title.setAttribute("x", n.x); title.setAttribute("y", n.y + 12);
+          title.setAttribute("fill", "#e2e8f0");
+          title.setAttribute("font-size", "10");
+          title.setAttribute("font-weight", "bold");
+          title.setAttribute("text-anchor", "middle");
+          title.textContent = n.title;
+
+          const tech = document.createElementNS(svgNS, "text");
+          tech.setAttribute("x", n.x); tech.setAttribute("y", n.y + 28);
+          tech.setAttribute("fill", "#38bdf8");
+          tech.setAttribute("font-size", "8");
+          tech.setAttribute("text-anchor", "middle");
+          tech.textContent = n.tech;
+
+          group.append(rect, icon, title, tech);
+
+          group.addEventListener("mousemove", (e) => {
+            const wrapRect = canvasWrap.getBoundingClientRect();
+            showTooltip(
+              e.clientX - wrapRect.left,
+              e.clientY - wrapRect.top,
+              `${n.icon} ${n.title} (${n.tech})`,
+              `<p><strong>Role:</strong> ${n.desc}</p>
+               <p><strong>Integration:</strong> Synchronizes field data into automated Matplotlib plots and O-level math trajectory calculations.</p>
+               <p><strong>Status:</strong> Connected (200 OK)</p>`
+            );
+          });
+          group.addEventListener("mouseleave", hideTooltip);
+
+          svg.append(group);
+        });
+      }
+
+      canvasWrap.append(svg);
+    }
+
+    const updateButtons = (newMode) => {
+      activeMode = newMode;
+      btnTrajectory.classList.toggle("active", newMode === "trajectory");
+      btnGear.classList.toggle("active", newMode === "gearratio");
+      btnPipeline.classList.toggle("active", newMode === "pipeline");
+      renderSvgGraph(newMode);
+    };
+
+    btnTrajectory.addEventListener("click", () => updateButtons("trajectory"));
+    btnGear.addEventListener("click", () => updateButtons("gearratio"));
+    btnPipeline.addEventListener("click", () => updateButtons("pipeline"));
+
+    const footerStrip = create("div", "fll-telemetry-strip");
+    footerStrip.append(
+      create("span", "fll-telemetry-badge", "📁 Rows: <strong>40 Runs</strong>"),
+      create("span", "fll-telemetry-badge", "📐 Math: <strong>O-Lvl Kinematics</strong>"),
+      create("span", "fll-telemetry-badge", "🐍 Plotter: <strong>Matplotlib</strong>"),
+      create("span", "fll-telemetry-badge", "☁️ Pipeline: <strong>GCP & API</strong>")
+    );
+
+    container.append(canvasWrap, footerStrip);
+    renderSvgGraph("trajectory");
+
+    return container;
+  }
+
+  function createVideoViewer(src, alt) {
+    const wrap = create("div", "media-video-wrapper");
+    const video = document.createElement("video");
+    video.src = src;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    video.className = "media-video-element";
+    video.setAttribute("aria-label", alt || "Video preview");
+
+    const controlsBar = create("div", "media-player-controls-bar");
+    const titleSpan = create("span", "media-player-title", alt || "Video Demo");
+    const downloadBtn = create("a", "text-button media-download-btn", "📥 Download Video");
+    downloadBtn.href = src;
+    downloadBtn.download = src.split('/').pop() || "video.webm";
+    downloadBtn.target = "_blank";
+
+    controlsBar.append(titleSpan, downloadBtn);
+    wrap.append(video, controlsBar);
+    return wrap;
+  }
+
+  function createAudioViewer(src, alt) {
+    const wrap = create("div", "media-audio-wrapper");
+    const titleSpan = create("p", "media-player-title", `🎵 ${alt || "Audio track"}`);
+    const audio = document.createElement("audio");
+    audio.src = src;
+    audio.controls = true;
+    audio.className = "media-audio-element";
+    
+    const downloadBtn = create("a", "text-button media-download-btn", "📥 Download Audio");
+    downloadBtn.href = src;
+    downloadBtn.download = src.split('/').pop() || "audio.mp3";
+    downloadBtn.target = "_blank";
+
+    wrap.append(titleSpan, audio, downloadBtn);
+    return wrap;
+  }
+
+  function createPdfViewer(src, alt) {
+    const wrap = create("div", "media-pdf-wrapper");
+    const object = document.createElement("object");
+    object.data = src;
+    object.type = "application/pdf";
+    object.className = "media-pdf-object";
+    
+    const fallbackText = create("p", "", "PDF preview loading or unavailable in embedded mode.");
+    const downloadBtn = create("a", "text-button media-download-btn", "📄 Download / View PDF");
+    downloadBtn.href = src;
+    downloadBtn.target = "_blank";
+    
+    object.append(fallbackText, downloadBtn);
+    
+    const toolbar = create("div", "media-player-controls-bar");
+    toolbar.append(create("span", "media-player-title", `📄 ${alt || "PDF Document"}`), downloadBtn.cloneNode(true));
+    wrap.append(toolbar, object);
+    return wrap;
+  }
+
+  function createDocumentViewer(src, alt) {
+    const wrap = create("div", "media-document-wrapper");
+    const icon = create("div", "media-document-icon", "📄");
+    const title = create("h3", "media-document-title", alt || "Document File");
+    const desc = create("p", "media-document-desc", `File reference: ${src.split('/').pop()}`);
+    const downloadBtn = create("a", "primary-button media-download-btn", "📥 Open / Download File");
+    downloadBtn.href = src;
+    downloadBtn.target = "_blank";
+    
+    wrap.append(icon, title, desc, downloadBtn);
+    return wrap;
+  }
+
+  function createImageViewer(src, alt, fallback) {
+    const block = create("figure", "media-block media-image-wrapper");
+    if (!src) {
+      block.append(create("span", "image-placeholder", fallback || "Image unavailable"));
+      return block;
+    }
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = alt || "Image preview";
+    img.className = "lightbox-image";
+    img.loading = "lazy";
+
+    const toolbar = create("div", "lightbox-toolbar");
+    let zoomLevel = 1;
+    let rotation = 0;
+
+    const applyTransform = () => {
+      img.style.transform = `scale(${zoomLevel}) rotate(${rotation}deg)`;
+      img.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+    };
+
+    const zoomInBtn = create("button", "lightbox-btn", "🔍+");
+    zoomInBtn.type = "button";
+    zoomInBtn.setAttribute("aria-label", "Zoom in image");
+    zoomInBtn.addEventListener("click", () => {
+      zoomLevel = Math.min(zoomLevel + 0.25, 3);
+      applyTransform();
+    });
+
+    const zoomOutBtn = create("button", "lightbox-btn", "🔍-");
+    zoomOutBtn.type = "button";
+    zoomOutBtn.setAttribute("aria-label", "Zoom out image");
+    zoomOutBtn.addEventListener("click", () => {
+      zoomLevel = Math.max(zoomLevel - 0.25, 0.5);
+      applyTransform();
+    });
+
+    const resetBtn = create("button", "lightbox-btn", "↺ Reset");
+    resetBtn.type = "button";
+    resetBtn.setAttribute("aria-label", "Reset zoom and rotation");
+    resetBtn.addEventListener("click", () => {
+      zoomLevel = 1;
+      rotation = 0;
+      applyTransform();
+    });
+
+    const rotateBtn = create("button", "lightbox-btn", "↻ 90°");
+    rotateBtn.type = "button";
+    rotateBtn.setAttribute("aria-label", "Rotate image 90 degrees");
+    rotateBtn.addEventListener("click", () => {
+      rotation = (rotation + 90) % 360;
+      applyTransform();
+    });
+
+    const downloadBtn = create("a", "lightbox-btn lightbox-btn-primary", "📥 Download");
+    downloadBtn.href = src;
+    downloadBtn.download = src.split('/').pop() || "image.png";
+    downloadBtn.target = "_blank";
+
+    toolbar.append(zoomInBtn, zoomOutBtn, resetBtn, rotateBtn, downloadBtn);
+    block.append(img, toolbar);
     return block;
+  }
+
+  function createMediaBlock(src, alt, fallback) {
+    const type = detectMediaType(src);
+    if (type === 'drawio') {
+      return createDrawioViewer(src, alt);
+    }
+    if (type === 'slides') {
+      return createSlidesViewer(src, alt);
+    }
+    if (type === 'spreadsheet') {
+      return createSpreadsheetViewer(src, alt, fallback);
+    }
+    if (type === 'video') {
+      return createVideoViewer(src, alt);
+    }
+    if (type === 'audio') {
+      return createAudioViewer(src, alt);
+    }
+    if (type === 'pdf') {
+      return createPdfViewer(src, alt);
+    }
+    if (type === 'document') {
+      return createDocumentViewer(src, alt);
+    }
+    return createImageViewer(src, alt, fallback);
   }
 
   function createDetail(label, value, className = "modal-detail") {
