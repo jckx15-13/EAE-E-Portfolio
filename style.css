@@ -2,7 +2,7 @@
 @import url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/open-dyslexic.css');
 
 /* ==========================================================================
-   1. Unified Design Tokens & Themes
+   1. Unified Design Tokens & Color Profiles
    ========================================================================== */
 
 :root {
@@ -28,8 +28,8 @@
   --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.06);
   --shadow-card: 0 6px 20px rgba(30, 42, 62, 0.05);
   --shadow-space: 0 16px 40px rgba(3, 8, 18, 0.12);
-  --radius: 8px;
-  --max-width: 1400px;
+  --radius: 10px;
+  --max-width: 1360px;
   --header-height: 72px;
   --view-mode-bar-height: 64px;
   --site-chrome-height: calc(var(--header-height) + var(--view-mode-bar-height));
@@ -37,8 +37,8 @@
   /* Semantic Theme Color Profiles (Default: Dark Mode) */
   --theme-bg: #0b1525;
   --theme-text-primary: #ffffff;
-  --theme-text-secondary: rgba(255, 255, 255, 0.95);
-  --theme-text-muted: rgba(255, 255, 255, 0.82);
+  --theme-text-secondary: rgba(255, 255, 255, 0.92);
+  --theme-text-muted: rgba(255, 255, 255, 0.74);
   --theme-card-bg: rgba(17, 27, 49, 0.85);
   --theme-card-border: rgba(109, 179, 240, 0.25);
   --theme-card-shadow: 0 10px 30px rgba(3, 8, 18, 0.35);
@@ -58,21 +58,26 @@
   --space-3xl: 4rem;
 }
 
-/* Dark Mode Profile */
+/* Dark Mode (Astral Navy Profile) */
 body[data-theme="dark"],
 body:not([data-theme="light"]) {
   --white: #ffffff;
   --paper: #0b1525;
   --theme-bg: #0b1525;
   --theme-text-primary: #ffffff;
-  --theme-text-secondary: rgba(255, 255, 255, 0.95);
+  --theme-text-secondary: rgba(255, 255, 255, 0.92);
+  --theme-text-muted: rgba(255, 255, 255, 0.74);
   --theme-card-bg: rgba(17, 27, 49, 0.85);
   --theme-card-border: rgba(109, 179, 240, 0.25);
+  --theme-card-shadow: 0 10px 30px rgba(3, 8, 18, 0.35);
+  --theme-chrome-bg: rgba(11, 21, 37, 0.98);
+  --theme-accent-cyan: #38bdf8;
+  --theme-accent-purple: #c084fc;
   color: #ffffff !important;
   background-color: #0b1525 !important;
 }
 
-/* Light Theme Profile: Organic daylight mode */
+/* Light Mode (Organic Daylight Profile: Warm Paper/Mist) */
 body[data-theme="light"] {
   --theme-bg: #fcfbf7;
   --theme-text-primary: #1f2937;
@@ -94,11 +99,13 @@ body[data-theme="light"] {
   background-color: #fcfbf7 !important;
 }
 
-/* Direct Section Light Mode Overrides */
+/* Universal Light Theme Section Overrides (Zero Patchy Dark Blocks) */
+body[data-theme="light"] section,
 body[data-theme="light"] .section,
 body[data-theme="light"] .hero,
 body[data-theme="light"] .section-soft,
 body[data-theme="light"] .section-dark,
+body[data-theme="light"] [class*="section-astral-"],
 body[data-theme="light"] .life-entry-section,
 body[data-theme="light"] .reader-guide-section,
 body[data-theme="light"] .personal-map-section,
@@ -108,26 +115,28 @@ body[data-theme="light"] .achievement-flow-section {
   background-color: #fcfbf7 !important;
   background: #fcfbf7 !important;
   color: #1f2937 !important;
+  border-bottom-color: #d8d3c8 !important;
 }
 
-body[data-theme="light"] .section-heading h2,
-body[data-theme="light"] .section-heading h3,
-body[data-theme="light"] .hero-name,
 body[data-theme="light"] h1,
 body[data-theme="light"] h2,
 body[data-theme="light"] h3,
-body[data-theme="light"] h4 {
+body[data-theme="light"] h4,
+body[data-theme="light"] .hero-name,
+body[data-theme="light"] .section-heading h2,
+body[data-theme="light"] .section-heading h3 {
   color: #1f2937 !important;
 }
 
 body[data-theme="light"] p,
 body[data-theme="light"] .section-lede,
-body[data-theme="light"] .hero-subtitle {
+body[data-theme="light"] .hero-subtitle,
+body[data-theme="light"] .hero-identity {
   color: #475569 !important;
 }
 
 /* ==========================================================================
-   2. OpenDyslexic Mode (Strict Typography Override)
+   2. OpenDyslexic Mode (100% Guaranteed Typography Override)
    ========================================================================== */
 
 body.dyslexic-mode,
@@ -137,12 +146,15 @@ body.dyslexic-mode h1,
 body.dyslexic-mode h2,
 body.dyslexic-mode h3,
 body.dyslexic-mode h4,
+body.dyslexic-mode h5,
+body.dyslexic-mode h6,
 body.dyslexic-mode button,
 body.dyslexic-mode input,
 body.dyslexic-mode textarea,
 body.dyslexic-mode a,
-body.dyslexic-mode span {
-  font-family: 'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', 'Space Grotesk', system-ui, sans-serif !important;
+body.dyslexic-mode span,
+body.dyslexic-mode div {
+  font-family: 'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', 'Comic Sans MS', sans-serif !important;
 }
 
 /* ==========================================================================
@@ -196,16 +208,29 @@ body.dyslexic-mode span {
 }
 
 /* ==========================================================================
-   4. Unified 2.5D SRT Style Extrusion Physics
+   4. Unified 2.5D SRT Style Extrusion Physics & Elevation
    ========================================================================== */
 
+/* 2.5D Tactile Buttons */
 .button,
 .theme-toggle-btn,
 .view-mode-pill,
 .quick-section-pill,
 .a11y-toggle-fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 750;
+  cursor: pointer;
+  text-decoration: none;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-card-border);
   border-bottom: 3px solid var(--theme-card-border) !important;
-  box-shadow: 0 4px 0 var(--theme-card-border), 0 6px 12px rgba(0, 0, 0, 0.15);
+  color: var(--theme-text-primary);
+  box-shadow: 0 4px 0 var(--theme-card-border), 0 6px 12px rgba(0, 0, 0, 0.15) !important;
   transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s ease, border-color 0.18s ease !important;
 }
 
@@ -228,7 +253,16 @@ body.dyslexic-mode span {
   box-shadow: 0 2px 0 var(--theme-card-border) !important;
 }
 
-/* Card 2.5D Tactile Elevation */
+.button-primary {
+  background: var(--theme-accent-cyan) !important;
+  color: #0a1222 !important;
+  border-color: var(--theme-accent-cyan) !important;
+  border-bottom: 3px solid #0284c7 !important;
+  box-shadow: 0 4px 0 #0284c7, 0 10px 20px rgba(56, 189, 248, 0.25) !important;
+}
+
+/* Unified 2.5D Tactile Elevation Cards */
+.card,
 .project-card,
 .achievement-card,
 .personal-map-card,
@@ -245,10 +279,15 @@ body.dyslexic-mode span {
   border: 1px solid var(--theme-card-border) !important;
   border-bottom: 3px solid var(--theme-card-border) !important;
   border-radius: var(--radius);
+  padding: var(--space-lg);
   box-shadow: 0 4px 0 var(--theme-card-border), var(--theme-card-shadow) !important;
+  transform-style: preserve-3d;
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+  margin-top: 0 !important; /* Remove staggered offset misalignment */
+  grid-column: auto !important; /* Allow fluid grid columns */
 }
 
+.card:hover,
 .project-card:hover,
 .achievement-card:hover,
 .personal-map-card:hover,
@@ -267,7 +306,7 @@ body.dyslexic-mode span {
 }
 
 /* ==========================================================================
-   5. Base Styles & Global Reset
+   5. Global Reset & Layout Architecture
    ========================================================================== */
 
 * { box-sizing: border-box; }
@@ -314,7 +353,7 @@ h1, h2, h3, h4, .brand, .site-nav a, .button, .section-label, .hero-name {
 }
 
 /* ==========================================================================
-   6. Chrome Header & Navigation Bar
+   6. Chrome Header & Navigation
    ========================================================================== */
 
 .site-chrome {
@@ -375,9 +414,10 @@ h1, h2, h3, h4, .brand, .site-nav a, .button, .section-label, .hero-name {
 }
 
 /* ==========================================================================
-   7. Harmonized Sections & Fluid Resizing Grids (Zero Overlap)
+   7. Harmonized Sections & Fluid Resizing Grids (Zero Overlap & Zero Clipping)
    ========================================================================== */
 
+section,
 .section,
 .hero,
 .section-soft,
@@ -397,7 +437,7 @@ h1, h2, h3, h4, .brand, .site-nav a, .button, .section-label, .hero-name {
   margin-inline: auto;
 }
 
-/* Fluid Grids with Responsive Min-Width */
+/* Fluid Grids with Responsive Min-Width (No fixed columns or overlapping pseudo-elements) */
 .project-grid,
 .achievement-grid,
 .personal-map-grid,
@@ -406,13 +446,18 @@ h1, h2, h3, h4, .brand, .site-nav a, .button, .section-label, .hero-name {
 .eae-snapshot-grid,
 .readiness-grid,
 .reader-guide-grid,
-.applications-grid {
+.applications-grid,
+.strength-grid {
   display: grid;
-  gap: clamp(1rem, 2vw, 1.5rem);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)) !important;
+  gap: clamp(1.2rem, 2.5vw, 1.8rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)) !important;
   align-items: start;
   min-width: 0;
   padding: 0;
+}
+
+.personal-map-grid::before {
+  display: none !important; /* Remove overlapping line background in personal map grid */
 }
 
 /* Hero Section */
