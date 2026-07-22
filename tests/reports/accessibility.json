@@ -1,6 +1,141 @@
 {
-  "timestamp": "2026-07-19T15:15:03.405Z",
+  "timestamp": "2026-07-22T15:19:08.566Z",
   "url": "http://127.0.0.1:3000/",
-  "violationCount": 0,
-  "violations": []
+  "violationCount": 4,
+  "violations": [
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensure role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "target": [
+            ".left.timeline-item[role=\"button\"]:nth-child(1)"
+          ],
+          "html": "<article class=\"timeline-item reveal left\" role=\"button\" tabindex=\"0\" aria-label=\"Open Scratch Coder Course evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            ".right.timeline-item[role=\"button\"]:nth-child(2)"
+          ],
+          "html": "<article class=\"timeline-item reveal right\" role=\"button\" tabindex=\"0\" aria-label=\"Open MIT App Inventor Appathon evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            ".left.timeline-item[role=\"button\"]:nth-child(3)"
+          ],
+          "html": "<article class=\"timeline-item reveal left\" role=\"button\" tabindex=\"0\" aria-label=\"Open Mathematics Growth Journey evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            ".right.timeline-item[role=\"button\"]:nth-child(4)"
+          ],
+          "html": "<article class=\"timeline-item reveal right\" role=\"button\" tabindex=\"0\" aria-label=\"Open NRC Robotics Competition evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            ".left.timeline-item[role=\"button\"]:nth-child(5)"
+          ],
+          "html": "<article class=\"timeline-item reveal left\" role=\"button\" tabindex=\"0\" aria-label=\"Open Python Coder Course - Basic evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            ".right.timeline-item[role=\"button\"]:nth-child(6)"
+          ],
+          "html": "<article class=\"timeline-item reveal right\" role=\"button\" tabindex=\"0\" aria-label=\"Open Python Coder Course - Intermediate evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            ".left.timeline-item[role=\"button\"]:nth-child(7)"
+          ],
+          "html": "<article class=\"timeline-item reveal left\" role=\"button\" tabindex=\"0\" aria-label=\"Open Roblox Global Goal Challenge evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            "article[aria-label=\"Open Python Advanced evidence\"]"
+          ],
+          "html": "<article class=\"timeline-item reveal right\" role=\"button\" tabindex=\"0\" aria-label=\"Open Python Advanced evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            ".left.timeline-item[role=\"button\"]:nth-child(9)"
+          ],
+          "html": "<article class=\"timeline-item reveal left\" role=\"button\" tabindex=\"0\" aria-label=\"Open YCEP Certificate of Participation evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            ".right.timeline-item[role=\"button\"]:nth-child(10)"
+          ],
+          "html": "<article class=\"timeline-item reveal right\" role=\"button\" tabindex=\"0\" aria-label=\"Open BuildingBloCS Game Jam (Unity Track) evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        },
+        {
+          "target": [
+            ".left.timeline-item[role=\"button\"]:nth-child(11)"
+          ],
+          "html": "<article class=\"timeline-item reveal left\" role=\"button\" tabindex=\"0\" aria-label=\"Open BuildingBloCS June Jam Workshops evidence\">",
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "target": [
+            "a[data-edit-path=\"uiLabels.navAbout\"]"
+          ],
+          "html": "<a data-edit-path=\"uiLabels.navAbout\" href=\"#about\" data-section=\"about\" class=\"is-active\" aria-current=\"page\">About</a>",
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.56 (foreground color: #0284c7, background color: #f3efe6, font size: 10.9pt (14.56px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "help": "Heading levels should only increase by one",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/heading-order?application=axeAPI",
+      "nodes": [
+        {
+          "target": [
+            ".left.timeline-item[role=\"button\"]:nth-child(1) > div > h4"
+          ],
+          "html": "<h4>Scratch Coder Course</h4>",
+          "failureSummary": "Fix any of the following:\n  Heading order invalid"
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensure every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/label?application=axeAPI",
+      "nodes": [
+        {
+          "target": [
+            "#dyslexicToggle"
+          ],
+          "html": "<input type=\"checkbox\" id=\"dyslexicToggle\">",
+          "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    }
+  ]
 }

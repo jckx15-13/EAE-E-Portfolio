@@ -214,6 +214,19 @@
         <div id="achievementCards" class="achievement-grid"></div>
       </section>
 
+      <!-- Personal Hobbies & Explorations -->
+      <section id="hobbies" class="section section-astral-hobbies">
+        <div class="section-heading">
+          <p class="section-label">Personal Interests</p>
+          <h2>Personal Hobbies & Explorations</h2>
+          <p id="hobbiesLede" class="section-lede">
+            Hands-on projects, CAD modeling, CTF security challenges, and physical tinkering that fuel my curiosity outside the classroom.
+          </p>
+        </div>
+        <div id="hobbiesFilters" class="filter-row" aria-label="Hobby filters"></div>
+        <div id="hobbiesGrid" class="hobbies-grid"></div>
+      </section>
+
       <!-- 9. EAE Course Fit -->
       <section id="applications" class="section section-astral-8">
         <div class="section-heading">
@@ -254,13 +267,48 @@
     </footer>
 
     <dialog id="achievementModal" class="modal">
-      <div class="modal-card theme-admin">
+      <div class="modal-card">
         <button class="modal-close" type="button" aria-label="Close achievement details">
           <span aria-hidden="true">&times;</span>
         </button>
         <div id="modalContent"></div>
       </div>
     </dialog>
+
+    <!-- Left Accessibility FAB Button -->
+    <button id="a11yToggleFab" class="a11y-toggle-fab" type="button" aria-label="Open Accessibility Settings" title="Accessibility Settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      <span>Accessibility</span>
+    </button>
+
+    <!-- Left Accessibility Sidebar Drawer -->
+    <aside id="a11ySidebar" class="a11y-sidebar" aria-label="Accessibility Settings">
+      <div class="a11y-sidebar-header">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 8v8M8 12h8"></path>
+          </svg>
+          Accessibility
+        </h3>
+        <button id="a11yCloseBtn" class="a11y-close-btn" type="button" aria-label="Close Accessibility Settings">&times;</button>
+      </div>
+
+      <div class="a11y-control-group">
+        <div class="a11y-control-row">
+          <span class="a11y-control-label">OpenDyslexic Font</span>
+          <label class="a11y-switch">
+            <input type="checkbox" id="dyslexicToggle">
+            <span class="a11y-slider"></span>
+          </label>
+        </div>
+        <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: var(--theme-text-muted);">Switch site typography to OpenDyslexic font for enhanced reading clarity.</p>
+      </div>
+    </aside>
 
   </body>
 </html>

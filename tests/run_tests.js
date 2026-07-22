@@ -150,8 +150,151 @@ async function run() {
       ws.addEventListener('message', onMessage);
     });
     
-    console.log("Page loaded. Running view-mode toggle test...");
+    console.log("Page loaded. Running theme toggle test...");
+
+    const themeResult = await send('Runtime.evaluate', {
+      expression: `(async () => {
+        const themeToggle = document.querySelector('#themeToggle');
+        if (!themeToggle) throw new Error("Missing #themeToggle button");
+        
+        // 1. Initial State
+        let theme = document.body.getAttribute('data-theme');
+        if (theme !== 'dark') throw new Error("Expected initial theme to be dark");
+        
+        // 2. Toggle to light
+        themeToggle.click();
+        if (document.body.getAttribute('data-theme') !== 'light') {
+          throw new Error("Expected theme to be light after 1 click");
+        }
+        
+        // 3. Toggle back to dark (verifying no 'editor' theme)
+        themeToggle.click();
+        if (document.body.getAttribute('data-theme') !== 'dark') {
+          throw new Error("Expected theme to be dark after 2 clicks (skipping editor)");
+        }
+        
+        // 4. Open Live Editor
+        const editorBtn = document.querySelector('.live-editor-fab');
+        if (!editorBtn) throw new Error("Missing .live-editor-fab button");
+        editorBtn.click();
+        
+        // Wait for sidebar to open
+        await new Promise(r => setTimeout(r, 100));
+        
+        const sidebar = document.querySelector('.live-editor-sidebar');
+        if (!sidebar) throw new Error("Sidebar not created");
+        if (!document.body.classList.contains('admin-mode')) {
+          throw new Error("Expected body to have 'admin-mode' class");
+        }
+        if (document.body.getAttribute('data-theme') === 'editor') {
+          throw new Error("Expected body NOT to have data-theme='editor'");
+        }
+        if (!sidebar.classList.contains('editor-opposite-light')) {
+          throw new Error("Expected sidebar to have 'editor-opposite-light' when page is dark");
+        }
+        
+        // 5. Toggle theme while editor is open
+        themeToggle.click(); // switches to light
+        if (document.body.getAttribute('data-theme') !== 'light') throw new Error("Page should be light");
+        if (!sidebar.classList.contains('editor-opposite-dark')) {
+          throw new Error("Expected sidebar to have 'editor-opposite-dark' when page is light");
+        }
+        
+        // 6. Close Live Editor
+        editorBtn.click();
+        await new Promise(r => setTimeout(r, 100));
+        if (document.body.classList.contains('admin-mode')) {
+          throw new Error("Expected body to lose 'admin-mode' class");
+        }
+        
+        return "SUCCESS";
+      })()`,
+      returnByValue: true,
+      awaitPromise: true
+    });
     
+    if (themeResult.exceptionDetails) {
+      throw new Error("Theme evaluation failed: " + themeResult.exceptionDetails.text);
+    }
+    
+    console.log("Theme toggle tests PASSED successfully!");
+    
+    console.log("Running 2.5D SRT Style Verification Suite...");
+    const srtResult = await send('Runtime.evaluate', {
+      expression: `(async () => {
+        await new Promise(r => setTimeout(r, 300));
+        const button = document.querySelector('.theme-toggle-btn, .view-mode-pill, .button');
+        if (!button) throw new Error("No button element found to test 2.5D styling");
+        
+        const buttonStyle = window.getComputedStyle(button);
+        if (!buttonStyle) throw new Error("Could not retrieve computed style for button");
+        
+        const card = document.querySelector('.snapshot-card, .project-card, .achievement-card, .personal-map-card, .card-base');
+        if (!card) throw new Error("No card element found on rendered page");
+        
+        return "SUCCESS";
+      })()`,
+      returnByValue: true,
+      awaitPromise: true
+    });
+    
+    if (srtResult.exceptionDetails) {
+      throw new Error("2.5D SRT Style evaluation failed: " + srtResult.exceptionDetails.text);
+    }
+    
+    console.log("2.5D SRT Style tests PASSED successfully!");
+    
+    console.log("Running Left Accessibility Sidebar & OpenDyslexic Toggle Suite...");
+    const a11yResult = await send('Runtime.evaluate', {
+      expression: `(async () => {
+        const fab = document.querySelector('#a11yToggleFab');
+        const sidebar = document.querySelector('#a11ySidebar');
+        const toggle = document.querySelector('#dyslexicToggle');
+        
+        if (!fab) throw new Error("Missing #a11yToggleFab button");
+        if (!sidebar) throw new Error("Missing #a11ySidebar drawer");
+        if (!toggle) throw new Error("Missing #dyslexicToggle checkbox");
+        
+        // 1. Open left sidebar
+        fab.click();
+        await new Promise(r => setTimeout(r, 100));
+        if (!sidebar.classList.contains('is-open')) {
+          throw new Error("Expected #a11ySidebar to have class 'is-open' after FAB click");
+        }
+        
+        // 2. Toggle OpenDyslexic font
+        toggle.click();
+        if (!document.body.classList.contains('dyslexic-mode')) {
+          throw new Error("Expected body to have class 'dyslexic-mode' after checking toggle");
+        }
+        
+        // 3. Toggle back
+        toggle.click();
+        if (document.body.classList.contains('dyslexic-mode')) {
+          throw new Error("Expected body to lose class 'dyslexic-mode' after unchecking toggle");
+        }
+        
+        // 4. Close sidebar
+        const closeBtn = document.querySelector('#a11yCloseBtn');
+        if (closeBtn) closeBtn.click();
+        await new Promise(r => setTimeout(r, 100));
+        if (sidebar.classList.contains('is-open')) {
+          throw new Error("Expected #a11ySidebar to close after clicking close button");
+        }
+        
+        return "SUCCESS";
+      })()`,
+      returnByValue: true,
+      awaitPromise: true
+    });
+    
+    if (a11yResult.exceptionDetails) {
+      throw new Error("Accessibility evaluation failed: " + a11yResult.exceptionDetails.text);
+    }
+    
+    console.log("Left Accessibility Sidebar & OpenDyslexic tests PASSED successfully!");
+    
+    console.log("Page loaded. Running view-mode toggle test...");
     // Run evaluation script to click view-mode buttons and verify
     const result = await send('Runtime.evaluate', {
       expression: `(() => {

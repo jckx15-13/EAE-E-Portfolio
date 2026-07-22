@@ -1056,11 +1056,63 @@
       "entries": []
     }
   },
+  "hobbies": {
+    "title": "Personal Hobbies & Explorations",
+    "intro": "Things I do purely out of curiosity and fun—from calculating the size of the sun using scale physics to tinkering with CAD models and hardware.",
+    "entries": [
+      {
+        "id": "hobby-sun-scale-physics",
+        "title": "Calculating the Size of the Sun via Scale Physics",
+        "category": "Physics & Curiosity",
+        "description": "Used pinhole optics, cardboard tube projection, and similar-triangles scale geometry to measure the sun's image diameter and calculate its physical size from first principles purely for fun.",
+        "image": "images/projects/exhibition_pitch.jpg",
+        "tags": ["Scale Physics", "Optics", "Geometry", "Curiosity"],
+        "takeaway": "Proves how simple geometry and physics principles can measure massive real-world astronomical scales without complex equipment."
+      },
+      {
+        "id": "hobby-3d-printing",
+        "title": "3D Printing & CAD Modeling",
+        "category": "Engineering",
+        "description": "Designing custom 3D models in Fusion 360 and 3D printing functional brackets, custom cases, and mechanical parts just to bring ideas into the physical world.",
+        "image": "images/projects/carnival_water_activity.jpg",
+        "tags": ["CAD", "3D Printing", "Prototyping"],
+        "takeaway": "Teaches spatial reasoning, iterative physical prototyping, and designing for real-world constraints."
+      },
+      {
+        "id": "hobby-ctf-hacking",
+        "title": "Cybersecurity CTFs & Puzzle Solving",
+        "category": "Cybersecurity",
+        "description": "Solving jeopardy-style CTF challenges across Web Exploitation, Cryptography, and Reverse Engineering on TryHackMe and picoCTF for the satisfaction of breaking down puzzles.",
+        "image": "images/projects/exhibition_pitch.jpg",
+        "tags": ["CTF", "Puzzles", "Reverse Engineering"],
+        "takeaway": "Develops a critical security mindset, analytical problem solving, and systematic investigation skills."
+      },
+      {
+        "id": "hobby-electronics-disassembly",
+        "title": "Reverse Engineering & Disassembling Electronics",
+        "category": "Hardware Tinkering",
+        "description": "Taking apart old broken gadgets, remote controls, and discarded circuit boards to inspect solder paths, chip architectures, and learn how everyday devices work inside.",
+        "image": "images/projects/exhibition_pitch.jpg",
+        "tags": ["Electronics", "Hardware", "Tinkering"],
+        "takeaway": "Provides intuitive familiarity with physical circuit boards, microcontrollers, and hardware safety."
+      },
+      {
+        "id": "hobby-water-sports",
+        "title": "Outdoor Water Sports & Kayaking",
+        "category": "Outdoors & Teamwork",
+        "description": "Participating in school carnival water activities, kayaking, and outdoor team activities for fun, fitness, and staying active.",
+        "image": "images/projects/carnival_water_activity.jpg",
+        "tags": ["Outdoors", "Kayaking", "Resilience"],
+        "takeaway": "Builds physical endurance, adaptability in outdoor environments, and active team cooperation."
+      }
+    ]
+  },
   "sectionVisibility": {},
   "uiLabels": {
     "heroBtnPrimary": "View strongest projects",
     "heroBtnSecondary": "View evidence timeline",
-    "heroBtnApplications": "View EAE direction",
+    "navBtnApplications": "View EAE direction",
+    "navHobbies": "Hobbies",
     "navAbout": "About",
     "navEvidence": "Evidence",
     "navProjects": "Projects",

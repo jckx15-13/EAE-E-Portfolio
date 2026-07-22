@@ -218,6 +218,7 @@
     ["Reflection", "reflections"],
     ["Gallery", "projects"],
     ["Library", "achievements"],
+    ["Hobbies", "hobbies"],
     ["Course Fit", "applications"],
     ["Goals", "goals"],
   ];
@@ -230,6 +231,7 @@
     "reflections",
     "gallery",
     "library",
+    "hobbies",
     "applications",
     "goals",
   ]);
@@ -2253,12 +2255,6 @@
   }
 
   function setupLiveEditor() {
-    // Hide editor from public view unless admin=true is in the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    if (!urlParams.has('admin')) return;
-    
-    document.body.classList.add('admin-mode');
-
     if ($(".live-editor-sidebar")) return;
 
     // Create FAB
@@ -2267,7 +2263,7 @@
     document.body.appendChild(fab);
 
     // Create Sidebar
-    const sidebar = create("aside", "live-editor-sidebar theme-admin");
+    const sidebar = create("aside", "live-editor-sidebar");
     sidebar.setAttribute("aria-label", "Live Portfolio Editor");
 
     const header = create("div", "sidebar-header");
@@ -2406,17 +2402,21 @@
     document.body.appendChild(sidebar);
 
     // Open/Close toggle
-    fab.addEventListener("click", () => {
-      sidebar.classList.toggle("is-open");
-      fab.classList.toggle("is-active");
-      fab.textContent = sidebar.classList.contains("is-open") ? "✖" : "🛠️";
-    });
+    const toggleEditor = (open) => {
+      const isOpen = open !== undefined ? open : !sidebar.classList.contains("is-open");
+      sidebar.classList.toggle("is-open", isOpen);
+      fab.classList.toggle("is-active", isOpen);
+      fab.textContent = isOpen ? "✖" : "🛠️";
+      if (isOpen) {
+        document.body.classList.add("admin-mode");
+        syncEditorOppositeTheme();
+      } else {
+        document.body.classList.remove("admin-mode");
+      }
+    };
 
-    closeBtn.addEventListener("click", () => {
-      sidebar.classList.remove("is-open");
-      fab.classList.remove("is-active");
-      fab.textContent = "🛠️";
-    });
+    fab.addEventListener("click", () => toggleEditor());
+    closeBtn.addEventListener("click", () => toggleEditor(false));
 
     let textEditingActive = false;
     let sectionShiftingActive = false;
@@ -2947,20 +2947,132 @@
     openModalDialog(dialog);
   }
 
+  function syncEditorOppositeTheme() {
+    const sidebar = document.querySelector(".live-editor-sidebar");
+    if (!sidebar) return;
+    const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+    
+    // Always apply the opposite class
+    if (currentTheme === 'light') {
+      sidebar.classList.remove('editor-opposite-light');
+      sidebar.classList.add('editor-opposite-dark');
+    } else {
+      sidebar.classList.remove('editor-opposite-dark');
+      sidebar.classList.add('editor-opposite-light');
+    }
+  }
+
   function setupThemeToggle() {
     const btn = $(SELECTORS.themeToggle);
-    if (!btn) return;
+    const editorBtn = $("#editorToggle");
 
     // Load saved theme or default to dark
     const savedTheme = localStorage.getItem(STORAGE_KEYS.theme) || 'dark';
     document.body.setAttribute('data-theme', savedTheme);
+    syncEditorOppositeTheme();
 
-    btn.addEventListener('click', () => {
-      const current = document.body.getAttribute('data-theme') || 'dark';
-      const nextTheme = current === 'dark' ? 'light' : 'dark';
-      document.body.setAttribute('data-theme', nextTheme);
-      localStorage.setItem(STORAGE_KEYS.theme, nextTheme);
-    });
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const current = document.body.getAttribute('data-theme') || 'dark';
+        const nextTheme = current === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', nextTheme);
+        localStorage.setItem(STORAGE_KEYS.theme, nextTheme);
+        syncEditorOppositeTheme();
+      });
+    }
+
+    if (editorBtn) {
+      editorBtn.addEventListener('click', () => {
+        if (!document.querySelector(".live-editor-sidebar")) {
+          setupLiveEditor(true);
+        }
+        const sidebar = document.querySelector(".live-editor-sidebar");
+        const fab = document.querySelector(".live-editor-fab");
+        if (sidebar) {
+          sidebar.classList.toggle("is-open");
+          const isOpen = sidebar.classList.contains("is-open");
+          if (fab) {
+            fab.classList.toggle("is-active", isOpen);
+            fab.textContent = isOpen ? "✖" : "🛠️";
+          }
+          if (isOpen) {
+            document.body.classList.add("admin-mode");
+            syncEditorOppositeTheme();
+          } else {
+            document.body.classList.remove("admin-mode");
+          }
+        }
+      });
+    }
+  }
+
+  function renderHobbies() {
+    const grid = $("#hobbiesGrid");
+    const filters = $("#hobbiesFilters");
+    const hobbiesData = data.hobbies || {};
+    const entries = Array.isArray(hobbiesData.entries) ? hobbiesData.entries : [];
+    if (!grid) return;
+
+    const categories = ["All", ...new Set(entries.map((item) => item.category || "General"))];
+    let activeCategory = "All";
+
+    function drawFilters() {
+      if (!filters) return;
+      renderFilterButtons(
+        filters,
+        categories,
+        (cat) => cat === activeCategory,
+        (cat) => { activeCategory = cat; drawFilters(); drawCards(); }
+      );
+    }
+
+    function drawCards() {
+      grid.replaceChildren();
+      const filtered = entries.filter((item) => activeCategory === "All" || item.category === activeCategory);
+
+      if (filtered.length === 0) {
+        grid.append(create("p", "empty-state", "No hobbies found matching category."));
+        return;
+      }
+
+      filtered.forEach((hobby) => {
+        const card = create("article", "hobby-card");
+
+        if (hobby.image) {
+          const imgFrame = create("div", "hobby-card-image");
+          const img = document.createElement("img");
+          img.src = hobby.image;
+          img.alt = hobby.title;
+          img.loading = "lazy";
+          imgFrame.append(img);
+          card.append(imgFrame);
+        }
+
+        if (hobby.category) {
+          card.append(create("span", "hobby-category-badge", hobby.category));
+        }
+
+        card.append(create("h3", "hobby-card-title", hobby.title));
+        card.append(create("p", "hobby-card-desc", hobby.description));
+
+        if (hobby.takeaway) {
+          card.append(create("div", "hobby-takeaway", `Takeaway: ${hobby.takeaway}`));
+        }
+
+        if (Array.isArray(hobby.tags) && hobby.tags.length > 0) {
+          const tagsWrap = create("div", "hobby-tags");
+          hobby.tags.forEach((tag) => {
+            tagsWrap.append(create("span", "hobby-tag-pill", `#${tag}`));
+          });
+          card.append(tagsWrap);
+        }
+
+        grid.append(card);
+      });
+    }
+
+    drawFilters();
+    drawCards();
   }
 
   /* ==========================================================================
@@ -2981,6 +3093,7 @@
     renderProjects();
     renderApplications();
     renderAchievements();
+    renderHobbies();
     renderGoals();
     renderOptionalSections();
     setupModal();
@@ -2992,6 +3105,44 @@
     setupReveal();
     setupHintTooltips();
     setupLiveEditor();
+    setupAccessibilitySidebar();
+  }
+
+  function setupAccessibilitySidebar() {
+    const fab = $('#a11yToggleFab');
+    const sidebar = $('#a11ySidebar');
+    const closeBtn = $('#a11yCloseBtn');
+    const dyslexicToggle = $('#dyslexicToggle');
+
+    if (!fab || !sidebar || !dyslexicToggle) return;
+
+    // Load persisted dyslexic mode preference
+    const isDyslexic = localStorage.getItem('eae_a11y_dyslexic') === 'true';
+    if (isDyslexic) {
+      document.body.classList.add('dyslexic-mode');
+      dyslexicToggle.checked = true;
+    }
+
+    // Toggle Left Sidebar
+    const toggleSidebar = (open) => {
+      sidebar.classList.toggle('is-open', open);
+    };
+
+    fab.addEventListener('click', () => {
+      const isOpen = sidebar.classList.contains('is-open');
+      toggleSidebar(!isOpen);
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => toggleSidebar(false));
+    }
+
+    // Toggle OpenDyslexic Font
+    dyslexicToggle.addEventListener('change', (e) => {
+      const enabled = e.target.checked;
+      document.body.classList.toggle('dyslexic-mode', enabled);
+      localStorage.setItem('eae_a11y_dyslexic', enabled ? 'true' : 'false');
+    });
   }
 
   if (document.readyState === "loading") {
