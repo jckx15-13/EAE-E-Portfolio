@@ -2651,8 +2651,194 @@ body.live-editing-active [contenteditable="true"] {
   box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
 }
 
+/* Redesigned Premium Footer Styling */
+.site-footer-redesign {
+  background: var(--theme-card-bg, rgba(15, 23, 42, 0.85));
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--theme-border, rgba(56, 189, 248, 0.25));
+  padding: 3.5rem 1.5rem 2.5rem;
+  margin-top: 5rem;
+  color: var(--theme-text-primary, #f8fafc);
+}
 
+.footer-redesign-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
 
+.footer-brand-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
 
+.footer-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid var(--theme-accent-cyan, #38bdf8);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--theme-accent-cyan, #38bdf8);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
 
+.footer-brand-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--theme-text-primary, #f8fafc);
+  margin: 0 0 0.2rem 0;
+}
 
+.footer-brand-sub {
+  font-size: 0.9rem;
+  color: var(--theme-text-muted, #94a3b8);
+  margin: 0;
+}
+
+.footer-target-pill {
+  display: inline-block;
+  padding: 0.5rem 1.1rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--theme-accent-cyan, #38bdf8);
+}
+
+/* 4 Core Pillars Grid */
+.footer-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.footer-pillar-card {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.3rem;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.footer-pillar-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--theme-accent-cyan, #38bdf8);
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.2);
+}
+
+.pillar-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pillar-num {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--theme-accent-cyan, #38bdf8);
+  letter-spacing: 0.08em;
+}
+
+.pillar-icon {
+  font-size: 1.4rem;
+}
+
+.footer-pillar-card h4 {
+  font-size: 1.05rem;
+  font-weight: 750;
+  color: var(--theme-text-primary, #f8fafc);
+  margin: 0;
+}
+
+.footer-pillar-card p {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--theme-text-muted, #94a3b8);
+  margin: 0;
+  flex: 1;
+}
+
+.pillar-link-text {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--theme-accent-cyan, #38bdf8);
+  margin-top: 0.4rem;
+}
+
+/* Central Tagline Banner */
+.footer-tagline-box {
+  text-align: center;
+  padding: 1.2rem;
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px dashed rgba(56, 189, 248, 0.25);
+  border-radius: 12px;
+}
+
+.footer-tagline-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--theme-text-primary, #f8fafc);
+  margin: 0;
+}
+
+/* Bottom Actions & Copyright */
+.footer-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-copyright {
+  font-size: 0.84rem;
+  color: var(--theme-text-muted, #64748b);
+  margin: 0;
+}
+
+.footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 1.1rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--theme-border, rgba(56, 189, 248, 0.3));
+  border-radius: 999px;
+  color: var(--theme-text-primary, #f1f5f9);
+  font-size: 0.85rem;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.footer-action-btn:hover {
+  background: var(--theme-accent-cyan, #38bdf8);
+  border-color: var(--theme-accent-cyan, #38bdf8);
+  color: #0f172a;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+}
