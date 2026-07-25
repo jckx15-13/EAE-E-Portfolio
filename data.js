@@ -904,6 +904,8 @@
     }
   ],
   "futureGoals": {
+    "title": "Future Direction Roadmap",
+    "intro": "A structured timeline mapping my transition from secondary education into polytechnic specialization and a career in software engineering and cybersecurity.",
     "shortTerm": [
       "Build stronger programming skills",
       "Explore AI and software engineering",
@@ -914,6 +916,36 @@
       "Use technology and engineering to build practical solutions that improve people's lives",
       "Create positive social impact through useful, well-designed technology",
       "Become a professional Cybersecurity Analyst, designing secure systems and protecting infrastructure"
+    ],
+    "timelineMilestones": [
+      {
+        "phase": "Milestone 1 (2024–2026)",
+        "title": "O-Level Academic Excellence & Foundation",
+        "description": "Strengthening quantitative logic and mathematical reasoning (achieved A1 in O-Level Mathematics) while serving as ALP Champion at Juying Secondary School.",
+        "icon": "🎓",
+        "badge": "Academic Base"
+      },
+      {
+        "phase": "Milestone 2 (2026)",
+        "title": "Polytechnic EAE Application (SP & NP)",
+        "description": "Applying for Diploma in Cybersecurity & Digital Forensics at Singapore Polytechnic and Ngee Ann Polytechnic, backed by projects in NGO software, robotics, and gamified security.",
+        "icon": "🎯",
+        "badge": "EAE Target"
+      },
+      {
+        "phase": "Milestone 3 (2026–2029)",
+        "title": "Polytechnic Specialization & Wargames",
+        "description": "Mastering malware analysis, digital forensics, network traffic auditing (Wireshark), and participating in live red/blue team security simulations in SP's Cyber Wargame Centre.",
+        "icon": "🛡️",
+        "badge": "Specialization"
+      },
+      {
+        "phase": "Milestone 4 (2029+)",
+        "title": "Cybersecurity & Software Engineering Career",
+        "description": "Designing resilient software architectures, auditing threat vectors, protecting community infrastructure, and contributing to Singapore's digital resilience.",
+        "icon": "🚀",
+        "badge": "Career Vision"
+      }
     ]
   },
   "certifications": [
@@ -1051,7 +1083,6 @@
         "title": "Exploring Windows Files & System Internals",
         "category": "OS & File Systems",
         "description": "Explored Windows file structures, system directories, environment variables, hidden files, registry keys, and PowerShell automation out of pure curiosity to understand how operating systems manage processes and user data.",
-        "image": "images/projects/portfolio_preview.png",
         "tags": [
           "Windows",
           "File Systems",
@@ -1065,7 +1096,6 @@
         "title": "Trying Linux & Command Line Environments",
         "category": "Linux & Systems",
         "description": "Set up Linux environments, practiced terminal navigation without a GUI, learned bash scripting, file permissions (chmod/chown), and explored system directories like /etc, /var, and /usr.",
-        "image": "images/projects/group_lobby.jpg",
         "tags": [
           "Linux",
           "Bash",
@@ -1079,7 +1109,6 @@
         "title": "Learning About AI & Machine Learning Concepts",
         "category": "Artificial Intelligence",
         "description": "Self-studied how modern AI models, neural networks, and LLMs work under the hood. Experimented with prompt engineering, local model execution, and AI-assisted coding to see how AI transforms problem solving.",
-        "image": "images/projects/space_attack_preview.png",
         "tags": [
           "AI",
           "Machine Learning",
@@ -1093,7 +1122,6 @@
         "title": "Calculating the Size of the Sun via Scale Physics",
         "category": "Physics & Curiosity",
         "description": "Used pinhole optics, cardboard tube projection, and similar-triangles scale geometry to measure the sun's image diameter and calculate its physical size from first principles purely for fun.",
-        "image": "images/projects/exhibition_pitch.jpg",
         "tags": [
           "Scale Physics",
           "Optics",
@@ -1107,7 +1135,6 @@
         "title": "3D Printing & Hardware Tinkering",
         "category": "Engineering",
         "description": "Designing 3D models in Fusion 360, 3D printing custom parts, and disassembling old electronics to inspect solder paths, chip architectures, and hardware components.",
-        "image": "images/projects/carnival_water_activity.jpg",
         "tags": [
           "CAD",
           "3D Printing",

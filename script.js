@@ -1394,7 +1394,7 @@
         timelineWrap.style.display = "block";
       } else {
         cards.style.display = "";
-        timelineWrap.style.display = "none";
+        timelineWrap.style.display = "block";
       }
     }
 
@@ -2566,6 +2566,24 @@
   function renderGoals() {
     renderGoalList("#shortTermGoals", data.futureGoals?.shortTerm || []);
     renderGoalList("#longTermGoals", data.futureGoals?.longTerm || []);
+
+    const timelineContainer = $("#futureDirectionTimeline");
+    if (timelineContainer && Array.isArray(data.futureGoals?.timelineMilestones)) {
+      timelineContainer.replaceChildren();
+      const milestoneWrap = create("div", "future-roadmap-grid");
+      (data.futureGoals.timelineMilestones || []).forEach((m, index) => {
+        const item = create("article", "future-roadmap-card reveal");
+        const top = create("div", "future-roadmap-top");
+        top.append(create("span", "future-step-badge", m.badge || `Step ${index + 1}`));
+        top.append(create("span", "future-icon", m.icon || "🎯"));
+        item.append(top);
+        item.append(create("p", "card-kicker", m.phase));
+        item.append(create("h3", "future-title", m.title));
+        item.append(create("p", "future-desc", m.description));
+        milestoneWrap.append(item);
+      });
+      timelineContainer.append(milestoneWrap);
+    }
   }
 
   function renderGoalList(selector, goals) {
@@ -4013,7 +4031,7 @@
       filtered.forEach((hobby) => {
         const card = create("article", "hobby-card");
 
-        if (hobby.image) {
+        if (hobby.image && hobby.image.trim() !== "") {
           const imgFrame = create("div", "hobby-card-image");
           const img = document.createElement("img");
           img.src = hobby.image;
@@ -4021,6 +4039,18 @@
           img.loading = "lazy";
           imgFrame.append(img);
           card.append(imgFrame);
+        } else {
+          const iconMap = {
+            "OS & File Systems": "💻",
+            "Linux & Systems": "🐧",
+            "Artificial Intelligence": "🤖",
+            "Physics & Curiosity": "🔭",
+            "Engineering": "⚙️"
+          };
+          const icon = iconMap[hobby.category] || "🚀";
+          const iconHeader = create("div", "hobby-card-icon-header");
+          iconHeader.append(create("span", "hobby-icon-emoji", icon));
+          card.append(iconHeader);
         }
 
         if (hobby.category) {
