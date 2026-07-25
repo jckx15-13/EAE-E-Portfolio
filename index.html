@@ -126,40 +126,18 @@
     -->
     </div>
 
+    <!-- // View mode selection (Cards, Timeline, Story) commented out per request
     <nav aria-label="View mode selection">
-  <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
-    <div class="view-mode-bar-inner">
-      <div class="view-mode-indicator" aria-hidden="true"></div>
-      <button id="view-cards" class="view-mode-pill is-active" type="button" role="tab" data-mode="cards" aria-selected="true" aria-controls="main">
-        <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="3" y="3" width="7" height="7"></rect>
-          <rect x="14" y="3" width="7" height="7"></rect>
-          <rect x="14" y="14" width="7" height="7"></rect>
-          <rect x="3" y="14" width="7" height="7"></rect>
-        </svg>
-        Cards
-      </button>
-      <button id="view-timeline" class="view-mode-pill" type="button" role="tab" data-mode="timeline" aria-selected="false" aria-controls="main">
-        <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="9" y1="5" x2="9" y2="19"></line>
-          <circle cx="9" cy="5" r="1.5"></circle>
-          <circle cx="9" cy="12" r="1.5"></circle>
-          <circle cx="9" cy="19" r="1.5"></circle>
-          <line x1="14" y1="5" x2="20" y2="5"></line>
-          <line x1="14" y1="12" x2="20" y2="12"></line>
-          <line x1="14" y1="19" x2="20" y2="19"></line>
-        </svg>
-        Timeline
-      </button>
-      <button id="view-story" class="view-mode-pill" type="button" role="tab" data-mode="story" aria-selected="false" aria-controls="main">
-        <svg class="view-mode-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-        </svg>
-        Story
-      </button>
-    </div>
-  </div>
-</nav>
+      <div class="view-mode-bar" role="tablist" aria-label="Portfolio view mode">
+        <div class="view-mode-bar-inner">
+          <div class="view-mode-indicator" aria-hidden="true"></div>
+          <button id="view-cards" class="view-mode-pill is-active" type="button" role="tab" data-mode="cards" aria-selected="true" aria-controls="main">Cards</button>
+          <button id="view-timeline" class="view-mode-pill" type="button" role="tab" data-mode="timeline" aria-selected="false" aria-controls="main">Timeline</button>
+          <button id="view-story" class="view-mode-pill" type="button" role="tab" data-mode="story" aria-selected="false" aria-controls="main">Story</button>
+        </div>
+      </div>
+    </nav>
+    -->
 <main id="main">
       <!-- 1. Hero Section -->
       <section id="about" class="hero section-dark unified-about-section">
@@ -462,182 +440,202 @@
 
       <!-- ═══ SECTION: Typography ═══ -->
       <section class="a11y-section" aria-labelledby="a11y-sec-typography">
-        <h3 class="a11y-section-title" id="a11y-sec-typography">
-          <span aria-hidden="true">📝</span> Typography
-        </h3>
+        <button type="button" class="a11y-section-header" aria-expanded="true" aria-controls="a11y-sec-typography-content">
+          <h3 class="a11y-section-title" id="a11y-sec-typography">
+            <span aria-hidden="true">📝</span> Typography
+          </h3>
+          <svg class="a11y-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
 
-        <!-- Font Library Grid -->
-        <div class="a11y-control-group">
-          <p class="a11y-control-label" id="fontPickerLabel">Choose Font</p>
-          <p class="a11y-hint">OpenDyslexic is the default — designed for reading ease.</p>
-          <div id="fontPickerGrid" class="a11y-font-grid" role="radiogroup" aria-labelledby="fontPickerLabel">
-            <!-- Font cards rendered by JS -->
+        <div id="a11y-sec-typography-content" class="a11y-section-content">
+          <!-- Font Library Grid -->
+          <div class="a11y-control-group">
+            <p class="a11y-control-label" id="fontPickerLabel">Choose Font</p>
+            <p class="a11y-hint">OpenDyslexic is the default — designed for reading ease.</p>
+            <div id="fontPickerGrid" class="a11y-font-grid" role="radiogroup" aria-labelledby="fontPickerLabel">
+              <!-- Font cards rendered by JS -->
+            </div>
           </div>
-        </div>
 
-        <!-- Custom Google Font Search -->
-        <div class="a11y-control-group">
-          <label class="a11y-control-label" for="fontSearchInput">Search Google Fonts</label>
-          <div class="a11y-font-search-wrap">
-            <input
-              type="search"
-              id="fontSearchInput"
-              class="a11y-font-search-input"
-              placeholder="e.g. Roboto, Merriweather…"
-              aria-label="Search and load any Google Font"
-              autocomplete="off"
-            />
-            <button id="fontSearchBtn" class="a11y-font-search-btn" type="button" aria-label="Apply searched font">Apply</button>
+          <!-- Custom Google Font Search -->
+          <div class="a11y-control-group">
+            <label class="a11y-control-label" for="fontSearchInput">Search Google Fonts</label>
+            <div class="a11y-font-search-wrap">
+              <input
+                type="search"
+                id="fontSearchInput"
+                class="a11y-font-search-input"
+                placeholder="e.g. Roboto, Merriweather…"
+                aria-label="Search and load any Google Font"
+                autocomplete="off"
+              />
+              <button id="fontSearchBtn" class="a11y-font-search-btn" type="button" aria-label="Apply searched font">Apply</button>
+            </div>
+            <p id="fontSearchStatus" class="a11y-hint" aria-live="polite"></p>
           </div>
-          <p id="fontSearchStatus" class="a11y-hint" aria-live="polite"></p>
-        </div>
 
-        <!-- Text Size -->
-        <div class="a11y-control-group">
-          <label class="a11y-control-label" for="textSizeRange">Text Size</label>
-          <div class="a11y-slider-row">
-            <span class="a11y-slider-label a">A</span>
-            <input type="range" id="textSizeRange" class="a11y-range" min="85" max="140" step="5" value="100" aria-label="Adjust text size" aria-valuemin="85" aria-valuemax="140"/>
-            <span class="a11y-slider-label A">A</span>
+          <!-- Text Size -->
+          <div class="a11y-control-group">
+            <label class="a11y-control-label" for="textSizeRange">Text Size</label>
+            <div class="a11y-slider-row">
+              <span class="a11y-slider-label a">A</span>
+              <input type="range" id="textSizeRange" class="a11y-range" min="85" max="140" step="5" value="100" aria-label="Adjust text size" aria-valuemin="85" aria-valuemax="140"/>
+              <span class="a11y-slider-label A">A</span>
+            </div>
+            <p id="textSizeDisplay" class="a11y-hint" aria-live="polite">100%</p>
           </div>
-          <p id="textSizeDisplay" class="a11y-hint" aria-live="polite">100%</p>
-        </div>
 
-        <!-- Line Spacing -->
-        <div class="a11y-control-group">
-          <label class="a11y-control-label" for="lineSpacingRange">Line Spacing</label>
-          <div class="a11y-slider-row">
-            <span class="a11y-slider-label">≡</span>
-            <input type="range" id="lineSpacingRange" class="a11y-range" min="1.2" max="2.2" step="0.1" value="1.6" aria-label="Adjust line spacing"/>
-            <span class="a11y-slider-label">⩶</span>
+          <!-- Line Spacing -->
+          <div class="a11y-control-group">
+            <label class="a11y-control-label" for="lineSpacingRange">Line Spacing</label>
+            <div class="a11y-slider-row">
+              <span class="a11y-slider-label">≡</span>
+              <input type="range" id="lineSpacingRange" class="a11y-range" min="1.2" max="2.2" step="0.1" value="1.6" aria-label="Adjust line spacing"/>
+              <span class="a11y-slider-label">⩶</span>
+            </div>
+            <p id="lineSpacingDisplay" class="a11y-hint" aria-live="polite">1.6×</p>
           </div>
-          <p id="lineSpacingDisplay" class="a11y-hint" aria-live="polite">1.6×</p>
-        </div>
 
-        <!-- Letter Spacing -->
-        <div class="a11y-control-group">
-          <label class="a11y-control-label" for="letterSpacingRange">Letter Spacing</label>
-          <div class="a11y-slider-row">
-            <span class="a11y-slider-label">AZ</span>
-            <input type="range" id="letterSpacingRange" class="a11y-range" min="0" max="0.15" step="0.01" value="0" aria-label="Adjust letter spacing"/>
-            <span class="a11y-slider-label">A Z</span>
+          <!-- Letter Spacing -->
+          <div class="a11y-control-group">
+            <label class="a11y-control-label" for="letterSpacingRange">Letter Spacing</label>
+            <div class="a11y-slider-row">
+              <span class="a11y-slider-label">AZ</span>
+              <input type="range" id="letterSpacingRange" class="a11y-range" min="0" max="0.15" step="0.01" value="0" aria-label="Adjust letter spacing"/>
+              <span class="a11y-slider-label">A Z</span>
+            </div>
+            <p id="letterSpacingDisplay" class="a11y-hint" aria-live="polite">0em</p>
           </div>
-          <p id="letterSpacingDisplay" class="a11y-hint" aria-live="polite">0em</p>
         </div>
       </section>
 
       <!-- ═══ SECTION: Visual ═══ -->
       <section class="a11y-section" aria-labelledby="a11y-sec-visual">
-        <h3 class="a11y-section-title" id="a11y-sec-visual">
-          <span aria-hidden="true">🎨</span> Visual
-        </h3>
+        <button type="button" class="a11y-section-header" aria-expanded="true" aria-controls="a11y-sec-visual-content">
+          <h3 class="a11y-section-title" id="a11y-sec-visual">
+            <span aria-hidden="true">🎨</span> Visual
+          </h3>
+          <svg class="a11y-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
 
-        <!-- High Contrast -->
-        <div class="a11y-control-group">
-          <div class="a11y-control-row">
-            <span class="a11y-control-label">High Contrast</span>
-            <label class="a11y-switch">
-              <input type="checkbox" id="highContrastToggle" aria-label="Toggle high contrast mode">
-              <span class="a11y-slider"></span>
-            </label>
+        <div id="a11y-sec-visual-content" class="a11y-section-content">
+          <!-- High Contrast -->
+          <div class="a11y-control-group">
+            <div class="a11y-control-row">
+              <span class="a11y-control-label">High Contrast</span>
+              <label class="a11y-switch">
+                <input type="checkbox" id="highContrastToggle" aria-label="Toggle high contrast mode">
+                <span class="a11y-slider"></span>
+              </label>
+            </div>
+            <p class="a11y-hint">Increases contrast ratios across the site.</p>
           </div>
-          <p class="a11y-hint">Increases contrast ratios across the site.</p>
-        </div>
 
-        <!-- Saturation Boost -->
-        <div class="a11y-control-group">
-          <div class="a11y-control-row">
-            <span class="a11y-control-label">Saturation Boost</span>
-            <label class="a11y-switch">
-              <input type="checkbox" id="saturationToggle" aria-label="Toggle saturation boost for low-vision users">
-              <span class="a11y-slider"></span>
-            </label>
+          <!-- Saturation Boost -->
+          <div class="a11y-control-group">
+            <div class="a11y-control-row">
+              <span class="a11y-control-label">Saturation Boost</span>
+              <label class="a11y-switch">
+                <input type="checkbox" id="saturationToggle" aria-label="Toggle saturation boost for low-vision users">
+                <span class="a11y-slider"></span>
+              </label>
+            </div>
+            <p class="a11y-hint">Boosts colour vibrancy for low-vision users.</p>
           </div>
-          <p class="a11y-hint">Boosts colour vibrancy for low-vision users.</p>
-        </div>
 
-        <!-- Colour Blind Filters -->
-        <div class="a11y-control-group">
-          <p class="a11y-control-label" id="colorblindLabel">Colour Blind Filter</p>
-          <div class="a11y-radio-group" role="radiogroup" aria-labelledby="colorblindLabel">
-            <label class="a11y-radio-option">
-              <input type="radio" name="colorblindFilter" value="none" checked aria-label="No colour blind filter"> None
-            </label>
-            <label class="a11y-radio-option">
-              <input type="radio" name="colorblindFilter" value="protanopia" aria-label="Protanopia filter (red-green)"> Protanopia
-            </label>
-            <label class="a11y-radio-option">
-              <input type="radio" name="colorblindFilter" value="deuteranopia" aria-label="Deuteranopia filter (green-red)"> Deuteranopia
-            </label>
-            <label class="a11y-radio-option">
-              <input type="radio" name="colorblindFilter" value="tritanopia" aria-label="Tritanopia filter (blue-yellow)"> Tritanopia
-            </label>
+          <!-- Colour Blind Filters -->
+          <div class="a11y-control-group">
+            <p class="a11y-control-label" id="colorblindLabel">Colour Blind Filter</p>
+            <div class="a11y-radio-group" role="radiogroup" aria-labelledby="colorblindLabel">
+              <label class="a11y-radio-option">
+                <input type="radio" name="colorblindFilter" value="none" checked aria-label="No colour blind filter"> None
+              </label>
+              <label class="a11y-radio-option">
+                <input type="radio" name="colorblindFilter" value="protanopia" aria-label="Protanopia filter (red-green)"> Protanopia
+              </label>
+              <label class="a11y-radio-option">
+                <input type="radio" name="colorblindFilter" value="deuteranopia" aria-label="Deuteranopia filter (green-red)"> Deuteranopia
+              </label>
+              <label class="a11y-radio-option">
+                <input type="radio" name="colorblindFilter" value="tritanopia" aria-label="Tritanopia filter (blue-yellow)"> Tritanopia
+              </label>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- ═══ SECTION: Motion & Focus ═══ -->
       <section class="a11y-section" aria-labelledby="a11y-sec-motion">
-        <h3 class="a11y-section-title" id="a11y-sec-motion">
-          <span aria-hidden="true">🎭</span> Motion &amp; Focus
-        </h3>
+        <button type="button" class="a11y-section-header" aria-expanded="true" aria-controls="a11y-sec-motion-content">
+          <h3 class="a11y-section-title" id="a11y-sec-motion">
+            <span aria-hidden="true">🎭</span> Motion &amp; Focus
+          </h3>
+          <svg class="a11y-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
 
-        <!-- Reduce Motion -->
-        <div class="a11y-control-group">
-          <div class="a11y-control-row">
-            <span class="a11y-control-label">Reduce Motion</span>
-            <label class="a11y-switch">
-              <input type="checkbox" id="reduceMotionToggle" aria-label="Toggle reduce motion for vestibular disorders">
-              <span class="a11y-slider"></span>
-            </label>
+        <div id="a11y-sec-motion-content" class="a11y-section-content">
+          <!-- Reduce Motion -->
+          <div class="a11y-control-group">
+            <div class="a11y-control-row">
+              <span class="a11y-control-label">Reduce Motion</span>
+              <label class="a11y-switch">
+                <input type="checkbox" id="reduceMotionToggle" aria-label="Toggle reduce motion for vestibular disorders">
+                <span class="a11y-slider"></span>
+              </label>
+            </div>
+            <p class="a11y-hint">Disables animations and transitions site-wide.</p>
           </div>
-          <p class="a11y-hint">Disables animations and transitions site-wide.</p>
-        </div>
 
-        <!-- Focus Highlight -->
-        <div class="a11y-control-group">
-          <div class="a11y-control-row">
-            <span class="a11y-control-label">Focus Highlight</span>
-            <label class="a11y-switch">
-              <input type="checkbox" id="focusHighlightToggle" aria-label="Toggle enhanced focus ring for keyboard navigation">
-              <span class="a11y-slider"></span>
-            </label>
+          <!-- Focus Highlight -->
+          <div class="a11y-control-group">
+            <div class="a11y-control-row">
+              <span class="a11y-control-label">Focus Highlight</span>
+              <label class="a11y-switch">
+                <input type="checkbox" id="focusHighlightToggle" aria-label="Toggle enhanced focus ring for keyboard navigation">
+                <span class="a11y-slider"></span>
+              </label>
+            </div>
+            <p class="a11y-hint">Draws a vivid ring around the focused element.</p>
           </div>
-          <p class="a11y-hint">Draws a vivid ring around the focused element.</p>
-        </div>
 
-        <!-- Reading Guide -->
-        <div class="a11y-control-group">
-          <div class="a11y-control-row">
-            <span class="a11y-control-label">Reading Guide</span>
-            <label class="a11y-switch">
-              <input type="checkbox" id="readingGuideToggle" aria-label="Toggle reading guide ruler overlay">
-              <span class="a11y-slider"></span>
-            </label>
+          <!-- Reading Guide -->
+          <div class="a11y-control-group">
+            <div class="a11y-control-row">
+              <span class="a11y-control-label">Reading Guide</span>
+              <label class="a11y-switch">
+                <input type="checkbox" id="readingGuideToggle" aria-label="Toggle reading guide ruler overlay">
+                <span class="a11y-slider"></span>
+              </label>
+            </div>
+            <p class="a11y-hint">A horizontal ruler follows your cursor to guide reading.</p>
           </div>
-          <p class="a11y-hint">A horizontal ruler follows your cursor to guide reading.</p>
         </div>
       </section>
 
       <!-- ═══ SECTION: Input ═══ -->
       <section class="a11y-section" aria-labelledby="a11y-sec-input">
-        <h3 class="a11y-section-title" id="a11y-sec-input">
-          <span aria-hidden="true">🖱️</span> Input
-        </h3>
+        <button type="button" class="a11y-section-header" aria-expanded="true" aria-controls="a11y-sec-input-content">
+          <h3 class="a11y-section-title" id="a11y-sec-input">
+            <span aria-hidden="true">🖱️</span> Input
+          </h3>
+          <svg class="a11y-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
 
-        <!-- Cursor Size -->
-        <div class="a11y-control-group">
-          <p class="a11y-control-label" id="cursorSizeLabel">Cursor Size</p>
-          <div class="a11y-radio-group" role="radiogroup" aria-labelledby="cursorSizeLabel">
-            <label class="a11y-radio-option">
-              <input type="radio" name="cursorSize" value="normal" checked aria-label="Normal cursor"> Normal
-            </label>
-            <label class="a11y-radio-option">
-              <input type="radio" name="cursorSize" value="large" aria-label="Large cursor"> Large
-            </label>
-            <label class="a11y-radio-option">
-              <input type="radio" name="cursorSize" value="xl" aria-label="Extra large cursor"> Extra Large
-            </label>
+        <div id="a11y-sec-input-content" class="a11y-section-content">
+          <!-- Cursor Size -->
+          <div class="a11y-control-group">
+            <p class="a11y-control-label" id="cursorSizeLabel">Cursor Size</p>
+            <div class="a11y-radio-group" role="radiogroup" aria-labelledby="cursorSizeLabel">
+              <label class="a11y-radio-option">
+                <input type="radio" name="cursorSize" value="normal" checked aria-label="Normal cursor"> Normal
+              </label>
+              <label class="a11y-radio-option">
+                <input type="radio" name="cursorSize" value="large" aria-label="Large cursor"> Large
+              </label>
+              <label class="a11y-radio-option">
+                <input type="radio" name="cursorSize" value="xl" aria-label="Extra large cursor"> Extra Large
+              </label>
+            </div>
           </div>
         </div>
       </section>

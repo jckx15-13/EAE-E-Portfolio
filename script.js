@@ -4095,8 +4095,9 @@
    * ========================================================================== */
   function render() {
     setupThemeToggle();
-    setupViewModeToggleOnce();
-    setupViewModeBarVisibility();
+    // // View mode toggle commented out per request:
+    // setupViewModeToggleOnce();
+    // setupViewModeBarVisibility();
     renderNav();
     applySectionVisibility();
     renderCustomSections();
@@ -4480,15 +4481,36 @@
       });
     }
 
-    // ── Sidebar open / close ─────────────────────────────────────────────
+    // ── Foldable Accordion Vertical Tabs ───────────────────────────────────
+    const sectionHeaders = sidebar.querySelectorAll('.a11y-section-header');
+    sectionHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        header.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+        const section = header.closest('.a11y-section');
+        if (section) {
+          section.classList.toggle('is-collapsed', isExpanded);
+        }
+      });
+    });
+
+    // ── Sidebar open / close with same-position FAB toggle ─────────────────
+    const defaultFabHtml = fab.innerHTML;
+
     const toggleSidebar = (open) => {
       sidebar.classList.toggle('is-open', open);
       sidebar.setAttribute('aria-hidden', open ? 'false' : 'true');
       fab.setAttribute('aria-expanded', open ? 'true' : 'false');
+      fab.classList.toggle('is-open', open);
+
       if (open) {
-        // Move focus to the first interactive element inside
+        fab.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Close</span>`;
+        fab.setAttribute('aria-label', 'Close Accessibility Settings');
         const firstFocusable = sidebar.querySelector('button, input, [role="radio"]');
         if (firstFocusable) firstFocusable.focus();
+      } else {
+        fab.innerHTML = defaultFabHtml;
+        fab.setAttribute('aria-label', 'Open Accessibility Settings');
       }
     };
 
