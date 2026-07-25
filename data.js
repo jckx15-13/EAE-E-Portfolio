@@ -905,46 +905,58 @@
   ],
   "futureGoals": {
     "title": "Future Direction Roadmap",
-    "intro": "A structured timeline mapping my transition from secondary education into polytechnic specialization and a career in software engineering and cybersecurity.",
+    "intro": "A structured timeline mapping my transition from secondary education into polytechnic specialization, DIS service, university degree studies, and a career in cybersecurity and software engineering.",
     "shortTerm": [
-      "Build stronger programming skills",
-      "Explore AI and software engineering",
-      "Participate in more hackathons and competitions",
-      "Prepare for the core Networking and Operating System modules of the Cybersecurity diploma"
+      "Build stronger programming skills and algorithmic thinking",
+      "Explore AI, machine learning, and software engineering",
+      "Participate in hackathons, CTFs, and coding competitions",
+      "Prepare for core Networking, Operating Systems, and Security modules"
     ],
     "longTerm": [
-      "Use technology and engineering to build practical solutions that improve people's lives",
-      "Create positive social impact through useful, well-designed technology",
-      "Become a professional Cybersecurity Analyst, designing secure systems and protecting infrastructure"
+      "Serve in the Digital and Intelligence Service (DIS) protecting critical cyber infrastructure",
+      "Pursue a university degree in Mathematics & Cybersecurity or Computer Science",
+      "Become a professional Cybersecurity Specialist, designing resilient systems and safeguarding digital networks"
     ],
     "timelineMilestones": [
       {
-        "phase": "Milestone 1 (2024–2026)",
-        "title": "O-Level Academic Excellence & Foundation",
+        "date": "2024 – 2026",
+        "phase": "Foundational Base",
+        "title": "O-Level Academic Excellence & Mathematics Foundation",
         "description": "Strengthening quantitative logic and mathematical reasoning (achieved A1 in O-Level Mathematics) while serving as ALP Champion at Juying Secondary School.",
-        "icon": "🎓",
-        "badge": "Academic Base"
+        "badge": "Academic Base",
+        "icon": "🎓"
       },
       {
-        "phase": "Milestone 2 (2026)",
-        "title": "Polytechnic EAE Application (SP & NP)",
-        "description": "Applying for Diploma in Cybersecurity & Digital Forensics at Singapore Polytechnic and Ngee Ann Polytechnic, backed by projects in NGO software, robotics, and gamified security.",
-        "icon": "🎯",
-        "badge": "EAE Target"
+        "date": "2026 – 2029",
+        "phase": "Polytechnic EAE Target",
+        "title": "Diploma in Cybersecurity & Digital Forensics (SP / NP)",
+        "description": "Targeting Singapore Polytechnic and Ngee Ann Polytechnic. Mastering network defense, malware analysis, digital forensics, and participating in live Cyber Wargame Centre simulations.",
+        "badge": "EAE Target",
+        "icon": "🎯"
       },
       {
-        "phase": "Milestone 3 (2026–2029)",
-        "title": "Polytechnic Specialization & Wargames",
-        "description": "Mastering malware analysis, digital forensics, network traffic auditing (Wireshark), and participating in live red/blue team security simulations in SP's Cyber Wargame Centre.",
-        "icon": "🛡️",
-        "badge": "Specialization"
+        "date": "2029 – 2031",
+        "phase": "National Defense Service",
+        "title": "Digital and Intelligence Service (DIS) Service",
+        "description": "Planning to serve in DIS (Digital and Intelligence Service), applying software engineering and security analysis to protect Singapore's digital domain and critical cyber infrastructure.",
+        "badge": "DIS Service",
+        "icon": "🛡️"
       },
       {
-        "phase": "Milestone 4 (2029+)",
-        "title": "Cybersecurity & Software Engineering Career",
-        "description": "Designing resilient software architectures, auditing threat vectors, protecting community infrastructure, and contributing to Singapore's digital resilience.",
-        "icon": "🚀",
-        "badge": "Career Vision"
+        "date": "2031+",
+        "phase": "Higher Education & Degree",
+        "title": "Degree in Mathematics & Cybersecurity / Computer Science",
+        "description": "Pursuing a university degree specializing in Mathematics & Cybersecurity or Computer Science, combining advanced quantitative cryptanalysis with software engineering.",
+        "badge": "University Degree",
+        "icon": "🔬"
+      },
+      {
+        "date": "Long-Term Vision",
+        "phase": "Career Ambition",
+        "title": "Cybersecurity Specialist & Resilient Systems Architect",
+        "description": "Designing secure cloud and software architectures, performing threat auditing, and ensuring digital systems that people rely on remain private, secure, and resilient.",
+        "badge": "Career Vision",
+        "icon": "🚀"
       }
     ]
   },

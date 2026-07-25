@@ -2570,19 +2570,29 @@
     const timelineContainer = $("#futureDirectionTimeline");
     if (timelineContainer && Array.isArray(data.futureGoals?.timelineMilestones)) {
       timelineContainer.replaceChildren();
-      const milestoneWrap = create("div", "future-roadmap-grid");
+      const timelineWrap = create("div", "timeline-container timeline-wrap");
+      const timelineEl = create("div", "timeline future-vertical-timeline");
+
       (data.futureGoals.timelineMilestones || []).forEach((m, index) => {
-        const item = create("article", "future-roadmap-card reveal");
+        const item = create("div", `timeline-item ${index % 2 === 0 ? "left" : "right"} reveal`);
+        const content = create("div", "timeline-content");
+
         const top = create("div", "future-roadmap-top");
         top.append(create("span", "future-step-badge", m.badge || `Step ${index + 1}`));
-        top.append(create("span", "future-icon", m.icon || "🎯"));
-        item.append(top);
-        item.append(create("p", "card-kicker", m.phase));
-        item.append(create("h3", "future-title", m.title));
-        item.append(create("p", "future-desc", m.description));
-        milestoneWrap.append(item);
+        if (m.icon) top.append(create("span", "future-icon", m.icon));
+        content.append(top);
+
+        if (m.date) content.append(create("p", "date-line", m.date));
+        if (m.phase) content.append(create("p", "card-kicker", m.phase));
+        content.append(create("h3", "", m.title));
+        content.append(create("p", "", m.description));
+
+        item.append(content);
+        timelineEl.append(item);
       });
-      timelineContainer.append(milestoneWrap);
+
+      timelineWrap.append(timelineEl);
+      timelineContainer.append(timelineWrap);
     }
   }
 
