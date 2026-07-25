@@ -1,3 +1,7 @@
+/* ==========================================================================
+   FONT IMPORTS — OpenDyslexic (default) + alternate picks
+   ========================================================================== */
+/* OpenDyslexic — primary default font, authentic from opendyslexic.org */
 @import url('https://fonts.cdnfonts.com/css/open-dyslexic');
 @import url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/open-dyslexic.css');
 
@@ -137,7 +141,8 @@ body {
   padding-top: var(--site-chrome-height);
   color: var(--theme-text-primary);
   background: var(--theme-bg);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Default font = OpenDyslexic for maximum inclusivity */
+  font-family: 'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', sans-serif;
   font-size: 16px;
   line-height: 1.6;
   letter-spacing: 0;
@@ -1445,20 +1450,23 @@ body[data-theme="light"] .theme-icon-moon { display: none; }
 .a11y-sidebar {
   position: fixed;
   top: 0;
-  left: -340px;
-  width: 320px;
+  left: -380px;
+  width: 360px;
   height: 100vh;
   z-index: 10000;
   background: var(--theme-chrome-bg);
   color: var(--theme-text-primary);
   border-right: 2px solid var(--theme-accent-cyan);
   box-shadow: 8px 0 32px rgba(0, 0, 0, 0.35);
-  padding: 24px 20px;
+  padding: 20px 18px 28px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   transition: left 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-border) transparent;
 }
 
 .a11y-sidebar.is-open {
@@ -1493,6 +1501,317 @@ body[data-theme="light"] .theme-icon-moon { display: none; }
   justify-content: space-between;
 }
 
+/* ── A11y Sidebar: Section headers ─────────────────────────────────────── */
+.a11y-sidebar-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--theme-text-primary);
+}
+
+.a11y-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.a11y-section-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--theme-accent-cyan);
+  margin: 0 0 2px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── A11y Sidebar: Control label ───────────────────────────────────────── */
+.a11y-control-label {
+  display: block;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--theme-text-secondary);
+  margin: 0 0 2px 0;
+}
+
+/* ── A11y Sidebar: Hint text ───────────────────────────────────────────── */
+.a11y-hint {
+  margin: 4px 0 0 0;
+  font-size: 0.77rem;
+  color: var(--theme-text-muted);
+  line-height: 1.45;
+}
+
+/* ── A11y Sidebar: Font grid ───────────────────────────────────────────── */
+.a11y-font-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.a11y-font-card {
+  padding: 10px 8px;
+  border-radius: 8px;
+  border: 1.5px solid var(--theme-border);
+  background: var(--theme-surface-soft);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: center;
+  min-height: 58px;
+  justify-content: center;
+  position: relative;
+  outline: none;
+}
+
+.a11y-font-card:focus-visible {
+  outline: 3px solid var(--theme-accent-cyan);
+  outline-offset: 2px;
+}
+
+.a11y-font-card:hover {
+  border-color: var(--theme-accent-cyan);
+  background: rgba(56, 189, 248, 0.07);
+}
+
+.a11y-font-card.is-active,
+.a11y-font-card[aria-checked="true"] {
+  border-color: var(--theme-accent-cyan);
+  background: rgba(56, 189, 248, 0.13);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+.a11y-font-card-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--theme-text-primary);
+}
+
+.a11y-font-card-tag {
+  font-size: 0.65rem;
+  color: var(--theme-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.a11y-font-card-badge {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  font-size: 0.6rem;
+  background: var(--theme-accent-cyan);
+  color: #0b1525;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* ── A11y Sidebar: Font search ─────────────────────────────────────────── */
+.a11y-font-search-wrap {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.a11y-font-search-input {
+  flex: 1;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-surface-soft);
+  color: var(--theme-text-primary);
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.a11y-font-search-input:focus {
+  border-color: var(--theme-accent-cyan);
+}
+
+.a11y-font-search-btn {
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: var(--theme-accent-cyan);
+  color: #0b1525;
+  font-weight: 700;
+  font-size: 0.82rem;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.18s;
+  white-space: nowrap;
+}
+
+.a11y-font-search-btn:hover { opacity: 0.85; }
+
+/* ── A11y Sidebar: Range sliders ───────────────────────────────────────── */
+.a11y-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.a11y-slider-label {
+  font-size: 0.75rem;
+  color: var(--theme-text-muted);
+  min-width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.a11y-range {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--theme-accent-cyan) 0%, var(--theme-border) 0%);
+  outline: none;
+  cursor: pointer;
+}
+
+.a11y-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--theme-accent-cyan);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.a11y-range::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* ── A11y Sidebar: Radio groups ────────────────────────────────────────── */
+.a11y-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.a11y-radio-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.83rem;
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  padding: 5px 6px;
+  border-radius: 5px;
+  transition: background 0.15s;
+}
+
+.a11y-radio-option:hover {
+  background: rgba(56, 189, 248, 0.07);
+}
+
+.a11y-radio-option input[type="radio"] {
+  accent-color: var(--theme-accent-cyan);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* ── A11y Sidebar: Toggle switch ───────────────────────────────────────── */
+.a11y-switch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.a11y-switch input { display: none; }
+
+.a11y-slider {
+  display: block;
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--theme-border);
+  position: relative;
+  transition: background 0.2s;
+}
+
+.a11y-slider::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+}
+
+.a11y-switch input:checked + .a11y-slider {
+  background: var(--theme-accent-cyan);
+}
+
+.a11y-switch input:checked + .a11y-slider::after {
+  transform: translateX(18px);
+}
+
+/* ── A11y Sidebar: Skip & Reset buttons ────────────────────────────────── */
+.a11y-skip-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: var(--theme-surface-soft);
+  border: 1px solid var(--theme-border);
+  color: var(--theme-accent-cyan);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.18s, border-color 0.18s;
+  width: 100%;
+}
+
+.a11y-skip-btn:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: var(--theme-accent-cyan);
+}
+
+.a11y-reset-btn {
+  margin-top: 4px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--theme-border);
+  background: transparent;
+  color: var(--theme-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  text-align: center;
+}
+
+.a11y-reset-btn:hover {
+  background: rgba(167, 139, 250, 0.1);
+  border-color: var(--theme-accent-purple);
+  color: var(--theme-accent-purple);
+}
+
 /* Top Bar Oval Button - School Portfolio */
 .school-portfolio-oval-btn {
   display: inline-flex;
@@ -1518,7 +1837,21 @@ body[data-theme="light"] .theme-icon-moon { display: none; }
   transform: translateY(-1px) scale(1.02);
 }
 
-/* OpenDyslexic Font Cascade - Authentic Heavy-Bottom Dyslexia Font */
+
+/* ==========================================================================
+   ACCESSIBILITY — Custom Font Mode
+   When JS applies a custom font via the picker, --a11y-font-override is set
+   on :root and picked up by this cascade. .dyslexic-mode is kept as a class
+   fallback for the OpenDyslexic card selection.
+   ========================================================================== */
+
+/* Custom font override: injected by JS as a CSS variable on :root */
+body,
+body * {
+  font-family: var(--a11y-font-override, 'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', sans-serif);
+}
+
+/* Dyslexic mode (kept for backwards-compat / test harness) */
 body.dyslexic-mode,
 body.dyslexic-mode * {
   font-family: 'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', sans-serif !important;
@@ -1539,6 +1872,120 @@ body.dyslexic-mode b {
   font-family: 'OpenDyslexic', 'OpenDyslexic-Bold', 'OpenDyslexic3', sans-serif !important;
   font-weight: 700 !important;
 }
+
+/* ==========================================================================
+   ACCESSIBILITY — High Contrast Mode
+   ========================================================================== */
+body.high-contrast-mode {
+  filter: contrast(1.45) brightness(1.05);
+}
+
+/* ==========================================================================
+   ACCESSIBILITY — Saturation Boost
+   ========================================================================== */
+body.saturation-boost-mode {
+  filter: saturate(1.6);
+}
+
+/* Combined modes stack gracefully */
+body.high-contrast-mode.saturation-boost-mode {
+  filter: contrast(1.45) brightness(1.05) saturate(1.6);
+}
+
+/* ==========================================================================
+   ACCESSIBILITY — Colour Blind Overlay
+   ========================================================================== */
+.colorblind-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+body[data-colorblind="protanopia"] .colorblind-overlay,
+body[data-colorblind="deuteranopia"] .colorblind-overlay,
+body[data-colorblind="tritanopia"] .colorblind-overlay {
+  display: block;
+}
+
+body[data-colorblind="protanopia"] {
+  filter: url(#cb-protanopia);
+}
+body[data-colorblind="deuteranopia"] {
+  filter: url(#cb-deuteranopia);
+}
+body[data-colorblind="tritanopia"] {
+  filter: url(#cb-tritanopia);
+}
+
+/* Combine colour-blind + high-contrast + saturation */
+body[data-colorblind="protanopia"].high-contrast-mode {
+  filter: url(#cb-protanopia) contrast(1.45);
+}
+body[data-colorblind="deuteranopia"].high-contrast-mode {
+  filter: url(#cb-deuteranopia) contrast(1.45);
+}
+body[data-colorblind="tritanopia"].high-contrast-mode {
+  filter: url(#cb-tritanopia) contrast(1.45);
+}
+
+/* ==========================================================================
+   ACCESSIBILITY — Reduce Motion
+   ========================================================================== */
+body.reduce-motion-mode *,
+body.reduce-motion-mode *::before,
+body.reduce-motion-mode *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY — Focus Highlight Mode
+   ========================================================================== */
+body.focus-highlight-mode :focus-visible {
+  outline: 4px solid #facc15 !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 0 6px rgba(250, 204, 21, 0.35) !important;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY — Reading Guide
+   ========================================================================== */
+.reading-guide {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 36px;
+  background: rgba(250, 204, 21, 0.12);
+  border-top: 2px solid rgba(250, 204, 21, 0.6);
+  border-bottom: 2px solid rgba(250, 204, 21, 0.6);
+  pointer-events: none;
+  z-index: 99998;
+  transition: top 40ms linear;
+}
+
+body.reading-guide-mode .reading-guide {
+  display: block;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY — Cursor Size
+   ========================================================================== */
+body[data-cursor="large"],
+body[data-cursor="large"] * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M5 5l30 13-13 4-4 13z' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 5 5, auto !important;
+}
+
+body[data-cursor="xl"],
+body[data-cursor="xl"] * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M6 6l44 18-18 6-6 18z' fill='white' stroke='black' stroke-width='2.5'/%3E%3C/svg%3E") 6 6, auto !important;
+}
+
+
 
 /* Live Editor Sidebar & Admin Controls */
 .live-editor-fab {

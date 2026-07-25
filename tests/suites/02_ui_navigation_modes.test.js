@@ -50,8 +50,8 @@ async function runUINavigationTests(harness) {
 
       const initialTheme = document.body.getAttribute('data-theme') || 'dark';
 
-      // Test Light Mode computed background
-      document.body.setAttribute('data-theme', 'light');
+      // Toggle to Light Mode via button click
+      toggle.click();
       await new Promise(r => setTimeout(r, 200));
       const lightBg = window.getComputedStyle(document.body).backgroundColor;
       const lightRgb = lightBg.replace(/[^0-9,]/g, '').split(',').map(Number);
@@ -59,8 +59,8 @@ async function runUINavigationTests(harness) {
         throw new Error('Light theme background is too dark: ' + lightBg);
       }
 
-      // Test Dark Mode computed background
-      document.body.setAttribute('data-theme', 'dark');
+      // Toggle back to Dark Mode via button click
+      toggle.click();
       await new Promise(r => setTimeout(r, 200));
       const darkBg = window.getComputedStyle(document.body).backgroundColor;
       const darkRgb = darkBg.replace(/[^0-9,]/g, '').split(',').map(Number);
@@ -68,8 +68,11 @@ async function runUINavigationTests(harness) {
         throw new Error('Dark theme background is too light: ' + darkBg);
       }
 
-      // Restore initial theme
-      document.body.setAttribute('data-theme', initialTheme);
+      // Restore initial theme if needed
+      const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+      if (currentTheme !== initialTheme) {
+        toggle.click();
+      }
       return 'SUCCESS';
     })()`);
 

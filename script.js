@@ -4124,23 +4124,372 @@
   }
 
   function setupAccessibilitySidebar() {
-    const fab = $('#a11yToggleFab');
-    const sidebar = $('#a11ySidebar');
-    const closeBtn = $('#a11yCloseBtn');
-    const dyslexicToggle = $('#dyslexicToggle');
+    const fab       = $('#a11yToggleFab');
+    const sidebar   = $('#a11ySidebar');
+    const closeBtn  = $('#a11yCloseBtn');
+    if (!fab || !sidebar) return;
 
-    if (!fab || !sidebar || !dyslexicToggle) return;
+    // ── Curated font library (loaded from Google Fonts + CDN) ─────────────
+    const FONT_LIBRARY = [
+      { family: 'OpenDyslexic',         label: 'OpenDyslexic',       tag: 'Dyslexia',       recommended: true,  css: null /* CDN pre-loaded */ },
+      { family: 'Atkinson Hyperlegible', label: 'Atkinson\nHyperlegible', tag: 'Low Vision', recommended: true,  css: 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap' },
+      { family: 'Lexend',               label: 'Lexend',             tag: 'Reading',        recommended: true,  css: 'https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap' },
+      { family: 'Inter',                label: 'Inter',              tag: 'System',         recommended: false, css: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' },
+      { family: 'Comic Neue',           label: 'Comic Neue',         tag: 'Casual',         recommended: false, css: 'https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap' },
+      { family: 'Nunito',               label: 'Nunito',             tag: 'Rounded',        recommended: false, css: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap' },
+      { family: 'Space Grotesk',        label: 'Space\nGrotesk',     tag: 'Tech',           recommended: false, css: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap' },
+      { family: 'Georgia',              label: 'Georgia',            tag: 'Serif',          recommended: false, css: null /* system font */ },
+    ];
 
-    // Load persisted dyslexic mode preference
-    const isDyslexic = localStorage.getItem('eae_a11y_dyslexic') === 'true';
-    if (isDyslexic) {
-      document.body.classList.add('dyslexic-mode');
-      dyslexicToggle.checked = true;
+    // Track current font selection
+    let currentFont = localStorage.getItem('eae_a11y_font') || 'OpenDyslexic';
+
+    // Utility: inject a Google Font link tag (idempotent)
+    function ensureFontLoaded(cssUrl) {
+      if (!cssUrl) return;
+      const existing = document.querySelector(`link[href="${cssUrl}"]`);
+      if (!existing) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = cssUrl;
+        document.head.appendChild(link);
+      }
     }
 
-    // Toggle Left Sidebar
+    // Apply font to entire site via CSS variable
+    function applyFont(family, persistKey) {
+      const fontStack = `'${family}', sans-serif`;
+      document.documentElement.style.setProperty('--a11y-font-override', fontStack);
+      // Backward compat: keep dyslexic-mode class for OpenDyslexic
+      document.body.classList.toggle('dyslexic-mode', family === 'OpenDyslexic');
+      if (persistKey !== false) {
+        localStorage.setItem('eae_a11y_font', family);
+      }
+      currentFont = family;
+      // Update grid active state
+      document.querySelectorAll('.a11y-font-card').forEach(card => {
+        const isActive = card.dataset.fontFamily === family;
+        card.classList.toggle('is-active', isActive);
+        card.setAttribute('aria-checked', isActive ? 'true' : 'false');
+      });
+    }
+
+    // ── Build font grid ──────────────────────────────────────────────────
+    const grid = $('#fontPickerGrid');
+    if (grid) {
+      FONT_LIBRARY.forEach(font => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'a11y-font-card';
+        card.dataset.fontFamily = font.family;
+        card.setAttribute('role', 'radio');
+        card.setAttribute('aria-checked', font.family === currentFont ? 'true' : 'false');
+        card.setAttribute('aria-label', `${font.label.replace('\n', ' ')} font${font.recommended ? ' (recommended)' : ''}`);
+        if (font.family === currentFont) card.classList.add('is-active');
+        // Render the name in its own typeface if the font family can be set inline
+        const nameEl = document.createElement('span');
+        nameEl.className = 'a11y-font-card-name';
+        nameEl.textContent = font.label;
+        nameEl.style.fontFamily = `'${font.family}', sans-serif`;
+        const tagEl = document.createElement('span');
+        tagEl.className = 'a11y-font-card-tag';
+        tagEl.textContent = font.tag;
+        card.appendChild(nameEl);
+        card.appendChild(tagEl);
+        if (font.recommended) {
+          const badge = document.createElement('span');
+          badge.className = 'a11y-font-card-badge';
+          badge.textContent = 'Rec';
+          badge.setAttribute('aria-hidden', 'true');
+          card.appendChild(badge);
+        }
+        card.addEventListener('click', () => {
+          ensureFontLoaded(font.css);
+          applyFont(font.family);
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    // ── Google Font search ───────────────────────────────────────────────
+    const fontSearchInput  = $('#fontSearchInput');
+    const fontSearchBtn    = $('#fontSearchBtn');
+    const fontSearchStatus = $('#fontSearchStatus');
+
+    function applySearchedFont() {
+      const raw = fontSearchInput ? fontSearchInput.value.trim() : '';
+      if (!raw) return;
+      // Normalise: "Roboto Mono" → "Roboto+Mono"
+      const encoded = encodeURIComponent(raw).replace(/%20/g, '+');
+      const cssUrl = `https://fonts.googleapis.com/css2?family=${encoded}:wght@400;700&display=swap`;
+      ensureFontLoaded(cssUrl);
+      // Give the browser a tick to parse the new stylesheet
+      setTimeout(() => {
+        applyFont(raw);
+        if (fontSearchStatus) {
+          fontSearchStatus.textContent = `✓ "${raw}" applied. If the font name was invalid it will fall back to the default.`;
+        }
+        if (fontSearchInput) fontSearchInput.value = '';
+      }, 400);
+    }
+
+    if (fontSearchBtn) fontSearchBtn.addEventListener('click', applySearchedFont);
+    if (fontSearchInput) {
+      fontSearchInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); applySearchedFont(); }
+      });
+    }
+
+    // Restore persisted font on load
+    if (currentFont) {
+      const found = FONT_LIBRARY.find(f => f.family === currentFont);
+      if (found) {
+        ensureFontLoaded(found.css);
+        applyFont(currentFont, false);
+      } else {
+        // Custom searched font
+        const encoded = encodeURIComponent(currentFont).replace(/%20/g, '+');
+        ensureFontLoaded(`https://fonts.googleapis.com/css2?family=${encoded}:wght@400;700&display=swap`);
+        applyFont(currentFont, false);
+      }
+    }
+
+    // ── Text size slider ─────────────────────────────────────────────────
+    const textSizeRange   = $('#textSizeRange');
+    const textSizeDisplay = $('#textSizeDisplay');
+    const savedTextSize   = parseFloat(localStorage.getItem('eae_a11y_textsize') || '100');
+    if (textSizeRange) {
+      textSizeRange.value = savedTextSize;
+      document.documentElement.style.fontSize = `${savedTextSize}%`;
+      if (textSizeDisplay) textSizeDisplay.textContent = `${savedTextSize}%`;
+      textSizeRange.addEventListener('input', () => {
+        const v = parseFloat(textSizeRange.value);
+        document.documentElement.style.fontSize = `${v}%`;
+        if (textSizeDisplay) textSizeDisplay.textContent = `${v}%`;
+        localStorage.setItem('eae_a11y_textsize', v);
+        updateSliderTrack(textSizeRange);
+      });
+      updateSliderTrack(textSizeRange);
+    }
+
+    // ── Line spacing slider ──────────────────────────────────────────────
+    const lineSpacingRange   = $('#lineSpacingRange');
+    const lineSpacingDisplay = $('#lineSpacingDisplay');
+    const savedLineSpacing   = parseFloat(localStorage.getItem('eae_a11y_linespacing') || '1.6');
+    if (lineSpacingRange) {
+      lineSpacingRange.value = savedLineSpacing;
+      document.body.style.lineHeight = savedLineSpacing;
+      if (lineSpacingDisplay) lineSpacingDisplay.textContent = `${savedLineSpacing.toFixed(1)}×`;
+      lineSpacingRange.addEventListener('input', () => {
+        const v = parseFloat(lineSpacingRange.value);
+        document.body.style.lineHeight = v;
+        if (lineSpacingDisplay) lineSpacingDisplay.textContent = `${v.toFixed(1)}×`;
+        localStorage.setItem('eae_a11y_linespacing', v);
+        updateSliderTrack(lineSpacingRange);
+      });
+      updateSliderTrack(lineSpacingRange);
+    }
+
+    // ── Letter spacing slider ────────────────────────────────────────────
+    const letterSpacingRange   = $('#letterSpacingRange');
+    const letterSpacingDisplay = $('#letterSpacingDisplay');
+    const savedLetterSpacing   = parseFloat(localStorage.getItem('eae_a11y_letterspacing') || '0');
+    if (letterSpacingRange) {
+      letterSpacingRange.value = savedLetterSpacing;
+      document.body.style.letterSpacing = `${savedLetterSpacing}em`;
+      if (letterSpacingDisplay) letterSpacingDisplay.textContent = `${savedLetterSpacing}em`;
+      letterSpacingRange.addEventListener('input', () => {
+        const v = parseFloat(letterSpacingRange.value);
+        document.body.style.letterSpacing = `${v}em`;
+        if (letterSpacingDisplay) letterSpacingDisplay.textContent = `${parseFloat(v.toFixed(2))}em`;
+        localStorage.setItem('eae_a11y_letterspacing', v);
+        updateSliderTrack(letterSpacingRange);
+      });
+      updateSliderTrack(letterSpacingRange);
+    }
+
+    // Utility: update range track fill colour
+    function updateSliderTrack(input) {
+      const min = parseFloat(input.min);
+      const max = parseFloat(input.max);
+      const val = parseFloat(input.value);
+      const pct = ((val - min) / (max - min)) * 100;
+      input.style.background =
+        `linear-gradient(to right, var(--theme-accent-cyan) ${pct}%, var(--theme-border) ${pct}%)`;
+    }
+
+    // ── High contrast ────────────────────────────────────────────────────
+    const highContrastToggle = $('#highContrastToggle');
+    if (highContrastToggle) {
+      const saved = localStorage.getItem('eae_a11y_highcontrast') === 'true';
+      highContrastToggle.checked = saved;
+      if (saved) document.body.classList.add('high-contrast-mode');
+      highContrastToggle.addEventListener('change', e => {
+        document.body.classList.toggle('high-contrast-mode', e.target.checked);
+        localStorage.setItem('eae_a11y_highcontrast', e.target.checked);
+      });
+    }
+
+    // ── Saturation boost ─────────────────────────────────────────────────
+    const saturationToggle = $('#saturationToggle');
+    if (saturationToggle) {
+      const saved = localStorage.getItem('eae_a11y_saturation') === 'true';
+      saturationToggle.checked = saved;
+      if (saved) document.body.classList.add('saturation-boost-mode');
+      saturationToggle.addEventListener('change', e => {
+        document.body.classList.toggle('saturation-boost-mode', e.target.checked);
+        localStorage.setItem('eae_a11y_saturation', e.target.checked);
+      });
+    }
+
+    // ── Colour blind filters ─────────────────────────────────────────────
+    const cbRadios = document.querySelectorAll('[name="colorblindFilter"]');
+    const savedCb  = localStorage.getItem('eae_a11y_colorblind') || 'none';
+    cbRadios.forEach(radio => {
+      if (radio.value === savedCb) radio.checked = true;
+      radio.addEventListener('change', () => {
+        const v = radio.value;
+        if (v === 'none') {
+          document.body.removeAttribute('data-colorblind');
+        } else {
+          document.body.setAttribute('data-colorblind', v);
+        }
+        localStorage.setItem('eae_a11y_colorblind', v);
+      });
+    });
+    if (savedCb && savedCb !== 'none') {
+      document.body.setAttribute('data-colorblind', savedCb);
+    }
+
+    // ── Reduce motion ────────────────────────────────────────────────────
+    const reduceMotionToggle = $('#reduceMotionToggle');
+    if (reduceMotionToggle) {
+      // Also respect OS preference
+      const osReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const saved = localStorage.getItem('eae_a11y_reducemotion') === 'true' || osReduceMotion;
+      reduceMotionToggle.checked = saved;
+      if (saved) document.body.classList.add('reduce-motion-mode');
+      reduceMotionToggle.addEventListener('change', e => {
+        document.body.classList.toggle('reduce-motion-mode', e.target.checked);
+        localStorage.setItem('eae_a11y_reducemotion', e.target.checked);
+      });
+    }
+
+    // ── Focus highlight ──────────────────────────────────────────────────
+    const focusHighlightToggle = $('#focusHighlightToggle');
+    if (focusHighlightToggle) {
+      const saved = localStorage.getItem('eae_a11y_focushighlight') === 'true';
+      focusHighlightToggle.checked = saved;
+      if (saved) document.body.classList.add('focus-highlight-mode');
+      focusHighlightToggle.addEventListener('change', e => {
+        document.body.classList.toggle('focus-highlight-mode', e.target.checked);
+        localStorage.setItem('eae_a11y_focushighlight', e.target.checked);
+      });
+    }
+
+    // ── Reading guide ────────────────────────────────────────────────────
+    const readingGuideToggle = $('#readingGuideToggle');
+    const readingGuideEl     = $('#readingGuide');
+    if (readingGuideToggle && readingGuideEl) {
+      const saved = localStorage.getItem('eae_a11y_readingguide') === 'true';
+      readingGuideToggle.checked = saved;
+      if (saved) document.body.classList.add('reading-guide-mode');
+      readingGuideToggle.addEventListener('change', e => {
+        document.body.classList.toggle('reading-guide-mode', e.target.checked);
+        localStorage.setItem('eae_a11y_readingguide', e.target.checked);
+      });
+      document.addEventListener('mousemove', e => {
+        if (document.body.classList.contains('reading-guide-mode')) {
+          readingGuideEl.style.top = `${e.clientY - 18}px`;
+        }
+      });
+    }
+
+    // ── Cursor size ──────────────────────────────────────────────────────
+    const cursorRadios = document.querySelectorAll('[name="cursorSize"]');
+    const savedCursor  = localStorage.getItem('eae_a11y_cursor') || 'normal';
+    cursorRadios.forEach(radio => {
+      if (radio.value === savedCursor) radio.checked = true;
+      radio.addEventListener('change', () => {
+        const v = radio.value;
+        if (v === 'normal') {
+          document.body.removeAttribute('data-cursor');
+        } else {
+          document.body.setAttribute('data-cursor', v);
+        }
+        localStorage.setItem('eae_a11y_cursor', v);
+      });
+    });
+    if (savedCursor !== 'normal') {
+      document.body.setAttribute('data-cursor', savedCursor);
+    }
+
+    // ── Reset all ────────────────────────────────────────────────────────
+    const resetBtn = $('#a11yResetAll');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        // Reset font
+        applyFont('OpenDyslexic');
+        document.documentElement.style.removeProperty('--a11y-font-override');
+        document.body.classList.remove('dyslexic-mode');
+
+        // Reset text size
+        document.documentElement.style.fontSize = '100%';
+        if (textSizeRange) { textSizeRange.value = 100; updateSliderTrack(textSizeRange); }
+        if (textSizeDisplay) textSizeDisplay.textContent = '100%';
+
+        // Reset line spacing
+        document.body.style.lineHeight = '1.6';
+        if (lineSpacingRange) { lineSpacingRange.value = 1.6; updateSliderTrack(lineSpacingRange); }
+        if (lineSpacingDisplay) lineSpacingDisplay.textContent = '1.6×';
+
+        // Reset letter spacing
+        document.body.style.letterSpacing = '0';
+        if (letterSpacingRange) { letterSpacingRange.value = 0; updateSliderTrack(letterSpacingRange); }
+        if (letterSpacingDisplay) letterSpacingDisplay.textContent = '0em';
+
+        // Reset toggles
+        document.body.classList.remove('high-contrast-mode', 'saturation-boost-mode',
+          'reduce-motion-mode', 'focus-highlight-mode', 'reading-guide-mode');
+        if (highContrastToggle) highContrastToggle.checked = false;
+        if (saturationToggle) saturationToggle.checked = false;
+        if (reduceMotionToggle) reduceMotionToggle.checked = false;
+        if (focusHighlightToggle) focusHighlightToggle.checked = false;
+        if (readingGuideToggle) readingGuideToggle.checked = false;
+
+        // Reset colour blind
+        document.body.removeAttribute('data-colorblind');
+        cbRadios.forEach(r => { r.checked = r.value === 'none'; });
+
+        // Reset cursor
+        document.body.removeAttribute('data-cursor');
+        cursorRadios.forEach(r => { r.checked = r.value === 'normal'; });
+
+        // Clear localStorage
+        const keys = [
+          'eae_a11y_font','eae_a11y_dyslexic','eae_a11y_textsize',
+          'eae_a11y_linespacing','eae_a11y_letterspacing','eae_a11y_highcontrast',
+          'eae_a11y_saturation','eae_a11y_colorblind','eae_a11y_reducemotion',
+          'eae_a11y_focushighlight','eae_a11y_readingguide','eae_a11y_cursor'
+        ];
+        keys.forEach(k => localStorage.removeItem(k));
+
+        // Reapply OpenDyslexic as default
+        const odStack = `'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', sans-serif`;
+        document.documentElement.style.setProperty('--a11y-font-override', odStack);
+      });
+    }
+
+    // ── Sidebar open / close ─────────────────────────────────────────────
     const toggleSidebar = (open) => {
       sidebar.classList.toggle('is-open', open);
+      sidebar.setAttribute('aria-hidden', open ? 'false' : 'true');
+      fab.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        // Move focus to the first interactive element inside
+        const firstFocusable = sidebar.querySelector('button, input, [role="radio"]');
+        if (firstFocusable) firstFocusable.focus();
+      }
     };
 
     fab.addEventListener('click', () => {
@@ -4149,15 +4498,37 @@
     });
 
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => toggleSidebar(false));
+      closeBtn.addEventListener('click', () => {
+        toggleSidebar(false);
+        fab.focus();
+      });
     }
 
-    // Toggle OpenDyslexic Font
-    dyslexicToggle.addEventListener('change', (e) => {
-      const enabled = e.target.checked;
-      document.body.classList.toggle('dyslexic-mode', enabled);
-      localStorage.setItem('eae_a11y_dyslexic', enabled ? 'true' : 'false');
+    // Close on Escape key
+    sidebar.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        toggleSidebar(false);
+        fab.focus();
+      }
     });
+
+    // Close when clicking outside the sidebar
+    document.addEventListener('click', e => {
+      if (
+        sidebar.classList.contains('is-open') &&
+        !sidebar.contains(e.target) &&
+        e.target !== fab &&
+        !fab.contains(e.target)
+      ) {
+        toggleSidebar(false);
+      }
+    }, { capture: false });
+
+    // ── Backward-compat: honour legacy dyslexic preference if set ────────
+    const legacyDyslexic = localStorage.getItem('eae_a11y_dyslexic');
+    if (legacyDyslexic === 'true' && !localStorage.getItem('eae_a11y_font')) {
+      applyFont('OpenDyslexic');
+    }
   }
 
   if (document.readyState === "loading") {

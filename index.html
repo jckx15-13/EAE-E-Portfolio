@@ -10,6 +10,36 @@
     />
     <meta name="author" content="Jaron Chew" />
     <meta name="theme-color" content="#0a1222" />
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         SECURITY HEADERS (via <meta> — GitHub Pages doesn't support .htaccess)
+         CSP: strict policy allowing only required CDN origins.
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self';
+        style-src 'self' 'unsafe-inline'
+          https://fonts.googleapis.com
+          https://fonts.cdnfonts.com
+          https://cdn.jsdelivr.net;
+        font-src 'self'
+          https://fonts.gstatic.com
+          https://fonts.cdnfonts.com
+          https://cdn.jsdelivr.net
+          data:;
+        img-src 'self' data: blob: https:;
+        connect-src 'self' data: https://fonts.googleapis.com;
+        frame-ancestors 'none';
+        base-uri 'self';
+        form-action 'self';
+      "
+    />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
+    <meta http-equiv="X-DNS-Prefetch-Control" content="on" />
     <meta property="og:title" content="Jaron Chew | EAE Portfolio" />
     <meta
       property="og:description"
@@ -24,17 +54,30 @@
       content="A card-style EAE portfolio centred on Jaron's learning journey, projects, achievements, and evidence."
     />
     <meta name="twitter:image" content="images/projects/exhibition_pitch.jpg" />
+    <!-- Google Fonts preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- OpenDyslexic — default site font, authentic from opendyslexic.org served via CDN
+         NOTE: cdnfonts.com serves dynamic CSS (varies by User-Agent) so SRI cannot be applied.
+         The jsdelivr link serves static CSS so SRI is enforced. -->
+    <link href="https://fonts.cdnfonts.com/css/open-dyslexic" rel="stylesheet" crossorigin="anonymous" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/open-dyslexic.css"
       rel="stylesheet"
+      integrity="sha384-NHDS+1Rxlaa506lWLgfd+JbQopGFnh8wMTM8kqCS7y3ZutgAW10RT/URu8LQBLQy"
+      crossorigin="anonymous"
     />
-    <link href="https://fonts.cdnfonts.com/css/open-dyslexic" rel="stylesheet" />
+    <!-- Fallback & alternate font stack (Google Fonts, loaded lazily by font picker)
+         NOTE: Google Fonts serves dynamic CSS per User-Agent, SRI cannot be applied. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@400;700&family=Comic+Neue:wght@400;700&family=Nunito:wght@400;700&display=swap"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
     <link rel="preload" href="images/projects/exhibition_pitch.jpg" as="image" />
-    <link rel="stylesheet" href="style.css?v=6" />
-    <script defer src="data.js?v=6"></script>
-    <script defer src="script.js?v=6"></script>
+    <link rel="stylesheet" href="style.css?v=7" />
+    <script defer src="data.js?v=7"></script>
+    <script defer src="script.js?v=7"></script>
   </head>
   <body id="top">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -394,39 +437,246 @@
     </dialog>
 
     <!-- Left Accessibility FAB Button -->
-    <button id="a11yToggleFab" class="a11y-toggle-fab" type="button" aria-label="Open Accessibility Settings" title="Accessibility Settings">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="12" y1="8" x2="12" y2="16"></line>
-        <line x1="8" y1="12" x2="16" y2="12"></line>
+    <button id="a11yToggleFab" class="a11y-toggle-fab" type="button" aria-label="Open Accessibility Settings" title="Accessibility Settings" aria-expanded="false" aria-controls="a11ySidebar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="5" r="2"/>
+        <path d="M12 22V12m0 0L9 7h6l-3 5z"/>
+        <path d="M9 12l-3 5m9-5l3 5"/>
       </svg>
       <span>Accessibility</span>
     </button>
 
     <!-- Left Accessibility Sidebar Drawer -->
-    <aside id="a11ySidebar" class="a11y-sidebar" aria-label="Accessibility Settings">
+    <aside id="a11ySidebar" class="a11y-sidebar" role="complementary" aria-label="Accessibility Settings" aria-hidden="true">
       <div class="a11y-sidebar-header">
-        <h3>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M12 8v8M8 12h8"></path>
+        <h2 class="a11y-sidebar-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="5" r="2"/>
+            <path d="M12 22V12m0 0L9 7h6l-3 5z"/>
+            <path d="M9 12l-3 5m9-5l3 5"/>
           </svg>
           Accessibility
-        </h3>
+        </h2>
         <button id="a11yCloseBtn" class="a11y-close-btn" type="button" aria-label="Close Accessibility Settings">&times;</button>
       </div>
 
-      <div class="a11y-control-group">
-        <div class="a11y-control-row">
-          <span class="a11y-control-label">OpenDyslexic Font</span>
-          <label class="a11y-switch">
-            <input type="checkbox" id="dyslexicToggle" aria-label="Toggle OpenDyslexic dyslexia-friendly font">
-            <span class="a11y-slider"></span>
-          </label>
+      <!-- ═══ SECTION: Typography ═══ -->
+      <section class="a11y-section" aria-labelledby="a11y-sec-typography">
+        <h3 class="a11y-section-title" id="a11y-sec-typography">
+          <span aria-hidden="true">📝</span> Typography
+        </h3>
+
+        <!-- Font Library Grid -->
+        <div class="a11y-control-group">
+          <p class="a11y-control-label" id="fontPickerLabel">Choose Font</p>
+          <p class="a11y-hint">OpenDyslexic is the default — designed for reading ease.</p>
+          <div id="fontPickerGrid" class="a11y-font-grid" role="radiogroup" aria-labelledby="fontPickerLabel">
+            <!-- Font cards rendered by JS -->
+          </div>
         </div>
-        <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: var(--theme-text-muted);">Switch site typography to OpenDyslexic font for enhanced reading clarity.</p>
-      </div>
+
+        <!-- Custom Google Font Search -->
+        <div class="a11y-control-group">
+          <label class="a11y-control-label" for="fontSearchInput">Search Google Fonts</label>
+          <div class="a11y-font-search-wrap">
+            <input
+              type="search"
+              id="fontSearchInput"
+              class="a11y-font-search-input"
+              placeholder="e.g. Roboto, Merriweather…"
+              aria-label="Search and load any Google Font"
+              autocomplete="off"
+            />
+            <button id="fontSearchBtn" class="a11y-font-search-btn" type="button" aria-label="Apply searched font">Apply</button>
+          </div>
+          <p id="fontSearchStatus" class="a11y-hint" aria-live="polite"></p>
+        </div>
+
+        <!-- Text Size -->
+        <div class="a11y-control-group">
+          <label class="a11y-control-label" for="textSizeRange">Text Size</label>
+          <div class="a11y-slider-row">
+            <span class="a11y-slider-label a">A</span>
+            <input type="range" id="textSizeRange" class="a11y-range" min="85" max="140" step="5" value="100" aria-label="Adjust text size" aria-valuemin="85" aria-valuemax="140"/>
+            <span class="a11y-slider-label A">A</span>
+          </div>
+          <p id="textSizeDisplay" class="a11y-hint" aria-live="polite">100%</p>
+        </div>
+
+        <!-- Line Spacing -->
+        <div class="a11y-control-group">
+          <label class="a11y-control-label" for="lineSpacingRange">Line Spacing</label>
+          <div class="a11y-slider-row">
+            <span class="a11y-slider-label">≡</span>
+            <input type="range" id="lineSpacingRange" class="a11y-range" min="1.2" max="2.2" step="0.1" value="1.6" aria-label="Adjust line spacing"/>
+            <span class="a11y-slider-label">⩶</span>
+          </div>
+          <p id="lineSpacingDisplay" class="a11y-hint" aria-live="polite">1.6×</p>
+        </div>
+
+        <!-- Letter Spacing -->
+        <div class="a11y-control-group">
+          <label class="a11y-control-label" for="letterSpacingRange">Letter Spacing</label>
+          <div class="a11y-slider-row">
+            <span class="a11y-slider-label">AZ</span>
+            <input type="range" id="letterSpacingRange" class="a11y-range" min="0" max="0.15" step="0.01" value="0" aria-label="Adjust letter spacing"/>
+            <span class="a11y-slider-label">A Z</span>
+          </div>
+          <p id="letterSpacingDisplay" class="a11y-hint" aria-live="polite">0em</p>
+        </div>
+      </section>
+
+      <!-- ═══ SECTION: Visual ═══ -->
+      <section class="a11y-section" aria-labelledby="a11y-sec-visual">
+        <h3 class="a11y-section-title" id="a11y-sec-visual">
+          <span aria-hidden="true">🎨</span> Visual
+        </h3>
+
+        <!-- High Contrast -->
+        <div class="a11y-control-group">
+          <div class="a11y-control-row">
+            <span class="a11y-control-label">High Contrast</span>
+            <label class="a11y-switch">
+              <input type="checkbox" id="highContrastToggle" aria-label="Toggle high contrast mode">
+              <span class="a11y-slider"></span>
+            </label>
+          </div>
+          <p class="a11y-hint">Increases contrast ratios across the site.</p>
+        </div>
+
+        <!-- Saturation Boost -->
+        <div class="a11y-control-group">
+          <div class="a11y-control-row">
+            <span class="a11y-control-label">Saturation Boost</span>
+            <label class="a11y-switch">
+              <input type="checkbox" id="saturationToggle" aria-label="Toggle saturation boost for low-vision users">
+              <span class="a11y-slider"></span>
+            </label>
+          </div>
+          <p class="a11y-hint">Boosts colour vibrancy for low-vision users.</p>
+        </div>
+
+        <!-- Colour Blind Filters -->
+        <div class="a11y-control-group">
+          <p class="a11y-control-label" id="colorblindLabel">Colour Blind Filter</p>
+          <div class="a11y-radio-group" role="radiogroup" aria-labelledby="colorblindLabel">
+            <label class="a11y-radio-option">
+              <input type="radio" name="colorblindFilter" value="none" checked aria-label="No colour blind filter"> None
+            </label>
+            <label class="a11y-radio-option">
+              <input type="radio" name="colorblindFilter" value="protanopia" aria-label="Protanopia filter (red-green)"> Protanopia
+            </label>
+            <label class="a11y-radio-option">
+              <input type="radio" name="colorblindFilter" value="deuteranopia" aria-label="Deuteranopia filter (green-red)"> Deuteranopia
+            </label>
+            <label class="a11y-radio-option">
+              <input type="radio" name="colorblindFilter" value="tritanopia" aria-label="Tritanopia filter (blue-yellow)"> Tritanopia
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTION: Motion & Focus ═══ -->
+      <section class="a11y-section" aria-labelledby="a11y-sec-motion">
+        <h3 class="a11y-section-title" id="a11y-sec-motion">
+          <span aria-hidden="true">🎭</span> Motion &amp; Focus
+        </h3>
+
+        <!-- Reduce Motion -->
+        <div class="a11y-control-group">
+          <div class="a11y-control-row">
+            <span class="a11y-control-label">Reduce Motion</span>
+            <label class="a11y-switch">
+              <input type="checkbox" id="reduceMotionToggle" aria-label="Toggle reduce motion for vestibular disorders">
+              <span class="a11y-slider"></span>
+            </label>
+          </div>
+          <p class="a11y-hint">Disables animations and transitions site-wide.</p>
+        </div>
+
+        <!-- Focus Highlight -->
+        <div class="a11y-control-group">
+          <div class="a11y-control-row">
+            <span class="a11y-control-label">Focus Highlight</span>
+            <label class="a11y-switch">
+              <input type="checkbox" id="focusHighlightToggle" aria-label="Toggle enhanced focus ring for keyboard navigation">
+              <span class="a11y-slider"></span>
+            </label>
+          </div>
+          <p class="a11y-hint">Draws a vivid ring around the focused element.</p>
+        </div>
+
+        <!-- Reading Guide -->
+        <div class="a11y-control-group">
+          <div class="a11y-control-row">
+            <span class="a11y-control-label">Reading Guide</span>
+            <label class="a11y-switch">
+              <input type="checkbox" id="readingGuideToggle" aria-label="Toggle reading guide ruler overlay">
+              <span class="a11y-slider"></span>
+            </label>
+          </div>
+          <p class="a11y-hint">A horizontal ruler follows your cursor to guide reading.</p>
+        </div>
+      </section>
+
+      <!-- ═══ SECTION: Input ═══ -->
+      <section class="a11y-section" aria-labelledby="a11y-sec-input">
+        <h3 class="a11y-section-title" id="a11y-sec-input">
+          <span aria-hidden="true">🖱️</span> Input
+        </h3>
+
+        <!-- Cursor Size -->
+        <div class="a11y-control-group">
+          <p class="a11y-control-label" id="cursorSizeLabel">Cursor Size</p>
+          <div class="a11y-radio-group" role="radiogroup" aria-labelledby="cursorSizeLabel">
+            <label class="a11y-radio-option">
+              <input type="radio" name="cursorSize" value="normal" checked aria-label="Normal cursor"> Normal
+            </label>
+            <label class="a11y-radio-option">
+              <input type="radio" name="cursorSize" value="large" aria-label="Large cursor"> Large
+            </label>
+            <label class="a11y-radio-option">
+              <input type="radio" name="cursorSize" value="xl" aria-label="Extra large cursor"> Extra Large
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTION: Screen Reader ═══ -->
+      <section class="a11y-section" aria-labelledby="a11y-sec-sr">
+        <h3 class="a11y-section-title" id="a11y-sec-sr">
+          <span aria-hidden="true">👁️</span> Screen Reader
+        </h3>
+        <div class="a11y-control-group">
+          <p class="a11y-hint" style="margin: 0;">This portfolio is built with semantic HTML5, ARIA landmarks, and logical heading order (WCAG 2.2 AA). All images have <code>alt</code> text. Use the skip link at the top of the page to jump directly to content.</p>
+          <a href="#main" class="a11y-skip-btn" id="a11ySkipToContent">Skip to main content ↓</a>
+        </div>
+      </section>
+
+      <!-- Reset All -->
+      <button id="a11yResetAll" class="a11y-reset-btn" type="button" aria-label="Reset all accessibility settings to defaults">↺ Reset All Settings</button>
+
+      <!-- Hidden SVG colour-blind filter definitions -->
+      <svg id="a11y-svg-filters" style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id="cb-protanopia">
+            <feColorMatrix type="matrix" values="0.567,0.433,0,0,0 0.558,0.442,0,0,0 0,0.242,0.758,0,0 0,0,0,1,0"/>
+          </filter>
+          <filter id="cb-deuteranopia">
+            <feColorMatrix type="matrix" values="0.625,0.375,0,0,0 0.70,0.30,0,0,0 0,0.30,0.70,0,0 0,0,0,1,0"/>
+          </filter>
+          <filter id="cb-tritanopia">
+            <feColorMatrix type="matrix" values="0.95,0.05,0,0,0 0,0.433,0.567,0,0 0,0.475,0.525,0,0 0,0,0,1,0"/>
+          </filter>
+        </defs>
+      </svg>
     </aside>
+
+    <!-- Reading guide overlay (follows cursor) -->
+    <div id="readingGuide" class="reading-guide" aria-hidden="true" role="presentation"></div>
+
+    <!-- Colour-blind overlay -->
+    <div id="colorblindOverlay" class="colorblind-overlay" aria-hidden="true" role="presentation"></div>
 
   </body>
 </html>
