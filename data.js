@@ -155,34 +155,9 @@
   "eaeSnapshot": {
     "title": "Top Evidence",
     "intro": "Quick view of my strongest EAE evidence for Singapore Polytechnic and Ngee Ann Polytechnic.",
-    "cards": [
-      {
-        "label": "Systems",
-        "title": "SPD Caregiver & Admin Portal",
-        "body": "Accessible admin + caregiver flows, reporting dashboards, and pragmatic NGO UX solutions.",
-        "image": "images/projects/SPD_User_Flow_Flow_chart.jpg",
-        "linkTarget": "#projects",
-        "projectTitle": "SPD Caregiver & Admin Event Portal Prototype"
-      },
-      {
-        "label": "Engineering",
-        "title": "FLL 2026 Unearthed Robot Design",
-        "body": "Multi-axis robot, gear-ratio planning, and mission flowcharts showing systems-level engineering.",
-        "image": "images/robots/fll-robot-design.png",
-        "linkTarget": "#projects",
-        "projectTitle": "FLL 2026 Unearthed Robot Design & Planning"
-      },
-      {
-        "label": "Cyber",
-        "title": "PyCon SkillQuest (Hackathon)",
-        "body": "Gamified cybersecurity education and a hackathon prototype demonstrating security teaching mechanics.",
-        "image": "images/projects/group_lobby.jpg",
-        "linkTarget": "#projects",
-        "projectTitle": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)"
-      }
-    ]
+    "cards": []
   },
-  "evidenceDeck": {
+  "evidenceDeck": { 
     "title": "Evidence Cards",
     "intro": "Each card translates my work into what it shows about me as an EAE applicant.",
     "cards": [
@@ -409,6 +384,9 @@
       "title": "SPD Caregiver & Admin Event Portal Prototype",
       "category": "Web & App Development / Social Impact",
       "status": "Version 1 Prototype Completed",
+      "snapshotLabel": "Systems",
+      "snapshotTitle": "SPD Caregiver & Admin Portal",
+      "snapshotSummary": "Accessible admin + caregiver flows, reporting dashboards, and pragmatic NGO UX solutions.",
       "portfolioSignal": "Shows the ability to translate real-world NGO challenges into a full system architecture with customized user roles (admin and caregiver), databases, and analytics dashboards.",
       "eaeConnection": "Directly aligns with software engineering and cybersecurity by demonstrating how to build secure, accessible systems that manage sensitive data—focusing on role-based access control (RBAC) and data privacy.",
       "evidenceStatus": "User flow flowcharts completed. Functional prototype logic mapped out.",
@@ -425,7 +403,7 @@
         "images/projects/SPD_User_Flow_Flow_chart_Page_2.jpg"
       ],
       "optionalVideo": "",
-      "image": "",
+      "image": "images/projects/SPD_User_Flow_Flow_chart.jpg",
       "carriedForward": {
         "fromProject": "Personal Student Portfolio Website",
         "lesson": "Applied structured HTML/CSS/JS and user flow thinking to solve real-world NGO administrative challenges"
@@ -437,6 +415,9 @@
       "title": "FLL 2026 Unearthed Robot Design & Planning",
       "category": "Robotics / Engineering & Planning",
       "status": "Participated in FLL 2026 Unearthed",
+      "snapshotLabel": "Engineering",
+      "snapshotTitle": "FLL 2026 Unearthed Robot Design",
+      "snapshotSummary": "Multi-axis robot, gear-ratio planning, and mission flowcharts showing systems-level engineering.",
       "portfolioSignal": "Shows simultaneous multi-axis movement planning, gear ratio control (torque vs speed), and detailed flowchart-based sequencing. Demonstrates precision engineering and sensor-based feedback systems.",
       "eaeConnection": "Robotics trained me to debug under strict constraints, similar to cybersecurity troubleshooting where small errors affect the whole system. Proves I can design, monitor, and defend complex interconnected systems.",
       "evidenceStatus": "Presentation slides, field mission flowcharts, and robot run video demo completed.",
@@ -451,36 +432,41 @@
         "images/robots/fll-robot-design.png"
       ],
       "optionalVideo": "",
-      "image": "",
+      "image": "images/robots/fll-robot-design.png",
       "carriedForward": {
         "fromProject": "NRC Robotics Competition",
         "lesson": "Evolved from basic virtual robot pathing into complex multi-axis physical robot design with gear ratio engineering"
-      }
+      },
+      "highlighted": true
     },
     {
       "title": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
       "category": "Hackathon / Game Jam / Cybersecurity & AI",
       "status": "Completed (June 2026)",
-      "portfolioSignal": "Demonstrates technical curiosity in cybersecurity by translating complex attacks (phishing, SQLi, XSS, DDoS) into playable game mechanics, showing a deep understanding of threat vectors.",
-      "eaeConnection": "Directly supports the Cybersecurity & Digital Forensics track. It proves I can analyze security risks and communicate them effectively, which is essential for security auditing and education.",
-      "evidenceStatus": "Functional prototype video demo completed. Hackathon participation certificate linked.",
-      "problem": "Technical concepts like SQL Injection, Cross-Site Scripting (XSS), and DDoS are often abstract and hard for beginners to grasp without interactive models.",
-      "proposedSolution": "A unified educational toolset: (1) SkillQuest, a roguelike where levels represent security challenges (e.g., bypassing a 'Firewall' guardian or patching a 'Vulnerable DB'); and (2) an AI-driven career pathing tool.",
-      "myRole": "Lead Software Engineer (Security Mechanics)",
-      "technologiesUsed": "Python, Unity, C#, Security Attack Simulation (XSS, SQLi, DDoS)",
-      "developmentJourney": "Built game loops that simulate real-world cyber threats. For example, the 'SQLi' mechanic requires players to identify unescaped inputs to progress, while 'Phishing' levels teach users to spot suspicious metadata. Integrated jobs-and-skills datasets to show how these skills map to real cybersecurity roles.",
-      "outcome": "Successfully pitched a product that turns cybersecurity education into an interactive experience, earning positive feedback for technical clarity.",
-      "lessonsLearned": "Discovered that the best way to understand security is to think like an attacker. Building the game required me to research how these attacks actually work at the code level so I could model them correctly.",
+      "snapshotLabel": "Cyber",
+      "snapshotTitle": "PyCon SkillQuest (Hackathon)",
+      "snapshotSummary": "personalized career discovery and upskilling platform designed to help users move from uncertainty to career readiness through a continuous, guided learning journey.",
+      "portfolioSignal": "Demonstrates strong initiative in designing and developing SkillQuest, a personalised career discovery and upskilling platform that helps users explore career paths, identify skill gaps, follow personalised learning journeys, complete practical quests, and track their progress towards career readiness.",
+      "eaeConnection": "Directly supports my interest in software development, data-driven systems, product design, and technology. SkillQuest demonstrates my ability to identify a real-world problem, design a complete digital solution, develop a functional prototype, and connect user needs with technical systems such as recommendation engines, skill-gap analysis, progress tracking, and personalised learning paths.",
+      "evidenceStatus": "Functional prototype developed with a responsive frontend and Python-based Course Matching Engine. The project includes a complete product and UX architecture covering career discovery, career recommendations, skill-gap analysis, personalised learning paths, practical quests, mastery tracking, career readiness, and AI Mentor guidance. Project prototype and development documentation can be linked as evidence.",
+      "problem": "Many people are unsure about which career path to pursue, what skills they need to develop, or what they should do next. Existing platforms often separate career discovery, skill assessments, online courses, progress tracking, and career guidance. This can make the learning journey feel fragmented and overwhelming.",
+      "proposedSolution": "SkillQuest is a personalised career discovery and upskilling platform that connects the entire journey in one experience. Users can explore potential careers through Explorer Mode or select a target career through Pathfinder Mode. The platform analyses skill gaps, recommends personalised learning paths and courses, converts learning into practical quests, tracks skill mastery and evidence of progress, and shows how each achievement brings the user closer to their career goal.",
+      "myRole": "Lead Software Engineer and Product Developer, responsible for developing the SkillQuest concept, designing the product architecture and user journey, creating the responsive frontend, developing the Python-based Course Matching Engine, and designing the personalised learning, quest, mastery, and career-readiness systems.",
+      "technologiesUsed": "HTML, CSS, JavaScript, Python, Responsive Web Development, REST API Design, Rule-Based Recommendation Systems, Course Matching Algorithms, Skill-Gap Analysis, Gamification Systems, Career Data, Skills Data, and User Progress Tracking.",
+      "developmentJourney": "I designed SkillQuest around a continuous user journey: Career Discovery → Career Recommendation → Skill-Gap Analysis → Personalised Learning Path → Quests → Skill Mastery → Career Readiness. I developed Explorer Mode for users who are unsure about their career direction and Pathfinder Mode for users who already have a specific career goal. I designed the Skill-Gap Engine to compare a user's current skills with the skills required for a target career. I also developed a Python-based Course Matching Engine that considers factors such as skill coverage, time commitment, cost, location, course quality, schedule fit, and potential calendar conflicts. The platform then transforms learning into practical quests that allow users to learn, practise, and demonstrate their progress. The overall system is designed to continuously adapt to the user's interests, goals, schedule, behaviour, and development over time.",
+      "outcome": "Successfully developed a functional SkillQuest prototype that combines career discovery, personalised recommendations, skill-gap analysis, course matching, learning paths, practical quests, progress tracking, and career readiness into one connected platform. The project transformed an initial idea into a structured product concept with a responsive frontend, Python matching engine, defined user journeys, product architecture, and a clear roadmap for future development.",
+      "lessonsLearned": "I learned how to transform a broad problem into a complete digital product by combining user research, product design, software development, recommendation logic, and gamification. Developing SkillQuest taught me the importance of making complex information simple and actionable for users. I also learned that a successful learning platform should not only provide information, but should guide users towards a clear next step, help them see their progress, and show how each completed action contributes to their larger career goal.",
       "images": [
-        "images/certificates/Jaron_Chew_Kai_Xin_Hackathon.png",
-        "images/projects/group_lobby.jpg"
+       // "images/certificates/Jaron_Chew_Kai_Xin_Hackathon.png",
+       // "images/projects/group_lobby.jpg"
       ],
       "optionalVideo": "videos/SkillQuest-demo.webm",
-      "image": "",
+      "image": "images/projects/group_lobby.jpg",
       "carriedForward": {
         "fromProject": "Kodecoon Project Journey",
         "lesson": "Applied years of coding foundation (Python, OOP, Pygame) to build a real hackathon product under deadline pressure"
-      }
+      },
+      "highlighted": true
     },
     {
       "title": "Personal Student Portfolio Website",
@@ -500,7 +486,7 @@
         "images/projects/portfolio_preview.png"
       ],
       "optionalVideo": "",
-      "image": "",
+      "image": "images/projects/portfolio_preview.png",
       "carriedForward": {
         "fromProject": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
         "lesson": "Used the data-driven design thinking from the hackathon to structure portfolio content as editable, schema-driven data"
@@ -525,7 +511,7 @@
         "images/projects/space_attack_preview.png"
       ],
       "optionalVideo": "",
-      "image": "",
+      "image": "images/projects/exhibition_pitch.jpg",
       "carriedForward": {
         "fromProject": "Scratch Coder Course",
         "lesson": "Grew from block-based Scratch projects into text-based Python, Pygame, and AR — building technical versatility over 3 years"
@@ -1057,60 +1043,85 @@
     }
   },
   "hobbies": {
-    "title": "Personal Hobbies & Explorations",
-    "intro": "Things I do purely out of curiosity and fun—from calculating the size of the sun using scale physics to tinkering with CAD models and hardware.",
+    "title": "Personal Tech Explorations & Hobbies",
+    "intro": "Personal stories of self-directed tech exploration outside of school and formal projects—driven by curiosity to understand how software, operating systems, and AI work under the hood.",
     "entries": [
+      {
+        "id": "hobby-windows-internals",
+        "title": "Exploring Windows Files & System Internals",
+        "category": "OS & File Systems",
+        "description": "Explored Windows file structures, system directories, environment variables, hidden files, registry keys, and PowerShell automation out of pure curiosity to understand how operating systems manage processes and user data.",
+        "image": "images/projects/portfolio_preview.png",
+        "tags": [
+          "Windows",
+          "File Systems",
+          "System Internals",
+          "PowerShell"
+        ],
+        "takeaway": "Built a strong mental model of operating system structures, directory organization, and command-line system navigation."
+      },
+      {
+        "id": "hobby-linux-exploration",
+        "title": "Trying Linux & Command Line Environments",
+        "category": "Linux & Systems",
+        "description": "Set up Linux environments, practiced terminal navigation without a GUI, learned bash scripting, file permissions (chmod/chown), and explored system directories like /etc, /var, and /usr.",
+        "image": "images/projects/group_lobby.jpg",
+        "tags": [
+          "Linux",
+          "Bash",
+          "CLI",
+          "Terminal"
+        ],
+        "takeaway": "Gained confidence in keyboard-driven system administration, shell commands, and managing files through terminal scripts."
+      },
+      {
+        "id": "hobby-ai-exploration",
+        "title": "Learning About AI & Machine Learning Concepts",
+        "category": "Artificial Intelligence",
+        "description": "Self-studied how modern AI models, neural networks, and LLMs work under the hood. Experimented with prompt engineering, local model execution, and AI-assisted coding to see how AI transforms problem solving.",
+        "image": "images/projects/space_attack_preview.png",
+        "tags": [
+          "AI",
+          "Machine Learning",
+          "Prompt Engineering",
+          "LLMs"
+        ],
+        "takeaway": "Developed an understanding of how AI tools process inputs and how to leverage AI ethically to accelerate learning and debugging."
+      },
       {
         "id": "hobby-sun-scale-physics",
         "title": "Calculating the Size of the Sun via Scale Physics",
         "category": "Physics & Curiosity",
         "description": "Used pinhole optics, cardboard tube projection, and similar-triangles scale geometry to measure the sun's image diameter and calculate its physical size from first principles purely for fun.",
         "image": "images/projects/exhibition_pitch.jpg",
-        "tags": ["Scale Physics", "Optics", "Geometry", "Curiosity"],
+        "tags": [
+          "Scale Physics",
+          "Optics",
+          "Geometry",
+          "Curiosity"
+        ],
         "takeaway": "Proves how simple geometry and physics principles can measure massive real-world astronomical scales without complex equipment."
       },
       {
         "id": "hobby-3d-printing",
-        "title": "3D Printing & CAD Modeling",
+        "title": "3D Printing & Hardware Tinkering",
         "category": "Engineering",
-        "description": "Designing custom 3D models in Fusion 360 and 3D printing functional brackets, custom cases, and mechanical parts just to bring ideas into the physical world.",
+        "description": "Designing 3D models in Fusion 360, 3D printing custom parts, and disassembling old electronics to inspect solder paths, chip architectures, and hardware components.",
         "image": "images/projects/carnival_water_activity.jpg",
-        "tags": ["CAD", "3D Printing", "Prototyping"],
-        "takeaway": "Teaches spatial reasoning, iterative physical prototyping, and designing for real-world constraints."
-      },
-      {
-        "id": "hobby-ctf-hacking",
-        "title": "Cybersecurity CTFs & Puzzle Solving",
-        "category": "Cybersecurity",
-        "description": "Solving jeopardy-style CTF challenges across Web Exploitation, Cryptography, and Reverse Engineering on TryHackMe and picoCTF for the satisfaction of breaking down puzzles.",
-        "image": "images/projects/exhibition_pitch.jpg",
-        "tags": ["CTF", "Puzzles", "Reverse Engineering"],
-        "takeaway": "Develops a critical security mindset, analytical problem solving, and systematic investigation skills."
-      },
-      {
-        "id": "hobby-electronics-disassembly",
-        "title": "Reverse Engineering & Disassembling Electronics",
-        "category": "Hardware Tinkering",
-        "description": "Taking apart old broken gadgets, remote controls, and discarded circuit boards to inspect solder paths, chip architectures, and learn how everyday devices work inside.",
-        "image": "images/projects/exhibition_pitch.jpg",
-        "tags": ["Electronics", "Hardware", "Tinkering"],
-        "takeaway": "Provides intuitive familiarity with physical circuit boards, microcontrollers, and hardware safety."
-      },
-      {
-        "id": "hobby-water-sports",
-        "title": "Outdoor Water Sports & Kayaking",
-        "category": "Outdoors & Teamwork",
-        "description": "Participating in school carnival water activities, kayaking, and outdoor team activities for fun, fitness, and staying active.",
-        "image": "images/projects/carnival_water_activity.jpg",
-        "tags": ["Outdoors", "Kayaking", "Resilience"],
-        "takeaway": "Builds physical endurance, adaptability in outdoor environments, and active team cooperation."
+        "tags": [
+          "CAD",
+          "3D Printing",
+          "Hardware",
+          "Electronics"
+        ],
+        "takeaway": "Teaches spatial reasoning, physical prototyping, and hardware-level intuition for how devices operate."
       }
     ]
   },
   "sectionVisibility": {},
   "uiLabels": {
-    "heroBtnPrimary": "View strongest projects",
-    "heroBtnSecondary": "View evidence timeline",
+    "heroBtnPrimary": "View projects",
+    "heroBtnSecondary": "View achievements",
     "navBtnApplications": "View EAE direction",
     "navHobbies": "Hobbies",
     "navAbout": "About",
@@ -1169,8 +1180,6 @@
     "viewCards": "Cards",
     "viewTimeline": "Timeline",
     "viewStory": "Story",
-    "heroBtnPrimary": "View projects",
-    "heroBtnSecondary": "View achievements",
     "personalQualitiesTitle": "Personal qualities",
     "journeyMilestonesLabel": "Journey Milestones",
     "evidenceOverviewLabel": "Evidence Overview",
@@ -1189,6 +1198,29 @@
     "applicationsLede": "• Editable course notes for target applications\n• Keep claims focused on confirmed skills and evidence\n• Avoid unverified statements",
     "footerText": "Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.",
     "footerPrintBtn": "Print portfolio"
-  }
+  },
+  "uploadedAssets": [
+    {
+      "id": "asset-mrwe39k4",
+      "name": "test-asset.png",
+      "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAn8B9d3xwQAAAABJRU5ErkJggg=="
+    }
+  ]
 };
+
+if (window.PORTFOLIO_DATA && Array.isArray(window.PORTFOLIO_DATA.projects)) {
+  window.PORTFOLIO_DATA.eaeSnapshot = window.PORTFOLIO_DATA.eaeSnapshot || {};
+  window.PORTFOLIO_DATA.eaeSnapshot.cards = window.PORTFOLIO_DATA.projects
+    .filter(function (p) { return p.highlighted || p.snapshotLabel; })
+    .map(function (p) {
+      return {
+        label: p.snapshotLabel || "Project",
+        title: p.snapshotTitle || p.title,
+        body: p.snapshotSummary || p.portfolioSignal || p.problem,
+        image: p.image || (Array.isArray(p.images) && p.images[0]) || "",
+        linkTarget: "#projects",
+        projectTitle: p.title
+      };
+    });
+}
 })();

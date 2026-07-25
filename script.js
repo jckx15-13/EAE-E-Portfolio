@@ -213,10 +213,9 @@
     ["About", "about"],
     ["Mindset", "philosophy"],
     ["Cybersecurity", "why-cybersecurity"],
-    ["Best Projects", "best-projects"],
     ["Journey", "timeline"],
     ["Reflection", "reflections"],
-    ["Gallery", "projects"],
+    ["Projects", "projects"],
     ["Library", "achievements"],
     ["Hobbies", "hobbies"],
     ["Course Fit", "applications"],
@@ -226,11 +225,10 @@
     "about",
     "philosophy",
     "why-cybersecurity",
-    "best-projects",
     "timeline",
     "reflections",
-    "gallery",
-    "library",
+    "projects",
+    "achievements",
     "hobbies",
     "applications",
     "goals",
@@ -251,10 +249,21 @@
 
   function renderEaeSnapshot() {
     const container = $("#personalSnapshot");
-    if (!container || !data.eaeSnapshot || !Array.isArray(data.eaeSnapshot.cards)) return;
+    if (!container) return;
+    const cards = (data.eaeSnapshot && Array.isArray(data.eaeSnapshot.cards) && data.eaeSnapshot.cards.length > 0)
+      ? data.eaeSnapshot.cards
+      : (data.projects || []).filter((p) => p.highlighted || p.snapshotLabel).map((p) => ({
+          label: p.snapshotLabel || "Project",
+          title: p.snapshotTitle || p.title,
+          body: p.snapshotSummary || p.portfolioSignal || p.problem,
+          image: p.image || (Array.isArray(p.images) && p.images[0]) || "",
+          linkTarget: "#projects",
+          projectTitle: p.title
+        }));
+    if (!cards || !cards.length) return;
     container.replaceChildren();
     const grid = create("div", "eae-snapshot-grid");
-    (data.eaeSnapshot.cards || []).forEach((item, index) => {
+    cards.forEach((item, index) => {
       const card = create("article", "snapshot-card reveal");
       if (item.image) {
         const media = create("div", "snapshot-media");
@@ -410,7 +419,7 @@
     setText("#heroBtnApplications", data.uiLabels?.heroBtnApplications || "View EAE direction", "uiLabels.heroBtnApplications");
     
     const heroBtnPrimary = $("#heroBtnPrimary");
-    if (heroBtnPrimary) heroBtnPrimary.href = "#best-projects";
+    if (heroBtnPrimary) heroBtnPrimary.href = "#projects";
     const heroBtnSecondary = $("#heroBtnSecondary");
     if (heroBtnSecondary) heroBtnSecondary.href = "#timeline";
     const heroBtnApplications = $("#heroBtnApplications");
@@ -1264,6 +1273,12 @@
 
           appendCaseRows(details, caseFields);
           body.append(details);
+
+          const modalBtn = create('button', 'button button-secondary project-modal-btn', 'View full project details');
+          modalBtn.type = 'button';
+          modalBtn.addEventListener('click', () => openProjectModal(project));
+          body.append(modalBtn);
+
           article.append(body);
           targetGrid.append(article);
         };
@@ -1580,7 +1595,7 @@
     }
     card.append(createEvidenceStatusStrip(achievement));
 
-    const button = create("button", "text-button", "View details");
+    const button = create("button", "button button-secondary modal-trigger-btn", "View details");
     button.type = "button";
     button.addEventListener("click", () => openAchievementModal(achievement));
     card.append(button);
@@ -1667,9 +1682,6 @@
 
     const refDetail = createDetail("Reflection", achievement.reflection);
     const refP = refDetail.querySelector("p") || refDetail;
-    refP.dataset.editPath = `achievements.${originalIndex}.reflection`;
-    details.append(refDetail);
-
     const outcomeDetail = createDetail("Learning outcome", achievement.learningOutcome);
     const outcomeP = outcomeDetail.querySelector("p") || outcomeDetail;
     outcomeP.dataset.editPath = `achievements.${originalIndex}.learningOutcome`;
@@ -3135,7 +3147,7 @@
   }
 
   function applySectionOrder() {
-    const order = data.sectionOrder || ["about", "philosophy", "why-cybersecurity", "best-projects", "timeline", "reflections", "projects", "achievements", "applications", "goals"];
+    const order = data.sectionOrder || ["about", "philosophy", "why-cybersecurity", "timeline", "reflections", "projects", "achievements", "hobbies", "applications", "goals"];
     const main = $("#main");
     if (!main) return;
     const sections = Array.from(main.querySelectorAll("section"));
@@ -3251,7 +3263,7 @@
     quickNavGroup.append(create("h4", "", "Quick jumps"));
     [
       ["Hero", "#about"],
-      ["Best projects", "#best-projects"],
+      ["Projects", "#projects"],
       ["Technical journey", "#timeline"],
       ["Course fit", "#applications"]
     ].forEach(([label, target]) => {
