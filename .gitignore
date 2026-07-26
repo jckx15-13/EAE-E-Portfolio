@@ -9,3 +9,10 @@ dist/
 build/
 .cache/
 tests/reports/
+.browser-tmp/
+.browser-tmp/*
+.vscode/mcp.json
+*.db-wal
+*-journal
+.agents/logs/
+

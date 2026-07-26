@@ -4115,7 +4115,8 @@
     setupModal();
     setupNavigation();
     setupChromeHeight();
-    setupViewModeBarVisibility();
+    // setupViewModeBarVisibility();
+    setupAccordions();
     setupScrollProgress();
     setupPrintMode();
     setupReveal();
@@ -4503,24 +4504,27 @@
       fab.setAttribute('aria-expanded', open ? 'true' : 'false');
       fab.classList.toggle('is-open', open);
 
+      const labelSpan = fab.querySelector('.a11y-fab-label') || fab.querySelector('span');
       if (open) {
-        fab.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Close</span>`;
+        if (labelSpan) labelSpan.textContent = 'Close';
         fab.setAttribute('aria-label', 'Close Accessibility Settings');
         const firstFocusable = sidebar.querySelector('button, input, [role="radio"]');
         if (firstFocusable) firstFocusable.focus();
       } else {
-        fab.innerHTML = defaultFabHtml;
+        if (labelSpan) labelSpan.textContent = 'Accessibility';
         fab.setAttribute('aria-label', 'Open Accessibility Settings');
       }
     };
 
-    fab.addEventListener('click', () => {
+    fab.addEventListener('click', (e) => {
+      e.stopPropagation();
       const isOpen = sidebar.classList.contains('is-open');
       toggleSidebar(!isOpen);
     });
 
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         toggleSidebar(false);
         fab.focus();
       });
@@ -4536,12 +4540,9 @@
 
     // Close when clicking outside the sidebar
     document.addEventListener('click', e => {
-      if (
-        sidebar.classList.contains('is-open') &&
-        !sidebar.contains(e.target) &&
-        e.target !== fab &&
-        !fab.contains(e.target)
-      ) {
+      if (!sidebar.classList.contains('is-open')) return;
+      const path = e.composedPath ? e.composedPath() : [];
+      if (!path.includes(sidebar) && !path.includes(fab)) {
         toggleSidebar(false);
       }
     }, { capture: false });
@@ -4551,6 +4552,27 @@
     if (legacyDyslexic === 'true' && !localStorage.getItem('eae_a11y_font')) {
       applyFont('OpenDyslexic');
     }
+  }
+
+  function setupAccordions() {
+    const accordions = document.querySelectorAll('.accordion-section');
+    
+    accordions.forEach(section => {
+      const header = section.querySelector('.accordion-header');
+      if (!header) return;
+      
+      header.addEventListener('click', () => {
+        const isOpen = section.classList.contains('is-open');
+        
+        if (isOpen) {
+          section.classList.remove('is-open');
+          header.setAttribute('aria-expanded', 'false');
+        } else {
+          section.classList.add('is-open');
+          header.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
   }
 
   if (document.readyState === "loading") {
