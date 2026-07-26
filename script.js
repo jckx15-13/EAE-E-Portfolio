@@ -367,37 +367,19 @@
 
   function renderNav() {
     const nav = $(SELECTORS.siteNav);
-    nav.replaceChildren();
-    const secondaryLinks = [];
+    if (!nav) return;
+    const container = nav.querySelector(".section-tab-bar-inner") || nav;
+    container.replaceChildren();
     const visibilityConfig = data.sectionVisibility || {};
 
     navItems.forEach(([label, id]) => {
       if (visibilityConfig[id]) return;
-
-      if (primaryNavIds.has(id)) {
-        const link = create("a", "", label, `uiLabels.nav${label}`);
-        link.href = `#${id}`;
-        link.dataset.section = id;
-        nav.appendChild(link);
-      } else {
-        secondaryLinks.push([label, id]);
-      }
-
+      const link = create("a", "section-tab-pill", label, `uiLabels.nav${label}`);
+      link.href = `#${id}`;
+      link.dataset.section = id;
+      link.setAttribute("role", "tab");
+      container.appendChild(link);
     });
-
-    if (secondaryLinks.length) {
-      const more = create("details", "nav-more");
-      more.append(create("summary", "nav-more-summary", data.uiLabels?.navMore || "More", "uiLabels.navMore"));
-      const panel = create("div", "nav-more-panel");
-      secondaryLinks.forEach(([label, id]) => {
-        const link = create("a", "", label, `uiLabels.nav${label}`);
-        link.href = `#${id}`;
-        link.dataset.section = id;
-        panel.append(link);
-      });
-      more.append(panel);
-      nav.append(more);
-    }
   }
 
   function renderHero() {
@@ -3099,22 +3081,15 @@
   }
 
   function setupNavigation() {
-    const toggle = document.querySelector(SELECTORS.navToggle);
     const nav = document.getElementById('siteNav');
-    if (!nav || !toggle) return;
+    if (!nav) return;
 
+    const toggle = document.querySelector(SELECTORS.navToggle);
     const header = $(SELECTORS.siteHeader);
     const headerLinks = Array.from(nav.querySelectorAll('a[data-section]'));
-    const more = $('.nav-more', nav);
     const navSections = headerLinks
       .map((link) => document.getElementById(link.dataset.section))
       .filter(Boolean);
-
-    const closeMoreMenu = () => {
-      nav.querySelectorAll('details').forEach((details) => {
-        details.open = false;
-      });
-    };
 
     const onScroll = () => {
       header?.classList.toggle('is-elevated', window.scrollY > 8);
@@ -3122,35 +3097,44 @@
       let activeId = navSections[0]?.id;
       navSections.forEach((section) => {
         const box = section.getBoundingClientRect();
-        if (box.top <= 180 && box.bottom > 180) activeId = section.id;
+        if (box.top <= 200 && box.bottom > 100) activeId = section.id;
       });
 
       headerLinks.forEach((link) => {
         const isActive = link.dataset.section === activeId;
         link.classList.toggle('is-active', isActive);
+        link.setAttribute('aria-selected', isActive ? 'true' : 'false');
         if (isActive) {
           link.setAttribute('aria-current', 'page');
         } else {
           link.removeAttribute('aria-current');
         }
       });
-
-      more?.classList.toggle(
-        'has-active-child',
-        headerLinks.some((link) => link.classList.contains('is-active') && !primaryNavIds.has(link.dataset.section))
-      );
     };
 
     onScroll();
 
+    headerLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const target = document.getElementById(link.dataset.section);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+          link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      });
+    });
+
     if (navigationSetupDone) return;
     navigationSetupDone = true;
 
-    toggle.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      nav.classList.toggle('is-open', !expanded);
-    });
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        nav.classList.toggle('is-open', !expanded);
+      });
+    }
 
     nav.addEventListener('click', (event) => {
       if (event.target.matches('a')) {
