@@ -3521,22 +3521,44 @@
     sidebar.append(header, content);
     document.body.appendChild(sidebar);
 
-    // Open/Close toggle
+    // Open/Close toggle with same-position controls
     const toggleEditor = (open) => {
       const isOpen = open !== undefined ? open : !sidebar.classList.contains("is-open");
       sidebar.classList.toggle("is-open", isOpen);
-      fab.classList.toggle("is-active", isOpen);
-      fab.textContent = isOpen ? "✖" : "🛠️";
+      sidebar.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      fab.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      fab.classList.toggle("is-replaced", isOpen);
+      fab.style.display = isOpen ? "none" : "flex";
+
+      closeFab.classList.toggle("is-visible", isOpen);
+      closeFab.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      closeFab.tabIndex = isOpen ? 0 : -1;
+
       if (isOpen) {
         document.body.classList.add("admin-mode");
         syncEditorOppositeTheme();
+        showEditorToast("Live portfolio editor active");
+        closeFab.focus();
       } else {
         document.body.classList.remove("admin-mode");
+        fab.focus();
       }
     };
 
-    fab.addEventListener("click", () => toggleEditor());
+    fab.addEventListener("click", () => toggleEditor(true));
+    closeFab.addEventListener("click", () => toggleEditor(false));
     closeBtn.addEventListener("click", () => toggleEditor(false));
+
+    // Global Keyboard Shortcut: Ctrl+Shift+E / Cmd+Shift+E
+    document.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === "E" || e.key === "e")) {
+        e.preventDefault();
+        toggleEditor();
+      }
+      if (e.key === "Escape" && sidebar.classList.contains("is-open")) {
+        toggleEditor(false);
+      }
+    });
 
     let textEditingActive = false;
     let sectionShiftingActive = false;
