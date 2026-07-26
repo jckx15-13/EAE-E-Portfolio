@@ -25,9 +25,8 @@ async function runAccessibilityTests(harness) {
       if (fab.getAttribute('aria-expanded') !== 'true')  throw new Error('fab aria-expanded should be true when open');
       if (sidebar.getAttribute('aria-hidden') !== 'false') throw new Error('sidebar aria-hidden should be false when open');
 
-      // Close via close button
-      const closeBtn = document.querySelector('#a11yCloseBtn');
-      if (!closeBtn) throw new Error('Missing #a11yCloseBtn');
+      // Close via unified FAB toggle button
+      const closeBtn = document.querySelector('#a11yCloseBtn') || fab;
       closeBtn.click();
       await new Promise(r => setTimeout(r, 200));
       if (sidebar.classList.contains('is-open')) throw new Error('sidebar still open after close click');
