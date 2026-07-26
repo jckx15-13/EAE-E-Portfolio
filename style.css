@@ -3676,3 +3676,126 @@ body.live-editing-active [contenteditable="true"] {
   color: #0f172a;
   box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
 }
+
+/* ===== MOBILE RESPONSIVE OVERRIDES ===== */
+
+@media (max-width: 820px) {
+  .site-nav {
+    display: none;
+  }
+
+  .site-nav.is-open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-toggle {
+    display: grid;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-card {
+    max-width: min(92vw, 680px);
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+
+  .modal-school-portfolio .modal-card {
+    max-width: none;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .filter-row {
+    flex-wrap: wrap;
+  }
+
+  .filter-row .filter-pill,
+  .filter-row button {
+    white-space: nowrap;
+  }
+
+  .a11y-sidebar.is-open {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-centerpiece {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .hero-person img {
+    width: 120px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hobbies-grid,
+  .goals-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hobbies-grid > *,
+  .goals-layout > * {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  #schoolPortfolioBtn {
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .focus-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle-text {
+    display: none;
+  }
+
+  .site-header {
+    padding: 0 16px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+  }
+
+  .accordion-header {
+    padding: 0.75rem 0;
+  }
+
+  .section {
+    padding-inline: var(--space-sm);
+  }
+}
+
+@media (max-width: 380px) {
+  #schoolPortfolioBtn {
+    display: none;
+  }
+
+  .focus-list {
+    grid-template-columns: 1fr;
+  }
+
+  body {
+    font-size: 14px;
+  }
+}
