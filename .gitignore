@@ -14,5 +14,6 @@ tests/reports/
 .vscode/mcp.json
 *.db-wal
 *-journal
-.agents/logs/
-
+.agents/
+.agents/*
+.flatpak/

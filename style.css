@@ -1,9 +1,38 @@
 /* ==========================================================================
    FONT IMPORTS — OpenDyslexic (default) + alternate picks
    ========================================================================== */
-/* OpenDyslexic — primary default font, authentic from opendyslexic.org */
-@import url('https://fonts.cdnfonts.com/css/open-dyslexic');
-@import url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/open-dyslexic.css');
+/* OpenDyslexic — local font fallback + CDN imports for 100% resilience */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('opendyslexic-0.92/OpenDyslexic-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('opendyslexic-0.92/OpenDyslexic-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('opendyslexic-0.92/OpenDyslexic-Italic.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('opendyslexic-0.92/OpenDyslexic-BoldItalic.otf') format('opentype');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
 
 /* ==========================================================================
    1. DESIGN SYSTEM TOKENS & SEMANTIC COLOR PROFILING
