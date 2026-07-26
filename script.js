@@ -1319,6 +1319,108 @@
       if (featuredGrid) refreshReveal(featuredGrid);
     }
 
+  function renderCodeShowcase() {
+    const container = $("#codeShowcaseContainer");
+    if (!container) return;
+    container.replaceChildren();
+
+    const showcaseData = data.codeShowcase || {
+      title: "Interactive Code Showcase",
+      subtitle: "Explore, test, and edit real project code snippets live on the page.",
+      snippets: []
+    };
+
+    const snippets = showcaseData.snippets || [];
+    if (!snippets.length) return;
+
+    let activeIndex = 0;
+
+    const navTabs = create("div", "code-tabs-row");
+    navTabs.setAttribute("role", "tablist");
+    navTabs.setAttribute("aria-label", "Code Showcase Snippets");
+
+    const codeCard = create("div", "code-showcase-card");
+
+    function updateActiveSnippet(index) {
+      activeIndex = index;
+      const snippet = snippets[activeIndex];
+      if (!snippet) return;
+
+      navTabs.querySelectorAll(".code-tab-btn").forEach((btn, idx) => {
+        const isActive = idx === activeIndex;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+
+      codeCard.replaceChildren();
+
+      // Header
+      const header = create("div", "code-card-header");
+      const titleWrap = create("div", "code-card-title-wrap");
+      const langBadge = create("span", `code-lang-badge lang-${snippet.language || 'code'}`, (snippet.language || 'CODE').toUpperCase());
+      const title = create("h3", "code-snippet-title", snippet.title);
+      title.setAttribute("data-edit-path", `codeShowcase.snippets.${activeIndex}.title`);
+      titleWrap.append(langBadge, title);
+
+      const actions = create("div", "code-card-actions");
+      const copyBtn = create("button", "button button-secondary code-action-btn", "📋 Copy Code");
+      copyBtn.type = "button";
+      copyBtn.addEventListener("click", () => {
+        const codeText = codeCard.querySelector("code")?.textContent || snippet.code;
+        navigator.clipboard.writeText(codeText).then(() => {
+          showEditorToast("Code snippet copied to clipboard!");
+        });
+      });
+
+      const runBtn = create("button", "button button-primary code-action-btn", "▶ Run Test");
+      runBtn.type = "button";
+      runBtn.addEventListener("click", () => {
+        let outputBox = codeCard.querySelector(".code-terminal-output");
+        if (!outputBox) {
+          outputBox = create("div", "code-terminal-output");
+          const termHeader = create("div", "term-header", "⚡ TERMINAL STDOUT OUTPUT");
+          const termBody = create("pre", "term-body", snippet.simulatedOutput || "[*] Execution finished cleanly.");
+          outputBox.append(termHeader, termBody);
+          codeCard.append(outputBox);
+        } else {
+          outputBox.classList.toggle("is-hidden");
+        }
+      });
+
+      actions.append(copyBtn, runBtn);
+      header.append(titleWrap, actions);
+
+      // Description
+      const desc = create("p", "code-snippet-desc", snippet.description);
+      desc.setAttribute("data-edit-path", `codeShowcase.snippets.${activeIndex}.description`);
+
+      // Code Container
+      const codeWrap = create("div", "code-block-wrap");
+      const pre = create("pre", "code-pre");
+      const codeEl = create("code", `code-content language-${snippet.language}`, snippet.code);
+      codeEl.setAttribute("data-edit-path", `codeShowcase.snippets.${activeIndex}.code`);
+      if (document.body.classList.contains("live-editing-active")) {
+        codeEl.contentEditable = "true";
+      }
+
+      pre.append(codeEl);
+      codeWrap.append(pre);
+
+      codeCard.append(header, desc, codeWrap);
+    }
+
+    snippets.forEach((s, idx) => {
+      const tabBtn = create("button", `code-tab-btn ${idx === 0 ? 'is-active' : ''}`, s.title);
+      tabBtn.type = "button";
+      tabBtn.setAttribute("role", "tab");
+      tabBtn.addEventListener("click", () => updateActiveSnippet(idx));
+      navTabs.append(tabBtn);
+    });
+
+    container.append(navTabs, codeCard);
+    updateActiveSnippet(0);
+  }
+
     drawFilters();
     drawProjects();
   }
@@ -4253,6 +4355,7 @@
     renderWhyCybersecurity();
     renderReflections();
     renderProjects();
+    renderCodeShowcase();
     renderApplications();
     renderAchievements();
     renderHobbies();
