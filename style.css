@@ -2131,31 +2131,52 @@ body[data-theme="light"] .section-astral-6 {
   color: var(--theme-accent-purple);
 }
 
-/* Top Bar Oval Button - School Portfolio */
+/* Top Bar Oval Button - School Portfolio (Academic Gold/Amber Contrast Badge) */
 .school-portfolio-oval-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 0.45rem 1.1rem;
   margin-left: 0.75rem;
-  margin-right: 3rem; /* Generous spacing between oval button and About link */
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.25));
-  border: 1px solid var(--theme-accent-cyan, #38bdf8);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(239, 68, 68, 0.22));
+  border: 1px solid #f59e0b;
   border-radius: 999px;
-  color: #ffffff !important;
+  color: #fbbf24 !important;
   font-weight: 700;
   font-size: 0.85rem;
   text-decoration: none;
-  box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25);
+  box-shadow: 0 2px 12px rgba(245, 158, 11, 0.25);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 
-.school-portfolio-oval-btn:hover {
-  background: linear-gradient(135deg, var(--theme-accent-cyan, #38bdf8), #6366f1);
+.school-portfolio-oval-btn .btn-arrow {
+  transition: transform 0.2s ease;
+}
+
+.school-portfolio-oval-btn:hover,
+.school-portfolio-oval-btn:focus-visible {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
   color: #0f172a !important;
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
-  transform: translateY(-1px) scale(1.02);
+  border-color: #f59e0b;
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.55);
+  transform: translateY(-1px) scale(1.03);
+  outline: none;
+}
+
+.school-portfolio-oval-btn:hover .btn-arrow {
+  transform: translate(2px, -2px);
+}
+
+[data-theme="light"] .school-portfolio-oval-btn {
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.14), rgba(220, 38, 38, 0.16));
+  border-color: #d97706;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .school-portfolio-oval-btn:hover {
+  background: linear-gradient(135deg, #d97706, #dc2626);
+  color: #ffffff !important;
 }
 
 
