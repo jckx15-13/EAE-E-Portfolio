@@ -142,13 +142,20 @@ body {
   color: var(--theme-text-primary);
   background: var(--theme-bg);
   /* Default font = OpenDyslexic for maximum inclusivity */
-  font-family: 'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', sans-serif;
+  font-family: var(--a11y-font-override, 'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', sans-serif);
   font-size: 16px;
   line-height: 1.6;
   letter-spacing: 0;
   overflow-x: hidden;
   overflow-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   transition: background-color 200ms ease, color 200ms ease;
+}
+
+main {
+  flex: 1 0 auto;
 }
 
 img, video {
@@ -2273,8 +2280,15 @@ body.live-editing-active [contenteditable="true"] {
     color: #111827;
     background: #ffffff;
   }
-  .site-chrome, .site-header, .view-mode-bar, .scroll-progress, .a11y-toggle-fab, .live-editor-fab {
+  .site-chrome, .site-header, .view-mode-bar, .scroll-progress, .a11y-toggle-fab, .live-editor-fab, .accordion-chevron {
     display: none !important;
+  }
+  .accordion-content {
+    max-height: none !important;
+    opacity: 1 !important;
+    display: block !important;
+    overflow: visible !important;
+    padding-bottom: 2rem !important;
   }
   .project-card, .achievement-card, .section {
     background: #ffffff !important;
