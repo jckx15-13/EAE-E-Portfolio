@@ -3349,14 +3349,38 @@
     return localStorage.getItem("eae_admin_authenticated") === "true";
   }
 
+  function showEditorToast(message) {
+    let toast = document.querySelector(".editor-toast-banner");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.className = "editor-toast-banner";
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      document.body.appendChild(toast);
+    }
+    toast.textContent = `✨ ${message}`;
+    toast.classList.add("is-visible");
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => {
+      toast.classList.remove("is-visible");
+    }, 3200);
+  }
+
   function setupLiveEditor() {
     if (!validateAdminToken()) return;
     if ($(".live-editor-sidebar")) return;
 
-    // Create FAB
+    // Create Same-Position FAB Pair (Open FAB & Close FAB)
     const fab = create("button", "live-editor-fab", "🛠️");
     fab.setAttribute("aria-label", "Open live portfolio editor");
-    document.body.appendChild(fab);
+    fab.setAttribute("title", "Open live portfolio editor (Ctrl+Shift+E)");
+
+    const closeFab = create("button", "live-editor-close-fab", "✖");
+    closeFab.setAttribute("aria-label", "Close live portfolio editor");
+    closeFab.setAttribute("title", "Close live portfolio editor");
+    closeFab.tabIndex = -1;
+
+    document.body.append(fab, closeFab);
 
     // Create Sidebar
     const sidebar = create("aside", "live-editor-sidebar");
