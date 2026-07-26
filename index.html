@@ -100,7 +100,7 @@
         <span class="theme-toggle-text">Mode</span>
       </button>
 
-      <a href="#projects" id="schoolPortfolioBtn" class="school-portfolio-oval-btn">School Portfolio</a>
+      <a href="DRAFT/Home.html" id="schoolPortfolioBtn" class="school-portfolio-oval-btn" aria-label="Open School E-Portfolio">School E-Portfolio</a>
 
       <nav id="siteNav" class="site-nav" aria-label="Primary navigation"></nav>
       <div class="scroll-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -146,7 +146,7 @@
             <p id="heroIdentityLine" class="hero-identity"></p>
             <p id="heroSubtitle" class="hero-subtitle"></p>
             <p id="brandStatement" class="section-lede"></p>
-            <section id="focusAreas" class="focus-list" aria-label="Portfolio focus areas"></section>
+            <section id="focusAreas" class="focus-list" aria-label="Portfolio guide"></section>
             <div class="hero-actions">
               <a id="heroBtnPrimary" class="button button-primary" href="#projects">View my projects</a>
               <a id="heroBtnSecondary" class="button button-secondary" href="#timeline">View evidence timeline</a>
@@ -391,7 +391,6 @@
           </svg>
           Accessibility
         </h2>
-        <button id="a11yCloseBtn" class="a11y-close-btn" type="button" aria-label="Close Accessibility Settings" title="Close Accessibility Settings">✕</button>
       </div>
 
       <!-- ═══ SECTION: Typography ═══ -->
@@ -625,6 +624,10 @@
         </defs>
       </svg>
     </aside>
+
+    <button id="a11yCloseBtn" class="a11y-close-btn" type="button" aria-label="Close Accessibility Settings" title="Close Accessibility Settings" aria-controls="a11ySidebar" aria-hidden="true" tabindex="-1">
+      <span aria-hidden="true">Close accessibility</span>
+    </button>
 
     <!-- Reading guide overlay (follows cursor) -->
     <div id="readingGuide" class="reading-guide" aria-hidden="true" role="presentation"></div>

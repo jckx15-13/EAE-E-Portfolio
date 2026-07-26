@@ -64,10 +64,10 @@
     "heroImage": "images/projects/exhibition_pitch.jpg",
     "photoCaption": "Jaron Chew, Juying Secondary School",
     "focusAreas": [
-      "Who I am",
-      "What shaped me",
-      "What I built",
-      "Where I am going"
+      "Who I Am",
+      "What Shaped Me",
+      "What I Built",
+      "Where I Am Going"
     ],
     "journeyMarkers": [],
     "contact": {
@@ -1235,7 +1235,7 @@
     "goalsLongTerm": "Long-term",
     "applicationsLabel": "Applications",
     "applicationsLede": "• Editable course notes for target applications\n• Keep claims focused on confirmed skills and evidence\n• Avoid unverified statements",
-    "footerText": "Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.",
+    "footerText": "Jaron Chew | EAE Portfolio - projects, evidence, reflection, and a clear direction toward cybersecurity.",
     "footerPrintBtn": "Print portfolio"
   },
   "uploadedAssets": [

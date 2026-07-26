@@ -23,9 +23,17 @@ const MIME_TYPES = {
   '.woff2': 'font/woff2'
 };
 
+const ALLOWED_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:5500',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:5500'
+];
+
 const server = http.createServer((req, res) => {
-  // CORS Headers to allow Live Server (port 5500) to hit this save endpoint
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  const isAllowed = ALLOWED_ORIGINS.includes(origin) || (!origin && req.socket.localAddress === req.socket.remoteAddress);
+  res.setHeader('Access-Control-Allow-Origin', isAllowed && origin ? origin : 'http://localhost:3000');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 

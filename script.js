@@ -86,6 +86,8 @@
   function openModalDialog(dialog) {
     if (!dialog) return;
     rememberModalFocusOrigin();
+    const mainEl = document.getElementById('main');
+    if (mainEl) mainEl.setAttribute('aria-hidden', 'true');
     if (typeof dialog.showModal === 'function') {
       dialog.showModal();
     } else {
@@ -98,6 +100,8 @@
 
   function closeModalDialog(dialog) {
     if (!dialog) return;
+    const mainEl = document.getElementById('main');
+    if (mainEl) mainEl.removeAttribute('aria-hidden');
     try {
       if (typeof dialog.close === 'function') dialog.close();
       else dialog.removeAttribute('open');
@@ -875,20 +879,24 @@
   }
 
   function resolveSlidesEmbedUrl(project) {
-    if (project.slidesEmbedUrl) {
-      const embed = project.slidesEmbedUrl.trim();
-      if (embed.includes("canva.com/design/") && !embed.includes("embed")) {
-        return `${embed}${embed.includes("?") ? "&" : "?"}embed`;
+    const raw = project.slidesEmbedUrl || (typeof project.slides === "string" ? project.slides : "");
+    if (!raw) return "";
+    const cleanRaw = raw.trim();
+    try {
+      const url = new URL(cleanRaw);
+      if (/canva\.com$/i.test(url.hostname) && /\/design\//i.test(url.pathname)) {
+        const pathWithoutEmbed = url.pathname.replace(/\/embed\/?$/i, "");
+        const embedPath = `${pathWithoutEmbed.replace(/\/+$/, "")}/embed`;
+        return `${url.origin}${embedPath}`;
       }
-      return embed;
-    }
-    if (typeof project.slides === "string") {
-      const slides = project.slides.trim();
-      if (slides.includes("canva.com/design/")) {
-        return slides.includes("embed") ? slides : `${slides}${slides.includes("?") ? "&" : "?"}embed`;
+      return `${url.origin}${url.pathname}${url.hash || ""}`;
+    } catch (error) {
+      if (cleanRaw.includes("canva.com/design/")) {
+        const noQuery = cleanRaw.split(/[?#]/)[0].replace(/\/embed\/?$/i, "");
+        return `${noQuery.replace(/\/+$/, "")}/embed`;
       }
+      return cleanRaw;
     }
-    return "";
   }
 
   function appendProjectSupportingImages(media, project, mediaImages) {
@@ -917,7 +925,7 @@
     if (!dialog || !content) return;
 
     content.replaceChildren();
-    dialog.classList.remove("modal-wide");
+    dialog.classList.remove("modal-wide", "modal-school-portfolio");
 
     const type = detectMediaType(src);
     if (type === 'spreadsheet' || type === 'pdf' || type === 'drawio' || type === 'slides') {
@@ -950,8 +958,46 @@
     openMediaViewerModal(src, alt);
   }
 
+  function openSchoolPortfolioModal() {
+    const dialog = $(SELECTORS.achievementModal);
+    const content = $(SELECTORS.modalContent);
+    if (!dialog || !content) return;
+
+    content.replaceChildren();
+    dialog.classList.add("modal-wide", "modal-school-portfolio");
+    const closeButton = dialog.querySelector(".modal-close");
+    if (closeButton) closeButton.setAttribute("aria-label", "Close School E-Portfolio");
+
+    const header = create("div", "modal-header school-portfolio-header");
+    header.append(create("p", "card-kicker", "School E-Portfolio"));
+    header.append(create("h2", "", "Jaron's School E-Portfolio"));
+    header.append(create("p", "modal-summary", "Browse the original school portfolio without leaving this EAE portfolio."));
+
+    const frameWrap = create("div", "school-portfolio-frame-wrap");
+    const frame = document.createElement("iframe");
+    frame.className = "school-portfolio-frame";
+    frame.src = "DRAFT/Home.html";
+    frame.title = "Jaron Chew School E-Portfolio";
+    frame.loading = "eager";
+    frame.referrerPolicy = "strict-origin-when-cross-origin";
+    frameWrap.append(frame);
+
+    content.append(header, frameWrap);
+    openModalDialog(dialog);
+  }
+
   window.openMediaViewerModal = openMediaViewerModal;
   window.openFullImageModal = openFullImageModal;
+  window.openSchoolPortfolioModal = openSchoolPortfolioModal;
+
+  function setupSchoolPortfolioIntegration() {
+    const schoolPortfolioButton = $("#schoolPortfolioBtn");
+    if (!schoolPortfolioButton) return;
+    schoolPortfolioButton.removeAttribute("aria-haspopup");
+    schoolPortfolioButton.removeAttribute("aria-controls");
+    schoolPortfolioButton.setAttribute("aria-label", "Open School E-Portfolio");
+    schoolPortfolioButton.setAttribute("href", "DRAFT/Home.html");
+  }
 
   function appendProjectImageMedia(media, project, mediaImages) {
     const leadImage = mediaImages[0];
@@ -971,7 +1017,7 @@
           button.setAttribute("aria-label", `View ${project.title} image ${imageIndex + 2}`);
           const thumbnail = document.createElement("img");
           thumbnail.src = src;
-          thumbnail.alt = "";
+          thumbnail.alt = `${project.title} supporting thumbnail ${imageIndex + 2}`;
           thumbnail.loading = "lazy";
           thumbnail.decoding = "async";
           button.append(thumbnail);
@@ -1134,18 +1180,16 @@
               const prevProject = filteredProjects[index - 1];
               if (project.carriedForward && project.carriedForward.fromProject === prevProject.title) {
                 const connector = create('div', 'story-connector reveal');
-                connector.innerHTML = `
-                  <div class="story-connector-line"></div>
-                  <div class="carried-forward-callout">
-                    <span class="carried-forward-badge">What I carried forward</span>
-                    <p class="carried-forward-text">${project.carriedForward.lesson}</p>
-                  </div>
-                  <div class="story-connector-line"></div>
-                `;
+                const line1 = create('div', 'story-connector-line');
+                const callout = create('div', 'carried-forward-callout');
+                callout.append(create('span', 'carried-forward-badge', 'What I carried forward'));
+                callout.append(create('p', 'carried-forward-text', project.carriedForward.lesson));
+                const line2 = create('div', 'story-connector-line');
+                connector.append(line1, callout, line2);
                 targetGrid.appendChild(connector);
               } else {
                 const spacer = create('div', 'story-track-spacer reveal');
-                spacer.innerHTML = `<span class="track-label">Next Track: Engineering & Prototyping</span>`;
+                spacer.append(create('span', 'track-label', 'Next Track: Engineering & Prototyping'));
                 targetGrid.appendChild(spacer);
               }
             }
@@ -1625,6 +1669,9 @@
     const originalIndex = data.achievements.indexOf(achievement);
     const dialog = $(SELECTORS.achievementModal);
     const content = $(SELECTORS.modalContent);
+    dialog.classList.remove("modal-wide", "modal-school-portfolio");
+    const closeButton = dialog.querySelector(".modal-close");
+    if (closeButton) closeButton.setAttribute("aria-label", "Close achievement details");
     content.replaceChildren();
 
     const header = create("div", "modal-header");
@@ -2023,13 +2070,34 @@
 
     let activeMode = "trajectory";
 
-    function showTooltip(x, y, title, contentHtml) {
+    function appendTooltipRows(container, rows) {
+      rows.forEach((row) => {
+        const p = document.createElement("p");
+        if (row.label) {
+          const strong = document.createElement("strong");
+          strong.textContent = `${row.label}: `;
+          p.append(strong);
+        }
+        p.append(document.createTextNode(String(row.value || "")));
+        container.append(p);
+      });
+    }
+
+    function showTooltip(x, y, title, contentRows) {
       tooltip.replaceChildren();
       const h5 = document.createElement("h5");
       h5.textContent = title;
       tooltip.append(h5);
       const div = document.createElement("div");
-      div.innerHTML = contentHtml;
+      if (Array.isArray(contentRows)) {
+        appendTooltipRows(div, contentRows);
+      } else if (contentRows instanceof Node) {
+        div.append(contentRows);
+      } else if (typeof contentRows === "string") {
+        const p = document.createElement("p");
+        p.textContent = contentRows;
+        div.append(p);
+      }
       tooltip.append(div);
 
       const wrapRect = canvasWrap.getBoundingClientRect();
@@ -2145,8 +2213,8 @@
           const circleBg = document.createElementNS(svgNS, "circle");
           circleBg.setAttribute("cx", n.x); circleBg.setAttribute("cy", n.y);
           circleBg.setAttribute("r", "14");
-          circleBg.setAttribute("fill", "#0f172a");
-          circleBg.setAttribute("stroke", "#38bdf8");
+          circleBg.setAttribute("fill", "var(--theme-surface)");
+          circleBg.setAttribute("stroke", "var(--theme-accent-cyan)");
           circleBg.setAttribute("stroke-width", "2");
 
           const text = document.createElementNS(svgNS, "text");
@@ -2165,9 +2233,11 @@
               e.clientX - rect.left,
               e.clientY - rect.top,
               `${n.id}: ${n.name}`,
-              `<p><strong>Points:</strong> +${n.pts} pts</p>
-               <p><strong>Math Model:</strong> ${n.math}</p>
-               <p><strong>Field Coords:</strong> (${(n.x * 0.33) | 0}cm, ${((360 - n.y) * 0.33) | 0}cm)</p>`
+              [
+                { label: "Points", value: `+${n.pts} pts` },
+                { label: "Math Model", value: n.math },
+                { label: "Field Coords", value: `(${(n.x * 0.33) | 0}cm, ${((360 - n.y) * 0.33) | 0}cm)` }
+              ]
             );
           });
           group.addEventListener("mouseleave", hideTooltip);
@@ -2270,10 +2340,12 @@
               e.clientX - rect.left,
               e.clientY - rect.top,
               p.mode,
-              `<p><strong>Motor Speed:</strong> ${p.rpm} RPM</p>
-               <p><strong>Torque Output:</strong> ${p.torque}</p>
-               <p><strong>Linear Velocity:</strong> ${p.speed}</p>
-               <p><strong>Mission Application:</strong> ${p.detail}</p>`
+              [
+                { label: "Motor Speed", value: `${p.rpm} RPM` },
+                { label: "Torque Output", value: p.torque },
+                { label: "Linear Velocity", value: p.speed },
+                { label: "Mission Application", value: p.detail }
+              ]
             );
           });
           dot.addEventListener("mouseleave", hideTooltip);
@@ -2319,8 +2391,8 @@
           const rect = document.createElementNS(svgNS, "rect");
           rect.setAttribute("x", n.x - 35); rect.setAttribute("y", n.y - 45);
           rect.setAttribute("width", "70"); rect.setAttribute("height", "90");
-          rect.setAttribute("fill", "rgba(15,23,42,0.9)");
-          rect.setAttribute("stroke", "#38bdf8");
+          rect.setAttribute("fill", "var(--theme-surface)");
+          rect.setAttribute("stroke", "var(--theme-accent-cyan)");
           rect.setAttribute("stroke-width", "1.5");
           rect.setAttribute("rx", "8");
 
@@ -2353,9 +2425,11 @@
               e.clientX - wrapRect.left,
               e.clientY - wrapRect.top,
               `${n.icon} ${n.title} (${n.tech})`,
-              `<p><strong>Role:</strong> ${n.desc}</p>
-               <p><strong>Integration:</strong> Synchronizes field data into automated Matplotlib plots and O-level math trajectory calculations.</p>
-               <p><strong>Status:</strong> Connected (200 OK)</p>`
+              [
+                { label: "Role", value: n.desc },
+                { label: "Integration", value: "Synchronizes field data into automated Matplotlib plots and O-level math trajectory calculations." },
+                { label: "Status", value: "Connected (200 OK)" }
+              ]
             );
           });
           group.addEventListener("mouseleave", hideTooltip);
@@ -2380,11 +2454,17 @@
     btnPipeline.addEventListener("click", () => updateButtons("pipeline"));
 
     const footerStrip = create("div", "fll-telemetry-strip");
+    const buildTelemetryBadge = (label, value) => {
+      const badge = create("span", "fll-telemetry-badge");
+      badge.append(document.createTextNode(`${label}: `));
+      badge.append(create("strong", "", value));
+      return badge;
+    };
     footerStrip.append(
-      create("span", "fll-telemetry-badge", "📁 Rows: <strong>40 Runs</strong>"),
-      create("span", "fll-telemetry-badge", "📐 Math: <strong>O-Lvl Kinematics</strong>"),
-      create("span", "fll-telemetry-badge", "🐍 Plotter: <strong>Matplotlib</strong>"),
-      create("span", "fll-telemetry-badge", "☁️ Pipeline: <strong>GCP & API</strong>")
+      buildTelemetryBadge("📁 Rows", "40 Runs"),
+      buildTelemetryBadge("📐 Math", "O-Lvl Kinematics"),
+      buildTelemetryBadge("🐍 Plotter", "Matplotlib"),
+      buildTelemetryBadge("☁️ Pipeline", "GCP & API")
     );
 
     container.append(canvasWrap, footerStrip);
@@ -2888,12 +2968,30 @@
 
   // Undo stack (session-scoped)
   function pushUndoSnapshot(label) {
+    const sizeOf = (value) => {
+      if (typeof TextEncoder === 'function') {
+        return new TextEncoder().encode(value).length;
+      }
+      return value.length;
+    };
+    const MAX_UNDO_BYTES = 4 * 1024 * 1024;
     try {
       const stack = JSON.parse(sessionStorage.getItem('eaeUndoStack') || '[]');
-      stack.push({ ts: new Date().toISOString(), label: label || 'Change', data: JSON.parse(JSON.stringify(data)) });
-      // limit 30
-      sessionStorage.setItem('eaeUndoStack', JSON.stringify(stack.slice(-30)));
-    } catch (e) { console.error('pushUndoSnapshot failed', e); }
+      const snapshotObj = { ts: new Date().toISOString(), label: label || 'Change', data: JSON.parse(JSON.stringify(data)) };
+      const snapshotStr = JSON.stringify(snapshotObj);
+      if (sizeOf(snapshotStr) > MAX_UNDO_BYTES) return;
+      stack.push(snapshotObj);
+      while (stack.length > 0 && sizeOf(JSON.stringify(stack)) > MAX_UNDO_BYTES) {
+        stack.shift();
+      }
+      sessionStorage.setItem('eaeUndoStack', JSON.stringify(stack));
+    } catch (e) {
+      if (e.name === 'QuotaExceededError') {
+        sessionStorage.removeItem('eaeUndoStack');
+      } else {
+        console.error('pushUndoSnapshot failed', e);
+      }
+    }
   }
 
   function undoLast() {
@@ -3364,12 +3462,12 @@
     // Theme editor
     const themeGroup = create('div', 'editor-control-group');
     themeGroup.append(create('h4', '', 'Theme tokens'));
-    const themePrimary = create('label', '', 'Primary color');
-    const inputPrimary = document.createElement('input'); inputPrimary.type = 'color'; inputPrimary.value = (data.theme?.colors?.primary) || '#1b74ab'; themePrimary.append(inputPrimary);
-    const themeAccent = create('label', '', 'Accent color');
-    const inputAccent = document.createElement('input'); inputAccent.type = 'color'; inputAccent.value = (data.theme?.colors?.accent) || '#6b5bd1'; themeAccent.append(inputAccent);
-    const themeBg = create('label', '', 'Background');
-    const inputBg = document.createElement('input'); inputBg.type = 'color'; inputBg.value = (data.theme?.colors?.background) || '#0b1525'; themeBg.append(inputBg);
+    const themePrimary = create('label', '', 'Primary color'); themePrimary.htmlFor = 'editorPrimaryColor';
+    const inputPrimary = document.createElement('input'); inputPrimary.type = 'color'; inputPrimary.id = 'editorPrimaryColor'; inputPrimary.value = (data.theme?.colors?.primary) || '#1b74ab'; themePrimary.append(inputPrimary);
+    const themeAccent = create('label', '', 'Accent color'); themeAccent.htmlFor = 'editorAccentColor';
+    const inputAccent = document.createElement('input'); inputAccent.type = 'color'; inputAccent.id = 'editorAccentColor'; inputAccent.value = (data.theme?.colors?.accent) || '#6b5bd1'; themeAccent.append(inputAccent);
+    const themeBg = create('label', '', 'Background'); themeBg.htmlFor = 'editorBgColor';
+    const inputBg = document.createElement('input'); inputBg.type = 'color'; inputBg.id = 'editorBgColor'; inputBg.value = (data.theme?.colors?.background) || '#0b1525'; themeBg.append(inputBg);
     themeGroup.append(themePrimary, themeAccent, themeBg);
 
     // Preview modes
@@ -3554,10 +3652,15 @@
 
     // Theme change handlers
     function applyThemeTokens() {
-      data.theme = data.theme || { colors: {} };
+      data.theme = data.theme || {};
+      data.theme.colors = data.theme.colors || {};
       data.theme.colors.primary = inputPrimary.value;
       data.theme.colors.accent = inputAccent.value;
       data.theme.colors.background = inputBg.value;
+      document.documentElement.style.setProperty('--theme-accent-cyan', data.theme.colors.primary);
+      document.documentElement.style.setProperty('--theme-accent-purple', data.theme.colors.accent);
+      document.documentElement.style.setProperty('--theme-bg', data.theme.colors.background);
+      // Keep legacy aliases synchronized for older component styles.
       document.documentElement.style.setProperty('--blue-500', data.theme.colors.primary);
       document.documentElement.style.setProperty('--purple-700', data.theme.colors.accent);
       document.documentElement.style.setProperty('--paper', data.theme.colors.background);
@@ -4113,6 +4216,7 @@
     renderGoals();
     renderOptionalSections();
     setupModal();
+    setupSchoolPortfolioIntegration();
     setupNavigation();
     setupChromeHeight();
     // setupViewModeBarVisibility();
@@ -4130,6 +4234,8 @@
     const sidebar   = $('#a11ySidebar');
     const closeBtn  = $('#a11yCloseBtn');
     if (!fab || !sidebar) return;
+    if (sidebar.dataset.a11yInitialized === 'true') return;
+    sidebar.dataset.a11yInitialized = 'true';
 
     // ── Curated font library (loaded from Google Fonts + CDN) ─────────────
     const FONT_LIBRARY = [
@@ -4192,7 +4298,7 @@
         const nameEl = document.createElement('span');
         nameEl.className = 'a11y-font-card-name';
         nameEl.textContent = font.label;
-        nameEl.style.fontFamily = `'${font.family}', sans-serif`;
+        nameEl.style.fontFamily = `'${font.family}', Inter, 'OpenDyslexic', sans-serif`;
         const tagEl = document.createElement('span');
         tagEl.className = 'a11y-font-card-tag';
         tagEl.textContent = font.tag;
@@ -4495,24 +4601,26 @@
       });
     });
 
-    // ── Sidebar open / close with same-position FAB toggle ─────────────────
-    const defaultFabHtml = fab.innerHTML;
-
+    // ── Sidebar open / close with same-position controls ──────────────────
     const toggleSidebar = (open) => {
       sidebar.classList.toggle('is-open', open);
       sidebar.setAttribute('aria-hidden', open ? 'false' : 'true');
       fab.setAttribute('aria-expanded', open ? 'true' : 'false');
-      fab.classList.toggle('is-open', open);
+      fab.classList.toggle('is-replaced', open);
+      fab.setAttribute('aria-hidden', open ? 'true' : 'false');
+      fab.tabIndex = open ? -1 : 0;
 
-      const labelSpan = fab.querySelector('.a11y-fab-label') || fab.querySelector('span');
+      if (closeBtn) {
+        closeBtn.classList.toggle('is-visible', open);
+        closeBtn.setAttribute('aria-hidden', open ? 'false' : 'true');
+        closeBtn.tabIndex = open ? 0 : -1;
+      }
+
       if (open) {
-        if (labelSpan) labelSpan.textContent = 'Close';
-        fab.setAttribute('aria-label', 'Close Accessibility Settings');
-        const firstFocusable = sidebar.querySelector('button, input, [role="radio"]');
+        const firstFocusable = closeBtn || sidebar.querySelector('.a11y-section-header, button, input, [role="radio"]');
         if (firstFocusable) firstFocusable.focus();
       } else {
-        if (labelSpan) labelSpan.textContent = 'Accessibility';
-        fab.setAttribute('aria-label', 'Open Accessibility Settings');
+        fab.focus();
       }
     };
 
@@ -4530,11 +4638,10 @@
       });
     }
 
-    // Close on Escape key
-    sidebar.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
+    // Close on Escape key, including when the fixed close button is focused.
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && sidebar.classList.contains('is-open')) {
         toggleSidebar(false);
-        fab.focus();
       }
     });
 
@@ -4542,7 +4649,7 @@
     document.addEventListener('click', e => {
       if (!sidebar.classList.contains('is-open')) return;
       const path = e.composedPath ? e.composedPath() : [];
-      if (!path.includes(sidebar) && !path.includes(fab)) {
+      if (!path.includes(sidebar) && !path.includes(fab) && !path.includes(closeBtn)) {
         toggleSidebar(false);
       }
     }, { capture: false });
