@@ -49,20 +49,24 @@ async function runAccessibilityTests(harness) {
       const cards = grid.querySelectorAll('.a11y-font-card');
       if (cards.length < 4) throw new Error('Font grid has fewer than 4 cards: ' + cards.length);
 
-      // OpenDyslexic card should exist and be active (default)
-      const odCard = Array.from(cards).find(c => c.dataset.fontFamily === 'OpenDyslexic');
-      if (!odCard) throw new Error('OpenDyslexic font card not found');
+      // Inter card should exist and be active (default)
+      const interCard = Array.from(cards).find(c => c.dataset.fontFamily === 'Inter');
+      if (!interCard) throw new Error('Inter font card not found');
 
-      // CSS variable should resolve to OpenDyslexic
-      const cssVar = getComputedStyle(document.documentElement).getPropertyValue('--a11y-font-override').trim();
-      // If variable isn't set, body font-family should still include OpenDyslexic from default CSS
+      // Body font-family should default to Inter
       const bodyFont = getComputedStyle(document.body).fontFamily;
-      if (!bodyFont.toLowerCase().includes('opendyslexic') && !cssVar.toLowerCase().includes('opendyslexic')) {
-        throw new Error('OpenDyslexic not applied as default font. bodyFont=' + bodyFont);
+      if (!bodyFont.toLowerCase().includes('inter')) {
+        throw new Error('Inter not applied as default body font. bodyFont=' + bodyFont);
       }
 
-      // Click a different font card and verify it becomes active
-      const interCard = Array.from(cards).find(c => c.dataset.fontFamily === 'Inter');
+      // Click OpenDyslexic font card and verify it becomes active
+      const odCard = Array.from(cards).find(c => c.dataset.fontFamily === 'OpenDyslexic');
+      if (!odCard) throw new Error('OpenDyslexic font card not found');
+      odCard.click();
+      const updatedVar = getComputedStyle(document.documentElement).getPropertyValue('--a11y-font-override').trim();
+      if (!updatedVar.toLowerCase().includes('opendyslexic')) {
+        throw new Error('Failed to switch to OpenDyslexic on card click. updatedVar=' + updatedVar);
+      }
       if (interCard) {
         interCard.click();
         await new Promise(r => setTimeout(r, 100));

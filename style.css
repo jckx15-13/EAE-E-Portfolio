@@ -165,8 +165,8 @@ body {
   padding-top: var(--site-chrome-height);
   color: var(--theme-text-primary);
   background: var(--theme-bg);
-  /* Default font = OpenDyslexic for maximum inclusivity */
-  font-family: var(--a11y-font-override, 'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', sans-serif);
+  /* Default font = Inter (most readable UI font recommended by design standards) */
+  font-family: var(--a11y-font-override, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   font-size: 16px;
   line-height: 1.6;
   letter-spacing: 0;

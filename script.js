@@ -4133,18 +4133,18 @@
 
     // ── Curated font library (loaded from Google Fonts + CDN) ─────────────
     const FONT_LIBRARY = [
+      { family: 'Inter',                label: 'Inter',              tag: 'UI Default',     recommended: true,  css: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' },
+      { family: 'Space Grotesk',        label: 'Space\nGrotesk',     tag: 'Tech',           recommended: true,  css: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap' },
       { family: 'OpenDyslexic',         label: 'OpenDyslexic',       tag: 'Dyslexia',       recommended: true,  css: null /* CDN pre-loaded */ },
       { family: 'Atkinson Hyperlegible', label: 'Atkinson\nHyperlegible', tag: 'Low Vision', recommended: true,  css: 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap' },
       { family: 'Lexend',               label: 'Lexend',             tag: 'Reading',        recommended: true,  css: 'https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap' },
-      { family: 'Inter',                label: 'Inter',              tag: 'System',         recommended: false, css: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' },
       { family: 'Comic Neue',           label: 'Comic Neue',         tag: 'Casual',         recommended: false, css: 'https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap' },
       { family: 'Nunito',               label: 'Nunito',             tag: 'Rounded',        recommended: false, css: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap' },
-      { family: 'Space Grotesk',        label: 'Space\nGrotesk',     tag: 'Tech',           recommended: false, css: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap' },
       { family: 'Georgia',              label: 'Georgia',            tag: 'Serif',          recommended: false, css: null /* system font */ },
     ];
 
     // Track current font selection
-    let currentFont = localStorage.getItem('eae_a11y_font') || 'OpenDyslexic';
+    let currentFont = localStorage.getItem('eae_a11y_font') || 'Inter';
 
     // Utility: inject a Google Font link tag (idempotent)
     function ensureFontLoaded(cssUrl) {
