@@ -2131,51 +2131,57 @@ body[data-theme="light"] .section-astral-6 {
   color: var(--theme-accent-purple);
 }
 
-/* Top Bar Oval Button - School Portfolio (Academic Gold/Amber Contrast Badge) */
+/* Top Bar Oval Button - School Portfolio (Light Classroom Paper Contrast Badge) */
 .school-portfolio-oval-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 0.45rem 1.1rem;
   margin-left: 0.75rem;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(239, 68, 68, 0.22));
-  border: 1px solid #f59e0b;
+  background: #ffffff !important;
+  border: 1.5px solid #0284c7 !important;
   border-radius: 999px;
-  color: #fbbf24 !important;
+  color: #0f172a !important;
+  font-family: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
   font-weight: 700;
   font-size: 0.85rem;
   text-decoration: none;
-  box-shadow: 0 2px 12px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.18);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 
 .school-portfolio-oval-btn .btn-arrow {
-  transition: transform 0.2s ease;
+  display: inline-block;
+  color: #0284c7;
+  font-weight: 800;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .school-portfolio-oval-btn:hover,
 .school-portfolio-oval-btn:focus-visible {
-  background: linear-gradient(135deg, #f59e0b, #ef4444);
-  color: #0f172a !important;
-  border-color: #f59e0b;
-  box-shadow: 0 0 18px rgba(245, 158, 11, 0.55);
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 18px rgba(2, 132, 199, 0.45);
   transform: translateY(-1px) scale(1.03);
   outline: none;
 }
 
-.school-portfolio-oval-btn:hover .btn-arrow {
+.school-portfolio-oval-btn:hover .btn-arrow,
+.school-portfolio-oval-btn:focus-visible .btn-arrow {
+  color: #ffffff !important;
   transform: translate(2px, -2px);
 }
 
 [data-theme="light"] .school-portfolio-oval-btn {
-  background: linear-gradient(135deg, rgba(217, 119, 6, 0.14), rgba(220, 38, 38, 0.16));
-  border-color: #d97706;
-  color: #b45309 !important;
+  background: #ffffff !important;
+  border-color: #0284c7 !important;
+  color: #0f172a !important;
 }
 
 [data-theme="light"] .school-portfolio-oval-btn:hover {
-  background: linear-gradient(135deg, #d97706, #dc2626);
+  background: #0284c7 !important;
   color: #ffffff !important;
 }
 
