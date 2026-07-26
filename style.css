@@ -105,10 +105,8 @@
 }
 
 /* Dark Theme Color Profile — Astral Navy & Glass */
+:root,
 [data-theme="dark"] {
-  background: #0b1525 !important;
-  background-color: #0b1525 !important;
-  color: #ffffff !important;
   --theme-bg: #0b1525;
   --theme-surface: #111b31;
   --theme-surface-soft: rgba(255, 255, 255, 0.05);
@@ -126,9 +124,6 @@
 
 /* Light Theme Color Profile — Organic Warm Paper & Crisp Daylight */
 [data-theme="light"] {
-  background: #f4f8fc !important;
-  background-color: #f4f8fc !important;
-  color: #0f172a !important;
   --theme-bg: #f4f8fc;
   --theme-surface: #ffffff;
   --theme-surface-soft: #f1f5f9;
