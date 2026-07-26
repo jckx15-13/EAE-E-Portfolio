@@ -17,3 +17,14 @@ tests/reports/
 .agents/
 .agents/*
 .flatpak/
+
+# Development tooling & AI instructions (kept local, excluded from git repo)
+tools/
+docs/developer_guides/
+.github/copilot-instructions.md
+CLAUDE.md
+validate-portfolio.sh
+screenshots/
+Test and prompting screenshots/
+.odysseusignore
+.odysseusrules

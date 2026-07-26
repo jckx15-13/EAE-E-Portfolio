@@ -58,7 +58,7 @@
     <!-- Google Fonts preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- OpenDyslexic — default site font, authentic from opendyslexic.org -->
+    <!-- OpenDyslexic — accessible font option, authentic from opendyslexic.org -->
     <link href="https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/open-dyslexic.css" rel="stylesheet" />
     <!-- Fallback & alternate font stack (Google Fonts, loaded lazily by font picker)
          NOTE: Google Fonts serves dynamic CSS per User-Agent, SRI cannot be applied. -->
@@ -82,18 +82,6 @@
         <span id="brandName">EAE Portfolio</span>
       </a>
 
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="siteNav"
-      >
-        <span class="sr-only">Toggle navigation</span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
       <button id="themeToggle" class="theme-toggle-btn" type="button" aria-label="Toggle light/dark color mode" title="Switch Theme">
         <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -102,21 +90,25 @@
 
       <a href="DRAFT/Home.html" id="schoolPortfolioBtn" class="school-portfolio-oval-btn" aria-label="Open School E-Portfolio">School E-Portfolio</a>
 
-      <nav id="siteNav" class="site-nav" aria-label="Primary navigation"></nav>
       <div class="scroll-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <span id="scrollProgressBar"></span>
       </div>
     </header>
 
-    <!--
-    <nav class="quick-section-bar" aria-label="Quick section navigation">
-      <div class="quick-section-bar-inner">
-        <a class="quick-section-pill" href="#best-projects">Best Projects</a>
-        <a class="quick-section-pill" href="#timeline">Technical Journey</a>
-        <a class="quick-section-pill" href="#applications">Course Fit</a>
+    <nav id="sectionTabBar" class="section-tab-bar" aria-label="Section navigation" role="tablist">
+      <div class="section-tab-bar-inner">
+        <a class="section-tab-pill is-active" href="#about" role="tab" aria-selected="true">About</a>
+        <a class="section-tab-pill" href="#philosophy" role="tab" aria-selected="false">Philosophy</a>
+        <a class="section-tab-pill" href="#why-cybersecurity" role="tab" aria-selected="false">Cybersecurity</a>
+        <a class="section-tab-pill" href="#timeline" role="tab" aria-selected="false">Timeline</a>
+        <a class="section-tab-pill" href="#reflections" role="tab" aria-selected="false">Reflections</a>
+        <a class="section-tab-pill" href="#projects" role="tab" aria-selected="false">Projects</a>
+        <a class="section-tab-pill" href="#achievements" role="tab" aria-selected="false">Evidence</a>
+        <a class="section-tab-pill" href="#hobbies" role="tab" aria-selected="false">Hobbies</a>
+        <a class="section-tab-pill" href="#applications" role="tab" aria-selected="false">Course Fit</a>
+        <a class="section-tab-pill" href="#goals" role="tab" aria-selected="false">Goals</a>
       </div>
     </nav>
-    -->
     </div>
 
     <!-- // View mode selection (Cards, Timeline, Story) commented out per request
@@ -157,59 +149,46 @@
       </section>
 
       <!-- 2. Personal Philosophy Section -->
-      <section id="philosophy" class="accordion-section section section-astral-1">
-        <button type="button" class="accordion-header" aria-expanded="false" aria-controls="philosophy-content">
+      <section id="philosophy" class="section section-astral-1">
         <div class="section-heading">
           <p class="section-label">Mindset</p>
           <h2>Personal Philosophy</h2>
           <p id="philosophyIntro" class="section-lede"></p>
         </div>
-        <svg class="accordion-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div id="philosophy-content" class="accordion-content">
-        <div id="personalSnapshot" class="snapshot-grid"></div>
-        <div id="personalMapCards" class="personal-map-grid"></div>
-      
+        <div id="philosophy-content" class="section-body">
+          <div id="personalSnapshot" class="snapshot-grid"></div>
+          <div id="personalMapCards" class="personal-map-grid"></div>
         </div>
       </section>
 
       <!-- 3. Why Cybersecurity Fits Me -->
-      <section id="why-cybersecurity" class="accordion-section section section-astral-2">
-        <button type="button" class="accordion-header" aria-expanded="false" aria-controls="why-cybersecurity-content">
+      <section id="why-cybersecurity" class="section section-astral-2">
         <div class="section-heading">
           <p class="section-label">Identity</p>
           <h2>Why Cybersecurity Fits Me</h2>
           <p id="whyCyberIntro" class="section-lede"></p>
         </div>
-        <svg class="accordion-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div id="why-cybersecurity-content" class="accordion-content">
-        <div id="cybersecurityReasons" class="strength-grid"></div>
-      
+        <div id="why-cybersecurity-content" class="section-body">
+          <div id="cybersecurityReasons" class="strength-grid"></div>
         </div>
       </section>
 
       <!-- 4. Technical Growth Timeline (Placed early for progression story) -->
-      <section id="timeline" class="accordion-section section section-astral-4">
-        <button type="button" class="accordion-header" aria-expanded="false" aria-controls="timeline-content">
+      <section id="timeline" class="section section-astral-4">
         <div class="section-heading">
           <p class="section-label">Progression</p>
           <h2>Technical Growth Journey</h2>
           <p id="timelineIntro" class="section-lede"></p>
         </div>
-        <svg class="accordion-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div id="timeline-content" class="accordion-content">
-        <div class="timeline-container timeline-wrap">
-          <div id="achievementTimeline" class="timeline"></div>
-        </div>
-      
+        <div id="timeline-content" class="section-body">
+          <div class="timeline-container timeline-wrap">
+            <div id="achievementTimeline" class="timeline"></div>
+          </div>
         </div>
       </section>
 
       <!-- 5. Reflection Section -->
-      <section id="reflections" class="accordion-section section section-astral-5">
-        <button type="button" class="accordion-header" aria-expanded="false" aria-controls="reflections-content">
+      <section id="reflections" class="section section-astral-5">
         <div class="section-heading">
           <p class="section-label">Growth</p>
           <h2>Reflection Journal</h2>
@@ -217,17 +196,13 @@
             Authentic reflections on challenges, failures, and lessons learned.
           </p>
         </div>
-        <svg class="accordion-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div id="reflections-content" class="accordion-content">
-        <div id="reflectionList" class="reflection-grid"></div>
-      
+        <div id="reflections-content" class="section-body">
+          <div id="reflectionList" class="reflection-grid"></div>
         </div>
       </section>
 
       <!-- 6. Projects Database Gallery -->
-      <section id="projects" class="accordion-section section section-astral-6">
-        <button type="button" class="accordion-header" aria-expanded="false" aria-controls="projects-content">
+      <section id="projects" class="section section-astral-6">
         <div class="section-heading">
           <p class="section-label">Gallery</p>
           <h2>Projects</h2>
@@ -235,31 +210,27 @@
             Use the filters to browse my coding, robotics, and innovation projects. Each card highlights the problem, my role, the technologies used, and the evidence behind the work.
           </p>
         </div>
-        <svg class="accordion-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div id="projects-content" class="accordion-content">
-        <div class="gallery-toolbar">
-          <div id="projectFilters" class="filter-row" aria-label="Project filters"></div>
-          <div class="gallery-meta">
-            <span id="projectResultCount" class="result-count" aria-live="polite">Showing all projects</span>
-            <label class="gallery-sort">
-              <span class="sr-only">Sort projects</span>
-              <select id="projectSort" class="gallery-sort-select" aria-label="Sort projects">
-                <option value="featured">Featured first</option>
-                <option value="alpha">A–Z</option>
-                <option value="category">By Category</option>
-              </select>
-            </label>
+        <div id="projects-content" class="section-body">
+          <div class="gallery-toolbar">
+            <div id="projectFilters" class="filter-row" aria-label="Project filters"></div>
+            <div class="gallery-meta">
+              <span id="projectResultCount" class="result-count" aria-live="polite">Showing all projects</span>
+              <label class="gallery-sort">
+                <span class="sr-only">Sort projects</span>
+                <select id="projectSort" class="gallery-sort-select" aria-label="Sort projects">
+                  <option value="featured">Featured first</option>
+                  <option value="alpha">A–Z</option>
+                  <option value="category">By Category</option>
+                </select>
+              </label>
+            </div>
           </div>
-        </div>
-        <div id="projectsGrid" class="project-grid view-mode-section"></div>
-      
+          <div id="projectsGrid" class="project-grid view-mode-section"></div>
         </div>
       </section>
 
       <!-- 7. Evidence Library / Certificates / Achievements -->
-      <section id="achievements" class="accordion-section section section-astral-7 compact-dark">
-        <button type="button" class="accordion-header" aria-expanded="false" aria-controls="achievements-content">
+      <section id="achievements" class="section section-astral-7 compact-dark">
         <div class="section-heading">
           <p class="section-label">Proof</p>
           <h2>Evidence Library</h2>
@@ -267,24 +238,20 @@
             Verifiable proof of participation, competitions, and academic growth.
           </p>
         </div>
-        <svg class="accordion-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div id="achievements-content" class="accordion-content">
-        <div class="achievement-controls" aria-label="Achievement filters">
-          <div id="achievementFilters" class="filter-row"></div>
-          <label class="achievement-search">
-            <span class="sr-only">Search achievements</span>
-            <input id="achievementSearch" type="search" placeholder="Search achievements" />
-          </label>
-        </div>
-        <div id="achievementCards" class="achievement-grid"></div>
-      
+        <div id="achievements-content" class="section-body">
+          <div class="achievement-controls" aria-label="Achievement filters">
+            <div id="achievementFilters" class="filter-row"></div>
+            <label class="achievement-search">
+              <span class="sr-only">Search achievements</span>
+              <input id="achievementSearch" type="search" placeholder="Search achievements" />
+            </label>
+          </div>
+          <div id="achievementCards" class="achievement-grid"></div>
         </div>
       </section>
 
       <!-- 8. Personal Tech Explorations & Hobbies (Placed below certificates) -->
-      <section id="hobbies" class="accordion-section section section-astral-hobbies">
-        <button type="button" class="accordion-header" aria-expanded="false" aria-controls="hobbies-content">
+      <section id="hobbies" class="section section-astral-hobbies">
         <div class="section-heading">
           <p class="section-label">Personal Interests</p>
           <h2>Personal Tech Explorations & Hobbies</h2>
@@ -292,18 +259,14 @@
             Personal stories of self-directed tech exploration—exploring OS system files, terminal environments, AI concepts, and hardware tinkering purely out of curiosity.
           </p>
         </div>
-        <svg class="accordion-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div id="hobbies-content" class="accordion-content">
-        <div id="hobbiesFilters" class="filter-row" aria-label="Hobby filters"></div>
-        <div id="hobbiesGrid" class="hobbies-grid"></div>
-      
+        <div id="hobbies-content" class="section-body">
+          <div id="hobbiesFilters" class="filter-row" aria-label="Hobby filters"></div>
+          <div id="hobbiesGrid" class="hobbies-grid"></div>
         </div>
       </section>
 
       <!-- 9. EAE Course Fit -->
-      <section id="applications" class="accordion-section section section-astral-8">
-        <button type="button" class="accordion-header" aria-expanded="false" aria-controls="applications-content">
+      <section id="applications" class="section section-astral-8">
         <div class="section-heading">
           <p class="section-label">Alignment</p>
           <h2>EAE Course Fit</h2>
@@ -312,17 +275,13 @@
             <a href="#why-cybersecurity" class="link-subtle">← Back to why cybersecurity fits me</a>
           </p>
         </div>
-        <svg class="accordion-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div id="applications-content" class="accordion-content">
-        <div id="applicationsGrid" class="applications-grid"></div>
-      
+        <div id="applications-content" class="section-body">
+          <div id="applicationsGrid" class="applications-grid"></div>
         </div>
       </section>
 
       <!-- 10. Future Direction -->
-      <section id="goals" class="accordion-section section section-astral-9 goals-section">
-        <button type="button" class="accordion-header" aria-expanded="false" aria-controls="goals-content">
+      <section id="goals" class="section section-astral-9 goals-section">
         <div class="section-heading">
           <p class="section-label">Ambition</p>
           <h2>Future Direction Roadmap</h2>
@@ -330,21 +289,18 @@
             A structured roadmap mapping my transition from secondary education into polytechnic specialization and a career in software engineering and cybersecurity.
           </p>
         </div>
-        <svg class="accordion-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div id="goals-content" class="accordion-content">
-        <div id="futureDirectionTimeline" class="future-direction-timeline"></div>
-        <div class="goals-layout">
-          <div>
-            <h3 id="goalsShortTerm">Short-term Goals</h3>
-            <ul id="shortTermGoals"></ul>
+        <div id="goals-content" class="section-body">
+          <div id="futureDirectionTimeline" class="future-direction-timeline"></div>
+          <div class="goals-layout">
+            <div>
+              <h3 id="goalsShortTerm">Short-term Goals</h3>
+              <ul id="shortTermGoals"></ul>
+            </div>
+            <div>
+              <h3 id="goalsLongTerm">Long-term Goals</h3>
+              <ul id="longTermGoals"></ul>
+            </div>
           </div>
-          <div>
-            <h3 id="goalsLongTerm">Long-term Goals</h3>
-            <ul id="longTermGoals"></ul>
-          </div>
-        </div>
-      
         </div>
       </section>
     </main>
@@ -406,7 +362,7 @@
           <!-- Font Library Grid -->
           <div class="a11y-control-group">
             <p class="a11y-control-label" id="fontPickerLabel">Choose Font</p>
-            <p class="a11y-hint">OpenDyslexic is the default — designed for reading ease.</p>
+            <p class="a11y-hint">Inter is the default — OpenDyslexic is available for reading ease.</p>
             <div id="fontPickerGrid" class="a11y-font-grid" role="radiogroup" aria-labelledby="fontPickerLabel">
               <!-- Font cards rendered by JS -->
             </div>

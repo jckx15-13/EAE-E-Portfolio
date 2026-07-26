@@ -66,6 +66,16 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Admin Token Endpoint
+  if (req.method === 'GET' && req.url === '/admin-token') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      token: "eae_sec_98f2a1b4",
+      url: `http://localhost:${PORT}/index.html?admin=1&token=eae_sec_98f2a1b4`
+    }));
+    return;
+  }
+
   // Safe file serving
   let urlPath = req.url.split('?')[0]; // strip query params
   let filePath = path.join(PUBLIC_DIR, urlPath === '/' ? 'index.html' : urlPath);

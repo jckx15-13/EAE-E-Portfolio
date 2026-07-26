@@ -3353,7 +3353,20 @@
     }, 2000);
   }
 
+  function validateAdminToken() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("admin") === "1") {
+      const token = params.get("token");
+      if (token && (token === "eae_admin_2026" || token === "eae_sec_98f2a1b4")) {
+        localStorage.setItem("eae_admin_authenticated", "true");
+        return true;
+      }
+    }
+    return localStorage.getItem("eae_admin_authenticated") === "true";
+  }
+
   function setupLiveEditor() {
+    if (!validateAdminToken()) return;
     if ($(".live-editor-sidebar")) return;
 
     // Create FAB
@@ -4220,7 +4233,7 @@
     setupNavigation();
     setupChromeHeight();
     // setupViewModeBarVisibility();
-    setupAccordions();
+    setupSectionTabs();
     setupScrollProgress();
     setupPrintMode();
     setupReveal();
@@ -4537,7 +4550,7 @@
     if (resetBtn) {
       resetBtn.addEventListener('click', () => {
         // Reset font
-        applyFont('OpenDyslexic');
+        applyFont('Inter');
         document.documentElement.style.removeProperty('--a11y-font-override');
         document.body.classList.remove('dyslexic-mode');
 
@@ -4582,9 +4595,9 @@
         ];
         keys.forEach(k => localStorage.removeItem(k));
 
-        // Reapply OpenDyslexic as default
-        const odStack = `'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', sans-serif`;
-        document.documentElement.style.setProperty('--a11y-font-override', odStack);
+        // Reapply Inter as default
+        const defaultStack = `'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
+        document.documentElement.style.setProperty('--a11y-font-override', defaultStack);
       });
     }
 
@@ -4661,25 +4674,51 @@
     }
   }
 
-  function setupAccordions() {
-    const accordions = document.querySelectorAll('.accordion-section');
-    
-    accordions.forEach(section => {
-      const header = section.querySelector('.accordion-header');
-      if (!header) return;
-      
-      header.addEventListener('click', () => {
-        const isOpen = section.classList.contains('is-open');
-        
-        if (isOpen) {
-          section.classList.remove('is-open');
-          header.setAttribute('aria-expanded', 'false');
-        } else {
-          section.classList.add('is-open');
-          header.setAttribute('aria-expanded', 'true');
+  function setupSectionTabs() {
+    const tabPills = document.querySelectorAll('.section-tab-pill');
+    const sections = document.querySelectorAll('main section[id]');
+    if (!tabPills.length || !sections.length) return;
+
+    tabPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        const targetId = pill.getAttribute('href');
+        if (targetId && targetId.startsWith('#')) {
+          const targetSection = document.querySelector(targetId);
+          if (targetSection) {
+            e.preventDefault();
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+            tabPills.forEach(p => {
+              p.classList.remove('is-active');
+              p.setAttribute('aria-selected', 'false');
+            });
+            pill.classList.add('is-active');
+            pill.setAttribute('aria-selected', 'true');
+            pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
         }
       });
     });
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          tabPills.forEach(pill => {
+            const isMatch = pill.getAttribute('href') === `#${id}`;
+            pill.classList.toggle('is-active', isMatch);
+            pill.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => observer.observe(section));
   }
 
   if (document.readyState === "loading") {

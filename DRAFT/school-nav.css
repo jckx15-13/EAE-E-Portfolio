@@ -1,0 +1,74 @@
+/* ==========================================================================
+   School Portfolio Navigation Bar CSS
+   Injected navigation top bar for exported Google Sites pages.
+   ========================================================================== */
+
+/* Push body content down by 56px so fixed top header does not overlap page content */
+body {
+  padding-top: 56px !important;
+}
+
+.school-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 56px;
+  background: rgba(13, 22, 40, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(109, 179, 240, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  z-index: 10000;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.school-nav-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 1.1rem;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.25));
+  border: 1px solid #38bdf8;
+  border-radius: 999px;
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.school-nav-back-btn:hover,
+.school-nav-back-btn:focus-visible {
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  color: #0f172a !important;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+  transform: translateY(-1px) scale(1.02);
+  outline: none;
+}
+
+.school-nav-title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .school-nav-bar {
+    padding: 0 1rem;
+  }
+  .school-nav-title {
+    display: none;
+  }
+}

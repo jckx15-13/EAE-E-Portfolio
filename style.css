@@ -69,8 +69,9 @@
   --radius: 8px;
   --max-width: 1400px;
   --header-height: 72px;
-  --view-mode-bar-height: 64px;
-  --site-chrome-height: calc(var(--header-height) + var(--view-mode-bar-height));
+  --tab-bar-height: 48px;
+  --view-mode-bar-height: 0px;
+  --site-chrome-height: calc(var(--header-height) + var(--tab-bar-height));
 
   /* Z-Index Hierarchy Tokens */
   --z-header: 1000;
@@ -320,6 +321,66 @@ h1, h2, h3, h4,
   transform-origin: left center;
   will-change: transform;
   transition: transform 80ms linear;
+}
+
+/* ==========================================================================
+   STICKY SECTION TAB BAR NAVIGATION
+   ========================================================================== */
+.section-tab-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--tab-bar-height, 48px);
+  padding: 0 16px;
+  background: var(--theme-chrome-bg);
+  border-bottom: 1px solid var(--theme-border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.section-tab-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.section-tab-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: var(--max-width);
+  width: 100%;
+  white-space: nowrap;
+  padding: 2px 0;
+}
+
+.section-tab-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--theme-text-secondary);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.18s ease;
+  flex-shrink: 0;
+}
+
+.section-tab-pill:hover {
+  color: var(--theme-text-primary);
+  background: var(--theme-surface-soft);
+  border-color: var(--theme-border);
+}
+
+.section-tab-pill.is-active,
+.section-tab-pill[aria-selected="true"] {
+  color: #ffffff !important;
+  background: var(--theme-accent-cyan) !important;
+  border-color: var(--theme-accent-cyan) !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
 }
 
 .brand {
@@ -2108,7 +2169,7 @@ body[data-theme="light"] .section-astral-6 {
 /* Custom font override: injected by JS as a CSS variable on :root */
 body,
 body * {
-  font-family: var(--a11y-font-override, 'OpenDyslexic', 'OpenDyslexic-Regular', 'OpenDyslexic3', sans-serif);
+  font-family: var(--a11y-font-override, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
 }
 
 /* Dyslexic mode (kept for backwards-compat / test harness) */
