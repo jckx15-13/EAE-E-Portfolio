@@ -3176,6 +3176,31 @@
     return createImageViewer(src, alt, fallback);
   }
 
+  function openMediaViewerModal(src, alt = 'Media Viewer') {
+    const dialog = $(SELECTORS.achievementModal);
+    const content = $(SELECTORS.modalContent);
+    if (!dialog || !content) return;
+
+    content.replaceChildren();
+    dialog.classList.add('modal-wide');
+
+    const header = create('header', 'modal-header');
+    const title = create('h2', '', alt);
+    const closeBtn = create('button', 'modal-close', '×');
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Close media viewer modal');
+    closeBtn.addEventListener('click', () => closeModalDialog(dialog));
+    header.append(title, closeBtn);
+
+    const body = create('div', 'modal-media-wrap');
+    const mediaBlock = createMediaBlock(src, alt);
+    body.append(mediaBlock);
+
+    content.append(header, body);
+    openModalDialog(dialog);
+  }
+  window.openMediaViewerModal = openMediaViewerModal;
+
   function createDetail(label, value, className = "modal-detail") {
     const detail = create("section", className);
     detail.append(create("h3", "", label));
