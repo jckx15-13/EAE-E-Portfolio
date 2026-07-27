@@ -2115,7 +2115,9 @@
       const query = (search?.value || "").trim().toLowerCase();
       const visibleAchievements = achievements.filter((achievement) => {
         const categoryMatch = activeCategory === "All" || achievement.category === activeCategory;
-        return categoryMatch && achievementMatchesSearch(achievement, query);
+        if (!query) return categoryMatch;
+        const text = [achievement.title, achievement.category, achievement.summary, achievement.organisation, achievement.fullDescription, achievement.applicantSignal, achievement.eaeRelevance].filter(Boolean).join(" ").toLowerCase();
+        return categoryMatch && text.includes(query);
       });
 
       if (resultCount) {
