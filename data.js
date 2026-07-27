@@ -157,7 +157,7 @@
     "intro": "Quick view of my strongest EAE evidence for Singapore Polytechnic and Ngee Ann Polytechnic.",
     "cards": []
   },
-  "evidenceDeck": { 
+  "evidenceDeck": {
     "title": "Evidence Cards",
     "intro": "Each card translates my work into what it shows about me as an EAE applicant.",
     "cards": [

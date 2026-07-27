@@ -47,6 +47,27 @@
       '3D Design & Mechanical Prototyping (Thingiverse Creations)',
     ],
   };
+
+  const LEARNING_REPO_BRANCH_ORDER = [
+    'main',
+    'coding',
+    'robotics',
+    'academic-growth',
+    'cybersecurity',
+    'projects',
+    'eae-direction'
+  ];
+
+  const LEARNING_REPO_BRANCH_COLORS = {
+    main: '#38bdf8',
+    coding: '#22c55e',
+    robotics: '#f59e0b',
+    'academic-growth': '#a78bfa',
+    cybersecurity: '#ef4444',
+    projects: '#06b6d4',
+    'eae-direction': '#ec4899'
+  };
+
   let modalLastActiveElement = null;
   let navigationSetupDone = false;
   let scrollProgressSetupDone = false;
@@ -403,7 +424,7 @@
     setText("#heroBtnPrimary", data.uiLabels?.heroBtnPrimary || "View strongest projects", "uiLabels.heroBtnPrimary");
     setText("#heroBtnSecondary", data.uiLabels?.heroBtnSecondary || "View evidence timeline", "uiLabels.heroBtnSecondary");
     setText("#heroBtnApplications", data.uiLabels?.heroBtnApplications || "View EAE direction", "uiLabels.heroBtnApplications");
-    
+
     const heroBtnPrimary = $("#heroBtnPrimary");
     if (heroBtnPrimary) heroBtnPrimary.href = "#projects";
     const heroBtnSecondary = $("#heroBtnSecondary");
@@ -432,8 +453,6 @@
     setText("#applicationsLede", data.uiLabels?.applicationsLede || "Institution-specific notes stay editable so the portfolio can support both Singapore Polytechnic and Ngee Ann Polytechnic without making unconfirmed course claims.", "uiLabels.applicationsLede");
     setText("#footerText", data.uiLabels?.footerText || "Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.", "uiLabels.footerText");
     setText("#printPortfolio", data.uiLabels?.footerPrintBtn || "Print portfolio", "uiLabels.footerPrintBtn");
-
-
 
     const heroProfileImage = $("#heroProfileImage");
     if (heroProfileImage && data.profile?.profileImage) {
@@ -468,7 +487,7 @@
 
   function renderPhilosophy() {
     setText("#philosophyIntro", data.philosophy?.intro || "", "philosophy.intro");
-    
+
     // Render snapshot/mindset cards
     const snapshotGrid = $("#personalSnapshot");
     if (snapshotGrid) {
@@ -515,9 +534,8 @@
     }
   }
 
-
-
   function renderLifeEntry() {
+    setText("#timelineIntro", data.lifeEntry?.intro || "", "lifeEntry.intro");
     setText("#lifeEntryTitle", data.lifeEntry?.title || "", "lifeEntry.title");
     setText("#lifeEntryIntro", data.lifeEntry?.intro || "", "lifeEntry.intro");
     setText("#lifeEntryDoorway", data.lifeEntry?.doorway || "", "lifeEntry.doorway");
@@ -532,7 +550,6 @@
       ]
     });
   }
-
 
   function renderEvidenceOverview() {
     setText("#evidenceOverviewTitle", data.uiLabels?.evidenceOverviewTitle || "My Evidence at a Glance", "uiLabels.evidenceOverviewTitle");
@@ -1145,7 +1162,7 @@
 
       filteredProjects.forEach((project, index) => {
         const originalIndex = data.projects.indexOf(project);
-        
+
         // Helper to render a project card instance into a specified grid
         const renderCardInstance = (targetGrid, isFeaturedSection) => {
           if (!targetGrid) return;
@@ -1258,7 +1275,7 @@
           const body = create('div', 'project-body');
           body.append(create('p', 'card-kicker', project.category || 'Portfolio Project'));
           body.append(create('h3', '', project.title));
-          
+
           if (project.status) {
             body.append(create('p', 'date-line', project.status));
           }
@@ -1318,6 +1335,10 @@
       if (grid) refreshReveal(grid);
       if (featuredGrid) refreshReveal(featuredGrid);
     }
+
+    drawFilters();
+    drawProjects();
+  }
 
   function renderCodeShowcase() {
     const container = $("#codeShowcaseContainer");
@@ -1421,10 +1442,6 @@
     updateActiveSnippet(0);
   }
 
-    drawFilters();
-    drawProjects();
-  }
-
   function createProjectInsight(project) {
     const originalIndex = data.projects.indexOf(project);
     const insight = create("div", "project-insight");
@@ -1502,7 +1519,6 @@
     });
   }
 
-
   function renderAchievements() {
     const cards = $("#achievementCards");
     const timeline = $("#achievementTimeline");
@@ -1536,21 +1552,561 @@
       );
     }
 
-    function achievementMatchesSearch(achievement, query) {
-      if (!query) return true;
-      const searchable = [
-        achievement.title,
-        achievement.date,
-        achievement.category,
-        achievement.summary,
-        achievement.fullDescription,
-        achievement.applicantSignal,
-        achievement.eaeRelevance,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-      return searchable.includes(query);
+    function getBranchColor(branchId) {
+      return LEARNING_REPO_BRANCH_COLORS[branchId] || '#94a3b8';
+    }
+
+    function ensureLearningRepositoryBase() {
+      data.learningRepository = data.learningRepository || {};
+      const repo = data.learningRepository;
+
+      repo.title = repo.title || 'Learning Repository';
+      repo.intro = repo.intro || 'A Git-style visual history of how my coding, robotics, cybersecurity, academic growth, and EAE direction developed over time.';
+
+      repo.branches = Array.isArray(repo.branches) && repo.branches.length
+        ? repo.branches
+        : LEARNING_REPO_BRANCH_ORDER.map((id) => ({
+            id,
+            label: id,
+            color: getBranchColor(id),
+            description: ''
+          }));
+
+      repo.commits = Array.isArray(repo.commits) ? repo.commits : [];
+      repo.commitOverrides = repo.commitOverrides || {};
+
+      return repo;
+    }
+
+    function generateLearningRepoCommitsFromPortfolio() {
+      return [
+        {
+          id: 'commit-scratch-coder-course',
+          title: 'Scratch Coder Course',
+          message: 'init: started coding journey with logic blocks',
+          date: 'February 2019 - September 2019',
+          branch: 'main',
+          parent: null,
+          mergeParents: [],
+          order: 1,
+          type: 'achievement',
+          visible: true,
+          linkedAchievement: 'Scratch Coder Course',
+          summary: 'The beginning of my coding journey, where I learned variables, loops, functions, lists, Boolean logic, and conditionals.'
+        },
+        {
+          id: 'commit-mit-app-inventor',
+          title: 'MIT App Inventor Appathon',
+          message: 'feat: built first mobile app interaction',
+          date: 'July 2020 - August 2020',
+          branch: 'main',
+          parent: 'commit-scratch-coder-course',
+          mergeParents: [],
+          order: 2,
+          type: 'achievement',
+          visible: true,
+          linkedAchievement: 'MIT App Inventor Appathon',
+          summary: 'Created Mpainter, an app for drawing on photographs and a digital whiteboard.'
+        },
+        {
+          id: 'commit-python-basic',
+          title: 'Python Coder Course - Basic',
+          message: 'branch: moved from block logic into Python syntax',
+          date: 'February 2021 - July 2021',
+          branch: 'coding',
+          parent: 'commit-mit-app-inventor',
+          mergeParents: [],
+          order: 3,
+          type: 'achievement',
+          visible: true,
+          linkedAchievement: 'Python Coder Course - Basic',
+          summary: 'Transitioned into text-based programming with Python syntax, Turtle, recursion, variables, loops, and functions.'
+        },
+        {
+          id: 'commit-robotics-nrc',
+          title: 'NRC Robotics Competition',
+          message: 'branch: applied logic to robotics movement and sensors',
+          date: 'September 2021',
+          branch: 'robotics',
+          parent: 'commit-python-basic',
+          mergeParents: [],
+          order: 4,
+          type: 'achievement',
+          visible: true,
+          linkedAchievement: 'NRC Robotics Competition',
+          summary: 'Applied programming logic to virtual robotics, movement planning, sensor thresholds, and debugging.'
+        },
+        {
+          id: 'commit-python-intermediate',
+          title: 'Python Coder Course - Intermediate',
+          message: 'feat: built interactive games and GUI systems',
+          date: 'October 2021 - March 2022',
+          branch: 'coding',
+          parent: 'commit-python-basic',
+          mergeParents: [],
+          order: 5,
+          type: 'achievement',
+          visible: true,
+          linkedAchievement: 'Python Coder Course - Intermediate',
+          summary: 'Built interactive applications using Pygame, Tkinter, game states, GUI logic, and event-driven design.'
+        },
+        {
+          id: 'commit-roblox-sdg',
+          title: 'Roblox Global Goal Challenge',
+          message: 'feat: used games to explain real-world issues',
+          date: 'December 2021',
+          branch: 'coding',
+          parent: 'commit-python-intermediate',
+          mergeParents: [],
+          order: 6,
+          type: 'achievement',
+          visible: true,
+          linkedAchievement: 'Roblox Global Goal Challenge',
+          summary: 'Created an underwater Roblox obstacle course inspired by SDG 14 - Life Below Water.'
+        },
+        {
+          id: 'commit-python-advanced',
+          title: 'Python Advanced',
+          message: 'feat: deepened OOP, data structures, and algorithms',
+          date: 'April 2022 - September 2022',
+          branch: 'coding',
+          parent: 'commit-python-intermediate',
+          mergeParents: [],
+          order: 7,
+          type: 'achievement',
+          visible: true,
+          linkedAchievement: 'Python Advanced',
+          summary: 'Developed stronger software structure through object-oriented programming, algorithms, and modular design.'
+        },
+        {
+          id: 'commit-math-growth',
+          title: 'Mathematics Growth Journey',
+          message: 'refactor: strengthened quantitative thinking through resilience',
+          date: '2021 - 2024',
+          branch: 'academic-growth',
+          parent: 'commit-python-basic',
+          mergeParents: [],
+          order: 8,
+          type: 'achievement',
+          visible: true,
+          linkedAchievement: 'Mathematics Growth Journey',
+          summary: 'A personal growth path from struggling with mathematics to building confidence and discipline.'
+        },
+        {
+          id: 'commit-ycep',
+          title: 'YCEP Certificate of Participation',
+          message: 'branch: entered cybersecurity through networking and forensics',
+          date: 'June 2025',
+          branch: 'cybersecurity',
+          parent: 'commit-python-advanced',
+          mergeParents: [],
+          order: 9,
+          type: 'achievement',
+          visible: true,
+          linkedAchievement: 'YCEP Certificate of Participation',
+          summary: 'Explored cybersecurity fundamentals, networking, ethical hacking concepts, and digital forensics.'
+        },
+        {
+          id: 'commit-fll-robot-design',
+          title: 'FLL 2026 Unearthed Robot Design & Planning',
+          message: 'feat: engineered robot systems with torque and flowchart planning',
+          date: '2026',
+          branch: 'robotics',
+          parent: 'commit-robotics-nrc',
+          mergeParents: [],
+          order: 10,
+          type: 'project',
+          visible: true,
+          linkedProject: 'FLL 2026 Unearthed Robot Design & Planning',
+          summary: 'Designed a modular robot system using gear ratios, mission planning, movement flowcharts, and sensor logic.'
+        },
+        {
+          id: 'commit-kodecoon-project-journey',
+          title: 'Kodecoon Project Journey',
+          message: 'feat: curated long-term coding growth into project evidence',
+          date: '2019 - 2022',
+          branch: 'coding',
+          parent: 'commit-python-advanced',
+          mergeParents: [],
+          order: 11,
+          type: 'project',
+          visible: true,
+          linkedProject: 'Kodecoon Project Journey',
+          summary: 'Curated long-term coding progress across Scratch, App Inventor, Spark AR, Roblox, Python, Tkinter, and Pygame.'
+        },
+        {
+          id: 'commit-skillquest',
+          title: 'PyCon Hackathon & SkillQuest',
+          message: 'merge: combined software, data, AI, and cybersecurity education',
+          date: 'June 2026',
+          branch: 'cybersecurity',
+          parent: 'commit-ycep',
+          mergeParents: ['commit-kodecoon-project-journey'],
+          order: 12,
+          type: 'project',
+          visible: true,
+          linkedProject: 'PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)',
+          summary: 'Built a personalised career and upskilling platform combining software development, data, recommendation logic, and cybersecurity education.'
+        },
+        {
+          id: 'commit-portfolio-website',
+          title: 'Personal Student Portfolio Website',
+          message: 'docs: organized evidence into a data-driven portfolio',
+          date: '2026',
+          branch: 'projects',
+          parent: 'commit-kodecoon-project-journey',
+          mergeParents: ['commit-math-growth'],
+          order: 13,
+          type: 'project',
+          visible: true,
+          linkedProject: 'Personal Student Portfolio Website',
+          summary: 'Built this portfolio as a structured, editable, data-driven website to present projects, achievements, and reflections.'
+        },
+        {
+          id: 'commit-spd-portal',
+          title: 'SPD Caregiver & Admin Event Portal Prototype',
+          message: 'feat: designed secure role-based system for real users',
+          date: '2026',
+          branch: 'projects',
+          parent: 'commit-portfolio-website',
+          mergeParents: ['commit-skillquest'],
+          order: 14,
+          type: 'project',
+          visible: true,
+          linkedProject: 'SPD Caregiver & Admin Event Portal Prototype',
+          summary: 'Designed an accessible event portal prototype with caregiver/admin flows, reporting dashboards, and role-based thinking.'
+        },
+        {
+          id: 'commit-eae-direction',
+          title: 'EAE Direction',
+          message: 'merge: connected coding, robotics, cybersecurity, and academic growth',
+          date: 'Current',
+          branch: 'eae-direction',
+          parent: 'commit-spd-portal',
+          mergeParents: [
+            'commit-fll-robot-design',
+            'commit-skillquest',
+            'commit-math-growth'
+          ],
+          order: 15,
+          type: 'milestone',
+          visible: true,
+          summary: 'My learning paths now converge toward cybersecurity and digital forensics for SP and NP.'
+        }
+      ];
+    }
+
+    function buildLearningRepositoryState() {
+      const repo = ensureLearningRepositoryBase();
+
+      const generated = generateLearningRepoCommitsFromPortfolio();
+      const manual = Array.isArray(repo.commits) ? repo.commits : [];
+      const overrides = repo.commitOverrides || {};
+      const byId = new Map();
+
+      generated.forEach((commit) => {
+        byId.set(commit.id, { ...commit });
+      });
+
+      manual.forEach((commit) => {
+        if (!commit || !commit.id) return;
+        byId.set(commit.id, {
+          ...(byId.get(commit.id) || {}),
+          ...commit
+        });
+      });
+
+      Object.entries(overrides).forEach(([id, override]) => {
+        if (!byId.has(id)) return;
+        byId.set(id, {
+          ...byId.get(id),
+          ...override
+        });
+      });
+
+      repo.commits = Array.from(byId.values())
+        .filter((commit) => commit && commit.visible !== false)
+        .sort((a, b) => Number(a.order || 0) - Number(b.order || 0));
+
+      return repo;
+    }
+
+    function assignBranchLanes(commits, branches) {
+      const laneMap = new Map();
+
+      LEARNING_REPO_BRANCH_ORDER.forEach((id, index) => {
+        laneMap.set(id, index);
+      });
+
+      (branches || []).forEach((branch) => {
+        if (branch && branch.id && !laneMap.has(branch.id)) {
+          laneMap.set(branch.id, laneMap.size);
+        }
+      });
+
+      (commits || []).forEach((commit) => {
+        if (commit && commit.branch && !laneMap.has(commit.branch)) {
+          laneMap.set(commit.branch, laneMap.size);
+        }
+      });
+
+      return laneMap;
+    }
+
+    function buildCommitGraphRows(commits, laneMap) {
+      const byId = new Map((commits || []).map((commit) => [commit.id, commit]));
+
+      return (commits || []).map((commit, rowIndex) => {
+        const parent = commit.parent ? byId.get(commit.parent) : null;
+        const mergeParents = Array.isArray(commit.mergeParents)
+          ? commit.mergeParents.map((id) => byId.get(id)).filter(Boolean)
+          : [];
+
+        return {
+          commit,
+          rowIndex,
+          lane: laneMap.get(commit.branch) || 0,
+          parent,
+          parentLane: parent ? laneMap.get(parent.branch) : null,
+          mergeParents,
+          mergeParentLanes: mergeParents.map((p) => laneMap.get(p.branch)).filter((lane) => lane !== undefined),
+          isMerge: mergeParents.length > 0
+        };
+      });
+    }
+
+    function createSvgElement(tag, attrs = {}) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      Object.entries(attrs).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          el.setAttribute(key, String(value));
+        }
+      });
+      return el;
+    }
+
+    function createGraphSvgForRow(row, rows, laneMap, repo) {
+      const laneGap = window.innerWidth <= 520 ? 16 : window.innerWidth <= 820 ? 18 : 28;
+      const leftPad = window.innerWidth <= 520 ? 12 : 18;
+      const rowHeight = 120;
+      const nodeY = 60;
+      const laneCount = Math.max(1, laneMap.size);
+      const width = Math.max(72, leftPad * 2 + laneGap * (laneCount - 1));
+
+      const svg = createSvgElement('svg', {
+        class: 'git-row-svg',
+        viewBox: `0 0 ${width} ${rowHeight}`,
+        preserveAspectRatio: 'xMinYMid meet',
+        'aria-hidden': 'true'
+      });
+
+      const branchById = new Map((repo.branches || []).map((branch) => [branch.id, branch]));
+
+      function laneX(lane) {
+        return leftPad + lane * laneGap;
+      }
+
+      function colorForBranch(branchId) {
+        const branch = branchById.get(branchId);
+        return branch?.color || getBranchColor(branchId);
+      }
+
+      Array.from(laneMap.entries()).forEach(([branchId, lane]) => {
+        const x = laneX(lane);
+        svg.append(createSvgElement('line', {
+          class: 'git-lane-line',
+          x1: x,
+          y1: 0,
+          x2: x,
+          y2: rowHeight
+        }));
+      });
+
+      const currentX = laneX(row.lane);
+      const currentColor = colorForBranch(row.commit.branch);
+
+      if (row.parent && row.parentLane !== null && row.parentLane !== undefined) {
+        const parentX = laneX(row.parentLane);
+        const path = parentX === currentX
+          ? `M ${currentX} 0 L ${currentX} ${nodeY}`
+          : `M ${parentX} 0 C ${parentX} ${nodeY * 0.45}, ${currentX} ${nodeY * 0.55}, ${currentX} ${nodeY}`;
+
+        svg.append(createSvgElement('path', {
+          class: 'git-parent-line',
+          d: path,
+          stroke: currentColor
+        }));
+      }
+
+      svg.append(createSvgElement('line', {
+        class: 'git-parent-line',
+        x1: currentX,
+        y1: nodeY,
+        x2: currentX,
+        y2: rowHeight,
+        stroke: currentColor
+      }));
+
+      row.mergeParents.forEach((mergeParent) => {
+        const mergeLane = laneMap.get(mergeParent.branch);
+        if (mergeLane === undefined) return;
+
+        const mergeX = laneX(mergeLane);
+        const mergeColor = colorForBranch(mergeParent.branch);
+
+        if (mergeX === currentX) return;
+
+        svg.append(createSvgElement('path', {
+          class: 'git-merge-line',
+          d: `M ${mergeX} 0 C ${mergeX} ${nodeY * 0.4}, ${currentX} ${nodeY * 0.6}, ${currentX} ${nodeY}`,
+          stroke: mergeColor
+        }));
+      });
+
+      svg.append(createSvgElement('circle', {
+        class: 'git-commit-node-ring',
+        cx: currentX,
+        cy: nodeY,
+        r: 12,
+        stroke: currentColor
+      }));
+
+      svg.append(createSvgElement('circle', {
+        class: 'git-commit-node',
+        cx: currentX,
+        cy: nodeY,
+        r: row.isMerge ? 8 : 7,
+        fill: currentColor,
+        style: `color:${currentColor}`
+      }));
+
+      if (row.isMerge || row.commit.branch === 'eae-direction') {
+        const label = createSvgElement('text', {
+          x: Math.min(currentX + 12, width - 4),
+          y: nodeY - 12,
+          fill: currentColor,
+          'font-size': '9',
+          'font-weight': '700'
+        });
+        label.textContent = row.commit.branch;
+        svg.append(label);
+      }
+
+      return svg;
+    }
+
+    function createLinkedCommitAction(commit) {
+      if (commit.linkedAchievement) {
+        const achievement = (data.achievements || []).find((item) => item.title === commit.linkedAchievement);
+        if (achievement) {
+          const btn = create('button', 'button button-secondary git-commit-action', 'Open evidence');
+          btn.type = 'button';
+          btn.addEventListener('click', () => openAchievementModal(achievement));
+          return btn;
+        }
+      }
+
+      if (commit.linkedProject) {
+        const project = (data.projects || []).find((item) => item.title === commit.linkedProject);
+        if (project) {
+          const link = create('a', 'button button-secondary git-commit-action', 'View project');
+          link.href = '#projects';
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const target = document.getElementById('projects');
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+          return link;
+        }
+      }
+      return null;
+    }
+
+    function createGitCommitCard(commit, repo) {
+      const card = create('article', 'git-commit-card reveal');
+      card.dataset.commitId = commit.id;
+      card.dataset.branch = commit.branch;
+
+      const branch = (repo.branches || []).find((item) => item.id === commit.branch);
+      const color = branch?.color || getBranchColor(commit.branch);
+
+      const meta = create('div', 'git-commit-meta');
+
+      const branchPill = create('span', 'git-branch-pill', branch?.label || commit.branch);
+      branchPill.style.setProperty('--branch-color', color);
+      meta.append(branchPill);
+
+      if (commit.type) {
+        meta.append(create('span', 'git-commit-type', commit.type));
+      }
+
+      if (commit.date) {
+        meta.append(create('span', 'git-commit-date', commit.date));
+      }
+
+      card.append(meta);
+      card.append(create('h3', '', commit.title || 'Untitled commit'));
+      card.append(create('p', 'git-commit-message', commit.message || 'chore: updated learning record'));
+
+      if (commit.summary) {
+        card.append(create('p', 'git-commit-summary', commit.summary));
+      }
+
+      if (Array.isArray(commit.mergeParents) && commit.mergeParents.length) {
+        const mergeNote = create('p', 'git-merge-note', `Merge commit • ${commit.mergeParents.length} incoming path${commit.mergeParents.length > 1 ? 's' : ''}`);
+        card.append(mergeNote);
+      }
+
+      const action = createLinkedCommitAction(commit);
+      if (action) card.append(action);
+
+      return card;
+    }
+
+    function renderLearningRepositoryTimeline() {
+      const container = $('#achievementTimeline');
+      if (!container) return;
+
+      const repo = buildLearningRepositoryState();
+      const commits = repo.commits || [];
+      const laneMap = assignBranchLanes(commits, repo.branches);
+      const rows = buildCommitGraphRows(commits, laneMap);
+
+      container.className = 'git-learning-repo';
+      container.replaceChildren();
+
+      const toolbar = create('div', 'git-repo-toolbar');
+      const titleWrap = create('div', 'git-repo-title-wrap');
+      titleWrap.append(create('span', 'git-repo-title', repo.title || 'Learning Repository'));
+      titleWrap.append(create('span', 'git-repo-subtitle', repo.intro || 'A Git-style learning history'));
+      const count = create('span', 'git-repo-count', `${commits.length} commits`);
+      toolbar.append(titleWrap, count);
+      container.append(toolbar);
+
+      const branchLegend = create('div', 'git-branch-legend');
+      (repo.branches || []).forEach((branch) => {
+        const pill = create('span', 'git-legend-pill', branch.label || branch.id);
+        pill.style.setProperty('--branch-color', branch.color || getBranchColor(branch.id));
+        branchLegend.append(pill);
+      });
+      container.append(branchLegend);
+
+      const body = create('div', 'git-repo-body');
+      rows.forEach((row) => {
+        const rowEl = create('div', 'git-commit-row');
+        rowEl.dataset.commitId = row.commit.id;
+        rowEl.dataset.branch = row.commit.branch;
+
+        const graphCell = create('div', 'git-graph-cell');
+        graphCell.append(createGraphSvgForRow(row, rows, laneMap, repo));
+        rowEl.append(graphCell, createGitCommitCard(row.commit, repo));
+        body.append(rowEl);
+      });
+
+      container.append(body);
+      if (typeof refreshReveal === 'function') {
+        refreshReveal(container);
+      }
     }
 
     function drawCards() {
@@ -1589,107 +2145,7 @@
     if (cards) cards.replaceChildren();
     if (timeline) timeline.replaceChildren();
 
-    const timelineAchievements = [...achievements].sort((a, b) => {
-      const aDate = parseTimelineDate(a.date);
-      const bDate = parseTimelineDate(b.date);
-      return aDate - bDate || String(a.title || '').localeCompare(String(b.title || ''));
-    });
-
-    timelineAchievements.forEach((achievement, index) => {
-      const item = create("article", "timeline-item reveal");
-      item.setAttribute("role", "button");
-      item.tabIndex = 0;
-      item.setAttribute("aria-label", `Open ${achievement.title} evidence`);
-      item.addEventListener("click", () => openAchievementModal(achievement));
-      item.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          openAchievementModal(achievement);
-        }
-      });
-      item.append(create("span", "timeline-dot"));
-      const content = create("div", "");
-      content.append(create("p", "date-line", achievement.date));
-      content.append(create("h4", "", achievement.title));
-      
-      if (achievement.summary) {
-        content.append(create("p", "", achievement.summary));
-      }
-
-      // Merge data from achievementFlow if matches by title
-      const flowStep = (data.achievementFlow?.steps || []).find(s => s.linkedAchievement === achievement.title || s.title === achievement.title);
-      if (flowStep) {
-        if (flowStep.whatItShows) {
-          const proof = create("div", "flow-copy-block");
-          proof.append(create("h5", "", "What it shows"));
-          proof.append(create("p", "", flowStep.whatItShows));
-          content.append(proof);
-        }
-        if (flowStep.personalMeaning) {
-          const meaning = create("div", "flow-copy-block flow-meaning");
-          meaning.append(create("h5", "", "What it means to me"));
-          meaning.append(create("p", "", flowStep.personalMeaning));
-          content.append(meaning);
-        }
-      } else if (achievement.applicantSignal) {
-        const signal = create("p", "achievement-signal", achievement.applicantSignal);
-        signal.textContent = `${achievement.applicantSignal.substring(0, 130)}${
-          achievement.applicantSignal.length > 130 ? "..." : ""
-        }`;
-        content.append(signal);
-      }
-      item.append(content);
-      if (timeline) timeline.append(item);
-    });
-
-    refreshReveal(timeline);
-
-    // make the timeline follow the centered spine layout and alternate sides
-    if (timeline) {
-      timeline.classList.add('timeline');
-      // assign left/right classes
-      assignTimelineSides();
-    }
-
-    // build a small year filter bar for the timeline (inside timelineWrap)
-    try {
-      const wrap = document.querySelector('.timeline-wrap');
-      if (wrap) {
-        let bar = wrap.querySelector('.timeline-filter-bar');
-        if (!bar) {
-          bar = document.createElement('div');
-          bar.className = 'timeline-filter-bar';
-          wrap.insertBefore(bar, wrap.firstElementChild.nextElementSibling || wrap.firstChild);
-        }
-        bar.replaceChildren();
-        const years = new Set();
-        (achievements || []).forEach(a => {
-          const m = (a.date || '').match(/(19|20)\d{2}/);
-          if (m) years.add(m[0]);
-        });
-        const yearArray = Array.from(years).sort((a,b) => b - a);
-        const allPill = create('button', 'filter-pill is-active', 'All'); allPill.type='button';
-        bar.append(allPill);
-        allPill.addEventListener('click', () => {
-          bar.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('is-active'));
-          allPill.classList.add('is-active');
-          document.querySelectorAll('#achievementTimeline .timeline-item').forEach(it => it.style.display = '');
-        });
-        yearArray.forEach(y => {
-          const pill = create('button', 'filter-pill', y);
-          pill.type = 'button';
-          pill.addEventListener('click', () => {
-            bar.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('is-active'));
-            pill.classList.add('is-active');
-            document.querySelectorAll('#achievementTimeline .timeline-item').forEach(it => {
-              const d = (it.querySelector('.date-line') || {}).textContent || '';
-              if (d.includes(y)) it.style.display = ''; else it.style.display = 'none';
-            });
-          });
-          bar.append(pill);
-        });
-      }
-    } catch (e) { console.warn('timeline filter build failed', e); }
+    renderLearningRepositoryTimeline();
 
     drawFilters();
     drawCards();
@@ -1867,26 +2323,26 @@
   function createDrawioViewer(src, alt) {
     const container = create("div", "media-drawio-container");
     const toolbar = create("div", "drawio-toolbar");
-    
+
     const titleBadge = create("span", "drawio-title-badge", `📐 ${alt || "Draw.io Flowchart"}`);
-    
+
     const tabDiagramBtn = create("button", "text-button drawio-tab-btn active", "📊 Interactive Flowchart");
     const tabCodeBtn = create("button", "text-button drawio-tab-btn", "💻 Diagram Logic");
     const downloadBtn = create("a", "text-button drawio-download-btn", "📥 Download .drawio");
-    
+
     tabDiagramBtn.type = "button";
     tabCodeBtn.type = "button";
     downloadBtn.href = src;
     downloadBtn.download = src.split('/').pop() || "diagram.drawio";
     downloadBtn.target = "_blank";
-    
+
     toolbar.append(titleBadge, tabDiagramBtn, tabCodeBtn, downloadBtn);
     container.append(toolbar);
 
     const diagramWrap = create("div", "drawio-diagram-wrap");
     const codeWrap = create("div", "drawio-code-wrap");
     codeWrap.style.display = "none";
-    
+
     container.append(diagramWrap, codeWrap);
 
     tabDiagramBtn.addEventListener("click", () => {
@@ -1931,7 +2387,7 @@
         iframe.src = `https://viewer.diagrams.net/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=${encodeURIComponent(alt || "Drawio Flowchart")}#R${encodeURIComponent(xmlText)}`;
         iframe.title = alt || "Draw.io Flowchart Diagram";
         iframe.allowFullscreen = true;
-        
+
         canvas.append(iframe);
         diagramWrap.append(canvas);
       })
@@ -1945,17 +2401,17 @@
 
   function createSlidesViewer(src, alt) {
     const container = create("div", "media-slides-container");
-    
+
     let embedUrl = src;
     if (src.includes("canva.com/design/") && !src.includes("embed")) {
       embedUrl = `${src}${src.includes("?") ? "&" : "?"}embed`;
     }
-    
+
     const toolbar = create("div", "slides-toolbar");
     const badge = create("span", "slides-title-badge", `📊 ${alt || "Presentation Slides"}`);
     const fullScreenBtn = create("button", "text-button slides-fullscreen-btn", "⛶ Fullscreen");
     fullScreenBtn.type = "button";
-    
+
     toolbar.append(badge, fullScreenBtn);
     container.append(toolbar);
 
@@ -2016,20 +2472,20 @@
   function createSpreadsheetViewer(src, alt, fallback) {
     const container = create("div", "media-spreadsheet-container");
     const toolbar = create("div", "spreadsheet-toolbar");
-    
+
     const searchInput = document.createElement("input");
     searchInput.type = "search";
     searchInput.className = "spreadsheet-search-input";
     searchInput.placeholder = "🔍 Search spreadsheet rows...";
     searchInput.setAttribute("aria-label", "Search spreadsheet rows");
-    
+
     const statsBadge = create("span", "spreadsheet-stats-badge", "Loading data...");
-    
+
     const downloadBtn = create("a", "text-button spreadsheet-download-btn", "📥 Download CSV");
     downloadBtn.href = src;
     downloadBtn.download = src.split('/').pop() || "data.csv";
     downloadBtn.target = "_blank";
-    
+
     toolbar.append(searchInput, statsBadge, downloadBtn);
     container.append(toolbar);
 
@@ -2047,7 +2503,7 @@
 
       const thead = document.createElement("thead");
       const headerRow = document.createElement("tr");
-      
+
       const lineNoHeader = document.createElement("th");
       lineNoHeader.className = "spreadsheet-col-line";
       lineNoHeader.textContent = "#";
@@ -2070,7 +2526,7 @@
         statsBadge.textContent = `Showing ${rowList.length} of ${parsed.data.length} rows`;
         rowList.forEach((row, rowIdx) => {
           const tr = document.createElement("tr");
-          
+
           const lineTd = document.createElement("td");
           lineTd.className = "spreadsheet-line-num";
           lineTd.textContent = rowIdx + 1;
@@ -2586,7 +3042,7 @@
     audio.src = src;
     audio.controls = true;
     audio.className = "media-audio-element";
-    
+
     const downloadBtn = create("a", "text-button media-download-btn", "📥 Download Audio");
     downloadBtn.href = src;
     downloadBtn.download = src.split('/').pop() || "audio.mp3";
@@ -2602,14 +3058,14 @@
     object.data = src;
     object.type = "application/pdf";
     object.className = "media-pdf-object";
-    
+
     const fallbackText = create("p", "", "PDF preview loading or unavailable in embedded mode.");
     const downloadBtn = create("a", "text-button media-download-btn", "📄 Download / View PDF");
     downloadBtn.href = src;
     downloadBtn.target = "_blank";
-    
+
     object.append(fallbackText, downloadBtn);
-    
+
     const toolbar = create("div", "media-player-controls-bar");
     toolbar.append(create("span", "media-player-title", `📄 ${alt || "PDF Document"}`), downloadBtn.cloneNode(true));
     wrap.append(toolbar, object);
@@ -2624,7 +3080,7 @@
     const downloadBtn = create("a", "primary-button media-download-btn", "📥 Open / Download File");
     downloadBtn.href = src;
     downloadBtn.target = "_blank";
-    
+
     wrap.append(icon, title, desc, downloadBtn);
     return wrap;
   }
@@ -3441,12 +3897,10 @@
 
   function validateAdminToken() {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("admin") === "1") {
-      const token = params.get("token");
-      if (token && (token === "eae_admin_2026" || token === "eae_sec_98f2a1b4")) {
-        localStorage.setItem("eae_admin_authenticated", "true");
-        return true;
-      }
+    const adminParam = params.get("admin");
+    if (adminParam === "1" || adminParam === "true") {
+      localStorage.setItem("eae_admin_authenticated", "true");
+      return true;
     }
     return localStorage.getItem("eae_admin_authenticated") === "true";
   }
@@ -4200,7 +4654,7 @@
     const sidebar = document.querySelector(".live-editor-sidebar");
     if (!sidebar) return;
     const currentTheme = document.body.getAttribute('data-theme') || 'dark';
-    
+
     // Always apply the opposite class
     if (currentTheme === 'light') {
       sidebar.classList.remove('editor-opposite-light');
@@ -4353,6 +4807,7 @@
     renderHero();
     renderPhilosophy();
     renderWhyCybersecurity();
+    renderLifeEntry();
     renderReflections();
     renderProjects();
     renderCodeShowcase();

@@ -79,7 +79,7 @@ const server = http.createServer((req, res) => {
   // Safe file serving
   let urlPath = req.url.split('?')[0]; // strip query params
   let filePath = path.join(PUBLIC_DIR, urlPath === '/' ? 'index.html' : urlPath);
-  
+
   if (!filePath.startsWith(PUBLIC_DIR)) {
     res.writeHead(403);
     res.end('Forbidden');
