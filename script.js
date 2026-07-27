@@ -1938,14 +1938,16 @@
         }));
       }
 
-      svg.append(createSvgElement('line', {
-        class: 'git-parent-line',
-        x1: currentX,
-        y1: nodeY,
-        x2: currentX,
-        y2: rowHeight,
-        stroke: currentColor
-      }));
+      if (row.rowIndex < rows.length - 1) {
+        svg.append(createSvgElement('line', {
+          class: 'git-parent-line',
+          x1: currentX,
+          y1: nodeY,
+          x2: currentX,
+          y2: rowHeight,
+          stroke: currentColor
+        }));
+      }
 
       row.mergeParents.forEach((mergeParent) => {
         const mergeLane = laneMap.get(mergeParent.branch);

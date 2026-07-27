@@ -1158,8 +1158,7 @@
     ]
   },
   "sectionVisibility": {
-    "reflections": true,
-    "hobbies": true
+    "code-showcase": true
   },
   "uiLabels": {
     "heroBtnPrimary": "View projects",
