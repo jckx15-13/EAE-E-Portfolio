@@ -1157,10 +1157,13 @@
       }
     ]
   },
-  "sectionVisibility": {},
+  "sectionVisibility": {
+    "reflections": true,
+    "hobbies": true
+  },
   "uiLabels": {
     "heroBtnPrimary": "View projects",
-    "heroBtnSecondary": "View achievements",
+    "heroBtnSecondary": "View learning repository",
     "navBtnApplications": "View EAE direction",
     "navHobbies": "Hobbies",
     "navAbout": "About",
