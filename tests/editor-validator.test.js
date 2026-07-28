@@ -10,7 +10,7 @@ const EditorValidator = require('../editor-validator.js');
 function testValidateDataSchema() {
   const validator = new EditorValidator();
   const validData = {
-    profile: { name: 'Jaron' },
+    profile: { name: 'Jaron', headline: 'Student at Juying' },
     projects: [],
     achievements: []
   };
@@ -24,7 +24,7 @@ function testMissingRequiredFields() {
   const validator = new EditorValidator();
   const invalidData = {
     profile: { name: 'Jaron' }
-    // Missing projects, achievements
+    // Missing projects, achievements, headline
   };
   const result = validator.validateDataSchema(invalidData);
   console.assert(result.valid === false, 'Missing fields should fail');
@@ -38,6 +38,25 @@ function testValueValidation() {
   const result = validator.validateField('profile.name', '');
   console.assert(result.valid === false, 'Empty name should fail');
   console.log('✓ Value validation test passed');
+}
+
+// Test type safety in validateField
+function testTypeSafety() {
+  const validator = new EditorValidator();
+  
+  // Test null
+  const result1 = validator.validateField('profile.name', null);
+  console.assert(result1.valid === false, 'null should fail');
+  
+  // Test number
+  const result2 = validator.validateField('profile.name', 123);
+  console.assert(result2.valid === false, 'number should fail');
+  
+  // Test undefined
+  const result3 = validator.validateField('profile.name', undefined);
+  console.assert(result3.valid === false, 'undefined should fail');
+  
+  console.log('✓ Type safety test passed');
 }
 
 // Test dependency check
@@ -57,12 +76,41 @@ function testDependencyCheck() {
   console.log('✓ Dependency check test passed');
 }
 
+// Test headline validation
+function testHeadlineValidation() {
+  const validator = new EditorValidator();
+  const invalidData = {
+    profile: { name: 'Jaron' },
+    projects: [],
+    achievements: []
+  };
+  const result = validator.validateDataSchema(invalidData);
+  console.assert(result.valid === false, 'Missing headline should fail');
+  console.assert(result.errors.some(e => e.includes('headline')), 'Should identify missing headline');
+  console.log('✓ Headline validation test passed');
+}
+
+// Test nested path conflict detection
+function testNestedPathConflict() {
+  const validator = new EditorValidator();
+  const edit1 = { value: 'test' };
+  const edit2 = { value: 'test-child' };
+  
+  // Test parent-child path conflict
+  const result = validator.detectConflict('profile', 'profile.name', edit1, edit2);
+  console.assert(result.conflict === true, 'Nested path should conflict');
+  console.log('✓ Nested path conflict test passed');
+}
+
 // Run all tests
 try {
   testValidateDataSchema();
   testMissingRequiredFields();
   testValueValidation();
+  testTypeSafety();
   testDependencyCheck();
+  testHeadlineValidation();
+  testNestedPathConflict();
   console.log('\n✅ All EditorValidator tests passed');
   process.exit(0);
 } catch (error) {

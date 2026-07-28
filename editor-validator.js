@@ -12,10 +12,10 @@ class EditorValidator {
     };
 
     this.fieldConstraints = {
-      'profile.name': { minLength: 1, maxLength: 100 },
-      'profile.headline': { minLength: 1, maxLength: 200 },
-      'projects[].title': { minLength: 1, maxLength: 150 },
-      'achievements[].name': { minLength: 1, maxLength: 150 }
+      'profile.name': { required: true, minLength: 1, maxLength: 100 },
+      'profile.headline': { required: true, minLength: 1, maxLength: 200 },
+      'projects[].title': { required: true, minLength: 1, maxLength: 150 },
+      'achievements[].name': { required: true, minLength: 1, maxLength: 150 }
     };
 
     this.errors = [];
@@ -49,6 +49,14 @@ class EditorValidator {
       }
       if (data.profile.name && data.profile.name.length === 0) {
         this.errors.push('profile.name cannot be empty');
+      }
+
+      // FIX #1: Add missing headline validation
+      if (!data.profile.headline || typeof data.profile.headline !== 'string') {
+        this.errors.push('profile.headline is required and must be a string');
+      }
+      if (data.profile.headline && data.profile.headline.length === 0) {
+        this.errors.push('profile.headline cannot be empty');
       }
     }
 
@@ -89,13 +97,22 @@ class EditorValidator {
       return { valid: true };
     }
 
-    // Check constraints
-    if (constraint.minLength && (!value || value.length < constraint.minLength)) {
-      return { valid: false, error: `${fieldPath} must be at least ${constraint.minLength} characters` };
+    // FIX #2: Type safety - check if value is a string before calling .length
+    if (constraint.required) {
+      if (!value || typeof value !== 'string') {
+        return { valid: false, error: `${fieldPath} must be a non-empty string` };
+      }
     }
 
-    if (constraint.maxLength && value && value.length > constraint.maxLength) {
-      return { valid: false, error: `${fieldPath} cannot exceed ${constraint.maxLength} characters` };
+    // Only check length constraints if value is a string
+    if (typeof value === 'string') {
+      if (constraint.minLength && value.length < constraint.minLength) {
+        return { valid: false, error: `${fieldPath} must be at least ${constraint.minLength} characters` };
+      }
+
+      if (constraint.maxLength && value.length > constraint.maxLength) {
+        return { valid: false, error: `${fieldPath} cannot exceed ${constraint.maxLength} characters` };
+      }
     }
 
     return { valid: true };
@@ -177,6 +194,15 @@ class EditorValidator {
           index: edit1.index
         };
       }
+    }
+
+    // FIX #4: Nested path conflict detection
+    const isNested = (p1, p2) => p2.startsWith(p1 + '.') || p2.startsWith(p1 + '[');
+    if (isNested(path1, path2) || isNested(path2, path1)) {
+      return {
+        conflict: true,
+        message: `Nested path conflict: ${path1} and ${path2}`
+      };
     }
 
     return { conflict: false };
