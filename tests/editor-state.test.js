@@ -1,6 +1,9 @@
+// Import EditorState
+const EditorState = require('../editor-state.js');
+
 // Test EditorState initialization
 function testEditorStateInit() {
-  const state = new EditorState(window.PORTFOLIO_DATA);
+  const state = new EditorState({test: 'data'});
   console.assert(state.canUndo() === false, 'Should have no undo initially');
   console.assert(state.canRedo() === false, 'Should have no redo initially');
   console.log('✓ EditorState initialization test passed');
