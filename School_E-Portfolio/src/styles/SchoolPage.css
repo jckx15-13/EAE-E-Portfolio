@@ -1,5 +1,7 @@
 /* Migrated school portfolio page content.
-   Readable measure, clear hierarchy, works in both school themes. */
+   Readable measure, clear hierarchy, styled after the original Google Sites
+   export this content was migrated from (see index.css for why) rather than
+   the main portfolio's card/glass language. */
 
 .school-page {
   max-width: 72ch;
@@ -9,12 +11,17 @@
 
 .school-page-title {
   margin: 0 0 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--sn-border);
   font-size: clamp(1.6rem, 4vw, 2.25rem);
+  font-weight: 500;
   line-height: 1.2;
 }
 
 .school-page-heading {
   margin: 2rem 0 0.75rem;
+  color: var(--sn-accent);
+  font-weight: 500;
   line-height: 1.3;
 }
 
@@ -24,33 +31,43 @@
 
 .school-page-text {
   margin: 0 0 1rem;
+  color: var(--sn-text);
   line-height: 1.7;
   overflow-wrap: break-word;
 }
 
 .school-page-empty {
   padding: 1rem 1.15rem;
-  border: 1px dashed currentColor;
-  border-radius: 12px;
-  opacity: 0.72;
+  background: var(--sn-surface-soft);
+  border: 1px dashed var(--sn-border);
+  border-radius: var(--sn-radius);
+  color: var(--sn-text-muted);
+  opacity: 1;
   font-style: italic;
 }
 
 .school-page-figure {
   margin: 1.5rem 0;
+  padding: 0.5rem;
+  background: var(--sn-surface-soft);
+  border: 1px solid var(--sn-border);
+  border-radius: var(--sn-radius);
+  box-shadow: var(--sn-shadow);
 }
 
 .school-page-figure img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: calc(var(--sn-radius) - 2px);
 }
 
 .school-page-figure figcaption {
   margin-top: 0.5rem;
+  padding: 0 0.25rem;
+  color: var(--sn-text-muted);
   font-size: 0.88rem;
-  opacity: 0.75;
+  opacity: 1;
 }
 
 @media print {
