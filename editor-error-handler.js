@@ -10,19 +10,20 @@ class EditorErrorHandler {
   }
 
   /**
-   * Categorize error by type/code
-   * @returns {string} Error category
+   * Categorize error by type/code and return the error code key for suggestions
+   * Uses case-insensitive matching and returns suggestion-compatible keys
+   * @returns {string} Error code key for use with getRecoverySuggestions()
    */
   categorizeError(error) {
-    const code = error.code || error.name || '';
+    const code = (error.code || error.name || '').toUpperCase();
     
-    if (code.includes('VALIDATION')) return 'validation';
-    if (code.includes('SAVE') || code.includes('NETWORK')) return 'save';
-    if (code.includes('CONFLICT')) return 'conflict';
-    if (code.includes('PARSE') || code.includes('SYNTAX')) return 'parse';
-    if (code.includes('PERMISSION')) return 'permission';
+    if (code.includes('VALIDATION')) return 'VALIDATION_ERROR';
+    if (code.includes('SAVE') || code.includes('NETWORK')) return 'SAVE_FAILED';
+    if (code.includes('CONFLICT')) return 'CONFLICT_DETECTED';
+    if (code.includes('PARSE') || code.includes('SYNTAX')) return 'PARSE_ERROR';
+    if (code.includes('PERMISSION')) return 'PERMISSION_ERROR';
     
-    return 'unknown';
+    return 'UNKNOWN_ERROR';
   }
 
   /**
@@ -48,11 +49,20 @@ class EditorErrorHandler {
     if (typeof localStorage !== 'undefined') {
       try {
         const stored = JSON.parse(localStorage.getItem('eaeEditorErrorLog') || '[]');
+        
+        // Add size check to prevent localStorage from growing too large
+        const serialized = JSON.stringify(stored);
+        if (serialized.length > 50000) {
+          // Remove oldest entries if approaching size limit
+          stored.shift();
+        }
+        
         stored.push(entry);
         if (stored.length > this.maxLogSize) stored.shift();
         localStorage.setItem('eaeEditorErrorLog', JSON.stringify(stored));
       } catch (e) {
         console.warn('Could not persist error log:', e);
+        // Continue anyway—in-memory log still works
       }
     }
 
@@ -118,27 +128,28 @@ class EditorErrorHandler {
 
     const message = friendlyMessages[errorCode] || 'An error occurred';
     return {
-      title: this.getCategoryTitle(this.categorizeError({ code: errorCode })),
+      title: this.getCategoryTitle(errorCode),
       message: message,
       details: context.details || null,
       suggestions: this.getRecoverySuggestions(errorCode)
     };
   }
 
-  getCategoryTitle(category) {
+  getCategoryTitle(errorCode) {
     const titles = {
-      'validation': '⚠️ Validation Error',
-      'save': '💾 Save Error',
-      'conflict': '⚔️ Conflict Detected',
-      'parse': '🔧 Data Error',
-      'permission': '🔒 Permission Denied',
-      'unknown': '❌ Error'
+      'VALIDATION_ERROR': '⚠️ Validation Error',
+      'SAVE_FAILED': '💾 Save Error',
+      'CONFLICT_DETECTED': '⚔️ Conflict Detected',
+      'PARSE_ERROR': '🔧 Data Error',
+      'PERMISSION_ERROR': '🔒 Permission Denied',
+      'UNKNOWN_ERROR': '❌ Error'
     };
-    return titles[category] || 'Error';
+    return titles[errorCode] || 'Error';
   }
 
   /**
    * Get recent error logs
+   * @param {number} limit Maximum number of logs to return
    */
   getErrorLogs(limit = 20) {
     return this.errorLog.slice(-limit);
@@ -160,9 +171,14 @@ class EditorErrorHandler {
 
   /**
    * Subscribe to errors
+   * @returns {function} Unsubscribe function to remove this listener
    */
   onError(callback) {
     this.listeners.push(callback);
+    // Return unsubscribe function to prevent memory leaks
+    return () => {
+      this.listeners = this.listeners.filter(cb => cb !== callback);
+    };
   }
 
   notifyListeners(eventType, payload) {
