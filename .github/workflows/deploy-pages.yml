@@ -1,0 +1,78 @@
+name: Deploy to GitHub Pages
+
+# Replaces the legacy branch-based Pages build, which recursively initializes
+# git submodules and fails on a stray gitlink under
+# "First LEGO League 2026 [FLL]/Simulation ZTesing/Simulation Testing" that
+# has no matching .gitmodules entry. This workflow does not check out
+# submodules at all, so that path is inert here — it is a separate, real,
+# independently-versioned project folder and is left untouched.
+#
+# This workflow also builds the React school portfolio (School_E-Portfolio)
+# so School_E-Portfolio/dist/ — gitignored, never committed — exists in the
+# deployed site rather than 404ing.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # No `submodules:` key — defaults to false, so the stray FLL gitlink
+        # is never touched and cannot fail this checkout.
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: School_E-Portfolio/package-lock.json
+
+      - name: Build School E-Portfolio (React/Vite)
+        working-directory: School_E-Portfolio
+        run: |
+          npm ci
+          npm run build
+
+      - name: Assemble Pages artifact
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='_site' \
+            --exclude='node_modules' \
+            --exclude='School_E-Portfolio/node_modules' \
+            --exclude='School_E-Portfolio/src' \
+            --exclude='School_E-Portfolio/archived_exports' \
+            --exclude='First LEGO League 2026 [FLL]/Simulation ZTesing/Simulation Testing' \
+            ./ _site/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -241,12 +241,12 @@
         "projectTitle": "FLL 2026 Unearthed Robot Design & Planning"
       },
       {
-        "label": "Cyber",
+        "label": "Product",
         "title": "PyCon SkillQuest (Hackathon)",
         "body": "personalized career discovery and upskilling platform designed to help users move from uncertainty to career readiness through a continuous, guided learning journey.",
         "image": "images/projects/group_lobby.jpg",
         "linkTarget": "#projects",
-        "projectTitle": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)"
+        "projectTitle": "PyCon Hackathon - SkillQuest"
       }
     ]
   },
@@ -538,10 +538,10 @@
       "highlighted": true
     },
     {
-      "title": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
-      "category": "Hackathon / Game Jam / Cybersecurity & AI",
+      "title": "PyCon Hackathon - SkillQuest",
+      "category": "Hackathon / Career Platform / Product Design",
       "status": "Completed (June 2026)",
-      "snapshotLabel": "Cyber",
+      "snapshotLabel": "Product",
       "snapshotTitle": "PyCon SkillQuest (Hackathon)",
       "snapshotSummary": "personalized career discovery and upskilling platform designed to help users move from uncertainty to career readiness through a continuous, guided learning journey.",
       "portfolioSignal": "Demonstrates strong initiative in designing and developing SkillQuest, a personalised career discovery and upskilling platform that helps users explore career paths, identify skill gaps, follow personalised learning journeys, complete practical quests, and track their progress towards career readiness.",
@@ -1591,7 +1591,7 @@
         "order": 12,
         "type": "project",
         "visible": true,
-        "linkedProject": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
+        "linkedProject": "PyCon Hackathon - SkillQuest",
         "summary": "Built a personalised career and upskilling platform combining software development, data, recommendation logic, and cybersecurity education."
       },
       {
