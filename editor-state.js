@@ -7,30 +7,55 @@ class EditorState {
     this.maxSnapshots = maxSnapshots;
     this.undoStack = [];
     this.redoStack = [];
-    this.currentState = JSON.parse(JSON.stringify(initialData));
+    this.currentState = this._deepCopy(initialData);
     this.listeners = [];
     this.operationLog = [];
-    this.lastSavedState = JSON.parse(JSON.stringify(initialData));
+    this.lastSavedState = this._deepCopy(initialData);
+  }
+
+  /**
+   * Create a deep copy of an object (JSON-safe only)
+   * @private
+   */
+  _deepCopy(obj) {
+    return JSON.parse(JSON.stringify(obj));
   }
 
   /**
    * Push a new snapshot after an operation
    * @param {string} operationName - Human-readable operation description
    * @param {object} newState - The new state after operation
+   * @throws {Error} If operationName or newState is invalid
    */
   pushSnapshot(operationName, newState) {
+    // Validate input
+    if (!operationName || typeof operationName !== 'string') {
+      throw new Error('operationName must be a non-empty string');
+    }
+    if (newState === null || typeof newState !== 'object') {
+      throw new Error('newState must be a serializable object');
+    }
+    // Test serializability
+    try {
+      JSON.stringify(newState);
+    } catch (e) {
+      throw new Error('newState must be JSON-serializable: ' + e.message);
+    }
+
     // Deep copy to prevent external mutation
     const snapshot = {
       name: operationName,
       timestamp: Date.now(),
-      state: JSON.parse(JSON.stringify(newState)),
-      before: JSON.parse(JSON.stringify(this.currentState))
+      state: this._deepCopy(newState),
+      before: this._deepCopy(this.currentState)
     };
 
-    // Save current state to undo stack
+    // Save to undo stack (snapshot fields are correct: state is NEW, before is OLD)
     this.undoStack.push({
-      ...snapshot,
-      state: this.currentState
+      name: snapshot.name,
+      timestamp: snapshot.timestamp,
+      state: snapshot.state,
+      before: snapshot.before
     });
 
     // Limit stack size
@@ -51,8 +76,13 @@ class EditorState {
       valid: true
     });
 
+    // Limit operation log size to prevent memory leak
+    if (this.operationLog.length > this.maxSnapshots) {
+      this.operationLog.shift();
+    }
+
     // Notify listeners
-    this.notifyListeners('stateChanged', {
+    this._notifyListeners('stateChanged', {
       operation: operationName,
       canUndo: this.canUndo(),
       canRedo: this.canRedo()
@@ -70,12 +100,12 @@ class EditorState {
     this.redoStack.push({
       name: snapshot.name,
       timestamp: snapshot.timestamp,
-      state: this.currentState,
-      before: snapshot.before
+      state: snapshot.state,
+      before: this.currentState
     });
 
     this.currentState = snapshot.before;
-    this.notifyListeners('stateChanged', {
+    this._notifyListeners('stateChanged', {
       operation: `Undo: ${snapshot.name}`,
       canUndo: this.canUndo(),
       canRedo: this.canRedo()
@@ -95,12 +125,12 @@ class EditorState {
     this.undoStack.push({
       name: snapshot.name,
       timestamp: snapshot.timestamp,
-      state: snapshot.before,
+      state: snapshot.state,
       before: this.currentState
     });
 
     this.currentState = snapshot.state;
-    this.notifyListeners('stateChanged', {
+    this._notifyListeners('stateChanged', {
       operation: `Redo: ${snapshot.name}`,
       canUndo: this.canUndo(),
       canRedo: this.canRedo()
@@ -118,7 +148,7 @@ class EditorState {
   }
 
   getCurrentState() {
-    return JSON.parse(JSON.stringify(this.currentState));
+    return this._deepCopy(this.currentState);
   }
 
   /**
@@ -134,7 +164,7 @@ class EditorState {
    * Mark current state as saved (for dirty-flag detection)
    */
   markSaved() {
-    this.lastSavedState = JSON.parse(JSON.stringify(this.currentState));
+    this.lastSavedState = this._deepCopy(this.currentState);
   }
 
   /**
@@ -147,15 +177,30 @@ class EditorState {
 
   /**
    * Subscribe to state changes
+   * @param {Function} callback - Called with (eventType, payload) on state change
+   * @returns {Function} Unsubscribe function
    */
   onChange(callback) {
     this.listeners.push(callback);
+    // Return unsubscribe function
+    return () => {
+      this.listeners = this.listeners.filter(cb => cb !== callback);
+    };
+  }
+
+  /**
+   * Unsubscribe from state changes
+   * @param {Function} callback - The callback to remove
+   */
+  offChange(callback) {
+    this.listeners = this.listeners.filter(cb => cb !== callback);
   }
 
   /**
    * Notify all listeners of state change
+   * @private
    */
-  notifyListeners(eventType, payload) {
+  _notifyListeners(eventType, payload) {
     this.listeners.forEach(cb => {
       try {
         cb(eventType, payload);
@@ -170,7 +215,7 @@ class EditorState {
    */
   createBackupSnapshot() {
     return {
-      state: JSON.parse(JSON.stringify(this.currentState)),
+      state: this._deepCopy(this.currentState),
       timestamp: Date.now(),
       historyLength: this.undoStack.length
     };
@@ -180,10 +225,10 @@ class EditorState {
    * Restore from backup snapshot
    */
   restoreFromBackup(snapshot) {
-    this.currentState = JSON.parse(JSON.stringify(snapshot.state));
+    this.currentState = this._deepCopy(snapshot.state);
     this.undoStack = [];
     this.redoStack = [];
-    this.notifyListeners('restored', { timestamp: snapshot.timestamp });
+    this._notifyListeners('restored', { timestamp: snapshot.timestamp });
   }
 }
 
