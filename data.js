@@ -433,6 +433,11 @@
       ],
       "optionalVideo": "",
       "image": "images/robots/fll-robot-design.png",
+      "spreadsheet": "First LEGO League 2026 [FLL]/fll_missions_offline_cache.csv",
+      "developerScreenshots": [
+        "First LEGO League 2026 [FLL]/Screenshot 2026-03-15 115850.png",
+        "First LEGO League 2026 [FLL]/fll_map.png"
+      ],
       "carriedForward": {
         "fromProject": "NRC Robotics Competition",
         "lesson": "Evolved from basic virtual robot pathing into complex multi-axis physical robot design with gear ratio engineering"

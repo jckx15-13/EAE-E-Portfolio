@@ -67,6 +67,9 @@
   --paper: #0b1525;
   --paper-soft: #111d31;
   --radius: 8px;
+  /* Shared card padding. Media bands negate this to bleed to the card edge,
+     so the two must stay in sync — hence the token. */
+  --card-pad: clamp(1.2rem, 2vw, 1.5rem);
   --max-width: 1400px;
   --header-height: 72px;
   --tab-bar-height: 48px;
@@ -1030,7 +1033,7 @@ body[data-theme="light"] .theme-icon-moon { display: none; }
 .optional-entry {
   position: relative;
   min-width: 0;
-  padding: clamp(1.2rem, 2vw, 1.5rem);
+  padding: var(--card-pad);
   border: 1px solid var(--theme-card-border);
   border-radius: var(--radius);
   background: var(--theme-card-bg);
@@ -1118,10 +1121,14 @@ body[data-theme="light"] .theme-icon-moon { display: none; }
 }
 
 .project-media {
-  margin: -1.2rem -1.2rem 1rem -1.2rem;
+  margin: calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad)) var(--space-md);
   overflow: hidden;
   border-bottom: 1px solid var(--theme-card-border);
   background: var(--space-950);
+}
+
+body[data-theme="light"] .project-media {
+  background: var(--theme-surface-soft);
 }
 
 .project-media-iframe-wrap {
@@ -1320,6 +1327,393 @@ body[data-theme="light"] .theme-icon-moon { display: none; }
   object-fit: contain !important;
   background: #070d19;
   padding: 6px;
+}
+
+/* ==========================================================================
+   EVIDENCE-FIRST CARDS
+   Every evidence card reads in one order: the proof, then what it is, then how
+   it was done. Achievement cards and project cards share these bands so a
+   reviewer scanning the page learns the same rhythm once.
+   ========================================================================== */
+
+.evidence-first-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* --- Band 1: the proof ---------------------------------------------------- */
+
+.evidence-media {
+  /* Negate the card padding so media reaches the card edge, same as
+     .project-media. */
+  margin: calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad)) var(--space-md);
+  overflow: hidden;
+  border-bottom: 1px solid var(--theme-card-border);
+  background: var(--space-950);
+}
+
+body[data-theme="light"] .evidence-media {
+  background: var(--theme-surface-soft);
+}
+
+.evidence-media-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.evidence-media-img {
+  display: block;
+  width: 100%;
+  height: 230px;
+  /* contain, not cover: cropping a certificate hides the text that makes it
+     evidence in the first place. */
+  object-fit: contain;
+  padding: var(--space-xs);
+  transition: transform 260ms ease;
+}
+
+.evidence-media-frame:hover .evidence-media-img {
+  transform: scale(1.03);
+}
+
+.evidence-media-frame:focus-visible {
+  outline: 3px solid var(--theme-accent-cyan);
+  outline-offset: -3px;
+}
+
+.evidence-media-badge {
+  position: absolute;
+  top: var(--space-xs);
+  left: var(--space-xs);
+  padding: 0.18rem 0.55rem;
+  border: 1px solid var(--theme-accent-cyan);
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.14);
+  backdrop-filter: blur(8px);
+  color: var(--theme-accent-cyan);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.evidence-media-zoom {
+  position: absolute;
+  right: var(--space-xs);
+  bottom: var(--space-xs);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(7, 11, 22, 0.78);
+  backdrop-filter: blur(8px);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.evidence-media-frame:hover .evidence-media-zoom,
+.evidence-media-frame:focus-visible .evidence-media-zoom {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.evidence-media-thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  padding: 0 var(--space-sm) var(--space-2xs);
+}
+
+.evidence-media-thumb {
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 200ms ease;
+}
+
+.evidence-media-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.evidence-media-thumb:hover,
+.evidence-media-thumb:focus-visible {
+  border-color: var(--theme-accent-cyan);
+}
+
+/* Honest empty state — says what is missing instead of faking a visual. */
+.evidence-media--empty {
+  background: var(--theme-surface-soft);
+}
+
+.evidence-media-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  min-height: 150px;
+  justify-content: center;
+  padding: var(--space-md);
+}
+
+.evidence-media-placeholder strong {
+  color: var(--theme-text-primary);
+  font-family: var(--font-heading, inherit);
+}
+
+.evidence-media-placeholder p {
+  color: var(--theme-text-muted);
+  font-size: 0.88rem;
+}
+
+.evidence-media-kicker {
+  color: var(--theme-accent-cyan);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Evidence availability chips — these sit with the media they describe. */
+.achievement-evidence-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-top: 1px solid var(--theme-card-border);
+}
+
+.evidence-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  padding: 0.16rem 0.55rem;
+  border: 1px solid var(--theme-border);
+  border-radius: 999px;
+  color: var(--theme-text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.evidence-chip::before {
+  content: "○";
+  font-size: 0.68em;
+}
+
+.evidence-chip-ready {
+  border-color: var(--theme-accent-cyan);
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--theme-accent-cyan);
+}
+
+.evidence-chip-ready::before {
+  content: "●";
+}
+
+/* --- Band 2: what the proof is -------------------------------------------- */
+
+.evidence-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.evidence-details > h3 {
+  margin: 0;
+}
+
+.evidence-summary {
+  color: var(--theme-text-secondary);
+}
+
+/* --- Band 3: how it was done ---------------------------------------------- */
+
+.evidence-method {
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--theme-card-border);
+  border-left: 3px solid var(--theme-accent-purple);
+  border-radius: var(--radius);
+  background: var(--theme-surface-soft);
+}
+
+.evidence-band-label {
+  margin: 0;
+  color: var(--theme-accent-purple);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.evidence-method > .evidence-band-label {
+  margin-bottom: var(--space-2xs);
+}
+
+.evidence-band-hint {
+  color: var(--theme-text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* The project variant is a <details>, so the band label lives in the summary. */
+.project-details.evidence-method {
+  border-top: 1px solid var(--theme-card-border);
+}
+
+.evidence-method > .project-details-summary {
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  justify-content: flex-start;
+  padding-top: 0;
+}
+
+.evidence-method > .project-details-summary .evidence-band-hint {
+  margin-inline-end: auto;
+}
+
+/* The grid is align-items:start, so cards size to content and there is no free
+   space to push the button into — plain spacing, not margin-top:auto. */
+.evidence-first-card > .modal-trigger-btn {
+  margin-top: var(--space-md);
+  align-self: flex-start;
+}
+
+@media (max-width: 520px) {
+  .evidence-media-img {
+    height: 190px;
+  }
+
+  .evidence-first-card > .modal-trigger-btn {
+    align-self: stretch;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .evidence-media-img,
+  .evidence-media-zoom,
+  .evidence-media-thumb {
+    transition: none;
+  }
+
+  .evidence-media-frame:hover .evidence-media-img {
+    transform: none;
+  }
+
+  .evidence-media-zoom {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Project media enhancements — spreadsheet and dev screenshots as lead visuals */
+
+.project-media-spreadsheet-preview,
+.project-dev-thumb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 220ms ease;
+}
+
+.project-media-spreadsheet-preview {
+  flex-direction: column;
+  min-height: 180px;
+  background: var(--theme-surface-soft);
+  gap: var(--space-sm);
+}
+
+.project-media-spreadsheet-preview:hover {
+  transform: scale(1.02);
+}
+
+.project-media-spreadsheet-preview:focus-visible {
+  outline: 3px solid var(--theme-accent-cyan);
+  outline-offset: -3px;
+}
+
+.project-media-badge {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.project-media-label {
+  color: var(--theme-text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.project-dev-screenshots {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-sm);
+  border-top: 1px solid var(--theme-card-border);
+}
+
+.project-dev-label {
+  margin: 0;
+  color: var(--theme-text-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-dev-thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
+.project-dev-thumb {
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+
+.project-dev-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-dev-thumb:hover,
+.project-dev-thumb:focus-visible {
+  border-color: var(--theme-accent-cyan);
+  transform: scale(1.08);
+}
+
+.project-dev-thumb:focus-visible {
+  outline: 2px solid var(--theme-accent-cyan);
+  outline-offset: 2px;
 }
 
 .filter-button {
@@ -2715,6 +3109,329 @@ body.live-editing-active [contenteditable="true"] {
   }
 }
 
+/* ==========================================================================
+   EVIDENCE SURFACE — floating island + unified evidence cards
+   ========================================================================== */
+
+/* A ghost: rides fixed under the site chrome for the whole scroll, sitting back at
+   low opacity until pointer or keyboard focus brings it forward. */
+.evidence-island {
+  position: fixed;
+  top: calc(var(--site-chrome-height) + var(--space-sm));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-view-mode, 40);
+  display: flex;
+  gap: var(--space-3xs);
+  width: fit-content;
+  padding: var(--space-3xs);
+  border: 1px solid var(--theme-card-border);
+  border-radius: 999px;
+  background: var(--theme-chrome-bg);
+  backdrop-filter: blur(var(--glass-blur, 18px));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 18px));
+  box-shadow: var(--theme-card-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+/* Present only over the surface it controls; fully transparent and inert elsewhere. */
+.evidence-island.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* The island is fixed, so the surface needs its own headroom to sit clear of it. */
+#timeline .section-heading {
+  padding-top: var(--space-2xl);
+}
+
+.evidence-island-pill {
+  padding: 0.5rem 1.15rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--theme-text-secondary);
+  font-family: var(--font-heading, inherit);
+  font-size: 0.85rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.evidence-island-pill:hover {
+  color: var(--theme-text-primary);
+  background: var(--theme-surface-soft);
+}
+
+.evidence-island-pill.is-active {
+  background: var(--theme-accent-cyan);
+  color: var(--theme-bg);
+}
+
+/* The light accent is only 3.8:1 against near-white pill text, so the active
+   chip drops a step darker to clear AA at this type size. */
+[data-theme="light"] .evidence-island-pill.is-active {
+  background: #0369a1;
+  color: #ffffff;
+}
+
+.evidence-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+  margin-top: var(--space-lg);
+}
+
+/* An author `display` beats the hidden attribute's UA `display: none`, so every
+   element the view toggle hides needs its own guard or both views render at once. */
+.evidence-groups[hidden],
+.timeline-wrap[hidden],
+#journeyChapters[hidden] {
+  display: none;
+}
+
+/* Kept in the DOM purely as an anchor target; it must occupy no space. */
+.section.is-folded-into-evidence {
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+  border: 0;
+}
+
+.section.is-folded-into-evidence::before,
+.section.is-folded-into-evidence::after {
+  content: none;
+}
+
+.evidence-group-heading {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: center;
+  gap: var(--space-2xs) var(--space-sm);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--theme-card-border);
+}
+
+.evidence-group-title {
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--theme-text-primary);
+}
+
+.evidence-group-count {
+  justify-self: start;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--theme-surface-soft);
+  color: var(--theme-code-accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.evidence-group-blurb {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.92rem;
+}
+
+.evidence-node-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: var(--space-lg);
+}
+
+.evidence-node {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-wrap: break-word;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius);
+  background: var(--theme-card-bg);
+  box-shadow: var(--theme-card-shadow);
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.evidence-node:hover,
+.evidence-node:focus-within {
+  transform: translateY(-6px) perspective(1000px) rotateX(1deg);
+  border-color: var(--theme-accent-cyan);
+  box-shadow: var(--shadow-srt, var(--theme-card-shadow));
+}
+
+.evidence-node-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--theme-surface-soft);
+  border-bottom: 1px solid var(--theme-card-border);
+}
+
+.evidence-node-media video,
+.evidence-node-media img,
+.evidence-node-media iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+  display: block;
+}
+
+.evidence-node-media-embed,
+.evidence-node-media-image {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.evidence-node-media-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2xs);
+  height: 100%;
+  padding: var(--space-md);
+  text-align: center;
+  color: var(--theme-text-secondary);
+}
+
+/* --theme-code-accent, not --theme-accent-cyan: the UI accent only reaches 3.7:1
+   against the soft surface, which fails AA at these small uppercase sizes. */
+.evidence-node-media-kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-code-accent);
+}
+
+.evidence-node-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+}
+
+.evidence-node-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
+.evidence-node-kind,
+.evidence-node-category,
+.evidence-node-stamp {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--theme-surface-soft);
+  color: var(--theme-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.evidence-node-kind {
+  color: var(--theme-code-accent);
+  text-transform: capitalize;
+}
+
+.evidence-node-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--theme-text-primary);
+}
+
+.evidence-node-summary {
+  margin: 0;
+  color: var(--theme-text-secondary);
+}
+
+.evidence-node-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  margin: 0;
+}
+
+.evidence-node-detail-row {
+  display: grid;
+  grid-template-columns: minmax(0, 7rem) minmax(0, 1fr);
+  gap: var(--space-sm);
+  padding-top: var(--space-2xs);
+  border-top: 1px dashed var(--theme-card-border);
+}
+
+.evidence-node-detail-row dt {
+  color: var(--theme-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.evidence-node-detail-row dd {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.88rem;
+}
+
+.evidence-node-related {
+  align-self: flex-start;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 999px;
+  background: var(--theme-surface-soft);
+  color: var(--theme-code-accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.evidence-node-related:hover {
+  border-color: var(--theme-accent-cyan);
+}
+
+.evidence-node.is-flagged {
+  border-color: var(--theme-accent-cyan);
+  box-shadow: var(--shadow-srt, var(--theme-card-shadow));
+}
+
+.evidence-node-linkback {
+  margin-top: auto;
+  padding: var(--space-sm);
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius);
+  background: var(--theme-surface-soft);
+}
+
+.evidence-node-linkback-label {
+  display: block;
+  margin-bottom: var(--space-3xs);
+  color: var(--theme-code-accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.evidence-node-linkback-text {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 680px) {
+  .evidence-node-detail-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3xs);
+  }
+}
+
 /* Motion & Print Accessibility */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -2757,6 +3474,33 @@ body.live-editing-active [contenteditable="true"] {
     color: #111827 !important;
     border-color: #cbd5e1 !important;
     box-shadow: none !important;
+  }
+  /* The certificate or photo IS the evidence — it has to reach paper. */
+  .evidence-media,
+  .evidence-media-frame,
+  .evidence-media-img {
+    display: block !important;
+    break-inside: avoid;
+  }
+  .evidence-media-img {
+    max-height: 220px;
+    object-fit: contain;
+  }
+  .evidence-media-zoom,
+  .evidence-media-thumbnails {
+    display: none !important;
+  }
+  .evidence-media-badge {
+    border-color: #94a3b8 !important;
+  }
+  .evidence-method {
+    border: 1px solid #cbd5e1 !important;
+    border-left: 3px solid #64748b !important;
+    break-inside: avoid;
+  }
+  .evidence-first-card,
+  .evidence-details {
+    break-inside: avoid;
   }
 }
 
@@ -3823,6 +4567,14 @@ body[data-theme="light"] .git-repo-body::before {
   font-weight: 800;
 }
 
+/* Branch colours are tuned for the dark canvas and are set inline by script.js, so
+   light mode darkens the label text only — the dot and border keep the vivid hue. */
+[data-theme="light"] .git-legend-pill,
+[data-theme="light"] .git-branch-pill,
+[data-theme="light"] .git-tag-pill {
+  color: color-mix(in srgb, var(--branch-color) 55%, #0f172a);
+}
+
 /* ---- Reflection Journal, rendered as `git notes` on the repository ---- */
 
 .timeline-subsection {
@@ -4142,7 +4894,7 @@ body[data-theme="light"] .git-repo-body::before {
   justify-content: center;
   gap: 8px;
   padding: 0.45rem 1.1rem;
-  background: rgba(15, 23, 42, 0.75);
+  background: var(--theme-card-bg);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(56, 189, 248, 0.3);
   border-radius: 999px;

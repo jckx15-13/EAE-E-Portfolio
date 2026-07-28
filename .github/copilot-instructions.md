@@ -110,7 +110,7 @@ The following constraints are non-negotiable for project compliance:
 
 ### AI Agent Rules Checklist
 - [ ] **Verify Stack Rules**: Confirm that you are writing vanilla JavaScript, HTML5, and CSS3. Do not suggest importing external packages or libraries (e.g., React hooks, Vue components, or Tailwind styles).
-- [ ] **Confirm File Paths**: Always check that files are written to the appropriate path under `/home/admin/Documents/EAE Materials/` rather than temporary folders.
+- [ ] **Confirm File Paths**: Always check that files are written to the appropriate path under `/home/admin/Documents/EAE-Portfolio/` rather than temporary folders.
 - [ ] **Verify Selectors**: Do not rename or delete HTML elements used in testing and layout automation (e.g., `#view-cards`, `#view-timeline`, `#view-story`, `#brandName`, `#siteNav`).
 - [ ] **Run Layout and Accessibility Tests**: Execute `npm test` after modifying any CSS, HTML structure, or JavaScript render logic to ensure layout and WCAG compliance.
 - [ ] **Enforce Path Traversal Check**: Do not alter the directory boundaries (`startsWith(PUBLIC_DIR)`) in `server.js`.

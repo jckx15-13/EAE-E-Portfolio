@@ -63,14 +63,34 @@ DRAFT/
 - Use kebab-case for multi-word terms
 - Update all internal links in school-nav.js
 
-#### 1.3 Archive Orphan Pages
-Move to `archive/` folder (preserve history, not delete):
-- `Secondary_3_Outward_Bound_Singapore_.html`
-- `Python_Advanced_Python.html`
-- `S2-Term_3.html` (duplicate)
-- `S2 - Term 4.html` (duplicate)
-- `Taiwan_STEM_Cultural_Exchange_Programme.html`
-- `Overall_Strengths.html` (duplicate of Endorsements)
+#### 1.3 Do NOT Archive the Six Unlinked Pages — Corrected 2026-07-28
+
+An earlier draft of this document called these six "orphan/test pages" and
+recommended archiving them. **That was wrong, and archiving them would be a
+mistake.** An audit of all 30 exports found the real mechanism: every page's
+navigation *does* contain an entry for each of them, but Google Sites shipped
+those entries wrapped in HTML comments, because the pages are unpublished in the
+source site. They are not junk, duplicates, or test artefacts — they are content
+the site owner deliberately chose not to publish.
+
+The six (actual filenames on disk):
+- `Secondary 3 Outward Bound Singapore_.html`
+- `Python  Advanced Python.html`
+- `S2-Term 3.html`
+- `S2 - Term 4.html`
+- `Taiwan STEM  Cultural Exchange Programme.html`
+- `Overall Strenghts.html`
+
+Correct handling, now implemented in `school-nav.js`: leave the files exactly
+where they are, keep them reachable by direct URL, and do not advertise them in
+any navigation the bar builds. Surfacing them would publish material that was
+deliberately unpublished; deleting or archiving them would destroy real work.
+
+For the record, the audit also found **no broken links and no true orphans** in
+the export. The only apparent mismatch — pages linking to
+`Secondary 3 Outward Bound Singapore .html` while disk holds
+`…Singapore_.html` — sits inside one of those commented-out entries, so it never
+renders and never 404s. No link rewriting is needed.
 
 ---
 
@@ -183,11 +203,17 @@ Disallow: /DRAFT/archive/
 
 ## 8. IMPLEMENTATION PRIORITY
 
-### Phase 1: Quick Wins (1-2 hours)
-- Standardize file naming
-- Add breadcrumb navigation
-- Enhance back button styling
-- Add quick-jump buttons
+### Phase 1: Quick Wins — DONE 2026-07-28 (except renaming)
+- ✅ Add breadcrumb navigation
+- ✅ Enhance back button styling
+- ✅ Add quick-jump buttons (prev / next / grouped page menu)
+- ⛔ Standardize file naming — **deliberately not done.** Renaming the 30 pages
+  and their 30 asset directories would require rewriting the internal links
+  inside 30 files of ~2.3 MB each. The gain is cosmetic (tidier names on disk);
+  the risk is breaking navigation and image paths across the whole export. The
+  spacing inconsistencies are invisible to readers, and `school-nav.js` already
+  absorbs them by holding the exact filenames in one map. Revisit only if the
+  export is ever regenerated from source.
 
 ### Phase 2: Medium Effort (2-4 hours)
 - Reorganize into subdirectories
@@ -210,6 +236,21 @@ Disallow: /DRAFT/archive/
 - All viewport sizes tested (320px, 375px, 768px, 1280px+)
 - Theme tokens applied for consistent styling
 - Responsive design verified across all breakpoints
+
+✅ **Completed 2026-07-28 — navigation layer rebuilt in `DRAFT/school-nav.js` + `school-nav.css`:**
+- Breadcrumb trail (`Home › Secondary 3 › S3 - Term 2`), parents linked
+- Sequential prev/next paging across the 24 published pages, in the export's own order
+- Grouped page menu (Overview / the four years / Programmes / Recognition),
+  current page marked with `aria-current`
+- Keyboard support: Escape closes and restores focus, arrow keys walk the menu,
+  outside-click closes
+- Bar offset measured rather than hardcoded, so the two-row mobile layout never
+  hides page content
+- Theme tokens mirroring the main portfolio in both dark and light
+- 44px touch targets, no horizontal overflow at 320px
+- `@media print` hides the bar so printed pages waste no ink on chrome
+
+The six unpublished pages stay unadvertised — see §1.3.
 
 ---
 

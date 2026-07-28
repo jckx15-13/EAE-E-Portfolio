@@ -1,7 +1,7 @@
 # Project: EAE Portfolio Core Frontend Documentation & Sectioning
 
 ## Architecture
-- Codebase location: `/home/admin/Documents/EAE Materials`
+- Codebase location: `/home/admin/Documents/EAE-Portfolio`
 - Core frontend files: `script.js`, `style.css`, `data.js`, `index.html`
 - Server & Testing: `server.js`, `npm run test:data`
 

@@ -88,7 +88,7 @@
         <span class="theme-toggle-text">Mode</span>
       </button>
 
-      <a href="DRAFT/Home.html" id="schoolPortfolioBtn" class="school-portfolio-oval-btn" aria-label="Open School E-Portfolio"><span aria-hidden="true">🏫</span> School E-Portfolio <span class="btn-arrow" aria-hidden="true">↗</span></a>
+      <a href="School_E-Portfolio/Home.html" id="schoolPortfolioBtn" class="school-portfolio-oval-btn" aria-label="Open School E-Portfolio"><span aria-hidden="true">🏫</span> School E-Portfolio <span class="btn-arrow" aria-hidden="true">↗</span></a>
 
       <div class="scroll-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <span id="scrollProgressBar"></span>
@@ -181,7 +181,15 @@
           <h2>Technical Growth Journey</h2>
           <p id="timelineIntro" class="section-lede"></p>
         </div>
-        <div id="timeline-content" class="section-body">
+        <div id="evidenceIsland" class="evidence-island" role="tablist" aria-label="Evidence view">
+          <span class="evidence-island-indicator" aria-hidden="true"></span>
+          <button id="evidenceViewTimeline" class="evidence-island-pill is-active" type="button" role="tab" data-view="timeline" aria-selected="true" aria-controls="timeline-content">Timeline</button>
+          <button id="evidenceViewProjects" class="evidence-island-pill" type="button" role="tab" data-view="projects" aria-selected="false" aria-controls="evidenceGridView">Projects</button>
+        </div>
+
+        <div id="evidenceGridView" class="evidence-groups" role="tabpanel" aria-labelledby="evidenceViewProjects" hidden></div>
+
+        <div id="timeline-content" class="section-body" role="tabpanel" aria-labelledby="evidenceViewTimeline">
           <div id="journeyChapters" class="journey-tag-track"></div>
           <div class="timeline-container timeline-wrap">
             <div id="achievementTimeline" class="timeline"></div>

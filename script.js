@@ -29,6 +29,7 @@
   const LABELS = {
     featuredProject: 'Featured Project',
     readCaseStudyDetails: 'Read case study details',
+    howIDidIt: 'How I did it',
   };
   const PROJECT_MODE_ORDER = {
     story: [
@@ -757,7 +758,7 @@
     const frameWrap = create("div", "school-portfolio-frame-wrap");
     const frame = document.createElement("iframe");
     frame.className = "school-portfolio-frame";
-    frame.src = "DRAFT/Home.html";
+    frame.src = "School_E-Portfolio/Home.html";
     frame.title = "Jaron Chew School E-Portfolio";
     frame.loading = "eager";
     frame.referrerPolicy = "strict-origin-when-cross-origin";
@@ -792,7 +793,7 @@
     button.removeAttribute("aria-haspopup");
     button.removeAttribute("aria-controls");
     button.setAttribute("aria-label", "Open School E-Portfolio");
-    button.setAttribute("href", "DRAFT/Home.html");
+    button.setAttribute("href", "School_E-Portfolio/Home.html");
     if (button.dataset.switchBound === "true") return;
     button.dataset.switchBound = "true";
 
@@ -888,6 +889,410 @@
       row.append(dd);
       container.append(row);
     });
+  }
+
+  // One normalised shape for every piece of evidence, so the git-graph and the grid
+  // render the same nodes instead of each keeping its own bespoke card markup.
+  // Graph placement (branch/order) is read back off learningRepository.commits when
+  // a commit links to the item; items with no commit still render in the grid.
+  function evidenceCommitIndex() {
+    const commits = data.learningRepository?.commits;
+    const byTitle = new Map();
+    if (Array.isArray(commits)) {
+      commits.forEach((commit) => {
+        const key = commit.linkedProject || commit.linkedAchievement;
+        if (key) byTitle.set(key, commit);
+      });
+    }
+    return byTitle;
+  }
+
+  function evidenceDetail(label, value) {
+    if (value === undefined || value === null) return null;
+    const text = Array.isArray(value) ? value.filter(Boolean).join(', ') : String(value).trim();
+    return text ? { label, value: text } : null;
+  }
+
+  function projectToEvidence(project, index, commitByTitle) {
+    const commit = commitByTitle.get(project.title);
+    const images = Array.isArray(project.images) ? project.images.filter(Boolean) : [];
+    const video = typeof project.optionalVideo === 'string' ? project.optionalVideo.trim() : '';
+    const embed = resolveSlidesEmbedUrl(project);
+    return {
+      id: commit?.id || `evidence-project-${index}`,
+      kind: 'project',
+      title: project.title || 'Untitled project',
+      date: '',
+      status: project.status || '',
+      category: project.category || 'Project',
+      summary: project.snapshotSummary || project.problem || '',
+      branch: commit?.branch || 'projects',
+      order: Number(commit?.order || 900 + index),
+      media: {
+        video,
+        embed,
+        images,
+        poster: project.image || images[0] || ''
+      },
+      details: [
+        evidenceDetail('Problem', project.problem),
+        evidenceDetail('My role', project.myRole),
+        evidenceDetail('Technologies', project.technologiesUsed),
+        evidenceDetail('Outcome', project.outcome)
+      ].filter(Boolean),
+      linkBack: project.eaeConnection || project.portfolioSignal || '',
+      editBase: `projects.${index}`,
+      source: project
+    };
+  }
+
+  function achievementToEvidence(achievement, index, commitByTitle) {
+    const commit = commitByTitle.get(achievement.title);
+    const images = [achievement.image, achievement.certificate].filter(Boolean);
+    return {
+      id: commit?.id || `evidence-achievement-${index}`,
+      kind: 'achievement',
+      title: achievement.title || 'Untitled achievement',
+      date: achievement.date || '',
+      category: achievement.category || 'Achievement',
+      summary: achievement.summary || '',
+      branch: commit?.branch || 'main',
+      order: Number(commit?.order || 800 + index),
+      media: { video: '', embed: '', images, poster: achievement.image || '' },
+      details: [
+        evidenceDetail('Organisation', achievement.organisation),
+        evidenceDetail('Learning outcome', achievement.learningOutcome),
+        evidenceDetail('Reflection', achievement.reflection)
+      ].filter(Boolean),
+      linkBack: achievement.eaeRelevance || achievement.applicantSignal || '',
+      editBase: `achievements.${index}`,
+      source: achievement
+    };
+  }
+
+  function certificateToEvidence(certificate, index) {
+    const images = [certificate.evidence].filter(Boolean);
+    return {
+      id: `evidence-certificate-${index}`,
+      kind: 'certificate',
+      title: certificate.title || 'Certificate',
+      date: certificate.date || '',
+      category: 'Certificate',
+      summary: '',
+      branch: 'academic-growth',
+      order: 600 + index,
+      media: { video: '', embed: '', images, poster: certificate.evidence || '' },
+      details: [evidenceDetail('Issuer', certificate.issuer)].filter(Boolean),
+      linkBack: '',
+      editBase: `certifications.${index}`,
+      source: certificate
+    };
+  }
+
+  function hobbyToEvidence(hobby, index) {
+    return {
+      id: hobby.id || `evidence-hobby-${index}`,
+      kind: 'hobby',
+      title: hobby.title || 'Hobby',
+      date: '',
+      category: hobby.category || 'Hobby',
+      summary: hobby.description || '',
+      branch: 'hobbies',
+      order: 700 + index,
+      media: { video: '', embed: '', images: [], poster: '' },
+      details: [
+        evidenceDetail('Tags', hobby.tags),
+        evidenceDetail('Takeaway', hobby.takeaway)
+      ].filter(Boolean),
+      linkBack: '',
+      editBase: `hobbies.entries.${index}`,
+      source: hobby
+    };
+  }
+
+  function buildEvidenceIndex() {
+    const commitByTitle = evidenceCommitIndex();
+    const projects = Array.isArray(data.projects) ? data.projects : [];
+    const achievements = Array.isArray(data.achievements) ? data.achievements : [];
+    const certificates = Array.isArray(data.certifications) ? data.certifications : [];
+    const hobbies = Array.isArray(data.hobbies?.entries) ? data.hobbies.entries : [];
+
+    const index = [
+      ...projects.map((item, i) => projectToEvidence(item, i, commitByTitle)),
+      ...achievements.map((item, i) => achievementToEvidence(item, i, commitByTitle)),
+      ...certificates.map((item, i) => certificateToEvidence(item, i)),
+      ...hobbies.map((item, i) => hobbyToEvidence(item, i))
+    ].sort((a, b) => a.order - b.order);
+
+    // A certificate is linked to the work it certifies only on an exact title match.
+    // Fuzzy matching would assert relationships the portfolio data never states.
+    const workByTitle = new Map();
+    index.forEach((node) => {
+      if (node.kind === 'project' || node.kind === 'achievement') workByTitle.set(node.title, node);
+    });
+    index.forEach((node) => {
+      if (node.kind !== 'certificate') return;
+      const related = workByTitle.get(node.title);
+      if (related) node.relatedId = related.id;
+    });
+
+    return index;
+  }
+
+  // Demonstration first: a viewer should see the thing working before reading about it.
+  // Falls back video -> embedded slides -> image -> textual placeholder.
+  function evidenceMediaBlock(node) {
+    const media = create('div', 'evidence-node-media');
+    const { video, embed, images, poster } = node.media;
+
+    if (video) {
+      const el = document.createElement('video');
+      el.src = video;
+      el.controls = true;
+      el.preload = 'metadata';
+      if (poster) el.poster = poster;
+      el.setAttribute('aria-label', `${node.title} demonstration video`);
+      media.append(el);
+      media.dataset.mediaType = 'video';
+      return media;
+    }
+
+    if (embed) {
+      const wrap = create('div', 'evidence-node-media-embed');
+      const frame = document.createElement('iframe');
+      frame.src = embed;
+      frame.loading = 'lazy';
+      frame.title = `${node.title} interactive slides`;
+      frame.setAttribute('allowfullscreen', '');
+      wrap.append(frame);
+      media.append(wrap);
+      media.dataset.mediaType = 'embed';
+      return media;
+    }
+
+    if (images.length) {
+      const button = create('button', 'evidence-node-media-image');
+      button.type = 'button';
+      button.setAttribute('aria-label', `View ${node.title} evidence full size`);
+      const img = document.createElement('img');
+      img.src = images[0];
+      img.alt = `${node.title} evidence`;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      button.append(img);
+      button.addEventListener('click', () => openFullImageModal(images[0], node.title));
+      media.append(button);
+      media.dataset.mediaType = 'image';
+      return media;
+    }
+
+    const placeholder = create('div', 'evidence-node-media-placeholder');
+    placeholder.append(create('span', 'evidence-node-media-kicker', node.category));
+    placeholder.append(create('p', '', 'Evidence media to be added.'));
+    media.append(placeholder);
+    media.dataset.mediaType = 'none';
+    return media;
+  }
+
+  function renderEvidenceCard(node) {
+    const card = create('article', 'evidence-node reveal');
+    card.dataset.evidenceId = node.id;
+    card.dataset.kind = node.kind;
+    card.dataset.branch = node.branch;
+
+    card.append(evidenceMediaBlock(node));
+
+    const body = create('div', 'evidence-node-body');
+
+    const meta = create('div', 'evidence-node-meta');
+    meta.append(create('span', `evidence-node-kind evidence-node-kind--${node.kind}`, node.kind));
+    // Certificates carry category "Certificate", which would just repeat the kind chip.
+    if (node.category && node.category.toLowerCase() !== node.kind.toLowerCase()) {
+      meta.append(create('span', 'evidence-node-category', node.category));
+    }
+    const stamp = node.date || node.status;
+    if (stamp) meta.append(create('span', 'evidence-node-stamp', stamp));
+    body.append(meta);
+
+    const heading = create('h3', 'evidence-node-title', node.title);
+    heading.dataset.editPath = `${node.editBase}.title`;
+    body.append(heading);
+
+    if (node.summary) {
+      const summary = create('p', 'evidence-node-summary', node.summary);
+      body.append(summary);
+    }
+
+    if (node.details.length) {
+      const list = create('dl', 'evidence-node-details');
+      node.details.forEach(({ label, value }) => {
+        const row = create('div', 'evidence-node-detail-row');
+        row.append(create('dt', '', label));
+        row.append(create('dd', '', value));
+        list.append(row);
+      });
+      body.append(list);
+    }
+
+    if (node.relatedId) {
+      const jump = create('button', 'evidence-node-related', 'See the work this certifies');
+      jump.type = 'button';
+      jump.addEventListener('click', () => {
+        const target = document.querySelector(`[data-evidence-id="${node.relatedId}"]`);
+        if (!target) return;
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.classList.add('is-flagged');
+        setTimeout(() => target.classList.remove('is-flagged'), 1600);
+      });
+      body.append(jump);
+    }
+
+    if (node.linkBack) {
+      const footer = create('div', 'evidence-node-linkback');
+      footer.append(create('span', 'evidence-node-linkback-label', 'How this connects'));
+      footer.append(create('p', 'evidence-node-linkback-text', node.linkBack));
+      body.append(footer);
+    }
+
+    card.append(body);
+    return card;
+  }
+
+  const EVIDENCE_VIEW_KEY = 'eaePortfolioEvidenceView';
+  let evidenceGridDrawn = false;
+
+  // Certificates first, then projects, then hobbies — the order a reviewer reads in:
+  // proof of completion, then the work itself, then the curiosity around it.
+  const EVIDENCE_GROUPS = [
+    { kinds: ['certificate'], label: 'Certificates', blurb: 'Verified completions and participation records.' },
+    { kinds: ['project', 'achievement'], label: 'Projects', blurb: 'Work I designed, built, and reflected on.' },
+    { kinds: ['hobby'], label: 'Hobbies', blurb: 'Self-directed exploration outside formal programmes.' }
+  ];
+
+  function renderEvidenceGrid() {
+    const grid = $('#evidenceGridView');
+    if (!grid) return;
+    grid.replaceChildren();
+
+    const index = buildEvidenceIndex();
+    EVIDENCE_GROUPS.forEach((group) => {
+      const nodes = index.filter((node) => group.kinds.includes(node.kind));
+      if (!nodes.length) return;
+
+      const section = create('section', 'evidence-group');
+      section.dataset.group = group.label.toLowerCase();
+
+      const heading = create('div', 'evidence-group-heading');
+      heading.append(create('h3', 'evidence-group-title', group.label));
+      heading.append(create('span', 'evidence-group-count', `${nodes.length}`));
+      heading.append(create('p', 'evidence-group-blurb', group.blurb));
+      section.append(heading);
+
+      const row = create('div', 'evidence-node-grid');
+      nodes.forEach((node) => row.append(renderEvidenceCard(node)));
+      section.append(row);
+
+      grid.append(section);
+    });
+
+    evidenceGridDrawn = true;
+    setupReveal();
+  }
+
+  function setEvidenceView(view) {
+    const island = $('#evidenceIsland');
+    const grid = $('#evidenceGridView');
+    // Only the graph itself swaps out. The Reflection Journal lives inside
+    // #timeline-content and must stay readable in both views.
+    const graphParts = [
+      ...document.querySelectorAll('.timeline-wrap'),
+      $('#journeyChapters')
+    ].filter(Boolean);
+    if (!island || !grid || !graphParts.length) return;
+
+    const isProjects = view === 'projects';
+    if (isProjects && !evidenceGridDrawn) renderEvidenceGrid();
+
+    grid.hidden = !isProjects;
+    graphParts.forEach((part) => { part.hidden = isProjects; });
+    document.body.dataset.evidenceView = view;
+
+    island.querySelectorAll('.evidence-island-pill').forEach((pill) => {
+      const active = pill.dataset.view === view;
+      pill.classList.toggle('is-active', active);
+      pill.setAttribute('aria-selected', String(active));
+      pill.tabIndex = active ? 0 : -1;
+    });
+
+    try { localStorage.setItem(EVIDENCE_VIEW_KEY, view); } catch (error) { /* storage disabled */ }
+  }
+
+  // Projects, achievements, certificates and hobbies all render inside the evidence
+  // surface now. Their original sections stay in the DOM so #ids and deep links keep
+  // resolving, but their bodies are folded away so nothing renders — or is tabbable —
+  // twice. Clicking one of their nav links lands on the surface in Projects view.
+  const LEGACY_EVIDENCE_SECTIONS = ['projects', 'achievements', 'hobbies'];
+
+  function foldLegacyEvidenceSections() {
+    LEGACY_EVIDENCE_SECTIONS.forEach((id) => {
+      const section = document.getElementById(id);
+      if (!section) return;
+      section.classList.add('is-folded-into-evidence');
+      Array.from(section.children).forEach((child) => { child.hidden = true; });
+    });
+  }
+
+  function routeLegacyAnchorsToEvidence() {
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      const id = decodeURIComponent(link.getAttribute('href').slice(1));
+      if (!LEGACY_EVIDENCE_SECTIONS.includes(id)) return;
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        setEvidenceView('projects');
+        const surface = $('#timeline');
+        if (surface) surface.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
+
+  function setupEvidenceIsland() {
+    const island = $('#evidenceIsland');
+    const section = $('#timeline');
+    if (!island || !section) return;
+
+    foldLegacyEvidenceSections();
+    routeLegacyAnchorsToEvidence();
+
+    const pills = Array.from(island.querySelectorAll('.evidence-island-pill'));
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => setEvidenceView(pill.dataset.view));
+    });
+
+    island.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      const current = pills.findIndex((pill) => pill.classList.contains('is-active'));
+      const next = (current + (event.key === 'ArrowRight' ? 1 : -1) + pills.length) % pills.length;
+      setEvidenceView(pills[next].dataset.view);
+      pills[next].focus();
+    });
+
+    let stored = 'timeline';
+    try { stored = localStorage.getItem(EVIDENCE_VIEW_KEY) || 'timeline'; } catch (error) { /* storage disabled */ }
+    setEvidenceView(stored === 'projects' ? 'projects' : 'timeline');
+
+    // The island exists only while the surface it controls is on screen. A direct
+    // rect test rather than IntersectionObserver: one cheap read per scroll, and it
+    // still resolves correctly when the page is restored mid-scroll.
+    const syncIslandPresence = () => {
+      const { top, bottom } = section.getBoundingClientRect();
+      island.classList.toggle('is-visible', top < window.innerHeight && bottom > 0);
+    };
+
+    window.addEventListener('scroll', syncIslandPresence, { passive: true });
+    window.addEventListener('resize', syncIslandPresence, { passive: true });
+    syncIslandPresence();
   }
 
   function renderProjects() {
@@ -1019,6 +1424,45 @@
             article.append(highlightBadge);
           }
 
+          // For projects like FLL with spreadsheet/developer screenshots, prioritize them as lead media
+          const spreadsheetPath = typeof project.spreadsheet === 'string' ? project.spreadsheet.trim() : '';
+          const devScreenshots = Array.isArray(project.developerScreenshots) ? project.developerScreenshots.filter(Boolean) : [];
+
+          if (spreadsheetPath || devScreenshots.length) {
+            // Lead visual: spreadsheet or first dev screenshot
+            if (spreadsheetPath) {
+              const ssPreview = create('button', 'project-media-spreadsheet-preview');
+              ssPreview.type = 'button';
+              ssPreview.setAttribute('aria-label', `View ${project.title} mission data spreadsheet`);
+              ssPreview.append(create('span', 'project-media-badge', '📊'));
+              ssPreview.append(create('span', 'project-media-label', 'Mission Data'));
+              ssPreview.addEventListener('click', () => openMediaViewerModal(spreadsheetPath, `${project.title} Mission Data`));
+              media.append(ssPreview);
+            }
+
+            // Developer screenshots gallery
+            if (devScreenshots.length) {
+              const devGallery = create('div', 'project-dev-screenshots');
+              devGallery.append(create('p', 'project-dev-label', 'Development Progress'));
+              const thumbs = create('div', 'project-dev-thumbnails');
+              devScreenshots.forEach((src, i) => {
+                const thumb = create('button', 'project-dev-thumb');
+                thumb.type = 'button';
+                thumb.setAttribute('aria-label', `View development screenshot ${i + 1}`);
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `Development screenshot ${i + 1}`;
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                thumb.append(img);
+                thumb.addEventListener('click', () => openFullImageModal(src, `${project.title} - Dev Screenshot ${i + 1}`));
+                thumbs.append(thumb);
+              });
+              devGallery.append(thumbs);
+              media.append(devGallery);
+            }
+          }
+
           if (slidesEmbedUrl) {
             media.classList.add('has-slides');
             const iframeContainer = create('div', 'project-media-iframe-wrap');
@@ -1080,38 +1524,44 @@
           }
           article.append(media);
 
-          // Append card details and actions
+          // Band 2 — the details that identify and frame the media above.
           const body = create('div', 'project-body');
-          body.append(create('p', 'card-kicker', project.category || 'Portfolio Project'));
-          body.append(create('h3', '', project.title));
+          const detailBand = create('div', 'evidence-details');
+          detailBand.append(create('p', 'card-kicker', project.category || 'Portfolio Project'));
+          detailBand.append(create('h3', '', project.title));
 
           if (project.status) {
-            body.append(create('p', 'date-line', project.status));
+            detailBand.append(create('p', 'date-line', project.status));
           }
 
           if (project.portfolioSignal) {
             const signalBlock = create('div', 'project-insight-card');
             signalBlock.append(create('h4', '', 'Portfolio Signal'));
             signalBlock.append(create('p', 'signal-text', project.portfolioSignal));
-            body.append(signalBlock);
+            detailBand.append(signalBlock);
           }
 
           if (project.eaeConnection) {
             const eaeBlock = create('div', 'project-insight-card project-evidence-status');
             eaeBlock.append(create('h4', '', 'EAE Connection'));
             eaeBlock.append(create('p', '', project.eaeConnection));
-            body.append(eaeBlock);
+            detailBand.append(eaeBlock);
           }
 
           const techs = projectTechs(project);
           if (techs.length) {
             const techWrap = create('div', 'tag-grid');
             techs.slice(0, 6).forEach(t => techWrap.append(create('span', 'project-tech-chip', t)));
-            body.append(techWrap);
+            detailBand.append(techWrap);
           }
+          body.append(detailBand);
 
-          const details = create('details', 'project-details');
-          const summary = create('summary', 'project-details-summary', LABELS.readCaseStudyDetails);
+          // Band 3 — how the work was actually done. Stays a <details> so the
+          // beforeprint handler can still force it open for the printed copy.
+          const details = create('details', 'project-details evidence-method');
+          const summary = create('summary', 'project-details-summary');
+          summary.append(create('span', 'evidence-band-label', LABELS.howIDidIt));
+          summary.append(create('span', 'evidence-band-hint', LABELS.readCaseStudyDetails));
           details.append(summary);
 
           const caseFields = [
@@ -1331,7 +1781,6 @@
   function renderAchievements() {
     const cards = $("#achievementCards");
     const timeline = $("#achievementTimeline");
-    const timelineWrap = $(".timeline-wrap") || $(".timeline-container");
     const filters = $("#achievementFilters");
     const search = $("#achievementSearch");
     const resultCount = $("#achievementResultCount");
@@ -1340,16 +1789,6 @@
       : [];
     const categories = ["All", ...new Set(achievements.map((achievement) => achievement.category || "Uncategorized"))];
     let activeCategory = "All";
-
-    if (cards && timelineWrap) {
-      if (currentViewMode === "timeline") {
-        cards.style.display = "none";
-        timelineWrap.style.display = "block";
-      } else {
-        cards.style.display = "";
-        timelineWrap.style.display = "block";
-      }
-    }
 
     function drawFilters() {
       if (!filters) return;
@@ -2047,36 +2486,128 @@
 
   function createAchievementCard(achievement) {
     const originalIndex = data.achievements.indexOf(achievement);
-    const card = create("article", "achievement-card reveal");
+    const card = create("article", "achievement-card evidence-first-card reveal");
+
+    // Band 1 — the proof itself. The certificate or photo leads the card so a
+    // reviewer sees evidence before reading any claim about it.
+    card.append(createAchievementEvidenceBand(achievement));
+
+    // Band 2 — the details that identify and frame that proof.
+    const details = create("div", "evidence-details");
 
     const cat = create("p", "card-kicker", achievement.category);
     cat.dataset.editPath = `achievements.${originalIndex}.category`;
-    card.append(cat);
+    details.append(cat);
 
     const title = create("h3", "", achievement.title);
     title.dataset.editPath = `achievements.${originalIndex}.title`;
-    card.append(title);
+    details.append(title);
+
+    if (achievement.organisation) {
+      const org = create("p", "organisation-line", achievement.organisation);
+      org.dataset.editPath = `achievements.${originalIndex}.organisation`;
+      details.append(org);
+    }
 
     const date = create("p", "date-line", achievement.date);
     date.dataset.editPath = `achievements.${originalIndex}.date`;
-    card.append(date);
+    details.append(date);
 
-    const summary = create("p", "", achievement.summary);
+    const summary = create("p", "evidence-summary", achievement.summary);
     summary.dataset.editPath = `achievements.${originalIndex}.summary`;
-    card.append(summary);
+    details.append(summary);
 
     if (achievement.applicantSignal) {
       const sig = create("p", "achievement-signal", achievement.applicantSignal);
       sig.dataset.editPath = `achievements.${originalIndex}.applicantSignal`;
-      card.append(sig);
+      details.append(sig);
     }
-    card.append(createEvidenceStatusStrip(achievement));
+    card.append(details);
+
+    // Band 3 — how the work was actually done. Reflection and learning outcome
+    // stay in the modal so the grid stays scannable.
+    if (achievement.fullDescription) {
+      const method = create("div", "evidence-method");
+      method.append(create("h4", "evidence-band-label", LABELS.howIDidIt));
+      const methodBody = create("p", "", achievement.fullDescription);
+      methodBody.dataset.editPath = `achievements.${originalIndex}.fullDescription`;
+      method.append(methodBody);
+      card.append(method);
+    }
 
     const button = create("button", "button button-secondary modal-trigger-btn", "View details");
     button.type = "button";
     button.addEventListener("click", () => openAchievementModal(achievement));
     card.append(button);
     return card;
+  }
+
+  function createAchievementEvidenceBand(achievement) {
+    const band = create("div", "evidence-media");
+    const image = typeof achievement.image === "string" ? achievement.image.trim() : "";
+    const certificate = typeof achievement.certificate === "string" ? achievement.certificate.trim() : "";
+    // A photo of the work outranks the certificate as the lead visual; the
+    // certificate leads when that is the only proof on file.
+    const lead = image || certificate;
+    const secondary = image && certificate ? certificate : "";
+
+    if (lead) {
+      band.append(createEvidenceFrame(achievement, lead, lead === image ? "photo" : "certificate"));
+      if (secondary) {
+        const thumbnails = create("div", "evidence-media-thumbnails");
+        thumbnails.append(createEvidenceThumb(achievement, secondary, "certificate"));
+        band.append(thumbnails);
+      }
+    } else {
+      band.classList.add("evidence-media--empty");
+      const placeholder = create("div", "evidence-media-placeholder");
+      placeholder.append(create("span", "evidence-media-kicker", achievement.category || "Evidence"));
+      placeholder.append(create("strong", "", achievement.title || "Evidence pending"));
+      placeholder.append(
+        create("p", "", "Add a certificate, photo, or demo screenshot to make this entry visual evidence.")
+      );
+      band.append(placeholder);
+    }
+
+    band.append(createEvidenceStatusStrip(achievement));
+    return band;
+  }
+
+  function createEvidenceFrame(achievement, src, kind) {
+    const frame = create("button", "evidence-media-frame");
+    frame.type = "button";
+    frame.setAttribute("aria-label", `View ${achievement.title} ${kind} at full size`);
+    frame.addEventListener("click", () =>
+      openMediaViewerModal(src, `${achievement.title} ${kind}`)
+    );
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = `${achievement.title} ${kind}`;
+    img.className = "evidence-media-img";
+    img.loading = "lazy";
+    img.decoding = "async";
+    frame.append(img);
+
+    frame.append(create("span", "evidence-media-badge", kind === "certificate" ? "Certificate" : "Photo"));
+    frame.append(create("span", "evidence-media-zoom", "View full size"));
+    return frame;
+  }
+
+  function createEvidenceThumb(achievement, src, kind) {
+    const thumb = create("button", "evidence-media-thumb");
+    thumb.type = "button";
+    thumb.setAttribute("aria-label", `View ${achievement.title} ${kind} at full size`);
+    thumb.addEventListener("click", () =>
+      openMediaViewerModal(src, `${achievement.title} ${kind}`)
+    );
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = `${achievement.title} ${kind}`;
+    img.loading = "lazy";
+    img.decoding = "async";
+    thumb.append(img);
+    return thumb;
   }
 
   function createEvidenceStatusStrip(achievement) {
@@ -2160,8 +2691,13 @@
     descP.dataset.editPath = `achievements.${originalIndex}.fullDescription`;
     details.append(descDetail);
 
-    const refDetail = createDetail("Reflection", achievement.reflection);
-    const refP = refDetail.querySelector("p") || refDetail;
+    if (achievement.reflection) {
+      const refDetail = createDetail("Reflection", achievement.reflection);
+      const refP = refDetail.querySelector("p") || refDetail;
+      refP.dataset.editPath = `achievements.${originalIndex}.reflection`;
+      details.append(refDetail);
+    }
+
     const outcomeDetail = createDetail("Learning outcome", achievement.learningOutcome);
     const outcomeP = outcomeDetail.querySelector("p") || outcomeDetail;
     outcomeP.dataset.editPath = `achievements.${originalIndex}.learningOutcome`;
@@ -3449,6 +3985,7 @@
   window.eaeAdminAPI.openCropModalForAsset = openCropModalForAsset;
   window.eaeAdminAPI.pushUndoSnapshot = pushUndoSnapshot;
   window.eaeAdminAPI.undoLast = undoLast;
+  window.eaeAdminAPI.buildEvidenceIndex = buildEvidenceIndex;
 
   // Top-level versioning helpers (safe if live editor DOM not present)
   function createVersionSnapshot(label) {
@@ -4738,6 +5275,7 @@
     setupHintTooltips();
     setupLiveEditor();
     setupAccessibilitySidebar();
+    setupEvidenceIsland();
     applyInitialHash();
   }
 
