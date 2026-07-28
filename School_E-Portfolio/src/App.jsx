@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SchoolNav from './components/SchoolNav'
+import { initialTheme, routerBasename } from './utils/eaeBridge'
 
 // Lazy load page components
 import Home from './pages/Home'
@@ -29,11 +30,16 @@ import Endorsements from './pages/recognition/Endorsements'
 import ApLM from './pages/terms/ApLM'
 
 function App() {
-  const [theme, setTheme] = useState(localStorage.getItem('eaePortfolioTheme') || 'dark')
+  // Theme hands off from the main EAE portfolio: the freshest source is the
+  // eaePortfolioReturn record written when its School E-Portfolio button was
+  // clicked, falling back to the shared eaePortfolioTheme key.
+  const [theme, setTheme] = useState(initialTheme)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-school-theme', theme)
-    localStorage.setItem('eaePortfolioTheme', theme)
+    try {
+      localStorage.setItem('eaePortfolioTheme', theme)
+    } catch (error) { /* private mode */ }
   }, [theme])
 
   const toggleTheme = () => {
@@ -41,7 +47,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router basename={routerBasename()}>
       <div className="school-portfolio-app">
         <SchoolNav onThemeToggle={toggleTheme} currentTheme={theme} />
         <main className="school-portfolio-main">
@@ -83,6 +89,10 @@ function App() {
 
             {/* Recognition */}
             <Route path="/endorsements" element={<Endorsements />} />
+
+            {/* Entry file and unknown paths land on the overview. Covers
+                /index.html when served from the main portfolio server. */}
+            <Route path="*" element={<Home />} />
           </Routes>
         </main>
       </div>

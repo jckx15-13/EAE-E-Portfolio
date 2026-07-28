@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { PAGES, GROUP_ORDER, getBreadcrumb } from '../utils/navigationData'
+import { mainPortfolioHref } from '../utils/eaeBridge'
 import '../styles/SchoolNav.css'
 
 export default function SchoolNav({ onThemeToggle, currentTheme }) {
@@ -15,10 +16,12 @@ export default function SchoolNav({ onThemeToggle, currentTheme }) {
 
   return (
     <nav className="school-nav-bar" aria-label="School e-portfolio">
-      <Link to="/" className="school-nav-back-btn" aria-label="Back to main EAE portfolio">
+      {/* Real navigation back to the vanilla EAE portfolio, restoring the
+          section the visitor left from — not a react-router route. */}
+      <a href={mainPortfolioHref()} className="school-nav-back-btn" aria-label="Back to main EAE portfolio">
         <span className="school-nav-back-glyph">←</span>
         <span className="school-nav-back-label">Main portfolio</span>
-      </Link>
+      </a>
 
       <span className="school-nav-title">School E-Portfolio</span>
 

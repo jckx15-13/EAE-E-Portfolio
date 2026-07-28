@@ -55,19 +55,24 @@ export const getBreadcrumb = (currentPath) => {
   const page = getPageByPath(currentPath)
   if (!page) return [{ label: 'Home', path: '/' }]
 
-  const trail = [{ label: 'Home', path: '/' }]
+  const trail = []
   let current = page
 
   while (current.parent) {
     const parent = getPageByPath(current.parent)
-    if (parent) {
-      trail.unshift({ label: parent.label, path: parent.path })
-      current = parent
-    } else {
-      break
-    }
+    if (!parent) break
+    trail.unshift({ label: parent.label, path: parent.path })
+    current = parent
   }
 
-  trail.push({ label: page.short || page.label, path: page.path })
+  // Root crumb, unless the ancestor walk already ended at the root page.
+  if (!trail.length || trail[0].path !== '/') {
+    trail.unshift({ label: 'Home', path: '/' })
+  }
+
+  if (page.path !== '/') {
+    trail.push({ label: page.short || page.label, path: page.path })
+  }
+
   return trail
 }
