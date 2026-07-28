@@ -1,0 +1,219 @@
+.school-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.5rem 1.25rem;
+  background: var(--sn-surface);
+  backdrop-filter: blur(var(--sn-blur));
+  border-bottom: 1px solid var(--sn-border);
+  color: var(--sn-text);
+  z-index: 10000;
+  font-family: inherit;
+}
+
+.school-nav-back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0.55rem 1.1rem;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.25));
+  border: 1px solid var(--sn-accent);
+  border-radius: var(--sn-radius);
+  color: var(--sn-text);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.school-nav-back-btn:hover {
+  background: linear-gradient(135deg, var(--sn-accent), var(--sn-accent-soft));
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+  transform: translateY(-1px);
+}
+
+.school-nav-title {
+  flex: 0 0 auto;
+  padding-right: 0.55rem;
+  border-right: 1px solid var(--sn-border);
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.school-nav-crumbs {
+  display: flex;
+  align-items: center;
+  flex: 1 1 12rem;
+  min-width: 0;
+  gap: 0.15rem;
+  overflow: hidden;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.school-nav-crumb {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.school-nav-crumb + .school-nav-crumb::before {
+  content: '›';
+  padding: 0 0.3rem;
+  color: var(--sn-text-muted);
+  font-size: 0.9rem;
+  flex: 0 0 auto;
+}
+
+.school-nav-crumb-label {
+  display: block;
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.82rem;
+}
+
+.school-nav-crumb-link {
+  padding: 0.3rem 0.4rem;
+  border-radius: 8px;
+  color: var(--sn-text-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.school-nav-crumb-link:hover {
+  background: var(--sn-hover);
+  color: var(--sn-text);
+}
+
+.school-nav-page {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--sn-chip-border);
+  border-radius: var(--sn-radius);
+  background: var(--sn-chip-bg);
+  color: var(--sn-text);
+  font-weight: 600;
+}
+
+.school-nav-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.35rem;
+  margin-left: auto;
+}
+
+.school-nav-menu-btn,
+.school-nav-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0.45rem 0.75rem;
+  background: var(--sn-chip-bg);
+  border: 1px solid var(--sn-chip-border);
+  border-radius: var(--sn-radius);
+  color: var(--sn-text);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.school-nav-menu-btn:hover,
+.school-nav-theme-btn:hover {
+  background: var(--sn-hover);
+  border-color: var(--sn-accent);
+  transform: translateY(-1px);
+}
+
+.school-nav-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 1.25rem;
+  z-index: 1;
+  width: min(30rem, calc(100vw - 2.5rem));
+  max-height: 70vh;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--sn-menu-bg);
+  border: 1px solid var(--sn-border);
+  border-radius: 16px;
+  box-shadow: var(--sn-shadow);
+}
+
+.school-nav-menu-heading {
+  margin: 0 0 0.3rem;
+  padding: 0 0.5rem;
+  color: var(--sn-accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.school-nav-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.school-nav-menu-link {
+  display: block;
+  padding: 0.5rem;
+  border-radius: 8px;
+  color: var(--sn-text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+}
+
+.school-nav-menu-link:hover,
+.school-nav-menu-link.is-current {
+  background: var(--sn-hover);
+  color: var(--sn-text);
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .school-nav-title {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .school-nav-bar {
+    padding: 0.5rem 0.85rem;
+  }
+  .school-nav-crumb:not(:last-child) {
+    display: none;
+  }
+  .school-nav-crumb + .school-nav-crumb::before {
+    content: none;
+  }
+  .school-nav-menu-btn,
+  .school-nav-theme-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
