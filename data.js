@@ -49,9 +49,77 @@
       }
     ]
   },
+  "learningThatStaysUseful": {
+    "title": "Learning That Stays Useful",
+    "intro": [
+      "Not every subject connects directly to a course module, but every subject trains a way of thinking.",
+      "I do not see school subjects as separate boxes, but as different ways of learning how to think, solve problems, and understand the world.",
+      "What I learn in school is not only useful for exams. It becomes valuable when I carry it into how I build, communicate, adapt, and make decisions."
+    ],
+    "subjects": [
+      {
+        "id": "math",
+        "name": "Elementary Mathematics",
+        "shortName": "E-Math",
+        "trains": ["Logic", "Patterns", "Precision", "Problem-solving"],
+        "usefulIn": "Coding, robotics, algorithms, data, and breaking large problems into smaller parts.",
+        "reflection": "Math trained me to think step by step and solve problems clearly instead of guessing."
+      },
+      {
+        "id": "science",
+        "name": "Combined Science (Physics & Chemistry)",
+        "shortName": "Science",
+        "trains": ["Observation", "Testing", "Cause and Effect", "Evidence"],
+        "usefulIn": "Robotics, engineering, troubleshooting, experimentation, and understanding why things work.",
+        "reflection": "Science taught me to observe carefully, test ideas, and learn from results instead of assumptions."
+      },
+      {
+        "id": "english",
+        "name": "English",
+        "shortName": "English",
+        "trains": ["Communication", "Clarity", "Reflection", "Explanation"],
+        "usefulIn": "Presentations, documentation, teamwork, writing, and expressing technical ideas clearly.",
+        "reflection": "English helps me turn ideas into something clear, understandable, and useful to others."
+      },
+      {
+        "id": "humanities",
+        "name": "Combined Humanities (Geography & Social Studies)",
+        "shortName": "Humanities",
+        "trains": ["Context", "Critical Thinking", "Social Awareness", "Judgement"],
+        "usefulIn": "Ethical thinking, understanding impact, evaluating information, and seeing the bigger picture.",
+        "reflection": "Humanities reminds me that decisions affect people, and that problems should be understood in their wider context."
+      },
+      {
+        "id": "poa",
+        "name": "Principles of Accounting",
+        "shortName": "POA",
+        "trains": ["Accuracy", "Accountability", "Organisation", "Structure"],
+        "usefulIn": "Planning, managing resources, keeping clear records, and making responsible decisions.",
+        "reflection": "I learned that details matter, and that being careful and accountable with information is important in both work and life."
+      },
+      {
+        "id": "chinese",
+        "name": "Chinese",
+        "shortName": "Chinese",
+        "trains": ["Communication", "Adaptability", "Cultural Awareness", "Expression"],
+        "usefulIn": "Connecting with different people, working across contexts, and building stronger communication skills.",
+        "reflection": "Chinese reminds me that learning is also about connecting with people and understanding different perspectives."
+      }
+    ],
+    "carryForwardTags": [
+      "Logic",
+      "Communication",
+      "Evidence",
+      "Responsibility",
+      "Adaptability",
+      "Critical Thinking",
+      "Precision",
+      "Problem-solving"
+    ]
+  },
   "profile": {
     "name": "Jaron Chew",
-    "shortName": "Jaron EAE Portfolio",
+    "shortName": "EDIT 2: Jaron EAE Portfolio",
     "headline": "A curious builder working toward cybersecurity.",
     "subheadline": "Projects, robotics, and reflections that show how I learn, solve problems, and turn curiosity into practical work.",
     "intro": "I am a secondary school student from Juying Secondary School who learns by making things. Coding, robotics, cybersecurity, and engineering are the places where my curiosity becomes something real.",
@@ -155,7 +223,32 @@
   "eaeSnapshot": {
     "title": "Top Evidence",
     "intro": "Quick view of my strongest EAE evidence for Singapore Polytechnic and Ngee Ann Polytechnic.",
-    "cards": []
+    "cards": [
+      {
+        "label": "Systems",
+        "title": "SPD Caregiver & Admin Portal",
+        "body": "Accessible admin + caregiver flows, reporting dashboards, and pragmatic NGO UX solutions.",
+        "image": "images/projects/SPD_User_Flow_Flow_chart.jpg",
+        "linkTarget": "#projects",
+        "projectTitle": "SPD Caregiver & Admin Event Portal Prototype"
+      },
+      {
+        "label": "Engineering",
+        "title": "FLL 2026 Unearthed Robot Design",
+        "body": "Multi-axis robot, gear-ratio planning, and mission flowcharts showing systems-level engineering.",
+        "image": "images/robots/fll-robot-design.png",
+        "linkTarget": "#projects",
+        "projectTitle": "FLL 2026 Unearthed Robot Design & Planning"
+      },
+      {
+        "label": "Cyber",
+        "title": "PyCon SkillQuest (Hackathon)",
+        "body": "personalized career discovery and upskilling platform designed to help users move from uncertainty to career readiness through a continuous, guided learning journey.",
+        "image": "images/projects/group_lobby.jpg",
+        "linkTarget": "#projects",
+        "projectTitle": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)"
+      }
+    ]
   },
   "evidenceDeck": {
     "title": "Evidence Cards",
@@ -461,10 +554,7 @@
       "developmentJourney": "I designed SkillQuest around a continuous user journey: Career Discovery → Career Recommendation → Skill-Gap Analysis → Personalised Learning Path → Quests → Skill Mastery → Career Readiness. I developed Explorer Mode for users who are unsure about their career direction and Pathfinder Mode for users who already have a specific career goal. I designed the Skill-Gap Engine to compare a user's current skills with the skills required for a target career. I also developed a Python-based Course Matching Engine that considers factors such as skill coverage, time commitment, cost, location, course quality, schedule fit, and potential calendar conflicts. The platform then transforms learning into practical quests that allow users to learn, practise, and demonstrate their progress. The overall system is designed to continuously adapt to the user's interests, goals, schedule, behaviour, and development over time.",
       "outcome": "Successfully developed a functional SkillQuest prototype that combines career discovery, personalised recommendations, skill-gap analysis, course matching, learning paths, practical quests, progress tracking, and career readiness into one connected platform. The project transformed an initial idea into a structured product concept with a responsive frontend, Python matching engine, defined user journeys, product architecture, and a clear roadmap for future development.",
       "lessonsLearned": "I learned how to transform a broad problem into a complete digital product by combining user research, product design, software development, recommendation logic, and gamification. Developing SkillQuest taught me the importance of making complex information simple and actionable for users. I also learned that a successful learning platform should not only provide information, but should guide users towards a clear next step, help them see their progress, and show how each completed action contributes to their larger career goal.",
-      "images": [
-       // "images/certificates/Jaron_Chew_Kai_Xin_Hackathon.png",
-       // "images/projects/group_lobby.jpg"
-      ],
+      "images": [],
       "optionalVideo": "videos/SkillQuest-demo.webm",
       "image": "images/projects/group_lobby.jpg",
       "carriedForward": {
@@ -1222,7 +1312,7 @@
     "liveEditorShift": "Shift Sections",
     "liveEditorShiftDesc": "Use Up/Down controls on sections to swap their layout sequence.",
     "liveEditorExport": "Export data.js",
-    "skipLink": "Skip to content",
+    "skipLink": "EDIT 1: CTRL+Z TEST Skip to content",
     "viewCards": "Cards",
     "viewTimeline": "Timeline",
     "viewStory": "Story",
@@ -1243,7 +1333,11 @@
     "applicationsLabel": "Applications",
     "applicationsLede": "• Editable course notes for target applications\n• Keep claims focused on confirmed skills and evidence\n• Avoid unverified statements",
     "footerText": "Jaron Chew | EAE Portfolio - projects, evidence, reflection, and a clear direction toward cybersecurity.",
-    "footerPrintBtn": "Print portfolio"
+    "footerPrintBtn": "Print portfolio",
+    "navReflection": "TEST EDIT Reflection",
+    "navMindset": "EDIT 3: Mindset",
+    "navCybersecurity": "EDIT 4: Cybersecurity",
+    "navJourney": "EDIT 5: Journey"
   },
   "uploadedAssets": [
     {
@@ -1281,22 +1375,289 @@
         "simulatedOutput": "ROBO-READY\nListening for sensor events on Micro:bit MessageBus...\n[!] Obstacle detected on PIN 0: Emergency Motor Stop triggered."
       }
     ]
+  },
+  "learningRepository": {
+    "title": "Learning Repository",
+    "intro": "A Git-style visual history of how my coding, robotics, cybersecurity, academic growth, and EAE direction developed over time.",
+    "branches": [
+      {
+        "id": "main",
+        "label": "main (my life)",
+        "color": "#38bdf8",
+        "description": ""
+      },
+      {
+        "id": "coding",
+        "label": "coding",
+        "color": "#22c55e",
+        "description": ""
+      },
+      {
+        "id": "robotics",
+        "label": "robotics",
+        "color": "#f59e0b",
+        "description": ""
+      },
+      {
+        "id": "academic-growth",
+        "label": "academic-growth",
+        "color": "#a78bfa",
+        "description": ""
+      },
+      {
+        "id": "cybersecurity",
+        "label": "cybersecurity",
+        "color": "#ef4444",
+        "description": ""
+      },
+      {
+        "id": "projects",
+        "label": "projects",
+        "color": "#06b6d4",
+        "description": ""
+      },
+      {
+        "id": "eae-direction",
+        "label": "eae-direction",
+        "color": "#ec4899",
+        "description": ""
+      }
+    ],
+    "commits": [
+      {
+        "id": "commit-scratch-coder-course",
+        "title": "Scratch Coder Course",
+        "message": "init: started coding journey with logic blocks",
+        "date": "February 2019 - September 2019",
+        "branch": "main",
+        "parent": null,
+        "mergeParents": [],
+        "order": 1,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Scratch Coder Course",
+        "summary": "The beginning of my coding journey, where I learned variables, loops, functions, lists, Boolean logic, and conditionals."
+      },
+      {
+        "id": "commit-mit-app-inventor",
+        "title": "MIT App Inventor Appathon",
+        "message": "feat: built first mobile app interaction",
+        "date": "July 2020 - August 2020",
+        "branch": "main",
+        "parent": "commit-scratch-coder-course",
+        "mergeParents": [],
+        "order": 2,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "MIT App Inventor Appathon",
+        "summary": "Created Mpainter, an app for drawing on photographs and a digital whiteboard."
+      },
+      {
+        "id": "commit-python-basic",
+        "title": "Python Coder Course - Basic",
+        "message": "branch: moved from block logic into Python syntax",
+        "date": "February 2021 - July 2021",
+        "branch": "coding",
+        "parent": "commit-mit-app-inventor",
+        "mergeParents": [],
+        "order": 3,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Python Coder Course - Basic",
+        "summary": "Transitioned into text-based programming with Python syntax, Turtle, recursion, variables, loops, and functions."
+      },
+      {
+        "id": "commit-robotics-nrc",
+        "title": "NRC Robotics Competition",
+        "message": "branch: applied logic to robotics movement and sensors",
+        "date": "September 2021",
+        "branch": "robotics",
+        "parent": "commit-python-basic",
+        "mergeParents": [],
+        "order": 4,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "NRC Robotics Competition",
+        "summary": "Applied programming logic to virtual robotics, movement planning, sensor thresholds, and debugging."
+      },
+      {
+        "id": "commit-python-intermediate",
+        "title": "Python Coder Course - Intermediate",
+        "message": "feat: built interactive games and GUI systems",
+        "date": "October 2021 - March 2022",
+        "branch": "coding",
+        "parent": "commit-python-basic",
+        "mergeParents": [],
+        "order": 5,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Python Coder Course - Intermediate",
+        "summary": "Built interactive applications using Pygame, Tkinter, game states, GUI logic, and event-driven design."
+      },
+      {
+        "id": "commit-roblox-sdg",
+        "title": "Roblox Global Goal Challenge",
+        "message": "feat: used games to explain real-world issues",
+        "date": "December 2021",
+        "branch": "coding",
+        "parent": "commit-python-intermediate",
+        "mergeParents": [],
+        "order": 6,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Roblox Global Goal Challenge",
+        "summary": "Created an underwater Roblox obstacle course inspired by SDG 14 - Life Below Water."
+      },
+      {
+        "id": "commit-python-advanced",
+        "title": "Python Advanced",
+        "message": "feat: deepened OOP, data structures, and algorithms",
+        "date": "April 2022 - September 2022",
+        "branch": "coding",
+        "parent": "commit-python-intermediate",
+        "mergeParents": [],
+        "order": 7,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Python Advanced",
+        "summary": "Developed stronger software structure through object-oriented programming, algorithms, and modular design."
+      },
+      {
+        "id": "commit-math-growth",
+        "title": "Mathematics Growth Journey",
+        "message": "refactor: strengthened quantitative thinking through resilience",
+        "date": "2021 - 2024",
+        "branch": "academic-growth",
+        "parent": "commit-python-basic",
+        "mergeParents": [],
+        "order": 8,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Mathematics Growth Journey",
+        "summary": "A personal growth path from struggling with mathematics to building confidence and discipline."
+      },
+      {
+        "id": "commit-ycep",
+        "title": "YCEP Certificate of Participation",
+        "message": "branch: entered cybersecurity through networking and forensics",
+        "date": "June 2025",
+        "branch": "cybersecurity",
+        "parent": "commit-python-advanced",
+        "mergeParents": [],
+        "order": 9,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "YCEP Certificate of Participation",
+        "summary": "Explored cybersecurity fundamentals, networking, ethical hacking concepts, and digital forensics."
+      },
+      {
+        "id": "commit-fll-robot-design",
+        "title": "FLL 2026 Unearthed Robot Design & Planning",
+        "message": "feat: engineered robot systems with torque and flowchart planning",
+        "date": "2026",
+        "branch": "robotics",
+        "parent": "commit-robotics-nrc",
+        "mergeParents": [],
+        "order": 10,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "FLL 2026 Unearthed Robot Design & Planning",
+        "summary": "Designed a modular robot system using gear ratios, mission planning, movement flowcharts, and sensor logic."
+      },
+      {
+        "id": "commit-kodecoon-project-journey",
+        "title": "Kodecoon Project Journey",
+        "message": "feat: curated long-term coding growth into project evidence",
+        "date": "2019 - 2022",
+        "branch": "coding",
+        "parent": "commit-python-advanced",
+        "mergeParents": [],
+        "order": 11,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "Kodecoon Project Journey",
+        "summary": "Curated long-term coding progress across Scratch, App Inventor, Spark AR, Roblox, Python, Tkinter, and Pygame."
+      },
+      {
+        "id": "commit-skillquest",
+        "title": "PyCon Hackathon & SkillQuest",
+        "message": "merge: combined software, data, AI, and cybersecurity education",
+        "date": "June 2026",
+        "branch": "cybersecurity",
+        "parent": "commit-ycep",
+        "mergeParents": [
+          "commit-kodecoon-project-journey"
+        ],
+        "order": 12,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
+        "summary": "Built a personalised career and upskilling platform combining software development, data, recommendation logic, and cybersecurity education."
+      },
+      {
+        "id": "commit-portfolio-website",
+        "title": "Personal Student Portfolio Website",
+        "message": "docs: organized evidence into a data-driven portfolio",
+        "date": "2026",
+        "branch": "projects",
+        "parent": "commit-kodecoon-project-journey",
+        "mergeParents": [
+          "commit-math-growth"
+        ],
+        "order": 13,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "Personal Student Portfolio Website",
+        "summary": "Built this portfolio as a structured, editable, data-driven website to present projects, achievements, and reflections."
+      },
+      {
+        "id": "commit-spd-portal",
+        "title": "SPD Caregiver & Admin Event Portal Prototype",
+        "message": "feat: designed secure role-based system for real users",
+        "date": "2026",
+        "branch": "projects",
+        "parent": "commit-portfolio-website",
+        "mergeParents": [
+          "commit-skillquest"
+        ],
+        "order": 14,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "SPD Caregiver & Admin Event Portal Prototype",
+        "summary": "Designed an accessible event portal prototype with caregiver/admin flows, reporting dashboards, and role-based thinking."
+      },
+      {
+        "id": "commit-sil-2026",
+        "title": "Singapore Informatics League '26 (SIL)",
+        "message": "feat: [Add commit message here]",
+        "date": "[To be confirmed]",
+        "branch": "coding",
+        "parent": "commit-kodecoon-project-journey",
+        "mergeParents": [],
+        "order": 14.5,
+        "type": "achievement",
+        "visible": true,
+        "summary": "[Add details here]"
+      },
+      {
+        "id": "commit-eae-direction",
+        "title": "EAE Direction",
+        "message": "merge: connected coding, robotics, cybersecurity, and academic growth",
+        "date": "Current",
+        "branch": "eae-direction",
+        "parent": "commit-spd-portal",
+        "mergeParents": [
+          "commit-fll-robot-design",
+          "commit-skillquest",
+          "commit-math-growth"
+        ],
+        "order": 15,
+        "type": "milestone",
+        "visible": true,
+        "summary": "My learning paths now converge toward cybersecurity and digital forensics for SP and NP."
+      }
+    ],
+    "commitOverrides": {}
   }
 };
-
-if (window.PORTFOLIO_DATA && Array.isArray(window.PORTFOLIO_DATA.projects)) {
-  window.PORTFOLIO_DATA.eaeSnapshot = window.PORTFOLIO_DATA.eaeSnapshot || {};
-  window.PORTFOLIO_DATA.eaeSnapshot.cards = window.PORTFOLIO_DATA.projects
-    .filter(function (p) { return p.highlighted || p.snapshotLabel; })
-    .map(function (p) {
-      return {
-        label: p.snapshotLabel || "Project",
-        title: p.snapshotTitle || p.title,
-        body: p.snapshotSummary || p.portfolioSignal || p.problem,
-        image: p.image || (Array.isArray(p.images) && p.images[0]) || "",
-        linkTarget: "#projects",
-        projectTitle: p.title
-      };
-    });
-}
 })();
