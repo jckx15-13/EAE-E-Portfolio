@@ -116,6 +116,8 @@
   --theme-chrome-bg: rgba(13, 22, 40, 0.96);
   --theme-accent-cyan: #38bdf8;
   --theme-accent-purple: #a78bfa;
+  /* Monospace commit lines need a stronger tint than the UI accent to clear AA. */
+  --theme-code-accent: #7dd3fc;
 }
 
 /* Dark Theme Color Profile — Astral Navy & Glass */
@@ -134,6 +136,8 @@
   --theme-chrome-bg: rgba(13, 22, 40, 0.96);
   --theme-accent-cyan: #38bdf8;
   --theme-accent-purple: #a78bfa;
+  /* Monospace commit lines need a stronger tint than the UI accent to clear AA. */
+  --theme-code-accent: #7dd3fc;
 }
 
 /* Light Theme Color Profile — Organic Warm Paper & Crisp Daylight */
@@ -151,6 +155,7 @@
   --theme-chrome-bg: rgba(255, 255, 255, 0.96);
   --theme-accent-cyan: #0284c7;
   --theme-accent-purple: #7c3aed;
+  --theme-code-accent: #0369a1;
 
   --paper: #f4f8fc;
   --paper-soft: #e2e8f0;
@@ -2378,9 +2383,251 @@ body.admin-mode .live-editor-fab {
   right: 0;
 }
 
+/* ---- No-code editor panel ---- */
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--theme-border);
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.sidebar-close-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--theme-text-primary);
+  cursor: pointer;
+}
+
+.sidebar-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.editor-workflow-card {
+  padding: var(--space-sm);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius);
+  background: var(--theme-surface-soft);
+}
+
+.editor-status-pill {
+  display: inline-flex;
+  margin-bottom: var(--space-2xs);
+  padding: var(--space-3xs) var(--space-xs);
+  border-radius: 999px;
+  background: var(--theme-surface-soft);
+  color: var(--theme-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.editor-status-pill[data-tone="active"] {
+  background: rgba(56, 189, 248, 0.16);
+  color: var(--theme-accent-cyan);
+}
+
+.editor-status-pill[data-tone="success"] {
+  background: rgba(34, 197, 94, 0.16);
+  color: #4ade80;
+}
+
+/* Collapsible task groups keep the panel short enough to scan. */
+.editor-panel {
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius);
+  background: var(--theme-surface-soft);
+}
+
+.editor-panel-summary {
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--theme-text-primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  list-style: revert;
+}
+
+.editor-panel[open] > .editor-panel-summary {
+  border-bottom: 1px solid var(--theme-border);
+}
+
+.editor-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: var(--space-sm);
+}
+
+.editor-control-group h4 {
+  margin: 0;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--theme-text-muted);
+}
+
+.control-description {
+  margin: 0;
+  color: var(--theme-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.editor-quick-jumps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
+.quick-jump-btn {
+  padding: var(--space-3xs) var(--space-xs);
+  font-size: 0.78rem;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.switch-container input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.switch-slider {
+  position: relative;
+  flex-shrink: 0;
+  width: 40px;
+  height: 22px;
+  border: 1px solid var(--theme-border);
+  border-radius: 999px;
+  background: var(--theme-surface-soft);
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.switch-slider::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--theme-text-secondary);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.switch-container input:checked + .switch-slider {
+  border-color: var(--theme-accent-cyan);
+  background: rgba(56, 189, 248, 0.28);
+}
+
+.switch-container input:checked + .switch-slider::after {
+  transform: translateX(18px);
+  background: var(--theme-accent-cyan);
+}
+
+.switch-container input:focus-visible + .switch-slider {
+  outline: 2px solid var(--theme-accent-cyan);
+  outline-offset: 2px;
+}
+
+.template-select,
+.editor-control-group input[type="file"],
+.editor-control-group input[type="color"] {
+  width: 100%;
+  padding: var(--space-3xs) var(--space-2xs);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius);
+  background: var(--theme-surface);
+  color: var(--theme-text-primary);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.editor-control-group label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  font-size: 0.82rem;
+  color: var(--theme-text-secondary);
+}
+
+.asset-list,
+.versions-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.asset-thumb {
+  width: 100%;
+  max-height: 96px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.asset-actions,
+.version-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: 0.78rem;
+}
+
+.version-row {
+  justify-content: space-between;
+  padding: var(--space-2xs);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius);
+}
+
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--space-sm) var(--space-sm);
+}
+
 body.live-editing-active [contenteditable="true"] {
   outline: 2px dashed var(--theme-accent-cyan);
   outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-editor-sidebar,
+  .switch-slider,
+  .switch-slider::after {
+    transition: none;
+  }
 }
 
 /* ==========================================================================
@@ -3251,7 +3498,7 @@ body.live-editing-active [contenteditable="true"] {
   padding: 0.9rem 1rem;
   border: 1px solid var(--theme-border);
   border-radius: 16px;
-  background: rgba(15, 23, 42, 0.45);
+  background: var(--theme-card-bg);
   backdrop-filter: blur(14px);
   box-shadow: var(--theme-card-shadow);
 }
@@ -3312,41 +3559,71 @@ body.live-editing-active [contenteditable="true"] {
   box-shadow: 0 0 8px var(--branch-color);
 }
 
+/* The graph column is one continuous canvas behind every row, so branch lines never
+   break across row gaps or variable card heights. --git-graph-col is read by
+   paintLearningGraph() in script.js and overridden in the breakpoints below. */
 .git-repo-body {
+  --git-graph-col: 240px;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
 }
 
+.git-repo-body::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--git-graph-col);
+  border: 1px solid rgba(56, 189, 248, 0.1);
+  border-radius: 16px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px), rgba(15, 23, 42, 0.22);
+  background-size: 28px 100%;
+  pointer-events: none;
+}
+
+body[data-theme="light"] .git-repo-body::before {
+  border-color: var(--theme-card-border);
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px), rgba(247, 244, 238, 0.7);
+  background-size: 28px 100%;
+}
+
+.git-graph-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
 .git-commit-row {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-columns: var(--git-graph-col) minmax(0, 1fr);
   gap: 1rem;
   align-items: stretch;
   position: relative;
 }
 
-.git-graph-cell {
-  position: relative;
-  min-height: 120px;
-  border: 1px solid rgba(56, 189, 248, 0.1);
-  border-radius: 14px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px), rgba(15, 23, 42, 0.22);
-  background-size: 28px 100%;
-  overflow: hidden;
+.git-commit-row > .git-commit-card {
+  grid-column: 2;
 }
 
-.git-row-svg {
-  display: block;
-  width: 100%;
-  height: 120px;
-  overflow: visible;
+.git-commit-row.is-highlighted > .git-commit-card {
+  border-color: var(--theme-accent-purple);
+  box-shadow: 0 0 0 2px var(--theme-accent-purple), var(--theme-card-shadow);
 }
 
-.git-lane-line {
-  stroke: rgba(148, 163, 184, 0.22);
+.git-branch-label {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.git-tag-marker {
+  stroke: var(--theme-bg);
   stroke-width: 2;
-  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px currentColor);
 }
 
 .git-parent-line,
@@ -3380,7 +3657,7 @@ body.live-editing-active [contenteditable="true"] {
   padding: 1rem 1.15rem;
   border: 1px solid var(--theme-card-border);
   border-radius: 16px;
-  background: linear-gradient(135deg, rgba(17, 27, 49, 0.78), rgba(15, 23, 42, 0.55));
+  background: var(--theme-card-bg);
   box-shadow: var(--theme-card-shadow);
   backdrop-filter: blur(14px);
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
@@ -3428,8 +3705,8 @@ body.live-editing-active [contenteditable="true"] {
   display: inline-flex;
   padding: 0.2rem 0.5rem;
   border-radius: 999px;
-  background: rgba(255,255,255,0.055);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--theme-surface-soft);
+  border: 1px solid var(--theme-card-border);
   color: var(--theme-text-muted);
   font-size: 0.74rem;
   font-weight: 700;
@@ -3444,7 +3721,7 @@ body.live-editing-active [contenteditable="true"] {
 
 .git-commit-message {
   margin: 0;
-  color: var(--theme-accent-cyan);
+  color: var(--theme-code-accent);
   font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
   font-size: 0.86rem;
   line-height: 1.55;
@@ -3467,19 +3744,232 @@ body.live-editing-active [contenteditable="true"] {
   margin-top: 0.85rem;
 }
 
+/* ---- Annotated tags: the six chapters of "A Map of Me" ---- */
+
+.journey-tag-track {
+  margin-bottom: 1.6rem;
+}
+
+.journey-tag-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--theme-card-border);
+}
+
+.journey-tag-command {
+  color: var(--theme-accent-cyan);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.journey-tag-count {
+  color: var(--theme-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.journey-tag-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1rem;
+}
+
+.journey-tag-card {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.journey-tag-index {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+/* The evidence line is the tag's annotation — separate it from the body copy. */
+.journey-tag-card .personal-map-evidence {
+  margin-top: auto;
+  padding-top: var(--space-xs);
+  border-top: 1px dashed var(--theme-card-border);
+  color: var(--theme-text-muted);
+  font-size: 0.82rem;
+}
+
+.journey-tag-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.journey-tag-jump {
+  margin-top: 0.75rem;
+}
+
+/* ---- Tag decoration shown on the commit each chapter annotates ---- */
+
+.git-tag-pill {
+  --branch-color: var(--theme-accent-purple);
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border: 1px dashed var(--branch-color);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--branch-color);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+/* ---- Reflection Journal, rendered as `git notes` on the repository ---- */
+
+.timeline-subsection {
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--theme-card-border);
+}
+
+.git-note-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.git-note-command {
+  color: var(--theme-accent-purple);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.git-note-ref {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--theme-text-muted);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.74rem;
+}
+
+.git-note-card {
+  border-left: 3px solid var(--theme-accent-purple);
+}
+
+/* A reflection attached to its commit, indented the way `git log --notes` prints
+   a "Notes:" block beneath the commit it belongs to. */
+.git-note-attached {
+  margin-top: var(--space-sm);
+  margin-left: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-left: 3px solid var(--theme-accent-purple);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--theme-surface-soft);
+}
+
+.git-note-attached .git-note-head {
+  margin-bottom: var(--space-2xs);
+}
+
+.git-note-title {
+  margin: 0 0 var(--space-2xs);
+  color: var(--theme-text-primary);
+  font-size: 0.98rem;
+}
+
+.git-note-body {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.9rem;
+}
+
+/* The Reflection Journal section is the index — `git notes list` — not a second
+   copy of the note bodies, which live on their commits above. */
+.git-notes-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.git-note-index-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3xs);
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--theme-card-border);
+  border-left: 3px solid var(--theme-accent-purple);
+  border-radius: var(--radius);
+  background: var(--theme-card-bg);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.git-note-index-row:hover,
+.git-note-index-row:focus-visible {
+  transform: translateX(3px);
+  border-color: var(--theme-accent-cyan);
+  border-left-color: var(--theme-accent-purple);
+}
+
+.git-note-index-ref {
+  overflow-wrap: anywhere;
+  color: var(--theme-code-accent);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.76rem;
+}
+
+.git-note-index-title {
+  color: var(--theme-text-primary);
+  font-weight: 700;
+}
+
+.git-note-index-target {
+  color: var(--theme-text-muted);
+  font-size: 0.82rem;
+}
+
+@media (min-width: 680px) {
+  .git-note-index-row {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: baseline;
+  }
+
+  .git-note-index-ref {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .git-note-index-row {
+    transition: none;
+  }
+  .git-note-index-row:hover,
+  .git-note-index-row:focus-visible {
+    transform: none;
+  }
+}
+
 @media (max-width: 820px) {
+  .git-repo-body {
+    --git-graph-col: 110px;
+  }
+
   .git-commit-row {
-    grid-template-columns: 96px minmax(0, 1fr);
     gap: 0.7rem;
   }
 
-  .git-graph-cell {
-    min-height: 120px;
+  .git-repo-body::before {
     background-size: 18px 100%;
   }
 
-  .git-row-svg {
-    height: 120px;
+  /* Branch names do not fit beside the lanes on a narrow graph column. */
+  .git-branch-label {
+    display: none;
   }
 
   .git-repo-toolbar {
@@ -3489,8 +3979,8 @@ body.live-editing-active [contenteditable="true"] {
 }
 
 @media (max-width: 520px) {
-  .git-commit-row {
-    grid-template-columns: 72px minmax(0, 1fr);
+  .git-repo-body {
+    --git-graph-col: 84px;
   }
 
   .git-commit-card {
@@ -4139,7 +4629,20 @@ body.live-editing-active [contenteditable="true"] {
 }
 
 @media (max-width: 380px) {
+  /* Collapse to an icon rather than hiding: this is the only way into the school
+     e-portfolio, so removing it would make the switch one-way on small phones. */
   #schoolPortfolioBtn {
+    max-width: none;
+    padding: 0.4rem 0.55rem;
+    font-size: 0;
+    gap: 0;
+  }
+
+  #schoolPortfolioBtn > [aria-hidden="true"] {
+    font-size: 1rem;
+  }
+
+  #schoolPortfolioBtn .btn-arrow {
     display: none;
   }
 

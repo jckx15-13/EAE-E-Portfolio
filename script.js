@@ -10,6 +10,7 @@
     theme: 'eaePortfolioTheme',
     versions: 'eaePortfolioVersions',
     publishedSnapshot: 'eaePublishedSnapshot',
+    schoolReturn: 'eaePortfolioReturn',
   };
   const SELECTORS = {
     achievementModal: '#achievementModal',
@@ -56,6 +57,77 @@
     'cybersecurity',
     'projects',
     'eae-direction'
+  ];
+
+  // [selector, data path, fallback] for the copy that comes straight from data.js.
+  // Every selector here resolves to a real node in index.html — bindings for headings
+  // that no longer exist were dropped rather than left as silent no-ops.
+  const HERO_TEXT_BINDINGS = [
+    ["#brandName", "profile.shortName", "EAE Portfolio"],
+    ["#heroName", "profile.name", ""],
+    ["#heroTitle", "profile.headline", ""],
+    ["#heroIdentityLine", "profile.identityLine", ""],
+    ["#heroSubtitle", "profile.subheadline", ""],
+    ["#heroPhotoCaption", "profile.photoCaption", ""],
+    ["#brandStatement", "profile.brandStatement", ""],
+    [".skip-link", "uiLabels.skipLink", "Skip to content"],
+    ["#heroBtnPrimary", "uiLabels.heroBtnPrimary", "View strongest projects"],
+    ["#heroBtnSecondary", "uiLabels.heroBtnSecondary", "View evidence timeline"],
+    ["#heroBtnApplications", "uiLabels.heroBtnApplications", "View EAE direction"],
+    ["#achievementStoryLede", "uiLabels.achievementStoryLede", "Verifiable proof of participation, competitions, and academic growth."],
+    ["#goalsShortTerm", "uiLabels.goalsShortTerm", "Short-term"],
+    ["#goalsLongTerm", "uiLabels.goalsLongTerm", "Long-term"],
+    ["#applicationsLede", "uiLabels.applicationsLede", ""],
+    ["#footerText", "uiLabels.footerText", "Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction."],
+    ["#printPortfolio", "uiLabels.footerPrintBtn", "Print portfolio"],
+  ];
+
+  const HERO_LINK_TARGETS = [
+    ["#heroBtnPrimary", "#projects"],
+    ["#heroBtnSecondary", "#timeline"],
+    ["#heroBtnApplications", "#applications"],
+  ];
+
+  // Editor shortcuts, kept in sync with the section order in index.html.
+  const EDITOR_QUICK_JUMPS = [
+    ["Hero", "#about"],
+    ["Technical journey", "#timeline"],
+    ["Reflection journal", "#reflections"],
+    ["Projects", "#projects"],
+    ["Evidence", "#achievements"],
+    ["Course fit", "#applications"],
+  ];
+
+  // `main` is my life; every other branch is a direction that life grew in.
+  const LEARNING_REPO_BRANCH_LABELS = {
+    main: 'main (my life)',
+    coding: 'coding',
+    robotics: 'robotics',
+    'academic-growth': 'academic-growth',
+    cybersecurity: 'cybersecurity',
+    projects: 'projects',
+    'eae-direction': 'eae-direction'
+  };
+
+  // `git notes` attach commentary to a specific commit without rewriting it. Each
+  // reflection hangs off the commit it is actually about, in authored order.
+  // Overridable per reflection via reflections[i].noteOn.
+  const REFLECTION_NOTE_ANCHORS = [
+    'commit-fll-robot-design',
+    'commit-skillquest',
+    'commit-spd-portal',
+    'commit-kodecoon-project-journey'
+  ];
+
+  // Which commit each "A Map of Me" chapter annotates, in the order the chapters
+  // are authored. Overridable per card via personalMap.cards[i].anchorCommit.
+  const JOURNEY_TAG_ANCHORS = [
+    'commit-scratch-coder-course',
+    'commit-roblox-sdg',
+    'commit-fll-robot-design',
+    'commit-skillquest',
+    'commit-math-growth',
+    'commit-eae-direction'
   ];
 
   const LEARNING_REPO_BRANCH_COLORS = {
@@ -136,32 +208,8 @@
     }
   }
 
-  function parseTimelineDate(value) {
-    if (!value) return 0;
-    const normalized = String(value)
-      .replace(/–/g, '-')
-      .replace(/\s*\-\s*/g, '-')
-      .replace(/\s+to\s+/gi, '-')
-      .trim();
-    const yearMatch = normalized.match(/(19|20)\d{2}/g);
-    if (yearMatch && yearMatch.length) {
-      return Number(yearMatch[0]);
-    }
-    const parsed = Date.parse(normalized);
-    return Number.isFinite(parsed) ? parsed : 0;
-  }
 
   /* Assign left/right classes to timeline items to create alternating layout */
-  function assignTimelineSides(targetElement) {
-    const timeline = targetElement || document.getElementById('achievementTimeline');
-    if (!timeline) return;
-    const items = Array.from(timeline.querySelectorAll('.timeline-item'));
-    items.forEach((it, i) => {
-      it.classList.remove('left','right');
-      // alternate sides, center important ones (featured) on full-width small screens handled via CSS
-      if (i % 2 === 0) it.classList.add('left'); else it.classList.add('right');
-    });
-  }
 
   // Editor runtime state for selection, last added section, and undo
   window._eaeEditorState = window._eaeEditorState || {
@@ -362,13 +410,6 @@
     }
   }
 
-  function appendList(container, items, className = "") {
-    container.replaceChildren();
-    (items || []).forEach((item) => {
-      const pill = create("span", className, item);
-      container.appendChild(pill);
-    });
-  }
 
   function buildCards(container, dataArray, basePath, config) {
     if (!container) return;
@@ -403,56 +444,21 @@
     });
   }
 
+  function getDataPath(path) {
+    return path.split(".").reduce((value, key) => (value == null ? value : value[key]), data);
+  }
+
   function renderHero() {
     document.title = data.meta?.title || "Student EAE Portfolio";
-    setText("#brandName", data.profile?.shortName || "EAE Portfolio", "profile.shortName");
-    setText("#heroName", data.profile?.name || "", "profile.name");
-    setText("#heroTitle", data.profile?.headline || "", "profile.headline");
-    setText("#heroIdentityLine", data.profile?.identityLine || "", "profile.identityLine");
-    setText("#heroSubtitle", data.profile?.subheadline || "", "profile.subheadline");
-    setText("#heroIntro", data.profile?.intro || "", "profile.intro");
-    setText("#heroSignature", data.profile?.personalSignature || "", "profile.personalSignature");
-    setText("#heroRememberMe", data.profile?.rememberMe || "", "profile.rememberMe");
-    setText("#heroPhotoCaption", data.profile?.photoCaption || "", "profile.photoCaption");
-    setText("#brandStatement", data.profile?.brandStatement || "", "profile.brandStatement");
-    setText("#profileName", data.profile?.name || "", "profile.name");
-    setText("#profileIntro", data.profile?.intro || "", "profile.intro");
-    setText(".skip-link", data.uiLabels?.skipLink || "Skip to content", "uiLabels.skipLink");
-    setText("#view-cards", data.uiLabels?.viewCards || "Cards", "uiLabels.viewCards");
-    setText("#view-timeline", data.uiLabels?.viewTimeline || "Timeline", "uiLabels.viewTimeline");
-    setText("#view-story", data.uiLabels?.viewStory || "Story", "uiLabels.viewStory");
-    setText("#heroBtnPrimary", data.uiLabels?.heroBtnPrimary || "View strongest projects", "uiLabels.heroBtnPrimary");
-    setText("#heroBtnSecondary", data.uiLabels?.heroBtnSecondary || "View evidence timeline", "uiLabels.heroBtnSecondary");
-    setText("#heroBtnApplications", data.uiLabels?.heroBtnApplications || "View EAE direction", "uiLabels.heroBtnApplications");
 
-    const heroBtnPrimary = $("#heroBtnPrimary");
-    if (heroBtnPrimary) heroBtnPrimary.href = "#projects";
-    const heroBtnSecondary = $("#heroBtnSecondary");
-    if (heroBtnSecondary) heroBtnSecondary.href = "#timeline";
-    const heroBtnApplications = $("#heroBtnApplications");
-    if (heroBtnApplications) heroBtnApplications.href = "#applications";
+    HERO_TEXT_BINDINGS.forEach(([selector, path, fallback]) => {
+      setText(selector, getDataPath(path) || fallback, path);
+    });
 
-    setText("#personalQualitiesTitle", data.uiLabels?.personalQualitiesTitle || "Personal qualities", "uiLabels.personalQualitiesTitle");
-    setText("#journeyMilestonesLabel", data.uiLabels?.journeyMilestonesLabel || "Journey Milestones", "uiLabels.journeyMilestonesLabel");
-    setText("#evidenceOverviewLabel", data.uiLabels?.evidenceOverviewLabel || "Evidence Overview", "uiLabels.evidenceOverviewLabel");
-    setText("#achievementFlowLabel", data.uiLabels?.achievementFlowLabel || "Achievement Flow", "uiLabels.achievementFlowLabel");
-    setText("#achievementFlowTitle", data.uiLabels?.achievementFlowTitle || "How Each Achievement Builds Into the Next", "uiLabels.achievementFlowTitle");
-    setText("#workLabel", data.uiLabels?.workLabel || "Work", "uiLabels.workLabel");
-    setText("#projectsTitle", data.uiLabels?.projectsTitle || "Featured Projects", "uiLabels.projectsTitle");
-    setText("#projectsLede", data.uiLabels?.projectsLede || "Case studies are written to show the problem, approach, role, technologies, development journey, outcome, and learning.", "uiLabels.projectsLede");
-    setText("#evidenceLibraryLabel", data.uiLabels?.evidenceLibraryLabel || "Evidence Library", "uiLabels.evidenceLibraryLabel");
-    setText("#achievementStoryTitle", data.uiLabels?.achievementStoryTitle || "Achievement Story", "uiLabels.achievementStoryTitle");
-    setText("#achievementStoryLede", data.uiLabels?.achievementStoryLede || "These cards support the flow above. Open each one for the fuller description, reflection, learning outcome, images, and certificates.", "uiLabels.achievementStoryLede");
-    setText("#timelineTitle", data.uiLabels?.timelineTitle || "Timeline", "uiLabels.timelineTitle");
-    setText("#directionLabel", data.uiLabels?.directionLabel || "Direction", "uiLabels.directionLabel");
-    setText("#goalsTitle", data.uiLabels?.goalsTitle || "Future Goals", "uiLabels.goalsTitle");
-    setText("#goalsShortTerm", data.uiLabels?.goalsShortTerm || "Short-term", "uiLabels.goalsShortTerm");
-    setText("#goalsLongTerm", data.uiLabels?.goalsLongTerm || "Long-term", "uiLabels.goalsLongTerm");
-    setText("#applicationsLabel", data.uiLabels?.applicationsLabel || "Applications", "uiLabels.applicationsLabel");
-    setText("#applicationsTitle", data.uiLabels?.applicationsTitle || "Target EAE Applications", "uiLabels.applicationsTitle");
-    setText("#applicationsLede", data.uiLabels?.applicationsLede || "Institution-specific notes stay editable so the portfolio can support both Singapore Polytechnic and Ngee Ann Polytechnic without making unconfirmed course claims.", "uiLabels.applicationsLede");
-    setText("#footerText", data.uiLabels?.footerText || "Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction.", "uiLabels.footerText");
-    setText("#printPortfolio", data.uiLabels?.footerPrintBtn || "Print portfolio", "uiLabels.footerPrintBtn");
+    HERO_LINK_TARGETS.forEach(([selector, href]) => {
+      const link = $(selector);
+      if (link) link.href = href;
+    });
 
     const heroProfileImage = $("#heroProfileImage");
     if (heroProfileImage && data.profile?.profileImage) {
@@ -460,29 +466,6 @@
       heroProfileImage.alt = data.profile?.profileImageAlt || `Photo related to ${data.profile?.name || "Jaron Chew"}`;
       heroProfileImage.fetchPriority = "high";
     }
-
-    const heroImage = $("#heroImage");
-    if (heroImage && data.profile?.heroImage) {
-      heroImage.src = data.profile.heroImage;
-      heroImage.alt = "Abstract technology visual for the portfolio";
-    }
-
-    const profileImage = $("#profileImage");
-    if (profileImage && data.profile?.profileImage) {
-      profileImage.src = data.profile.profileImage;
-      profileImage.alt = data.profile?.profileImageAlt || `Photo related to ${data.profile?.name || "Jaron Chew"}`;
-      profileImage.loading = "lazy";
-    }
-
-    appendList($("#focusAreas"), data.profile?.focusAreas, "focus-item");
-
-    buildCards($("#journeyMarkers"), data.profile?.journeyMarkers, "profile.journeyMarkers", {
-      cardClass: "journey-marker",
-      elements: [
-        { tag: "strong", key: "value", hasEditPath: true },
-        { tag: "span", key: "label", hasEditPath: true }
-      ]
-    });
   }
 
   function renderPhilosophy() {
@@ -500,24 +483,6 @@
       });
     }
 
-    // Render personal map cards
-    const mapGrid = $("#personalMapCards");
-    if (mapGrid) {
-      mapGrid.replaceChildren();
-      (data.personalMap?.cards || []).forEach((item, index) => {
-        const card = create("article", "personal-map-card reveal");
-        const top = create("div", "personal-map-card-top");
-        top.append(create("span", "personal-map-index", String(index + 1).padStart(2, "0")));
-        top.append(create("p", "card-kicker", item.label, `personalMap.cards.${index}.label`));
-        card.append(top);
-        card.append(create("h3", "", item.title, `personalMap.cards.${index}.title`));
-        card.append(create("p", "", item.body, `personalMap.cards.${index}.body`));
-        if (item.evidence) {
-          card.append(create("p", "personal-map-evidence", item.evidence));
-        }
-        mapGrid.append(card);
-      });
-    }
   }
 
   function renderWhyCybersecurity() {
@@ -551,291 +516,108 @@
     });
   }
 
-  function renderEvidenceOverview() {
-    setText("#evidenceOverviewTitle", data.uiLabels?.evidenceOverviewTitle || "My Evidence at a Glance", "uiLabels.evidenceOverviewTitle");
-    setText("#evidenceOverviewIntro", data.uiLabels?.evidenceOverviewIntro || "A consolidated view of my personal map (structured goals) and evidence deck (proof of capabilities). Use the tabs below to switch between them.", "uiLabels.evidenceOverviewIntro");
 
-    const mapGrid = $("#personalMapCards");
-    const deckGrid = $("#evidenceDeckCards");
 
-    if (mapGrid) {
-      mapGrid.replaceChildren();
-      (data.personalMap?.cards || []).forEach((item, index) => {
-        const card = create("article", "personal-map-card reveal");
-        const top = create("div", "personal-map-card-top");
-        top.append(create("span", "personal-map-index", String(index + 1).padStart(2, "0")));
-        top.append(create("p", "card-kicker", item.label, `personalMap.cards.${index}.label`));
-        card.append(top);
-        card.append(create("h3", "", item.title, `personalMap.cards.${index}.title`));
-        card.append(create("p", "", item.body, `personalMap.cards.${index}.body`));
-        card.append(create("p", "personal-map-evidence", item.evidence));
-        mapGrid.append(card);
-      });
-    }
 
-    if (deckGrid) {
-      deckGrid.replaceChildren();
-      (data.evidenceDeck?.cards || []).forEach((item, index) => {
-        const card = create("article", "evidence-card reveal");
-        const top = create("div", "evidence-card-top");
-        top.append(create("p", "card-kicker", item.label, `evidenceDeck.cards.${index}.label`));
-        card.append(top);
-        card.append(create("h3", "", item.title, `evidenceDeck.cards.${index}.title`));
-        card.append(create("p", "evidence-summary", item.summary));
-
-        const list = create("ul", "evidence-proof-list");
-        (item.proofPoints || []).forEach((point) => {
-          list.append(create("li", "", point));
-        });
-        card.append(list);
-
-        const next = create("p", "evidence-next", item.nextStep);
-        card.append(next);
-
-        if (item.linkTarget && item.linkLabel) {
-          const link = create("a", "evidence-link", item.linkLabel);
-          link.href = item.linkTarget;
-          card.append(link);
-        }
-
-        deckGrid.append(card);
-      });
-    }
-
-    // Tabs setup
-    const tabs = document.querySelectorAll(".evidence-tab");
-    tabs.forEach(tab => {
-      // Remove old listeners to avoid duplicates
-      const newTab = tab.cloneNode(true);
-      tab.parentNode.replaceChild(newTab, tab);
-
-      newTab.addEventListener("click", () => {
-        document.querySelectorAll(".evidence-tab").forEach(t => {
-          t.classList.remove("is-active");
-          t.setAttribute("aria-selected", "false");
-        });
-        newTab.classList.add("is-active");
-        newTab.setAttribute("aria-selected", "true");
-
-        const targetTab = newTab.dataset.tab;
-        if (targetTab === "map") {
-          if (mapGrid) mapGrid.hidden = false;
-          if (deckGrid) deckGrid.hidden = true;
-        } else {
-          if (mapGrid) mapGrid.hidden = true;
-          if (deckGrid) deckGrid.hidden = false;
-        }
-      });
-    });
+  function slugify(value) {
+    return String(value || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'note';
   }
 
-  function hasPlaceholderText(value) {
-    if (typeof value !== "string") return false;
-    const text = value.toLowerCase();
-    return value.includes("[") || text.includes("to be confirmed") || text.includes("confirm exact");
-  }
+  // The six chapters of the journey are rendered as annotated tags on the repository
+  // of my life. Each tag points at the commit in the graph below that it marks.
+  function renderJourneyChapters() {
+    const track = $("#journeyChapters");
+    if (!track) return;
+    const cards = data.personalMap?.cards || [];
+    track.replaceChildren();
+    if (!cards.length) return;
 
-  function renderAchievementFlow() {
-    setText("#achievementFlowIntro", data.achievementFlow?.intro || "", "achievementFlow.intro");
-    const flow = $("#achievementFlow");
-    flow.replaceChildren();
-    const achievementsByTitle = new Map(
-      (data.achievements || []).map((achievement) => [achievement.title, achievement])
-    );
+    const head = create("div", "journey-tag-head");
+    head.append(create("span", "journey-tag-command", "git tag --list --sort=creatordate"));
+    head.append(create("span", "journey-tag-count", `${cards.length} annotated tags`));
+    track.append(head);
 
-    (data.achievementFlow?.steps || []).forEach((step, index) => {
-      const item = create("article", "flow-step reveal");
-      const marker = create("div", "flow-step-marker");
-      marker.append(create("span", "", String(index + 1).padStart(2, "0")));
+    const grid = create("div", "journey-tag-grid");
+    cards.forEach((item, index) => {
+      const anchorId = item.anchorCommit || JOURNEY_TAG_ANCHORS[index] || "";
+      const card = create("article", "journey-tag-card personal-map-card reveal");
+      card.dataset.anchorCommit = anchorId;
 
-      const body = create("div", "flow-step-body");
-      const top = create("div", "flow-step-top");
-      top.append(create("p", "card-kicker", step.stage));
-      top.append(create("p", "date-line", step.period));
-      body.append(top);
-      body.append(create("h3", "", step.title));
+      const top = create("div", "personal-map-card-top journey-tag-top");
+      top.append(create("span", "personal-map-index journey-tag-index", String(index + 1).padStart(2, "0")));
+      top.append(create("p", "card-kicker", item.label, `personalMap.cards.${index}.label`));
+      card.append(top);
 
-      const proof = create("div", "flow-copy-block");
-      proof.append(create("h4", "", "What it shows"));
-      proof.append(create("p", "", step.whatItShows));
-      body.append(proof);
-
-      const meaning = create("div", "flow-copy-block flow-meaning");
-      meaning.append(create("h4", "", "What it means to me"));
-      meaning.append(create("p", "", step.personalMeaning));
-      body.append(meaning);
-
-      const linkedAchievement = achievementsByTitle.get(step.linkedAchievement);
-      if (linkedAchievement) {
-        const button = create("button", "text-button", "Open evidence");
-        button.type = "button";
-        button.addEventListener("click", () => openAchievementModal(linkedAchievement));
-        body.append(button);
+      card.append(create("h3", "", item.title, `personalMap.cards.${index}.title`));
+      card.append(create("p", "", item.body, `personalMap.cards.${index}.body`));
+      if (item.evidence) {
+        card.append(create("p", "personal-map-evidence", item.evidence, `personalMap.cards.${index}.evidence`));
       }
 
-      item.append(marker, body);
-      flow.append(item);
+      if (anchorId) {
+        const jump = create("button", "text-button journey-tag-jump", "Show commit in graph");
+        jump.type = "button";
+        jump.addEventListener("click", () => focusCommitRow(anchorId));
+        card.append(jump);
+      }
+
+      grid.append(card);
     });
+
+    track.append(grid);
   }
 
+  function focusCommitRow(commitId, { scroll = true } = {}) {
+    const row = document.querySelector(`.git-commit-row[data-commit-id="${commitId}"]`);
+    if (!row) return;
+    if (scroll) row.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.querySelectorAll(".git-commit-row.is-highlighted")
+      .forEach((el) => el.classList.remove("is-highlighted"));
+    row.classList.add("is-highlighted");
+    window.setTimeout(() => row.classList.remove("is-highlighted"), 2600);
+  }
+
+  // The reflections themselves are attached to their commits inside the graph, the
+  // way `git notes` hang off a commit. This section is the note index — `git notes
+  // list` — so the journal stays addressable from the nav without repeating itself.
   function renderReflections() {
     const grid = document.getElementById('reflectionList');
     if (!grid) return;
     grid.replaceChildren();
-    (data.reflections || []).forEach((reflection) => {
-      const card = create('article', 'reflection-card reveal');
-      card.append(create('h3', '', reflection.title));
-      card.append(create('p', '', reflection.body));
-      grid.append(card);
+
+    (data.reflections || []).forEach((reflection, index) => {
+      const commitId = reflection.noteOn || REFLECTION_NOTE_ANCHORS[index];
+      const row = create('button', 'git-note-index-row reveal');
+      row.type = 'button';
+      row.dataset.noteOn = commitId || '';
+
+      row.append(create('span', 'git-note-index-ref', `refs/notes/${slugify(reflection.title)}`));
+      row.append(create('span', 'git-note-index-title', reflection.title));
+
+      const commit = (data.learningRepository?.commits || []).find((item) => item.id === commitId);
+      row.append(create('span', 'git-note-index-target', commit ? `attached to ${commit.title}` : 'attached to the journey'));
+
+      row.addEventListener('click', () => {
+        // Highlight without scrolling, then let the note itself own the scroll.
+        if (commitId) focusCommitRow(commitId, { scroll: false });
+        const note = document.getElementById(`reflection-${slugify(reflection.title)}`);
+        if (note) note.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      grid.append(row);
     });
   }
 
-  let viewModeInitialized = false;
+  // Project ordering still keys off this; the view-mode switcher itself is disabled.
   let currentViewMode = "story";
 
-  function setupViewModeToggleOnce() {
-    if (viewModeInitialized) return;
-    viewModeInitialized = true;
-
-    const pills = Array.from(document.querySelectorAll('.view-mode-pill'));
-    const indicator = document.querySelector('.view-mode-indicator');
-    currentViewMode = localStorage.getItem(STORAGE_KEYS.viewMode) || 'cards';
-
-    function updateIndicatorPosition(activePill) {
-      if (!indicator || !activePill) return;
-      const barInner = activePill.closest('.view-mode-bar-inner');
-      if (!barInner) return;
-      const innerRect = barInner.getBoundingClientRect();
-      const pillRect = activePill.getBoundingClientRect();
-      if (innerRect.width > 0 && pillRect.width > 0) {
-        const offsetLeft = (pillRect.left - innerRect.left) + (pillRect.width / 2) - 8;
-        indicator.style.transform = `translateX(${Math.max(0, offsetLeft)}px)`;
-      }
-    }
-
-    function switchMode(mode, targetPill) {
-      if (mode === currentViewMode) return;
-      currentViewMode = mode;
-      localStorage.setItem(STORAGE_KEYS.viewMode, mode);
-
-      pills.forEach(p => {
-        const act = p.dataset.mode === mode;
-        p.classList.toggle('is-active', act);
-        p.setAttribute('aria-selected', String(act));
-        if (act && targetPill) {
-          p.focus();
-        }
-      });
-
-      if (targetPill) {
-        updateIndicatorPosition(targetPill);
-      }
-
-      document.body.dataset.viewMode = mode;
-      document.body.classList.remove('story-mode', 'timeline-mode', 'cards-mode');
-      document.body.classList.add(`${mode}-mode`);
-
-      const mainEl = document.getElementById('main'); if (mainEl) mainEl.setAttribute('aria-labelledby', 'view-' + mode);
-
-      // Re-render view-mode-aware sections
-      renderProjects();
-      renderAchievements();
-    }
-
-    pills.forEach((pill, idx) => {
-      const active = pill.dataset.mode === currentViewMode;
-      pill.classList.toggle('is-active', active);
-      pill.setAttribute('aria-selected', String(active));
-      if (active) {
-        setTimeout(() => updateIndicatorPosition(pill), 50);
-      }
-
-      pill.addEventListener('click', () => {
-        switchMode(pill.dataset.mode, pill);
-      });
-
-      pill.addEventListener('keydown', (e) => {
-        let newIdx = -1;
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault();
-          newIdx = (idx + 1) % pills.length;
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          newIdx = (idx - 1 + pills.length) % pills.length;
-        } else if (e.key === 'Home') {
-          e.preventDefault();
-          newIdx = 0;
-        } else if (e.key === 'End') {
-          e.preventDefault();
-          newIdx = pills.length - 1;
-        }
-
-        if (newIdx !== -1 && pills[newIdx]) {
-          const target = pills[newIdx];
-          switchMode(target.dataset.mode, target);
-        }
-      });
-    });
-
-    document.body.dataset.viewMode = currentViewMode;
-    document.body.classList.remove('story-mode', 'timeline-mode', 'cards-mode');
-    document.body.classList.add(`${currentViewMode}-mode`);
-    const mainEl = document.getElementById('main'); if (mainEl) mainEl.setAttribute('aria-labelledby', 'view-' + currentViewMode);
-  }
 
   let viewModeBarObserver = null;
   let viewModeBarSections = [];
-  function updateViewModeBarVisibility(isVisible) {
-    const bar = document.querySelector('.view-mode-bar');
-    if (!bar) return;
-    bar.classList.toggle('is-active', Boolean(isVisible));
-    bar.setAttribute('aria-hidden', String(!isVisible));
-    bar.querySelectorAll('.view-mode-pill').forEach((pill) => {
-      if (isVisible) {
-        pill.removeAttribute('tabindex');
-      } else {
-        pill.setAttribute('tabindex', '-1');
-      }
-    });
-  }
 
-  function setupViewModeBarVisibility() {
-    if (viewModeBarObserver) return;
-    const bar = document.querySelector('.view-mode-bar');
-    if (!bar) return;
-    const selectors = ['#projects', '#achievements', '#reflections'];
-    viewModeBarSections = selectors.map((sel) => document.querySelector(sel)).filter(Boolean);
-    if (!viewModeBarSections.length) {
-      updateViewModeBarVisibility(false);
-      return;
-    }
-
-    viewModeBarObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          entry.target.dataset.viewModeSectionVisible = String(
-            entry.isIntersecting && entry.intersectionRatio > 0.1
-          );
-        });
-        const anyVisible = viewModeBarSections.some(
-          (section) => section.dataset.viewModeSectionVisible === 'true'
-        );
-        updateViewModeBarVisibility(anyVisible);
-      },
-      {
-        root: null,
-        rootMargin: '-84px 0px -20px 0px',
-        threshold: [0.1],
-      }
-    );
-    viewModeBarSections.forEach((section) => viewModeBarObserver.observe(section));
-    updateViewModeBarVisibility(
-      viewModeBarSections.some((section) => {
-        const rect = section.getBoundingClientRect();
-        return rect.top < window.innerHeight && rect.bottom > 0;
-      })
-    );
-  }
 
   function setupHintTooltips() {
     const triggers = document.querySelectorAll(".hint-trigger");
@@ -989,13 +771,40 @@
   window.openFullImageModal = openFullImageModal;
   window.openSchoolPortfolioModal = openSchoolPortfolioModal;
 
+  // Two-way switch between this portfolio and the exported school e-portfolio.
+  // Leaving records where you were, so DRAFT/school-nav.js can send you back to the
+  // same section in the same theme instead of dumping you at the top of the page.
+  function currentSectionHash() {
+    // Hidden sections collapse to top:0 and would otherwise always look "current",
+    // so only sections that are actually laid out are considered.
+    const sections = Array.from(document.querySelectorAll("#main > section[id]"))
+      .filter((section) => section.offsetHeight > 0);
+    let current = sections[0];
+    sections.forEach((section) => {
+      if (section.getBoundingClientRect().top <= 160) current = section;
+    });
+    return current ? `#${current.id}` : "";
+  }
+
   function setupSchoolPortfolioIntegration() {
-    const schoolPortfolioButton = $("#schoolPortfolioBtn");
-    if (!schoolPortfolioButton) return;
-    schoolPortfolioButton.removeAttribute("aria-haspopup");
-    schoolPortfolioButton.removeAttribute("aria-controls");
-    schoolPortfolioButton.setAttribute("aria-label", "Open School E-Portfolio");
-    schoolPortfolioButton.setAttribute("href", "DRAFT/Home.html");
+    const button = $("#schoolPortfolioBtn");
+    if (!button) return;
+    button.removeAttribute("aria-haspopup");
+    button.removeAttribute("aria-controls");
+    button.setAttribute("aria-label", "Open School E-Portfolio");
+    button.setAttribute("href", "DRAFT/Home.html");
+    if (button.dataset.switchBound === "true") return;
+    button.dataset.switchBound = "true";
+
+    button.addEventListener("click", () => {
+      try {
+        localStorage.setItem(STORAGE_KEYS.schoolReturn, JSON.stringify({
+          hash: currentSectionHash(),
+          theme: document.body.dataset.theme || "dark",
+          savedAt: Date.now()
+        }));
+      } catch (e) { /* private mode — the school page falls back to the top of the portfolio */ }
+    });
   }
 
   function appendProjectImageMedia(media, project, mediaImages) {
@@ -1567,7 +1376,7 @@
         ? repo.branches
         : LEARNING_REPO_BRANCH_ORDER.map((id) => ({
             id,
-            label: id,
+            label: LEARNING_REPO_BRANCH_LABELS[id] || id,
             color: getBranchColor(id),
             description: ''
           }));
@@ -1885,116 +1694,146 @@
       return el;
     }
 
-    function createGraphSvgForRow(row, rows, laneMap, repo) {
-      const laneGap = window.innerWidth <= 520 ? 16 : window.innerWidth <= 820 ? 18 : 28;
-      const leftPad = window.innerWidth <= 520 ? 12 : 18;
-      const rowHeight = 120;
-      const nodeY = 60;
-      const laneCount = Math.max(1, laneMap.size);
-      const width = Math.max(72, leftPad * 2 + laneGap * (laneCount - 1));
+    // Rounded-elbow connector: the shape `git log --graph` draws when a commit changes
+    // lane — straight down the parent's lane, then a quarter turn into the child's.
+    function connectorPath(from, to) {
+      if (from.x === to.x) return `M ${from.x} ${from.y} L ${to.x} ${to.y}`;
+      const dir = to.x > from.x ? 1 : -1;
+      const span = Math.abs(to.x - from.x);
+      const bend = Math.max(6, Math.min(26, span, (to.y - from.y) / 2));
+      return `M ${from.x} ${from.y} L ${from.x} ${to.y - bend} Q ${from.x} ${to.y} ${from.x + dir * bend} ${to.y} L ${to.x} ${to.y}`;
+    }
 
-      const svg = createSvgElement('svg', {
-        class: 'git-row-svg',
-        viewBox: `0 0 ${width} ${rowHeight}`,
-        preserveAspectRatio: 'xMinYMid meet',
-        'aria-hidden': 'true'
-      });
+    // Paints the whole graph into one overlay SVG that spans every row, so branch
+    // lines stay continuous across row gaps and variable card heights.
+    function paintLearningGraph(container) {
+      const graph = container && container.__learningGraph;
+      const body = container?.querySelector('.git-repo-body');
+      const layer = container?.querySelector('.git-graph-layer');
+      if (!graph || !body || !layer) return;
 
-      const branchById = new Map((repo.branches || []).map((branch) => [branch.id, branch]));
+      const height = body.offsetHeight;
+      if (!height) return;
 
-      function laneX(lane) {
-        return leftPad + lane * laneGap;
-      }
+      const columnWidth = parseFloat(getComputedStyle(body).getPropertyValue('--git-graph-col')) || 240;
+      const laneCount = Math.max(1, graph.laneMap.size);
+      // Lanes are sized to fit the column at every breakpoint: on a narrow phone the
+      // gap (and the nodes with it) shrink rather than spilling past the column edge.
+      const leftPad = Math.max(8, Math.min(24, columnWidth * 0.1));
+      const usableWidth = Math.max(0, columnWidth - leftPad * 2);
+      const laneGap = laneCount > 1 ? Math.min(28, usableWidth / (laneCount - 1)) : 0;
+      const nodeRadius = Math.max(3.5, Math.min(7, laneGap * 0.42));
+      const laneX = (lane) => leftPad + lane * laneGap;
 
-      function colorForBranch(branchId) {
-        const branch = branchById.get(branchId);
-        return branch?.color || getBranchColor(branchId);
-      }
+      layer.replaceChildren();
+      layer.setAttribute('viewBox', `0 0 ${columnWidth} ${height}`);
+      layer.setAttribute('preserveAspectRatio', 'none');
+      layer.style.width = `${columnWidth}px`;
+      layer.style.height = `${height}px`;
 
-      Array.from(laneMap.entries()).forEach(([branchId, lane]) => {
-        const x = laneX(lane);
-        svg.append(createSvgElement('line', {
-          class: 'git-lane-line',
-          x1: x,
-          y1: 0,
-          x2: x,
-          y2: rowHeight
-        }));
-      });
-
-      const currentX = laneX(row.lane);
-      const currentColor = colorForBranch(row.commit.branch);
-
-      if (row.parent && row.parentLane !== null && row.parentLane !== undefined) {
-        const parentX = laneX(row.parentLane);
-        const path = parentX === currentX
-          ? `M ${currentX} 0 L ${currentX} ${nodeY}`
-          : `M ${parentX} 0 C ${parentX} ${nodeY * 0.45}, ${currentX} ${nodeY * 0.55}, ${currentX} ${nodeY}`;
-
-        svg.append(createSvgElement('path', {
-          class: 'git-parent-line',
-          d: path,
-          stroke: currentColor
-        }));
-      }
-
-      if (row.rowIndex < rows.length - 1) {
-        svg.append(createSvgElement('line', {
-          class: 'git-parent-line',
-          x1: currentX,
-          y1: nodeY,
-          x2: currentX,
-          y2: rowHeight,
-          stroke: currentColor
-        }));
-      }
-
-      row.mergeParents.forEach((mergeParent) => {
-        const mergeLane = laneMap.get(mergeParent.branch);
-        if (mergeLane === undefined) return;
-
-        const mergeX = laneX(mergeLane);
-        const mergeColor = colorForBranch(mergeParent.branch);
-
-        if (mergeX === currentX) return;
-
-        svg.append(createSvgElement('path', {
-          class: 'git-merge-line',
-          d: `M ${mergeX} 0 C ${mergeX} ${nodeY * 0.4}, ${currentX} ${nodeY * 0.6}, ${currentX} ${nodeY}`,
-          stroke: mergeColor
-        }));
-      });
-
-      svg.append(createSvgElement('circle', {
-        class: 'git-commit-node-ring',
-        cx: currentX,
-        cy: nodeY,
-        r: 12,
-        stroke: currentColor
-      }));
-
-      svg.append(createSvgElement('circle', {
-        class: 'git-commit-node',
-        cx: currentX,
-        cy: nodeY,
-        r: row.isMerge ? 8 : 7,
-        fill: currentColor,
-        style: `color:${currentColor}`
-      }));
-
-      if (row.isMerge || row.commit.branch === 'eae-direction') {
-        const label = createSvgElement('text', {
-          x: Math.min(currentX + 12, width - 4),
-          y: nodeY - 12,
-          fill: currentColor,
-          'font-size': '9',
-          'font-weight': '700'
+      // Rows are positioned relative to .git-repo-body, so offsetTop is enough.
+      const nodeFor = new Map();
+      graph.rows.forEach((row) => {
+        const el = body.querySelector(`[data-commit-id="${row.commit.id}"]`);
+        if (!el) return;
+        nodeFor.set(row.commit.id, {
+          x: laneX(row.lane),
+          y: el.offsetTop + Math.min(52, el.offsetHeight / 2)
         });
-        label.textContent = row.commit.branch;
-        svg.append(label);
-      }
+      });
 
-      return svg;
+      // 1. Edges first, so nodes sit on top of them.
+      graph.rows.forEach((row) => {
+        const to = nodeFor.get(row.commit.id);
+        if (!to) return;
+        const parent = row.parent && nodeFor.get(row.parent.id);
+        if (parent) {
+          layer.append(createSvgElement('path', {
+            class: 'git-parent-line',
+            d: connectorPath(parent, to),
+            stroke: graph.colorFor(row.commit.branch)
+          }));
+        }
+        row.mergeParents.forEach((mergeParent) => {
+          const from = nodeFor.get(mergeParent.id);
+          if (!from) return;
+          layer.append(createSvgElement('path', {
+            class: 'git-merge-line',
+            d: connectorPath(from, to),
+            stroke: graph.colorFor(mergeParent.branch)
+          }));
+        });
+      });
+
+      // 2. Commit nodes.
+      graph.rows.forEach((row) => {
+        const point = nodeFor.get(row.commit.id);
+        if (!point) return;
+        const color = graph.colorFor(row.commit.branch);
+        layer.append(createSvgElement('circle', {
+          class: 'git-commit-node-ring', cx: point.x, cy: point.y, r: nodeRadius + 5, stroke: color
+        }));
+        layer.append(createSvgElement('circle', {
+          class: 'git-commit-node',
+          cx: point.x,
+          cy: point.y,
+          r: row.isMerge ? nodeRadius + 1 : nodeRadius,
+          fill: color,
+          style: `color:${color}`
+        }));
+      });
+
+      // 3. Tag diamonds for the chapters that annotate a commit, like `--decorate`.
+      graph.tagAnchors.forEach((label, commitId) => {
+        const point = nodeFor.get(commitId);
+        if (!point) return;
+        const row = graph.rows.find((item) => item.commit.id === commitId);
+        const color = graph.colorFor(row?.commit.branch);
+        const size = Math.max(3, nodeRadius * 0.8);
+        const x = Math.min(point.x + nodeRadius + 8, columnWidth - size - 2);
+        layer.append(createSvgElement('path', {
+          class: 'git-tag-marker',
+          d: `M ${x} ${point.y - size} L ${x + size} ${point.y} L ${x} ${point.y + size} L ${x - size} ${point.y} Z`,
+          fill: color,
+          style: `color:${color}`
+        }));
+      });
+
+      // 4. Branch decoration at the first commit of each lane.
+      const decorated = new Set();
+      graph.rows.forEach((row) => {
+        if (decorated.has(row.commit.branch)) return;
+        decorated.add(row.commit.branch);
+        const point = nodeFor.get(row.commit.id);
+        if (!point) return;
+        // Labels on right-hand lanes are anchored inward so long branch names
+        // (eae-direction, academic-growth) stay inside the graph column.
+        const name = row.commit.branch;
+        const fitsRight = point.x + 13 + name.length * 5.4 <= columnWidth - 2;
+        const text = createSvgElement('text', {
+          class: 'git-branch-label',
+          x: fitsRight ? point.x + 13 : Math.max(2, point.x - 13),
+          y: point.y - 15,
+          'text-anchor': fitsRight ? 'start' : 'end',
+          fill: graph.colorFor(name)
+        });
+        text.textContent = name;
+        layer.append(text);
+      });
+    }
+
+    function scheduleGraphPaint(container) {
+      const paint = () => paintLearningGraph(container);
+      requestAnimationFrame(() => requestAnimationFrame(paint));
+      if (document.fonts?.ready) document.fonts.ready.then(paint).catch(() => {});
+      if (container.__learningGraphObserver) container.__learningGraphObserver.disconnect();
+      if (typeof ResizeObserver === 'function') {
+        const observer = new ResizeObserver(() => paint());
+        const body = container.querySelector('.git-repo-body');
+        if (body) observer.observe(body);
+        container.__learningGraphObserver = observer;
+      }
+      window.addEventListener('resize', paint, { passive: true });
     }
 
     function createLinkedCommitAction(commit) {
@@ -2024,19 +1863,25 @@
       return null;
     }
 
-    function createGitCommitCard(commit, repo) {
+    function createGitCommitCard(commit, repo, tagLabel, colorFor) {
       const card = create('article', 'git-commit-card reveal');
       card.dataset.commitId = commit.id;
       card.dataset.branch = commit.branch;
 
       const branch = (repo.branches || []).find((item) => item.id === commit.branch);
-      const color = branch?.color || getBranchColor(commit.branch);
+      const color = colorFor ? colorFor(commit.branch) : (branch?.color || getBranchColor(commit.branch));
 
       const meta = create('div', 'git-commit-meta');
 
       const branchPill = create('span', 'git-branch-pill', branch?.label || commit.branch);
       branchPill.style.setProperty('--branch-color', color);
       meta.append(branchPill);
+
+      if (tagLabel) {
+        const tagPill = create('span', 'git-tag-pill', `tag: ${slugify(tagLabel)}`);
+        tagPill.style.setProperty('--branch-color', color);
+        meta.append(tagPill);
+      }
 
       if (commit.type) {
         meta.append(create('span', 'git-commit-type', commit.type));
@@ -2065,6 +1910,44 @@
       return card;
     }
 
+    // Maps commit id -> chapter label for the commits that "A Map of Me" annotates.
+    function buildTagAnchorMap() {
+      const anchors = new Map();
+      (data.personalMap?.cards || []).forEach((card, index) => {
+        const commitId = card.anchorCommit || JOURNEY_TAG_ANCHORS[index];
+        if (commitId) anchors.set(commitId, card.label || `chapter-${index + 1}`);
+      });
+      return anchors;
+    }
+
+    // Maps commit id -> the reflections attached to it, like `git log --notes`.
+    function buildNotesByCommit() {
+      const byCommit = new Map();
+      (data.reflections || []).forEach((reflection, index) => {
+        const commitId = reflection.noteOn || REFLECTION_NOTE_ANCHORS[index];
+        if (!commitId) return;
+        if (!byCommit.has(commitId)) byCommit.set(commitId, []);
+        byCommit.get(commitId).push({ reflection, index });
+      });
+      return byCommit;
+    }
+
+    // Rendered inside the commit card, indented, the way `git log --notes` prints
+    // a "Notes:" block beneath the commit it belongs to.
+    function createAttachedNote({ reflection, index }) {
+      const note = create('div', 'git-note-attached');
+      note.id = `reflection-${slugify(reflection.title)}`;
+
+      const head = create('div', 'git-note-head');
+      head.append(create('span', 'git-note-command', 'Notes:'));
+      head.append(create('span', 'git-note-ref', `refs/notes/${slugify(reflection.title)}`));
+      note.append(head);
+
+      note.append(create('h4', 'git-note-title', reflection.title, `reflections.${index}.title`));
+      note.append(create('p', 'git-note-body', reflection.body, `reflections.${index}.body`));
+      return note;
+    }
+
     function renderLearningRepositoryTimeline() {
       const container = $('#achievementTimeline');
       if (!container) return;
@@ -2073,9 +1956,14 @@
       const commits = repo.commits || [];
       const laneMap = assignBranchLanes(commits, repo.branches);
       const rows = buildCommitGraphRows(commits, laneMap);
+      const branchById = new Map((repo.branches || []).map((branch) => [branch.id, branch]));
+      const tagAnchors = buildTagAnchorMap();
+      const notesByCommit = buildNotesByCommit();
+      const colorFor = (branchId) => branchById.get(branchId)?.color || getBranchColor(branchId);
 
       container.className = 'git-learning-repo';
       container.replaceChildren();
+      container.__learningGraph = { rows, laneMap, colorFor, tagAnchors };
 
       const toolbar = create('div', 'git-repo-toolbar');
       const titleWrap = create('div', 'git-repo-title-wrap');
@@ -2088,27 +1976,28 @@
       const branchLegend = create('div', 'git-branch-legend');
       (repo.branches || []).forEach((branch) => {
         const pill = create('span', 'git-legend-pill', branch.label || branch.id);
-        pill.style.setProperty('--branch-color', branch.color || getBranchColor(branch.id));
+        pill.style.setProperty('--branch-color', colorFor(branch.id));
         branchLegend.append(pill);
       });
       container.append(branchLegend);
 
       const body = create('div', 'git-repo-body');
+      const layer = createSvgElement('svg', { class: 'git-graph-layer', 'aria-hidden': 'true', focusable: 'false' });
+      body.append(layer);
+
       rows.forEach((row) => {
         const rowEl = create('div', 'git-commit-row');
         rowEl.dataset.commitId = row.commit.id;
         rowEl.dataset.branch = row.commit.branch;
-
-        const graphCell = create('div', 'git-graph-cell');
-        graphCell.append(createGraphSvgForRow(row, rows, laneMap, repo));
-        rowEl.append(graphCell, createGitCommitCard(row.commit, repo));
+        const card = createGitCommitCard(row.commit, repo, tagAnchors.get(row.commit.id), colorFor);
+        (notesByCommit.get(row.commit.id) || []).forEach((entry) => card.append(createAttachedNote(entry)));
+        rowEl.append(card);
         body.append(rowEl);
       });
 
       container.append(body);
-      if (typeof refreshReveal === 'function') {
-        refreshReveal(container);
-      }
+      if (typeof refreshReveal === 'function') refreshReveal(container);
+      scheduleGraphPaint(container);
     }
 
     function drawCards() {
@@ -3180,31 +3069,6 @@
     return createImageViewer(src, alt, fallback);
   }
 
-  function openMediaViewerModal(src, alt = 'Media Viewer') {
-    const dialog = $(SELECTORS.achievementModal);
-    const content = $(SELECTORS.modalContent);
-    if (!dialog || !content) return;
-
-    content.replaceChildren();
-    dialog.classList.add('modal-wide');
-
-    const header = create('header', 'modal-header');
-    const title = create('h2', '', alt);
-    const closeBtn = create('button', 'modal-close', '×');
-    closeBtn.type = 'button';
-    closeBtn.setAttribute('aria-label', 'Close media viewer modal');
-    closeBtn.addEventListener('click', () => closeModalDialog(dialog));
-    header.append(title, closeBtn);
-
-    const body = create('div', 'modal-media-wrap');
-    const mediaBlock = createMediaBlock(src, alt);
-    body.append(mediaBlock);
-
-    content.append(header, body);
-    openModalDialog(dialog);
-  }
-  window.openMediaViewerModal = openMediaViewerModal;
-
   function createDetail(label, value, className = "modal-detail") {
     const detail = create("section", className);
     detail.append(create("h3", "", label));
@@ -3847,7 +3711,9 @@
     const order = data.sectionOrder || ["about", "philosophy", "why-cybersecurity", "timeline", "reflections", "projects", "achievements", "hobbies", "applications", "goals"];
     const main = $("#main");
     if (!main) return;
-    const sections = Array.from(main.querySelectorAll("section"));
+    // Only top-level sections take part in ordering — nested ones (Reflection Journal
+    // inside the Technical Growth Journey) must stay inside their parent.
+    const sections = Array.from(main.querySelectorAll(":scope > section"));
     const sectionMap = {};
     sections.forEach(sec => {
       if (sec.id) {
@@ -3884,7 +3750,10 @@
       console.log("Running via file protocol, auto-save to disk is disabled. Use the Export data.js button to manually save.");
       return;
     }
-    fetch('http://localhost:3000/api/save', {
+    // Same-origin and relative: an absolute http://localhost:3000 URL is blocked by
+    // this page's own CSP (connect-src 'self') whenever it is served from 127.0.0.1
+    // or any other host, which silently broke saving to disk.
+    fetch('/api/save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -3993,47 +3862,46 @@
 
     const quickNavGroup = create("div", "editor-control-group");
     quickNavGroup.append(create("h4", "", "Quick jumps"));
-    [
-      ["Hero", "#about"],
-      ["Projects", "#projects"],
-      ["Technical journey", "#timeline"],
-      ["Course fit", "#applications"]
-    ].forEach(([label, target]) => {
+    const quickJumpRow = create("div", "editor-quick-jumps");
+    EDITOR_QUICK_JUMPS.forEach(([label, target]) => {
       const jumpBtn = create("button", "button button-secondary quick-jump-btn", label);
       jumpBtn.type = "button";
       jumpBtn.addEventListener("click", () => {
-        const targetEl = document.querySelector(target);
-        if (targetEl) {
-          targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        document.querySelector(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
-      quickNavGroup.append(jumpBtn);
+      quickJumpRow.append(jumpBtn);
     });
+    quickNavGroup.append(quickJumpRow);
     content.append(quickNavGroup);
 
-    // Switch 1: Edit Text
-    const group1 = create("div", "editor-control-group");
-    const label1 = create("label", "switch-container");
-    label1.append(create("span", "", "Edit Text Inline"));
-    const input1 = document.createElement("input");
-    input1.type = "checkbox";
-    input1.id = "toggleEditModeBtn";
-    const slider1 = create("span", "switch-slider");
-    label1.append(input1, slider1);
-    group1.append(label1);
-    group1.append(create("p", "control-description", "Click and edit text directly on the page. Changes save automatically when you click away."));
+    // A labelled on/off switch. Both editing modes are built from this so the
+    // markup contract (.switch-container / .switch-slider) stays identical.
+    function buildSwitch(id, label, description) {
+      const group = create("div", "editor-control-group");
+      const wrap = create("label", "switch-container");
+      wrap.append(create("span", "", label));
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.id = id;
+      wrap.append(input, create("span", "switch-slider"));
+      group.append(wrap, create("p", "control-description", description));
+      return { group, input };
+    }
 
-    // Switch 2: Shift Sections
-    const group2 = create("div", "editor-control-group");
-    const label2 = create("label", "switch-container");
-    label2.append(create("span", "", "Shift Sections"));
-    const input2 = document.createElement("input");
-    input2.type = "checkbox";
-    input2.id = "toggleReorderModeBtn";
-    const slider2 = create("span", "switch-slider");
-    label2.append(input2, slider2);
-    group2.append(label2);
-    group2.append(create("p", "control-description", "Use Up/Down controls on sections to swap their layout sequence."));
+    const editText = buildSwitch(
+      "toggleEditModeBtn",
+      "Edit Text Inline",
+      "Click and edit text directly on the page. Changes save automatically when you click away."
+    );
+    const reorder = buildSwitch(
+      "toggleReorderModeBtn",
+      "Shift Sections",
+      "Use Up/Down controls on sections to swap their layout sequence."
+    );
+    const group1 = editText.group;
+    const input1 = editText.input;
+    const group2 = reorder.group;
+    const input2 = reorder.input;
 
     // Actions Group
     const actions = create("div", "admin-actions");
@@ -4049,8 +3917,6 @@
     exportBtn.style.width = "100%";
     exportBtn.style.marginTop = "12px";
     actions.append(exportBtn);
-
-    content.append(group1, group2);
 
     // Templates / Insert Section
     const templatesGroup = create('div', 'editor-control-group');
@@ -4084,15 +3950,12 @@
     const previewMobile = create('button', 'button', 'Mobile'); previewMobile.type = 'button';
     previewGroup.append(previewDesktop, previewTablet, previewMobile);
 
-    content.append(templatesGroup, themeGroup, previewGroup, actions);
-
     // Asset uploader & library
     const assetsGroup = create('div', 'editor-control-group');
     assetsGroup.append(create('h4', '', 'Asset library (images)'));
     const fileInput = document.createElement('input'); fileInput.type = 'file'; fileInput.accept = 'image/*'; fileInput.setAttribute('aria-label', 'Upload an image to the asset library');
     const assetList = create('div', 'asset-list');
     assetsGroup.append(fileInput, assetList);
-    content.append(assetsGroup);
 
     // Versions / publish controls
     const versionsGroup = create('div', 'editor-control-group');
@@ -4102,7 +3965,26 @@
     publishBtn.id = 'publishBtn';
     const versionsList = create('div', 'versions-list');
     versionsGroup.append(publishBtn, versionsList);
-    content.append(versionsGroup);
+
+    // The panel used to be one long scroll. Grouping it into collapsible task
+    // sections keeps the editing controls reachable without hunting.
+    function addPanel(title, groups, open = false) {
+      const panel = document.createElement("details");
+      panel.className = "editor-panel";
+      panel.open = open;
+      const summary = document.createElement("summary");
+      summary.className = "editor-panel-summary";
+      summary.textContent = title;
+      panel.append(summary, ...groups);
+      content.append(panel);
+    }
+
+    addPanel("Content", [group1, templatesGroup], true);
+    addPanel("Layout", [group2, previewGroup]);
+    addPanel("Design", [themeGroup]);
+    addPanel("Assets", [assetsGroup]);
+    addPanel("Versions & publish", [versionsGroup, actions]);
+
     sidebar.append(header, content);
     document.body.appendChild(sidebar);
 
@@ -4186,7 +4068,7 @@
         setEditorStatus("Section reorder mode active • use the move buttons", "active");
         const main = $("#main");
         if (main) {
-          const sections = Array.from(main.querySelectorAll("section"));
+          const sections = Array.from(main.querySelectorAll(":scope > section"));
           sections.forEach(sec => {
             if (!sec.id) return;
             let controls = sec.querySelector(".section-edit-controls");
@@ -4826,9 +4708,6 @@
    * ========================================================================== */
   function render() {
     setupThemeToggle();
-    // // View mode toggle commented out per request:
-    // setupViewModeToggleOnce();
-    // setupViewModeBarVisibility();
     renderNav();
     applySectionVisibility();
     renderCustomSections();
@@ -4837,11 +4716,14 @@
     renderPhilosophy();
     renderWhyCybersecurity();
     renderLifeEntry();
-    renderReflections();
+    renderJourneyChapters();
     renderProjects();
     renderCodeShowcase();
     renderApplications();
     renderAchievements();
+    // After renderAchievements(), which materialises data.learningRepository that
+    // the note index reads commit titles from.
+    renderReflections();
     renderHobbies();
     renderGoals();
     renderOptionalSections();
@@ -4849,7 +4731,6 @@
     setupSchoolPortfolioIntegration();
     setupNavigation();
     setupChromeHeight();
-    // setupViewModeBarVisibility();
     setupSectionTabs();
     setupScrollProgress();
     setupPrintMode();
@@ -4857,6 +4738,21 @@
     setupHintTooltips();
     setupLiveEditor();
     setupAccessibilitySidebar();
+    applyInitialHash();
+  }
+
+  // The browser resolves #section while parsing, but rendering then re-parents
+  // sections and fills them with content, which moves the anchor. Re-apply it once
+  // the final layout exists so returning from the school portfolio lands correctly.
+  function applyInitialHash() {
+    const id = decodeURIComponent((location.hash || "").slice(1));
+    if (!id) return;
+    const settle = () => {
+      const target = document.getElementById(id);
+      if (target) target.scrollIntoView({ behavior: "instant", block: "start" });
+    };
+    requestAnimationFrame(() => requestAnimationFrame(settle));
+    window.addEventListener("load", () => setTimeout(settle, 120), { once: true });
   }
 
   function setupAccessibilitySidebar() {

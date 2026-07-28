@@ -8,6 +8,7 @@ const runAccessibilityTests = require('./suites/03_accessibility_a11y.test.js');
 const runLiveEditorE2ETests = require('./suites/04_live_editor_e2e.test.js');
 const runSecurityVibeSecTests = require('./suites/05_security_vibesec.test.js');
 const runResponsiveViewportTests = require('./suites/06_responsive_viewports.test.js');
+const runGrowthJourneyTests = require('./suites/07_growth_journey.test.js');
 
 async function runMasterTestSuite() {
   console.log('=====================================================');
@@ -29,6 +30,34 @@ async function runMasterTestSuite() {
   // Save original data.js to restore after tests finish
   const dataJsPath = path.join(__dirname, '../data.js');
   const originalDataJs = fs.existsSync(dataJsPath) ? fs.readFileSync(dataJsPath, 'utf8') : null;
+
+  // The live-editor suites drive POST /api/save, which rewrites data.js from
+  // window.PORTFOLIO_DATA and drops the trailing bootstrap block. If the run is
+  // interrupted the `finally` below never fires, the damaged file becomes the next
+  // run's baseline, and the loss is committed. Restore on signals too.
+  let dataRestored = false;
+  const restoreDataJs = () => {
+    if (dataRestored || originalDataJs === null) return;
+    dataRestored = true;
+    try {
+      fs.writeFileSync(dataJsPath, originalDataJs, 'utf8');
+    } catch (err) {
+      console.error('Failed to restore data.js:', err.message);
+    }
+  };
+
+  const onSignal = (signal) => {
+    console.error(`\n[Runner] Received ${signal} — restoring data.js before exit.`);
+    restoreDataJs();
+    process.exit(1);
+  };
+  process.once('SIGINT', () => onSignal('SIGINT'));
+  process.once('SIGTERM', () => onSignal('SIGTERM'));
+  process.once('uncaughtException', (err) => {
+    console.error('[Runner] Uncaught exception:', err);
+    restoreDataJs();
+    process.exit(1);
+  });
 
   try {
     await harness.ensureServerRunning();
@@ -59,19 +88,15 @@ async function runMasterTestSuite() {
       await runResponsiveViewportTests(harness);
     }
 
+    if (targetSuite === 'all' || targetSuite === 'journey') {
+      await runGrowthJourneyTests(harness);
+    }
+
   } catch (fatalErr) {
     console.error(`\n🔥 [FATAL TEST SUITE ERROR]: ${fatalErr.message || fatalErr}`);
     overallPassed = false;
   } finally {
-    // Restore original data.js file
-    if (originalDataJs !== null) {
-      try {
-        fs.writeFileSync(dataJsPath, originalDataJs, 'utf8');
-      } catch (err) {
-        console.error('Failed to restore data.js:', err.message);
-      }
-    }
-
+    restoreDataJs();
     await harness.cleanup();
 
     const totalDuration = Date.now() - startTime;

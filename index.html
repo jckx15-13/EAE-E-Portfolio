@@ -139,7 +139,6 @@
             <p id="heroIdentityLine" class="hero-identity"></p>
             <p id="heroSubtitle" class="hero-subtitle"></p>
             <p id="brandStatement" class="section-lede"></p>
-            <section id="focusAreas" class="focus-list" aria-label="Portfolio guide"></section>
             <div class="hero-actions">
               <a id="heroBtnPrimary" class="button button-primary" href="#projects">View my projects</a>
               <a id="heroBtnSecondary" class="button button-secondary" href="#timeline">View evidence timeline</a>
@@ -158,7 +157,6 @@
         </div>
         <div id="philosophy-content" class="section-body">
           <div id="personalSnapshot" class="snapshot-grid"></div>
-          <div id="personalMapCards" class="personal-map-grid"></div>
         </div>
       </section>
 
@@ -174,7 +172,9 @@
         </div>
       </section>
 
-      <!-- 4. Technical Growth Timeline (Placed early for progression story) -->
+      <!-- 4. Technical Growth Journey — a vertical git-tree graph of my life repository.
+           `main` is my life; each commit is an experience I added to it; annotated tags are
+           the chapters that changed how I think; git notes are my reflections. -->
       <section id="timeline" class="section section-astral-4">
         <div class="section-heading">
           <p class="section-label">Progression</p>
@@ -182,23 +182,24 @@
           <p id="timelineIntro" class="section-lede"></p>
         </div>
         <div id="timeline-content" class="section-body">
+          <div id="journeyChapters" class="journey-tag-track"></div>
           <div class="timeline-container timeline-wrap">
             <div id="achievementTimeline" class="timeline"></div>
           </div>
-        </div>
-      </section>
 
-      <!-- 5. Reflection Section -->
-      <section id="reflections" class="section section-astral-5">
-        <div class="section-heading">
-          <p class="section-label">Growth</p>
-          <h2>Reflection Journal</h2>
-          <p class="section-lede">
-            Authentic reflections on challenges, failures, and lessons learned.
-          </p>
-        </div>
-        <div id="reflections-content" class="section-body">
-          <div id="reflectionList" class="reflection-grid"></div>
+          <!-- 4b. Reflection Journal — rendered as `git notes` on the repository above -->
+          <section id="reflections" class="timeline-subsection">
+            <div class="section-heading">
+              <p class="section-label">Growth</p>
+              <h2>Reflection Journal</h2>
+              <p class="section-lede">
+                Authentic reflections on challenges, failures, and lessons learned.
+              </p>
+            </div>
+            <div id="reflections-content" class="section-body">
+              <div id="reflectionList" class="reflection-grid git-notes-grid"></div>
+            </div>
+          </section>
         </div>
       </section>
 

@@ -77,18 +77,32 @@ const server = http.createServer((req, res) => {
   }
 
   // Safe file serving
-  let urlPath = req.url.split('?')[0]; // strip query params
-  let filePath = path.join(PUBLIC_DIR, urlPath === '/' ? 'index.html' : urlPath);
+  const rawPath = req.url.split('?')[0].split('#')[0]; // strip query and fragment
 
-  if (!filePath.startsWith(PUBLIC_DIR)) {
-    res.writeHead(403);
+  // The exported school portfolio in DRAFT/ has spaces in almost every filename,
+  // so request paths arrive percent-encoded and must be decoded before lookup.
+  let urlPath;
+  try {
+    urlPath = decodeURIComponent(rawPath);
+  } catch (err) {
+    res.writeHead(400, { 'Content-Type': 'text/plain' });
+    res.end('Bad Request');
+    return;
+  }
+
+  const filePath = path.join(PUBLIC_DIR, urlPath === '/' ? 'index.html' : urlPath);
+
+  // Checked after decoding, so encoded traversal (%2e%2e%2f) is caught too. The
+  // trailing separator stops a sibling directory sharing the prefix from passing.
+  if (filePath !== PUBLIC_DIR && !filePath.startsWith(PUBLIC_DIR + path.sep)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain' });
     res.end('Forbidden');
     return;
   }
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
-      res.writeHead(404);
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end('Not Found');
       return;
     }

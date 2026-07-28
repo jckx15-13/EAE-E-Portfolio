@@ -68,11 +68,64 @@ body {
   user-select: none;
 }
 
+/* Which school page you are on — the bar is otherwise identical on all 30 exports. */
+.school-nav-page {
+  margin-right: auto;
+  max-width: 45vw;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(109, 179, 240, 0.28);
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.1);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  user-select: none;
+}
+
+/* Light theme carried over from the main portfolio via localStorage. */
+html[data-school-theme="light"] .school-nav-bar {
+  background: rgba(252, 251, 247, 0.94);
+  border-bottom-color: #d8d3c8;
+}
+
+html[data-school-theme="light"] .school-nav-title {
+  color: #1f2937;
+}
+
+html[data-school-theme="light"] .school-nav-page {
+  border-color: #d8d3c8;
+  background: rgba(2, 132, 199, 0.08);
+  color: #475569;
+}
+
+html[data-school-theme="light"] .school-nav-back-btn {
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.14), rgba(139, 92, 246, 0.18));
+  border-color: #0284c7;
+  color: #0f172a !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .school-nav-back-btn {
+    transition: none;
+  }
+  .school-nav-back-btn:hover,
+  .school-nav-back-btn:focus-visible {
+    transform: none;
+  }
+}
+
 @media (max-width: 640px) {
   .school-nav-bar {
     padding: 0 1rem;
   }
   .school-nav-title {
     display: none;
+  }
+  .school-nav-page {
+    max-width: 40vw;
   }
 }

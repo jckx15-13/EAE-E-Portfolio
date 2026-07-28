@@ -1,5 +1,6 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 
 class TestHarness {
@@ -9,7 +10,9 @@ class TestHarness {
     this.ws = null;
     this.tabId = null;
     this.baseUrl = 'http://127.0.0.1:3000';
-    this.chromePort = 9222;
+    // Ephemeral rather than a fixed 9222: a stale Chrome from an interrupted run
+    // would otherwise answer the CDP health check and the suite would drive it.
+    this.chromePort = 9222 + Math.floor(Math.random() * 700);
     this.suiteResults = [];
     this.currentSuite = 'General';
     this.pageErrors = [];
@@ -88,17 +91,30 @@ class TestHarness {
       throw new Error(`Google Chrome binary not found at ${chromePath}`);
     }
 
+    // An isolated profile directory is required: without it Chrome attaches to the
+    // developer's existing profile, hits the singleton lock and never opens the
+    // debugging port, which surfaces as "failed to respond on port 9222".
+    this.userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'eae-chrome-'));
+
     console.log(`[Harness] Launching headless Chrome on port ${this.chromePort}...`);
     this.chromeProcess = spawn(chromePath, [
-      '--headless',
+      '--headless=new',
       `--remote-debugging-port=${this.chromePort}`,
+      `--user-data-dir=${this.userDataDir}`,
+      '--no-first-run',
+      '--no-default-browser-check',
       '--no-sandbox',
       '--disable-gpu',
       '--disable-dev-shm-usage'
     ]);
 
+    // A Chrome left over from an earlier run answers on the port too, so confirm the
+    // endpoint belongs to the process we just spawned before trusting it.
     let responsive = false;
     for (let i = 0; i < 20; i++) {
+      if (this.chromeProcess.exitCode !== null) {
+        throw new Error(`Headless Chrome exited early (code ${this.chromeProcess.exitCode}) — is port ${this.chromePort} already in use?`);
+      }
       try {
         const res = await fetch(`http://127.0.0.1:${this.chromePort}/json/version`);
         if (res.ok) {
@@ -163,15 +179,20 @@ class TestHarness {
     const fullUrl = `${this.baseUrl}${urlPath}`;
     await this.send('Page.navigate', { url: fullUrl });
 
-    // Wait for Page.loadEventFired
+    // Wait for Page.loadEventFired, but do not block forever: the exported school
+    // pages in DRAFT/ reference third-party assets that never settle offline, and
+    // the DOM is interactive long before `load` would fire.
     await new Promise((resolve) => {
+      const done = () => {
+        clearTimeout(timer);
+        this.ws.removeEventListener('message', onMessage);
+        resolve();
+      };
       const onMessage = (event) => {
         const data = JSON.parse(event.data);
-        if (data.method === 'Page.loadEventFired') {
-          this.ws.removeEventListener('message', onMessage);
-          resolve();
-        }
+        if (data.method === 'Page.loadEventFired') done();
       };
+      const timer = setTimeout(done, 15000);
       this.ws.addEventListener('message', onMessage);
     });
 
@@ -241,6 +262,10 @@ class TestHarness {
     if (this.serverProcess) {
       try { this.serverProcess.kill('SIGKILL'); } catch (e) {}
       this.serverProcess = null;
+    }
+    if (this.userDataDir) {
+      try { fs.rmSync(this.userDataDir, { recursive: true, force: true }); } catch (e) {}
+      this.userDataDir = null;
     }
   }
 }

@@ -17,7 +17,8 @@ colors:
   muted: "#718093"
   warning: "#8A5B00"
   on-dark: "#FFFFFF"
-  astral-gradients:
+gradients:
+  astral:
     - "linear-gradient(180deg, #070b16 0%, #0d1222 100%)"
     - "linear-gradient(180deg, #0d1222 0%, #12162b 100%)"
     - "linear-gradient(180deg, #12162b 0%, #161936 100%)"
@@ -30,31 +31,31 @@ typography:
     fontSize: "4rem"
     fontWeight: "700"
     lineHeight: "1.05"
-    letterSpacing: "0"
+    letterSpacing: "0em"
   section-title:
     fontFamily: "Space Grotesk"
     fontSize: "2.5rem"
     fontWeight: "700"
     lineHeight: "1.08"
-    letterSpacing: "0"
+    letterSpacing: "0em"
   card-title:
     fontFamily: "Space Grotesk"
     fontSize: "1.22rem"
     fontWeight: "700"
     lineHeight: "1.25"
-    letterSpacing: "0"
+    letterSpacing: "0em"
   body:
     fontFamily: "Inter"
     fontSize: "1rem"
     fontWeight: "400"
     lineHeight: "1.6"
-    letterSpacing: "0"
+    letterSpacing: "0em"
   label:
     fontFamily: "Space Grotesk"
     fontSize: "0.86rem"
     fontWeight: "800"
     lineHeight: "1.3"
-    letterSpacing: "0"
+    letterSpacing: "0em"
 rounded:
   sm: "6px"
   md: "8px"
@@ -85,7 +86,7 @@ components:
     typography: "{typography.body}"
     rounded: "{rounded.md}"
     padding: "22px"
-    border: "1px solid rgba(109, 179, 240, 0.15)"
+    borderColor: "rgba(109, 179, 240, 0.15)"
   card-muted:
     backgroundColor: "{colors.paper-soft}"
     textColor: "{colors.secondary}"
@@ -128,7 +129,7 @@ components:
     padding: "18px"
   border-line:
     backgroundColor: "{colors.border}"
-    textColor: "{colors.muted}"
+    textColor: "{colors.secondary}"
     typography: "{typography.label}"
     height: "1px"
 ---
