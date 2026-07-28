@@ -220,6 +220,258 @@
   };
 
   /* ==========================================================================
+   * SECTION 2B: EDITOR MODULE INITIALIZATION
+   * Initialize all 5 production-ready editor modules (state, validator, error handler, operation, backup)
+   * ========================================================================== */
+  let editorState = null;
+  let editorValidator = null;
+  let editorErrorHandler = null;
+  let editorBackup = null;
+
+  // Reference to unsubscribe functions for cleanup
+  const editorUnsubscribers = [];
+
+  function initializeEditorModules() {
+    // Only initialize if admin mode is enabled
+    if (!validateAdminToken()) return;
+
+    try {
+      // 1. Initialize EditorState (undo/redo stack manager)
+      editorState = new EditorState(data, 50);
+      console.log('✓ EditorState initialized (maxSnapshots: 50)');
+
+      // 2. Initialize EditorValidator (schema & dependency checker)
+      editorValidator = new EditorValidator();
+      console.log('✓ EditorValidator initialized');
+
+      // 3. Initialize EditorErrorHandler (error recovery & user messaging)
+      editorErrorHandler = new EditorErrorHandler();
+      console.log('✓ EditorErrorHandler initialized');
+
+      // 4. Initialize EditorBackup (automatic snapshots every 30 seconds)
+      editorBackup = new EditorBackup(30000, 20); // 30s interval, max 20 snapshots
+      console.log('✓ EditorBackup initialized (autoBackup: 30s interval, maxSnapshots: 20)');
+
+      // 5. Wire EditorState listener to update undo/redo UI when state changes
+      const unsubState = editorState.onChange((eventType, payload) => {
+        updateUndoRedoUI();
+      });
+      editorUnsubscribers.push(unsubState);
+
+      // 6. Wire EditorErrorHandler listener to display errors to user
+      const unsubError = editorErrorHandler.onError((eventType, payload) => {
+        if (eventType === 'error') {
+          displayEditorError(payload.code, payload.message, payload.context);
+        }
+      });
+      editorUnsubscribers.push(unsubError);
+
+      // 7. Wire EditorBackup to auto-backup every 30 seconds
+      editorBackup.startAutoBackup(() => editorState.getCurrentState());
+
+      // 8. Subscribe to backup events
+      const unsubBackup = editorBackup.onBackupEvent((eventType, payload) => {
+        if (eventType === 'autoBackupCreated') {
+          console.log(`📦 Auto-backup created (${payload.size} bytes)`);
+        }
+      });
+      editorUnsubscribers.push(unsubBackup);
+
+      // Initialize admin API for undo/redo and other operations
+      window.eaeAdminAPI = window.eaeAdminAPI || {};
+      window.eaeAdminAPI.undo = performUndo;
+      window.eaeAdminAPI.redo = performRedo;
+      window.eaeAdminAPI.canUndo = () => editorState ? editorState.canUndo() : false;
+      window.eaeAdminAPI.canRedo = () => editorState ? editorState.canRedo() : false;
+
+      console.log('✅ All editor modules initialized and wired together');
+      return true;
+
+    } catch (error) {
+      console.error('❌ Failed to initialize editor modules:', error);
+      return false;
+    }
+  }
+
+  function updateUndoRedoUI() {
+    const undoBtn = document.getElementById('undoBtn');
+    const redoBtn = document.getElementById('redoBtn');
+
+    if (!editorState) return;
+
+    if (undoBtn) {
+      const canUndo = editorState.canUndo();
+      undoBtn.disabled = !canUndo;
+      undoBtn.classList.toggle('disabled', !canUndo);
+      undoBtn.title = canUndo ? 'Undo (Ctrl+Z)' : 'Nothing to undo';
+    }
+
+    if (redoBtn) {
+      const canRedo = editorState.canRedo();
+      redoBtn.disabled = !canRedo;
+      redoBtn.classList.toggle('disabled', !canRedo);
+      redoBtn.title = canRedo ? 'Redo (Ctrl+Shift+Z)' : 'Nothing to redo';
+    }
+  }
+
+  function performUndo() {
+    if (!editorState || !editorState.canUndo()) return;
+
+    try {
+      const restoredState = editorState.undo();
+      if (restoredState) {
+        Object.assign(data, restoredState);
+        window.location.reload(); // Reload to reflect UI changes
+      }
+    } catch (error) {
+      if (editorErrorHandler) {
+        editorErrorHandler.log('UNDO_FAILED', 'Failed to undo last operation', { error });
+      }
+      console.error('Undo failed:', error);
+    }
+  }
+
+  function performRedo() {
+    if (!editorState || !editorState.canRedo()) return;
+
+    try {
+      const restoredState = editorState.redo();
+      if (restoredState) {
+        Object.assign(data, restoredState);
+        window.location.reload(); // Reload to reflect UI changes
+      }
+    } catch (error) {
+      if (editorErrorHandler) {
+        editorErrorHandler.log('REDO_FAILED', 'Failed to redo last operation', { error });
+      }
+      console.error('Redo failed:', error);
+    }
+  }
+
+  function displayEditorError(code, message, context) {
+    if (!editorErrorHandler) return;
+
+    const userMsg = editorErrorHandler.createUserMessage(code, context);
+    showEditorErrorModal(userMsg.title, userMsg.message, userMsg.suggestions);
+  }
+
+  function showEditorErrorModal(title, message, suggestions) {
+    let modal = document.getElementById('editorErrorModal');
+
+    if (!modal) {
+      modal = document.createElement('dialog');
+      modal.id = 'editorErrorModal';
+      modal.className = 'editor-error-modal';
+      document.body.appendChild(modal);
+    }
+
+    const html = `
+      <div class="modal-card">
+        <button class="modal-close" aria-label="Close error dialog">✖</button>
+        <h2>${title}</h2>
+        <p>${message}</p>
+        ${suggestions && suggestions.length > 0 ? `
+          <div class="error-suggestions">
+            <h3>Suggestions:</h3>
+            <ul>
+              ${suggestions.map(s => `<li>${s}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+        <div class="modal-actions">
+          <button class="button button-primary close-error-modal">Got it</button>
+          ${editorBackup && editorBackup.listRestorePoints().length > 0 ? `
+            <button class="button button-secondary restore-from-backup">Restore from backup</button>
+          ` : ''}
+        </div>
+      </div>
+    `;
+
+    modal.innerHTML = html;
+    openModalDialog(modal);
+
+    modal.querySelector('.modal-close').addEventListener('click', () => closeModalDialog(modal));
+    modal.querySelector('.close-error-modal').addEventListener('click', () => closeModalDialog(modal));
+
+    const restoreBtn = modal.querySelector('.restore-from-backup');
+    if (restoreBtn) {
+      restoreBtn.addEventListener('click', () => {
+        showRestorePointsModal();
+        closeModalDialog(modal);
+      });
+    }
+  }
+
+  function showRestorePointsModal() {
+    if (!editorBackup) return;
+
+    const restorePoints = editorBackup.listRestorePoints();
+    if (restorePoints.length === 0) {
+      alert('No restore points available');
+      return;
+    }
+
+    let modal = document.getElementById('restorePointsModal');
+    if (!modal) {
+      modal = document.createElement('dialog');
+      modal.id = 'restorePointsModal';
+      modal.className = 'restore-points-modal';
+      document.body.appendChild(modal);
+    }
+
+    const html = `
+      <div class="modal-card">
+        <button class="modal-close" aria-label="Close restore dialog">✖</button>
+        <h2>📦 Restore from Backup</h2>
+        <p>Choose a restore point to revert your changes:</p>
+        <div class="restore-points-list">
+          ${restorePoints.reverse().map((rp, idx) => `
+            <div class="restore-point-item">
+              <button class="restore-point-btn" data-index="${restorePoints.length - 1 - idx}">
+                <span class="restore-time">${rp.timestamp}</span>
+                <span class="restore-age">${rp.age}</span>
+                <span class="restore-type">${rp.manual ? '📌 Manual' : '📦 Auto'}</span>
+              </button>
+            </div>
+          `).join('')}
+        </div>
+        <div class="modal-actions">
+          <button class="button button-secondary close-restore-modal">Cancel</button>
+        </div>
+      </div>
+    `;
+
+    modal.innerHTML = html;
+    openModalDialog(modal);
+
+    modal.querySelector('.modal-close').addEventListener('click', () => closeModalDialog(modal));
+    modal.querySelector('.close-restore-modal').addEventListener('click', () => closeModalDialog(modal));
+
+    modal.querySelectorAll('.restore-point-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const index = parseInt(btn.dataset.index);
+        restoreFromBackupPoint(index);
+        closeModalDialog(modal);
+      });
+    });
+  }
+
+  function restoreFromBackupPoint(index) {
+    if (!editorBackup) return;
+
+    try {
+      const restoredData = editorBackup.restore(index);
+      Object.assign(data, restoredData);
+      editorState.restoreState(restoredData);
+      showSaveNotification('✅ Restored from backup');
+      setTimeout(() => window.location.reload(), 800);
+    } catch (error) {
+      console.error('Restore failed:', error);
+      showSaveNotification('❌ Failed to restore');
+    }
+  }
+
+  /* ==========================================================================
    * SECTION 3: STATE MANAGEMENT & LOCAL STORAGE UPLOAD OVERRIDES
    * ========================================================================== */
   // Override with local uploads if available
@@ -4397,6 +4649,29 @@
     workflowSummary.append(create("p", "control-description", "Use the workflow shortcuts below to edit copy, reorder sections, add content blocks, and preview the layout."));
     content.append(workflowSummary);
 
+    // Undo/Redo Controls
+    const undoRedoGroup = create("div", "editor-control-group");
+    undoRedoGroup.append(create("h4", "", "History"));
+    const undoRedoRow = create("div", "editor-undo-redo-row");
+
+    const undoBtn = create("button", "button button-secondary undo-btn", "↶ Undo");
+    undoBtn.id = "undoBtn";
+    undoBtn.type = "button";
+    undoBtn.title = "Undo last change (Ctrl+Z)";
+    undoBtn.addEventListener("click", performUndo);
+    undoRedoRow.append(undoBtn);
+
+    const redoBtn = create("button", "button button-secondary redo-btn", "↷ Redo");
+    redoBtn.id = "redoBtn";
+    redoBtn.type = "button";
+    redoBtn.title = "Redo last undone change (Ctrl+Shift+Z)";
+    redoBtn.addEventListener("click", performRedo);
+    undoRedoRow.append(redoBtn);
+
+    undoRedoGroup.append(undoRedoRow);
+    undoRedoGroup.append(create("p", "control-description", "Undo/Redo history is automatically saved. Use keyboard shortcuts: Ctrl+Z to undo, Ctrl+Shift+Z to redo."));
+    content.append(undoRedoGroup);
+
     const quickNavGroup = create("div", "editor-control-group");
     quickNavGroup.append(create("h4", "", "Quick jumps"));
     const quickJumpRow = create("div", "editor-quick-jumps");
@@ -4553,14 +4828,26 @@
     closeFab.addEventListener("click", () => toggleEditor(false));
     closeBtn.addEventListener("click", () => toggleEditor(false));
 
-    // Global Keyboard Shortcut: Ctrl+Shift+E / Cmd+Shift+E
+    // Global Keyboard Shortcuts
     document.addEventListener("keydown", (e) => {
+      // Ctrl+Shift+E / Cmd+Shift+E: Open/close editor
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === "E" || e.key === "e")) {
         e.preventDefault();
         toggleEditor();
       }
+      // Escape: Close editor
       if (e.key === "Escape" && sidebar.classList.contains("is-open")) {
         toggleEditor(false);
+      }
+      // Ctrl+Z / Cmd+Z: Undo (when editor is open)
+      if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey && sidebar.classList.contains("is-open")) {
+        e.preventDefault();
+        performUndo();
+      }
+      // Ctrl+Shift+Z / Cmd+Shift+Z: Redo (when editor is open)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === "z" || e.key === "Z") && sidebar.classList.contains("is-open")) {
+        e.preventDefault();
+        performRedo();
       }
     });
 
@@ -5274,6 +5561,7 @@
     setupReveal();
     setupHintTooltips();
     setupLiveEditor();
+    initializeEditorModules();
     setupAccessibilitySidebar();
     setupEvidenceIsland();
     applyInitialHash();
