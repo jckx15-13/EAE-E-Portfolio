@@ -178,6 +178,17 @@
         </div>
       </section>
 
+      <!-- 3b. Learning That Stays Useful — academic subjects mapped to transferable skills -->
+      <section id="learning-useful" class="section section-astral-3 learning-useful-section">
+        <div class="section-heading">
+          <p class="section-label">Transferable Skills</p>
+          <h2 id="learningUsefulTitle">Learning That Stays Useful</h2>
+          <div id="learningUsefulIntro" class="section-lede learning-useful-intro"></div>
+        </div>
+
+        <div id="learningUsefulContent" class="section-body learning-useful-body"></div>
+      </section>
+
       <!-- 4. Technical Growth Journey — a vertical git-tree graph of my life repository.
            `main` is my life; each commit is an experience I added to it; annotated tags are
            the chapters that changed how I think; git notes are my reflections. -->
@@ -189,11 +200,14 @@
         </div>
         <div id="evidenceIsland" class="evidence-island" role="tablist" aria-label="Evidence view">
           <span class="evidence-island-indicator" aria-hidden="true"></span>
-          <button id="evidenceViewTimeline" class="evidence-island-pill is-active" type="button" role="tab" data-view="timeline" aria-selected="true" aria-controls="timeline-content">Timeline</button>
-          <button id="evidenceViewProjects" class="evidence-island-pill" type="button" role="tab" data-view="projects" aria-selected="false" aria-controls="evidenceGridView">Projects</button>
+          <button id="evidenceViewRepository" class="evidence-island-pill is-active" type="button" role="tab" data-view="repository" aria-selected="true" aria-controls="timeline-content">Repository</button>
+          <button id="evidenceViewProjectTimeline" class="evidence-island-pill" type="button" role="tab" data-view="project-timeline" aria-selected="false" aria-controls="projectTimelineView">Project Timeline</button>
+          <button id="evidenceViewGrid" class="evidence-island-pill" type="button" role="tab" data-view="evidence-grid" aria-selected="false" aria-controls="evidenceGridView">Evidence Grid</button>
         </div>
 
-        <div id="evidenceGridView" class="evidence-groups" role="tabpanel" aria-labelledby="evidenceViewProjects" hidden></div>
+        <div id="projectTimelineView" class="project-timeline-view" role="tabpanel" aria-labelledby="evidenceViewProjectTimeline" hidden></div>
+
+        <div id="evidenceGridView" class="evidence-groups" role="tabpanel" aria-labelledby="evidenceViewGrid" hidden></div>
 
         <div id="timeline-content" class="section-body" role="tabpanel" aria-labelledby="evidenceViewTimeline">
           <div id="journeyChapters" class="journey-tag-track"></div>

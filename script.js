@@ -3,6 +3,11 @@
    * SECTION 1: CONSTANTS, SELECTORS & CONFIGURATION
    * ========================================================================== */
   const data = window.PORTFOLIO_DATA || {};
+
+  // Local editor gate. This is a convenience PIN for the no-code editor on this
+  // device, not secure authentication — the portfolio is a static local site.
+  const ADMIN_PIN = "2410";
+  const ADMIN_AUTH_KEY = "eae_admin_authenticated";
   const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
   const STORAGE_KEYS = {
     uploads: 'eaePortfolioUploads',
@@ -92,6 +97,7 @@
   // Editor shortcuts, kept in sync with the section order in index.html.
   const EDITOR_QUICK_JUMPS = [
     ["Hero", "#about"],
+    ["Skill mapping", "#learning-useful"],
     ["Technical journey", "#timeline"],
     ["Reflection journal", "#reflections"],
     ["Projects", "#projects"],
@@ -539,6 +545,7 @@
     ["About", "about"],
     ["Mindset", "philosophy"],
     ["Cybersecurity", "why-cybersecurity"],
+    ["Skills", "learning-useful"],
     ["Journey", "timeline"],
     ["Reflection", "reflections"],
     ["Projects", "projects"],
@@ -551,6 +558,7 @@
     "about",
     "philosophy",
     "why-cybersecurity",
+    "learning-useful",
     "timeline",
     "reflections",
     "projects",
@@ -752,6 +760,134 @@
     }
   }
 
+  let activeLearningSubjectId = null;
+
+  function renderLearningUseful() {
+    const title = $("#learningUsefulTitle");
+    const intro = $("#learningUsefulIntro");
+    const content = $("#learningUsefulContent");
+    const section = data.learningThatStaysUseful;
+    if (!title || !intro || !content || !section) return;
+
+    title.textContent = section.title || "Learning That Stays Useful";
+    title.dataset.editPath = "learningThatStaysUseful.title";
+
+    intro.replaceChildren();
+    const introLines = Array.isArray(section.intro) ? section.intro : [];
+    introLines.forEach((line, index) => {
+      intro.append(create("p", "learning-useful-intro-line", line, `learningThatStaysUseful.intro.${index}`));
+    });
+
+    content.replaceChildren();
+    const subjects = Array.isArray(section.subjects) ? section.subjects : [];
+    if (!subjects.length) return;
+
+    const selector = create("div", "learning-subject-selector");
+    selector.setAttribute("role", "tablist");
+    selector.setAttribute("aria-label", "Academic subject selector");
+
+    const panel = create("div", "learning-subject-panel reveal");
+    panel.id = "learningSubjectPanel";
+    panel.setAttribute("role", "tabpanel");
+
+    subjects.forEach((subject) => {
+      const pill = create("button", "learning-subject-pill", subject.shortName || subject.name);
+      pill.type = "button";
+      pill.dataset.subjectId = subject.id;
+      pill.setAttribute("role", "tab");
+      pill.setAttribute("aria-selected", "false");
+      pill.addEventListener("click", () => switchLearningSubject(subject.id));
+      selector.append(pill);
+    });
+
+    selector.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      const pills = Array.from(selector.querySelectorAll(".learning-subject-pill"));
+      const current = pills.findIndex((pill) => pill.classList.contains("is-active"));
+      const next = (current + (event.key === "ArrowRight" ? 1 : -1) + pills.length) % pills.length;
+      pills[next].click();
+      pills[next].focus();
+    });
+
+    const carry = create("div", "learning-carry-tags reveal");
+    carry.append(create("p", "learning-carry-label", "Ways of thinking I carry forward"));
+    const tagWrap = create("div", "learning-carry-tag-row");
+    (section.carryForwardTags || []).forEach((tag) => {
+      const span = create("span", "learning-carry-tag", tag);
+      span.dataset.tag = tag;
+      tagWrap.append(span);
+    });
+    carry.append(tagWrap);
+
+    content.append(selector, panel, carry);
+
+    const fallbackId = subjects[0].id;
+    const startId = subjects.some((subject) => subject.id === activeLearningSubjectId) ? activeLearningSubjectId : fallbackId;
+    switchLearningSubject(startId, { instant: true });
+  }
+
+  function switchLearningSubject(subjectId, options = {}) {
+    const section = data.learningThatStaysUseful;
+    const subjects = Array.isArray(section?.subjects) ? section.subjects : [];
+    const subject = subjects.find((item) => item.id === subjectId);
+    const panel = $("#learningSubjectPanel");
+    if (!subject || !panel) return;
+
+    activeLearningSubjectId = subjectId;
+    const subjectIndex = subjects.indexOf(subject);
+
+    document.querySelectorAll(".learning-subject-pill").forEach((pill) => {
+      const active = pill.dataset.subjectId === subjectId;
+      pill.classList.toggle("is-active", active);
+      pill.setAttribute("aria-selected", String(active));
+      pill.tabIndex = active ? 0 : -1;
+    });
+
+    const updatePanel = () => {
+      panel.replaceChildren();
+      panel.append(create("p", "card-kicker", "Selected subject"));
+      panel.append(create("h3", "learning-subject-title", subject.name, `learningThatStaysUseful.subjects.${subjectIndex}.name`));
+
+      const trains = create("section", "learning-subject-block");
+      trains.append(create("h4", "learning-subject-block-title", "Trains"));
+      const chips = create("div", "learning-skill-chip-row");
+      (subject.trains || []).forEach((skill) => chips.append(create("span", "learning-skill-chip", skill)));
+      trains.append(chips);
+
+      const useful = create("section", "learning-subject-block");
+      useful.append(create("h4", "learning-subject-block-title", "Stays useful in"));
+      useful.append(create("p", "learning-subject-text", subject.usefulIn || "", `learningThatStaysUseful.subjects.${subjectIndex}.usefulIn`));
+
+      const reflection = create("section", "learning-subject-block learning-subject-reflection");
+      reflection.append(create("h4", "learning-subject-block-title", "What stays with me"));
+      reflection.append(create("p", "learning-subject-text", subject.reflection || "", `learningThatStaysUseful.subjects.${subjectIndex}.reflection`));
+
+      panel.append(trains, useful, reflection);
+
+      document.querySelectorAll(".learning-carry-tag").forEach((tag) => {
+        const active = (subject.trains || []).some((skill) => skill.toLowerCase() === (tag.dataset.tag || "").toLowerCase());
+        tag.classList.toggle("is-active", active);
+      });
+
+      refreshReveal(panel);
+    };
+
+    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (options.instant || reduceMotion) {
+      updatePanel();
+      return;
+    }
+
+    panel.classList.add("is-exiting");
+    window.setTimeout(() => {
+      updatePanel();
+      panel.classList.remove("is-exiting");
+      panel.classList.add("is-entering");
+      window.setTimeout(() => panel.classList.remove("is-entering"), 420);
+    }, 120);
+  }
+
   function renderLifeEntry() {
     setText("#timelineIntro", data.lifeEntry?.intro || "", "lifeEntry.intro");
     setText("#lifeEntryTitle", data.lifeEntry?.title || "", "lifeEntry.title");
@@ -824,6 +960,8 @@
   }
 
   function focusCommitRow(commitId, { scroll = true } = {}) {
+    // The graph only exists in Repository view; switch back before locating the row.
+    if (document.body.dataset.evidenceView !== 'repository') setEvidenceView('repository');
     const row = document.querySelector(`.git-commit-row[data-commit-id="${commitId}"]`);
     if (!row) return;
     if (scroll) row.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1045,7 +1183,9 @@
     button.removeAttribute("aria-haspopup");
     button.removeAttribute("aria-controls");
     button.setAttribute("aria-label", "Open School E-Portfolio");
-    button.setAttribute("href", "School_E-Portfolio/Home.html");
+    // The React school portfolio's built entry. The old Home.html export no
+    // longer exists, which left this button pointing at a 404.
+    button.setAttribute("href", "School_E-Portfolio/dist/index.html");
     if (button.dataset.switchBound === "true") return;
     button.dataset.switchBound = "true";
 
@@ -1411,7 +1551,19 @@
   }
 
   const EVIDENCE_VIEW_KEY = 'eaePortfolioEvidenceView';
+  const GRAPH_VIEW_KEY = 'eaePortfolioGraphView';
   let evidenceGridDrawn = false;
+  let projectTimelineDrawn = false;
+
+  const EVIDENCE_ALLOWED_VIEWS = new Set(['repository', 'project-timeline', 'evidence-grid']);
+
+  // Older builds stored 'timeline' / 'projects'; map them onto the new modes so
+  // returning visitors land on the closest equivalent instead of a reset view.
+  function normalizeEvidenceView(view) {
+    if (view === 'timeline') return 'repository';
+    if (view === 'projects') return 'evidence-grid';
+    return EVIDENCE_ALLOWED_VIEWS.has(view) ? view : 'repository';
+  }
 
   // Certificates first, then projects, then hobbies — the order a reviewer reads in:
   // proof of completion, then the work itself, then the curiosity around it.
@@ -1451,32 +1603,126 @@
     setupReveal();
   }
 
+  function getProjectYear(project) {
+    const text = [
+      project.status,
+      project.date,
+      project.developmentJourney,
+      project.evidenceStatus,
+      project.title
+    ].filter(Boolean).join(' ');
+    const match = text.match(/\b(20\d{2})\b/);
+    return match ? match[1] : 'Current';
+  }
+
+  function getProjectTimelineSortValue(project) {
+    const year = getProjectYear(project);
+    return year === 'Current' ? 9999 : Number(year);
+  }
+
+  function renderProjectTimelineView() {
+    const container = $('#projectTimelineView');
+    if (!container) return;
+    container.replaceChildren();
+
+    const projects = Array.isArray(data.projects) ? data.projects : [];
+    if (!projects.length) {
+      container.append(create('p', 'git-empty-state', 'No projects available yet.'));
+      return;
+    }
+
+    const ordered = [...projects].sort((a, b) => {
+      const ay = getProjectTimelineSortValue(a);
+      const by = getProjectTimelineSortValue(b);
+      if (ay !== by) return ay - by;
+      return (a.title || '').localeCompare(b.title || '');
+    });
+
+    const header = create('div', 'project-timeline-header');
+    header.append(create('p', 'card-kicker', 'Project Timeline'));
+    header.append(create('h3', '', 'How my projects built on each other'));
+    header.append(create('p', '', 'A chronological view of the work I built, what each project trained, and what I carried forward into the next one.'));
+    container.append(header);
+
+    const timeline = create('div', 'project-timeline-track');
+
+    ordered.forEach((project, index) => {
+      const item = create('article', 'project-timeline-item reveal');
+      item.dataset.projectTitle = project.title || '';
+
+      const marker = create('div', 'project-timeline-marker');
+      marker.append(create('span', 'project-timeline-dot', String(index + 1).padStart(2, '0')));
+
+      const body = create('div', 'project-timeline-card');
+      body.append(create('p', 'card-kicker', getProjectYear(project)));
+      body.append(create('h3', '', project.title || 'Untitled project'));
+      if (project.category) body.append(create('p', 'project-timeline-category', project.category));
+      if (project.snapshotSummary || project.problem) {
+        body.append(create('p', 'project-timeline-summary', project.snapshotSummary || project.problem));
+      }
+      if (project.portfolioSignal) {
+        const signal = create('div', 'project-timeline-signal');
+        signal.append(create('span', 'evidence-band-label', 'What this shows'));
+        signal.append(create('p', '', project.portfolioSignal));
+        body.append(signal);
+      }
+      if (project.carriedForward?.lesson) {
+        const carry = create('div', 'carried-forward-callout');
+        carry.append(create('span', 'carried-forward-badge', 'Carried forward'));
+        carry.append(create('p', 'carried-forward-text', project.carriedForward.lesson));
+        body.append(carry);
+      }
+
+      const actions = create('div', 'project-timeline-actions');
+      const evidenceBtn = create('button', 'button button-secondary', 'View project evidence');
+      evidenceBtn.type = 'button';
+      evidenceBtn.addEventListener('click', () => openProjectModal(project));
+      actions.append(evidenceBtn);
+      body.append(actions);
+
+      item.append(marker, body);
+      timeline.append(item);
+    });
+
+    container.append(timeline);
+    projectTimelineDrawn = true;
+    refreshReveal(container);
+  }
+
   function setEvidenceView(view) {
     const island = $('#evidenceIsland');
     const grid = $('#evidenceGridView');
+    const projectTimeline = $('#projectTimelineView');
     // Only the graph itself swaps out. The Reflection Journal lives inside
-    // #timeline-content and must stay readable in both views.
+    // #timeline-content and must stay readable in every view. Scoped to the
+    // journey section so the Future Goals timeline never gets hidden with it.
     const graphParts = [
-      ...document.querySelectorAll('.timeline-wrap'),
+      ...document.querySelectorAll('#timeline-content .timeline-wrap'),
       $('#journeyChapters')
     ].filter(Boolean);
-    if (!island || !grid || !graphParts.length) return;
+    if (!island || !grid || !projectTimeline || !graphParts.length) return;
 
-    const isProjects = view === 'projects';
-    if (isProjects && !evidenceGridDrawn) renderEvidenceGrid();
+    const safeView = normalizeEvidenceView(view);
+    const isRepository = safeView === 'repository';
+    const isProjectTimeline = safeView === 'project-timeline';
+    const isEvidenceGrid = safeView === 'evidence-grid';
 
-    grid.hidden = !isProjects;
-    graphParts.forEach((part) => { part.hidden = isProjects; });
-    document.body.dataset.evidenceView = view;
+    if (isEvidenceGrid && !evidenceGridDrawn) renderEvidenceGrid();
+    if (isProjectTimeline && !projectTimelineDrawn) renderProjectTimelineView();
+
+    graphParts.forEach((part) => { part.hidden = !isRepository; });
+    projectTimeline.hidden = !isProjectTimeline;
+    grid.hidden = !isEvidenceGrid;
+    document.body.dataset.evidenceView = safeView;
 
     island.querySelectorAll('.evidence-island-pill').forEach((pill) => {
-      const active = pill.dataset.view === view;
+      const active = pill.dataset.view === safeView;
       pill.classList.toggle('is-active', active);
       pill.setAttribute('aria-selected', String(active));
       pill.tabIndex = active ? 0 : -1;
     });
 
-    try { localStorage.setItem(EVIDENCE_VIEW_KEY, view); } catch (error) { /* storage disabled */ }
+    try { localStorage.setItem(EVIDENCE_VIEW_KEY, safeView); } catch (error) { /* storage disabled */ }
   }
 
   // Projects, achievements, certificates and hobbies all render inside the evidence
@@ -1500,7 +1746,7 @@
       if (!LEGACY_EVIDENCE_SECTIONS.includes(id)) return;
       link.addEventListener('click', (event) => {
         event.preventDefault();
-        setEvidenceView('projects');
+        setEvidenceView(id === 'projects' ? 'project-timeline' : 'evidence-grid');
         const surface = $('#timeline');
         if (surface) surface.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
@@ -1530,9 +1776,9 @@
       pills[next].focus();
     });
 
-    let stored = 'timeline';
-    try { stored = localStorage.getItem(EVIDENCE_VIEW_KEY) || 'timeline'; } catch (error) { /* storage disabled */ }
-    setEvidenceView(stored === 'projects' ? 'projects' : 'timeline');
+    let stored = 'repository';
+    try { stored = localStorage.getItem(EVIDENCE_VIEW_KEY) || 'repository'; } catch (error) { /* storage disabled */ }
+    setEvidenceView(normalizeEvidenceView(stored));
 
     // The island exists only while the surface it controls is on screen. A direct
     // rect test rather than IntersectionObserver: one cheap read per scroll, and it
@@ -2296,6 +2542,74 @@
       ];
     }
 
+    // SHA-like ids and diff stats below are symbolic portfolio metadata derived
+    // deterministically from each commit id — not a real Git history. The commit
+    // details modal states this explicitly so reviewers are never misled.
+    function pseudoSha(input) {
+      let hash = 0;
+      const text = String(input || 'commit');
+      for (let i = 0; i < text.length; i += 1) {
+        hash = ((hash << 5) - hash) + text.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash).toString(16).padStart(7, '0').slice(0, 7);
+    }
+
+    function buildPortfolioChangedFiles(commit) {
+      const files = [];
+      if (commit.linkedProject) {
+        files.push({
+          path: 'data.js',
+          status: 'modified',
+          note: `Linked project evidence: ${commit.linkedProject}`
+        });
+        files.push({
+          path: 'images/projects/',
+          status: 'added',
+          note: 'Project media or supporting visual evidence'
+        });
+      }
+      if (commit.linkedAchievement) {
+        files.push({
+          path: 'data.js',
+          status: 'modified',
+          note: `Linked achievement evidence: ${commit.linkedAchievement}`
+        });
+        files.push({
+          path: 'images/certificates/',
+          status: 'added',
+          note: 'Certificate or proof asset'
+        });
+      }
+      if (!files.length) {
+        files.push({
+          path: 'portfolio-story.md',
+          status: 'modified',
+          note: 'Narrative milestone update'
+        });
+      }
+      return files;
+    }
+
+    function enrichLearningCommit(commit) {
+      const sha = commit.sha || pseudoSha(`${commit.id}-${commit.title}-${commit.order}`);
+      const statsSeed = parseInt(sha.slice(0, 3), 16) || 100;
+      return {
+        author: 'Jaron Chew',
+        sha,
+        shortSha: sha.slice(0, 7),
+        refs: [
+          commit.branch ? `branch:${commit.branch}` : '',
+          commit.type === 'milestone' ? 'tag:eae-direction' : ''
+        ].filter(Boolean),
+        filesChanged: Math.max(1, statsSeed % 9),
+        additions: Math.max(8, statsSeed % 320),
+        deletions: statsSeed % 60,
+        changedFiles: buildPortfolioChangedFiles(commit),
+        ...commit
+      };
+    }
+
     function buildLearningRepositoryState() {
       const repo = ensureLearningRepositoryBase();
 
@@ -2326,6 +2640,7 @@
 
       repo.commits = Array.from(byId.values())
         .filter((commit) => commit && commit.visible !== false)
+        .map(enrichLearningCommit)
         .sort((a, b) => Number(a.order || 0) - Number(b.order || 0));
 
       return repo;
@@ -2385,8 +2700,9 @@
       return el;
     }
 
-    // Rounded-elbow connector: the shape `git log --graph` draws when a commit changes
-    // lane — straight down the parent's lane, then a quarter turn into the child's.
+    // Rounded-elbow connector: straight down the parent's lane, a rounded corner,
+    // then straight across into the child's lane — the presentation-friendly
+    // "subway map" shape, not a sweeping curve.
     function connectorPath(from, to) {
       if (from.x === to.x) return `M ${from.x} ${from.y} L ${to.x} ${to.y}`;
       const dir = to.x > from.x ? 1 : -1;
@@ -2433,45 +2749,70 @@
         });
       });
 
-      // 1. Edges first, so nodes sit on top of them.
+      // 1. Edges first, so nodes sit on top of them. Each edge carries the id of
+      // the commit it arrives at plus its row index, for hover focus and the
+      // staggered draw-in animation.
       graph.rows.forEach((row) => {
         const to = nodeFor.get(row.commit.id);
         if (!to) return;
         const parent = row.parent && nodeFor.get(row.parent.id);
         if (parent) {
+          const color = graph.colorFor(row.commit.branch);
           layer.append(createSvgElement('path', {
             class: 'git-parent-line',
             d: connectorPath(parent, to),
-            stroke: graph.colorFor(row.commit.branch)
+            stroke: color,
+            'data-commit': row.commit.id,
+            'data-row': row.rowIndex,
+            style: `color:${color}`
           }));
         }
         row.mergeParents.forEach((mergeParent) => {
           const from = nodeFor.get(mergeParent.id);
           if (!from) return;
+          const color = graph.colorFor(mergeParent.branch);
           layer.append(createSvgElement('path', {
             class: 'git-merge-line',
             d: connectorPath(from, to),
-            stroke: graph.colorFor(mergeParent.branch)
+            stroke: color,
+            'data-commit': row.commit.id,
+            'data-row': row.rowIndex,
+            style: `color:${color}`
           }));
         });
       });
 
-      // 2. Commit nodes.
+      // 2. Commit nodes. Standard commits are solid glowing dots; merge commits
+      // render as a hollow ring with a solid core so they read differently at a
+      // glance, the way premium Git GUIs draw them.
       graph.rows.forEach((row) => {
         const point = nodeFor.get(row.commit.id);
         if (!point) return;
         const color = graph.colorFor(row.commit.branch);
         layer.append(createSvgElement('circle', {
-          class: 'git-commit-node-ring', cx: point.x, cy: point.y, r: nodeRadius + 5, stroke: color
+          class: 'git-commit-node-ring', cx: point.x, cy: point.y, r: nodeRadius + 5, stroke: color,
+          'data-commit': row.commit.id, 'data-row': row.rowIndex, style: `color:${color}`
         }));
-        layer.append(createSvgElement('circle', {
-          class: 'git-commit-node',
-          cx: point.x,
-          cy: point.y,
-          r: row.isMerge ? nodeRadius + 1 : nodeRadius,
-          fill: color,
-          style: `color:${color}`
-        }));
+        if (row.isMerge) {
+          layer.append(createSvgElement('circle', {
+            class: 'git-commit-node git-merge-node',
+            cx: point.x, cy: point.y, r: nodeRadius + 1.5,
+            'data-commit': row.commit.id, 'data-row': row.rowIndex, style: `color:${color}`
+          }));
+          layer.append(createSvgElement('circle', {
+            class: 'git-commit-node git-merge-node-core',
+            cx: point.x, cy: point.y, r: Math.max(2.2, nodeRadius - 2.4),
+            fill: color,
+            'data-commit': row.commit.id, 'data-row': row.rowIndex, style: `color:${color}`
+          }));
+        } else {
+          layer.append(createSvgElement('circle', {
+            class: 'git-commit-node',
+            cx: point.x, cy: point.y, r: nodeRadius,
+            fill: color,
+            'data-commit': row.commit.id, 'data-row': row.rowIndex, style: `color:${color}`
+          }));
+        }
       });
 
       // 3. Tag diamonds for the chapters that annotate a commit, like `--decorate`.
@@ -2486,6 +2827,8 @@
           class: 'git-tag-marker',
           d: `M ${x} ${point.y - size} L ${x + size} ${point.y} L ${x} ${point.y + size} L ${x - size} ${point.y} Z`,
           fill: color,
+          'data-commit': commitId,
+          'data-row': row?.rowIndex,
           style: `color:${color}`
         }));
       });
@@ -2511,6 +2854,126 @@
         text.textContent = name;
         layer.append(text);
       });
+
+      setupGraphDrawAnimation(container, layer, body);
+      if (container.__graphFocusId) applyGraphFocus(container, container.__graphFocusId);
+    }
+
+    // Presentation draw-in: branch lines sketch themselves top-to-bottom the first
+    // time the graph scrolls into view (stroke-dasharray/-dashoffset), and nodes
+    // pop in as the line reaches their row. Runs once per page load; repaints
+    // afterwards render the finished state so resizes never re-trigger it.
+    function setupGraphDrawAnimation(container, layer, body) {
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion || container.__graphDrawDone) return;
+
+      const paths = Array.from(layer.querySelectorAll('.git-parent-line, .git-merge-line'));
+      const nodes = Array.from(layer.querySelectorAll('.git-commit-node, .git-commit-node-ring, .git-tag-marker, .git-branch-label'));
+      if (!paths.length && !nodes.length) return;
+
+      const STEP = 110; // ms of stagger per graph row
+
+      paths.forEach((path) => {
+        const length = path.getTotalLength();
+        path.style.strokeDasharray = `${length}`;
+        path.style.strokeDashoffset = `${length}`;
+        path.style.transition = 'none';
+      });
+      nodes.forEach((node) => node.classList.add('git-node-pending'));
+
+      // Re-queries the layer at fire time: a repaint between arming and firing
+      // replaces every path/node, so a captured list would animate dead elements
+      // and leave the live graph invisible.
+      const run = () => {
+        if (container.__graphDrawDone) return;
+        container.__graphDrawDone = true;
+        const liveLayer = container.querySelector('.git-graph-layer');
+        if (!liveLayer) return;
+        const livePaths = Array.from(liveLayer.querySelectorAll('.git-parent-line, .git-merge-line'));
+        const liveNodes = Array.from(liveLayer.querySelectorAll('.git-commit-node, .git-commit-node-ring, .git-tag-marker, .git-branch-label'));
+
+        let longest = 0;
+        livePaths.forEach((path) => {
+          const delay = Number(path.dataset.row || 0) * STEP;
+          longest = Math.max(longest, delay + 900);
+          path.style.transition = `stroke-dashoffset 900ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`;
+          path.style.strokeDashoffset = '0';
+        });
+        liveNodes.forEach((node) => {
+          const delay = Number(node.dataset.row || 0) * STEP + 260;
+          longest = Math.max(longest, delay + 500);
+          node.style.transitionDelay = `${delay}ms`;
+          node.classList.add('git-node-arrived');
+        });
+        // Once drawn, clear the inline helpers: merge lines get their CSS dash
+        // pattern back and hover styles stop being shadowed by inline values.
+        window.setTimeout(() => {
+          livePaths.forEach((path) => {
+            path.style.strokeDasharray = '';
+            path.style.strokeDashoffset = '';
+            path.style.transition = '';
+          });
+          liveNodes.forEach((node) => {
+            node.style.transitionDelay = '';
+            node.classList.remove('git-node-pending', 'git-node-arrived');
+          });
+        }, longest + 250);
+      };
+
+      // Arm exactly once. Repaints (fonts, resize, view switches) used to
+      // disconnect and re-create the observer, which could destroy it before it
+      // ever fired and strand the graph at stroke-dashoffset/scale(0).
+      if (container.__graphDrawArmed) return;
+      container.__graphDrawArmed = true;
+
+      if (!('IntersectionObserver' in window)) { run(); return; }
+      const observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          run();
+        }
+      }, { threshold: 0.12 });
+      observer.observe(body);
+      // Failsafe: the graph must never stay invisible in a live presentation,
+      // whatever the observer does.
+      window.setTimeout(run, 2500);
+    }
+
+    // Hover isolation: light up the hovered commit's node and the lines arriving
+    // at it, dim every unrelated branch path, and echo the focus on the cards.
+    function applyGraphFocus(container, commitId) {
+      const layer = container?.querySelector('.git-graph-layer');
+      const body = container?.querySelector('.git-repo-body');
+      if (!layer || !body) return;
+      container.__graphFocusId = commitId || null;
+
+      layer.classList.toggle('has-focus', Boolean(commitId));
+      body.classList.toggle('has-focus', Boolean(commitId));
+
+      layer.querySelectorAll('.is-focus').forEach((el) => el.classList.remove('is-focus'));
+      body.querySelectorAll('.git-commit-row.is-focus').forEach((el) => el.classList.remove('is-focus'));
+      if (!commitId) return;
+
+      layer.querySelectorAll(`[data-commit="${commitId}"]`).forEach((el) => el.classList.add('is-focus'));
+      const row = body.querySelector(`.git-commit-row[data-commit-id="${commitId}"]`);
+      if (row) row.classList.add('is-focus');
+    }
+
+    function setGraphViewMode(container, mode) {
+      const safeMode = mode === 'gallery' ? 'gallery' : 'timeline';
+      container.dataset.graphView = safeMode;
+
+      container.querySelectorAll('.git-view-toggle-btn').forEach((btn) => {
+        const active = btn.dataset.graphViewMode === safeMode;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-pressed', String(active));
+      });
+
+      try { localStorage.setItem(GRAPH_VIEW_KEY, safeMode); } catch (error) { /* storage disabled */ }
+
+      // Card rows reflow between the two layouts (graph rail vs. plain grid), so
+      // node/line coordinates only make sense once Timeline is visible again.
+      if (safeMode === 'timeline') scheduleGraphPaint(container);
     }
 
     function scheduleGraphPaint(container) {
@@ -2541,17 +3004,99 @@
       if (commit.linkedProject) {
         const project = (data.projects || []).find((item) => item.title === commit.linkedProject);
         if (project) {
-          const link = create('a', 'button button-secondary git-commit-action', 'View project');
-          link.href = '#projects';
-          link.addEventListener('click', (event) => {
-            event.preventDefault();
-            const target = document.getElementById('projects');
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          });
-          return link;
+          // The legacy #projects section is folded into the evidence surface, so
+          // scrolling there lands on a zero-height node. Open the modal instead.
+          const btn = create('button', 'button button-secondary git-commit-action', 'View project');
+          btn.type = 'button';
+          btn.addEventListener('click', () => openProjectModal(project));
+          return btn;
         }
       }
       return null;
+    }
+
+    function openCommitDetailsModal(commit, repo) {
+      const dialog = $(SELECTORS.achievementModal);
+      const content = $(SELECTORS.modalContent);
+      if (!dialog || !content || !commit) return;
+
+      dialog.classList.remove('modal-school-portfolio');
+      dialog.classList.add('modal-wide');
+      const closeButton = dialog.querySelector('.modal-close');
+      if (closeButton) closeButton.setAttribute('aria-label', 'Close commit details');
+      content.replaceChildren();
+
+      const branch = (repo.branches || []).find((item) => item.id === commit.branch);
+
+      const header = create('div', 'modal-header git-commit-detail-header');
+      header.append(create('p', 'card-kicker', `commit ${commit.shortSha || commit.sha || commit.id}`));
+      header.append(create('h2', '', commit.title || 'Commit details'));
+      header.append(create('p', 'git-commit-message', commit.message || 'chore: updated learning record'));
+      if (commit.summary) header.append(create('p', 'modal-summary', commit.summary));
+
+      const meta = create('dl', 'git-commit-detail-meta');
+      const addMeta = (label, value) => {
+        if (!value || (Array.isArray(value) && !value.length)) return;
+        const row = create('div', 'git-commit-detail-row');
+        row.append(create('dt', '', label));
+        row.append(create('dd', '', Array.isArray(value) ? value.join(', ') : String(value)));
+        meta.append(row);
+      };
+
+      addMeta('SHA', commit.sha || commit.id);
+      addMeta('Author', commit.author || 'Jaron Chew');
+      addMeta('Email', commit.email || data.profile?.contact?.email);
+      addMeta('Date', commit.date);
+      addMeta('Branch', branch?.label || commit.branch);
+      addMeta('Type', commit.type);
+      addMeta('Refs', commit.refs);
+      addMeta('Parent', commit.parent);
+      addMeta('Merge parents', commit.mergeParents);
+
+      const stats = create('div', 'git-commit-stats');
+      stats.append(create('span', 'git-stat-chip', `${commit.filesChanged || 0} files changed`));
+      stats.append(create('span', 'git-stat-chip git-stat-add', `+${commit.additions || 0}`));
+      stats.append(create('span', 'git-stat-chip git-stat-del', `-${commit.deletions || 0}`));
+
+      const filesSection = create('section', 'git-changed-files');
+      filesSection.append(create('h3', '', 'Changed files'));
+      const fileList = create('div', 'git-file-list');
+      const files = Array.isArray(commit.changedFiles) ? commit.changedFiles : [];
+
+      if (!files.length) {
+        fileList.append(create('p', 'git-empty-state', 'No changed file details added for this learning commit yet.'));
+      } else {
+        files.forEach((file) => {
+          const item = create('article', 'git-file-row');
+          item.dataset.status = file.status || 'modified';
+          const top = create('div', 'git-file-row-top');
+          top.append(create('span', 'git-file-status', file.status || 'modified'));
+          top.append(create('code', 'git-file-path', file.path || 'unknown-file'));
+          if (file.additions != null || file.deletions != null) {
+            top.append(create('span', 'git-file-diffstat', `+${file.additions || 0} -${file.deletions || 0}`));
+          }
+          item.append(top);
+          if (file.note || file.summary) item.append(create('p', 'git-file-summary', file.note || file.summary));
+          fileList.append(item);
+        });
+      }
+      filesSection.append(fileList);
+
+      const disclaimer = create('p', 'git-symbolic-note', 'This is a symbolic learning-repository view: SHAs, stats, and file paths represent portfolio evidence, not a real Git history.');
+
+      const actions = create('div', 'git-commit-detail-actions');
+      const copySha = create('button', 'button button-secondary', 'Copy SHA');
+      copySha.type = 'button';
+      copySha.addEventListener('click', () => {
+        navigator.clipboard?.writeText(commit.sha || commit.id);
+        showEditorToast('Commit SHA copied');
+      });
+      actions.append(copySha);
+      const linkedAction = createLinkedCommitAction(commit);
+      if (linkedAction) actions.append(linkedAction);
+
+      content.append(header, meta, stats, filesSection, disclaimer, actions);
+      openModalDialog(dialog);
     }
 
     function createGitCommitCard(commit, repo, tagLabel, colorFor) {
@@ -2582,6 +3127,10 @@
         meta.append(create('span', 'git-commit-date', commit.date));
       }
 
+      if (commit.shortSha || commit.sha) {
+        meta.append(create('span', 'git-commit-sha', commit.shortSha || commit.sha));
+      }
+
       card.append(meta);
       card.append(create('h3', '', commit.title || 'Untitled commit'));
       card.append(create('p', 'git-commit-message', commit.message || 'chore: updated learning record'));
@@ -2597,6 +3146,11 @@
 
       const action = createLinkedCommitAction(commit);
       if (action) card.append(action);
+
+      const detailsBtn = create('button', 'button button-secondary git-commit-action', 'View commit details');
+      detailsBtn.type = 'button';
+      detailsBtn.addEventListener('click', () => openCommitDetailsModal(commit, repo));
+      card.append(detailsBtn);
 
       return card;
     }
@@ -2656,12 +3210,33 @@
       container.replaceChildren();
       container.__learningGraph = { rows, laneMap, colorFor, tagAnchors };
 
+      let storedGraphView = 'timeline';
+      try { storedGraphView = localStorage.getItem(GRAPH_VIEW_KEY) || 'timeline'; } catch (error) { /* storage disabled */ }
+      container.dataset.graphView = storedGraphView === 'gallery' ? 'gallery' : 'timeline';
+
       const toolbar = create('div', 'git-repo-toolbar');
       const titleWrap = create('div', 'git-repo-title-wrap');
       titleWrap.append(create('span', 'git-repo-title', repo.title || 'Learning Repository'));
       titleWrap.append(create('span', 'git-repo-subtitle', repo.intro || 'A Git-style learning history'));
       const count = create('span', 'git-repo-count', `${commits.length} commits`);
-      toolbar.append(titleWrap, count);
+
+      // Timeline shows the branch graph with connector lines; Gallery drops the
+      // graph for a plain responsive card grid — useful for a dense recap slide.
+      const graphViewToggle = create('div', 'git-view-toggle');
+      graphViewToggle.setAttribute('role', 'group');
+      graphViewToggle.setAttribute('aria-label', 'Graph display mode');
+      [['timeline', 'Timeline'], ['gallery', 'Gallery']].forEach(([mode, label]) => {
+        const btn = create('button', 'git-view-toggle-btn', label);
+        btn.type = 'button';
+        btn.dataset.graphViewMode = mode;
+        const active = container.dataset.graphView === mode;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-pressed', String(active));
+        btn.addEventListener('click', () => setGraphViewMode(container, mode));
+        graphViewToggle.append(btn);
+      });
+
+      toolbar.append(titleWrap, graphViewToggle, count);
       container.append(toolbar);
 
       const branchLegend = create('div', 'git-branch-legend');
@@ -2675,6 +3250,15 @@
       const body = create('div', 'git-repo-body');
       const layer = createSvgElement('svg', { class: 'git-graph-layer', 'aria-hidden': 'true', focusable: 'false' });
       body.append(layer);
+
+      // Hover isolation: focus follows the pointer from card to card; leaving the
+      // graph area clears it. Delegated so repaints never duplicate listeners.
+      body.addEventListener('mouseover', (event) => {
+        const rowEl = event.target.closest('.git-commit-row');
+        const id = rowEl ? rowEl.dataset.commitId : null;
+        if (id !== container.__graphFocusId) applyGraphFocus(container, id);
+      });
+      body.addEventListener('mouseleave', () => applyGraphFocus(container, null));
 
       rows.forEach((row) => {
         const rowEl = create('div', 'git-commit-row');
@@ -3864,6 +4448,58 @@
     return detail;
   }
 
+  function openProjectModal(project) {
+    const dialog = $(SELECTORS.achievementModal);
+    const content = $(SELECTORS.modalContent);
+    if (!dialog || !content || !project) return;
+
+    dialog.classList.remove("modal-school-portfolio");
+    dialog.classList.add("modal-wide");
+    const closeButton = dialog.querySelector(".modal-close");
+    if (closeButton) closeButton.setAttribute("aria-label", "Close project details");
+    content.replaceChildren();
+
+    const header = create("div", "modal-header");
+    header.append(create("p", "card-kicker", project.category || "Project"));
+    header.append(create("h2", "", project.title || "Project details"));
+    if (project.status) header.append(create("p", "date-line", project.status));
+    if (project.snapshotSummary || project.problem) {
+      header.append(create("p", "modal-summary", project.snapshotSummary || project.problem));
+    }
+
+    const media = create("div", "modal-media-grid");
+    const images = [];
+    if (project.image) images.push(project.image);
+    (Array.isArray(project.images) ? project.images : []).forEach((src) => {
+      if (src && !images.includes(src)) images.push(src);
+    });
+    images.slice(0, 3).forEach((src, index) => {
+      media.append(createMediaBlock(src, `${project.title} image ${index + 1}`, "Project image unavailable"));
+    });
+    if (project.optionalVideo) media.append(createMediaBlock(project.optionalVideo, `${project.title} video demo`, "Project video unavailable"));
+    if (project.spreadsheet) media.append(createMediaBlock(project.spreadsheet, `${project.title} spreadsheet`, "Spreadsheet unavailable"));
+
+    const details = create("div", "modal-detail-grid");
+    [
+      ["Problem", project.problem],
+      ["Proposed solution", project.proposedSolution],
+      ["My role", project.myRole],
+      ["Technologies used", project.technologiesUsed],
+      ["Development journey", project.developmentJourney],
+      ["Outcome", project.outcome],
+      ["Lessons learned", project.lessonsLearned],
+      ["EAE connection", project.eaeConnection]
+    ].forEach(([label, value]) => {
+      if (!value) return;
+      details.append(createDetail(label, Array.isArray(value) ? value.join(", ") : value));
+    });
+
+    if (media.children.length) content.append(header, media, details);
+    else content.append(header, details);
+
+    openModalDialog(dialog);
+  }
+
   function renderGoals() {
     renderGoalList("#shortTermGoals", data.futureGoals?.shortTerm || []);
     renderGoalList("#longTermGoals", data.futureGoals?.longTerm || []);
@@ -4497,7 +5133,7 @@
   }
 
   function applySectionOrder() {
-    const order = data.sectionOrder || ["about", "philosophy", "why-cybersecurity", "timeline", "reflections", "projects", "achievements", "hobbies", "applications", "goals"];
+    const order = data.sectionOrder || ["about", "philosophy", "why-cybersecurity", "learning-useful", "timeline", "reflections", "projects", "achievements", "hobbies", "applications", "goals"];
     const main = $("#main");
     if (!main) return;
     // Only top-level sections take part in ordering — nested ones (Reflection Journal
@@ -4582,14 +5218,95 @@
     }, 2000);
   }
 
+  function isAdminAuthenticated() {
+    try {
+      return localStorage.getItem(ADMIN_AUTH_KEY) === "true";
+    } catch (error) {
+      return false;
+    }
+  }
+
   function validateAdminToken() {
     const params = new URLSearchParams(window.location.search);
-    const adminParam = params.get("admin");
-    if (adminParam === "1" || adminParam === "true") {
-      localStorage.setItem("eae_admin_authenticated", "true");
-      return true;
+    const wantsAdmin = params.get("admin") === "1" || params.get("admin") === "true";
+
+    if (isAdminAuthenticated()) return true;
+
+    if (wantsAdmin) {
+      showAdminPinPrompt();
     }
-    return localStorage.getItem("eae_admin_authenticated") === "true";
+
+    return false;
+  }
+
+  function showAdminPinPrompt() {
+    if (document.getElementById("adminPinOverlay")) return;
+
+    const overlay = create("div", "admin-pin-overlay");
+    overlay.id = "adminPinOverlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-labelledby", "adminPinTitle");
+
+    const card = create("div", "admin-pin-card");
+
+    const title = create("h2", "", "Enter Editor PIN");
+    title.id = "adminPinTitle";
+
+    const desc = create("p", "", "Enter the 4-digit PIN to unlock the portfolio editor on this device.");
+
+    const input = document.createElement("input");
+    input.type = "password";
+    input.inputMode = "numeric";
+    input.pattern = "[0-9]*";
+    input.maxLength = 4;
+    input.className = "admin-pin-input";
+    input.setAttribute("aria-label", "4-digit admin PIN");
+    input.placeholder = "••••";
+
+    const error = create("p", "admin-pin-error");
+    error.setAttribute("aria-live", "polite");
+
+    const actions = create("div", "admin-pin-actions");
+
+    const unlock = create("button", "button button-primary", "Unlock editor");
+    unlock.type = "button";
+
+    const cancel = create("button", "button button-secondary", "Cancel");
+    cancel.type = "button";
+
+    function tryUnlock() {
+      if (input.value === ADMIN_PIN) {
+        try {
+          localStorage.setItem(ADMIN_AUTH_KEY, "true");
+        } catch (storageError) { /* storage disabled */ }
+        overlay.remove();
+        initializeEditorModules();
+        setupLiveEditor();
+        showEditorToast("Editor unlocked");
+      } else {
+        error.textContent = "Incorrect PIN. Try again.";
+        input.value = "";
+        input.focus();
+      }
+    }
+
+    unlock.addEventListener("click", tryUnlock);
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        tryUnlock();
+      }
+      if (event.key === "Escape") overlay.remove();
+    });
+    cancel.addEventListener("click", () => overlay.remove());
+
+    actions.append(unlock, cancel);
+    card.append(title, desc, input, error, actions);
+    overlay.append(card);
+    document.body.append(overlay);
+
+    setTimeout(() => input.focus(), 0);
   }
 
   function showEditorToast(message) {
@@ -4686,6 +5403,31 @@
     quickNavGroup.append(quickJumpRow);
     content.append(quickNavGroup);
 
+    // Visibility: Reflection Journal ("Growth") — lets the presenter fold the
+    // journal away without deleting content. Persists through export/save via
+    // data.sectionVisibility, the same mechanism the other sections use.
+    const reflectionVisGroup = create("div", "editor-control-group");
+    reflectionVisGroup.append(create("h4", "", "Section visibility"));
+    const reflectionSwitch = create("label", "switch-container");
+    reflectionSwitch.append(create("span", "", "Show Reflection Journal"));
+    const reflectionInput = document.createElement("input");
+    reflectionInput.type = "checkbox";
+    reflectionInput.id = "reflectionVisibilityToggle";
+    data.sectionVisibility = data.sectionVisibility || {};
+    reflectionInput.checked = !data.sectionVisibility.reflections;
+    reflectionSwitch.append(reflectionInput, create("span", "switch-slider"));
+    reflectionVisGroup.append(reflectionSwitch);
+    reflectionVisGroup.append(create("p", "control-description", "Hide or show the Reflection Journal (Growth) section. Export or save data.js to keep the setting."));
+    reflectionInput.addEventListener("change", () => {
+      data.sectionVisibility = data.sectionVisibility || {};
+      if (reflectionInput.checked) delete data.sectionVisibility.reflections;
+      else data.sectionVisibility.reflections = true;
+      applySectionVisibility();
+      renderNav();
+      showEditorToast(reflectionInput.checked ? "Reflection Journal shown" : "Reflection Journal hidden");
+    });
+    content.append(reflectionVisGroup);
+
     // A labelled on/off switch. Both editing modes are built from this so the
     // markup contract (.switch-container / .switch-slider) stays identical.
     function buildSwitch(id, label, description) {
@@ -4729,6 +5471,22 @@
     exportBtn.style.width = "100%";
     exportBtn.style.marginTop = "12px";
     actions.append(exportBtn);
+
+    const lockEditorBtn = create("button", "button button-secondary", "Lock editor");
+    lockEditorBtn.type = "button";
+    lockEditorBtn.style.width = "100%";
+    lockEditorBtn.style.marginTop = "12px";
+    lockEditorBtn.addEventListener("click", () => {
+      try {
+        localStorage.removeItem(ADMIN_AUTH_KEY);
+      } catch (error) { /* storage disabled */ }
+      document.body.classList.remove("admin-mode", "live-editing-active");
+      document.querySelector(".live-editor-sidebar")?.remove();
+      document.querySelector(".live-editor-fab")?.remove();
+      document.querySelector(".live-editor-close-fab")?.remove();
+      showEditorToast("Editor locked");
+    });
+    actions.append(lockEditorBtn);
 
     // Templates / Insert Section
     const templatesGroup = create('div', 'editor-control-group');
@@ -5539,6 +6297,7 @@
     renderHero();
     renderPhilosophy();
     renderWhyCybersecurity();
+    renderLearningUseful();
     renderLifeEntry();
     renderJourneyChapters();
     renderProjects();

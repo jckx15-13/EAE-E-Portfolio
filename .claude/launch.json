@@ -6,8 +6,7 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["server.js"],
       "port": 3000,
-      "url": "http://localhost:3000",
-      "autoPort": false
+      "autoPort": true
     }
   ]
 }

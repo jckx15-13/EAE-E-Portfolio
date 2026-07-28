@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT || process.argv[2] || 3000);
 const PUBLIC_DIR = __dirname;
 
 const MIME_TYPES = {
@@ -66,12 +66,14 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Admin Token Endpoint
+  // Admin entry hint endpoint.
+  // Admin mode is protected client-side by a local 4-digit PIN.
+  // This endpoint must not expose secrets.
   if (req.method === 'GET' && req.url === '/admin-token') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
-      token: "eae_sec_98f2a1b4",
-      url: `http://localhost:${PORT}/index.html?admin=1&token=eae_sec_98f2a1b4`
+      message: "Admin mode uses a local 4-digit PIN.",
+      url: `http://localhost:${PORT}/index.html?admin=1`
     }));
     return;
   }
@@ -102,6 +104,22 @@ const server = http.createServer((req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
+      // SPA fallback: deep links into the React school portfolio (BrowserRouter
+      // routes like /School_E-Portfolio/dist/cca) resolve to its entry file so
+      // the client-side router can take over.
+      if (urlPath.startsWith('/School_E-Portfolio/dist/')) {
+        const spaEntry = path.join(PUBLIC_DIR, 'School_E-Portfolio', 'dist', 'index.html');
+        fs.stat(spaEntry, (entryErr, entryStats) => {
+          if (entryErr || !entryStats.isFile()) {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Not Found');
+            return;
+          }
+          res.writeHead(200, { 'Content-Type': 'text/html', 'Cache-Control': 'no-cache' });
+          fs.createReadStream(spaEntry).pipe(res);
+        });
+        return;
+      }
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end('Not Found');
       return;
@@ -110,7 +128,9 @@ const server = http.createServer((req, res) => {
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-    res.writeHead(200, { 'Content-Type': contentType });
+    // no-cache forces revalidation so edited script.js/data.js never go stale in
+    // an open tab (the server previously sent no caching headers at all).
+    res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': 'no-cache' });
     fs.createReadStream(filePath).pipe(res);
   });
 });
