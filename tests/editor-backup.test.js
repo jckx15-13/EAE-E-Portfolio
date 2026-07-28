@@ -42,9 +42,23 @@ function testPruneOldBackups() {
   console.log('✓ Prune backups test passed');
 }
 
+// Test listener unsubscribe
+function testListenerUnsubscribe() {
+  const backup = new EditorBackup();
+  let callCount = 0;
+  const unsub = backup.onBackupEvent(() => callCount++);
+  backup.createSnapshot({ data: 'test1' });
+  console.assert(callCount === 1, 'Should fire once');
+  unsub();
+  backup.createSnapshot({ data: 'test2' });
+  console.assert(callCount === 1, 'Should not fire after unsubscribe');
+  console.log('✓ Listener unsubscribe test passed');
+}
+
 // Run tests
 testCreateBackup();
 testRestoreBackup();
 testPruneOldBackups();
+testListenerUnsubscribe();
 // testAutoBackup() - async test, skip in sync suite
 console.log('✅ All EditorBackup tests passed');

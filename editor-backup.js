@@ -4,12 +4,23 @@
  */
 class EditorBackup {
   constructor(autoBackupIntervalMs = null, maxSnapshots = 20) {
+    // Validate parameters
+    if (autoBackupIntervalMs !== null && autoBackupIntervalMs <= 0) {
+      throw new Error('autoBackupIntervalMs must be positive or null');
+    }
+    if (maxSnapshots < 1) {
+      throw new Error('maxSnapshots must be >= 1');
+    }
+
     this.snapshots = [];
     this.maxSnapshots = maxSnapshots;
     this.autoBackupIntervalMs = autoBackupIntervalMs;
     this.autoBackupTimer = null;
     this.autoBackupFn = null;
     this.listeners = [];
+
+    // Load persisted snapshots to prevent data loss
+    this.loadPersistedSnapshots();
   }
 
   /**
@@ -61,7 +72,8 @@ class EditorBackup {
         this.snapshots.push(snapshot);
 
         if (this.snapshots.length > this.maxSnapshots) {
-          this.snapshots.shift();
+          const removed = this.snapshots.shift();
+          this.notifyListeners('snapshotPruned', { id: removed.id });
         }
 
         this.persistSnapshots();
@@ -83,6 +95,7 @@ class EditorBackup {
     if (this.autoBackupTimer) {
       clearInterval(this.autoBackupTimer);
       this.autoBackupTimer = null;
+      this.notifyListeners('autoBackupStopped', {});
       console.log('Auto-backup stopped');
     }
   }
@@ -147,6 +160,7 @@ class EditorBackup {
    */
   exportBackups() {
     return {
+      version: 1,
       exported: new Date().toISOString(),
       count: this.snapshots.length,
       snapshots: this.snapshots
@@ -172,8 +186,12 @@ class EditorBackup {
 
   /**
    * Persist snapshots to localStorage
+   * @returns {boolean} True if persisted successfully, false otherwise
    */
   persistSnapshots() {
+    if (typeof localStorage === 'undefined') {
+      return false;
+    }
     try {
       const backupData = {
         version: 1,
@@ -181,9 +199,10 @@ class EditorBackup {
         snapshots: this.snapshots
       };
       localStorage.setItem('eaeEditorBackups', JSON.stringify(backupData));
+      return true;
     } catch (error) {
-      console.warn('Could not persist backups to localStorage:', error);
-      // This is non-critical; continue anyway
+      console.warn('Could not persist backups:', error);
+      return false;
     }
   }
 
@@ -191,6 +210,9 @@ class EditorBackup {
    * Load persisted snapshots from localStorage
    */
   loadPersistedSnapshots() {
+    if (typeof localStorage === 'undefined') {
+      return;
+    }
     try {
       const stored = localStorage.getItem('eaeEditorBackups');
       if (stored) {
@@ -218,9 +240,13 @@ class EditorBackup {
 
   /**
    * Subscribe to backup events
+   * @returns {function} Unsubscribe function to remove the listener
    */
   onBackupEvent(callback) {
     this.listeners.push(callback);
+    return () => {
+      this.listeners = this.listeners.filter(cb => cb !== callback);
+    };
   }
 
   notifyListeners(eventType, payload) {
