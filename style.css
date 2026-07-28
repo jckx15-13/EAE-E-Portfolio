@@ -1635,21 +1635,21 @@ body[data-theme="light"] .section-astral-6 {
   bottom: var(--a11y-control-bottom);
   width: var(--a11y-control-width);
   height: var(--a11y-control-height);
-  z-index: var(--z-a11y-fab); /* Unified open/close position, elevated above drawer */
+  z-index: var(--z-a11y-fab);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 0 var(--space-md);
   border-radius: 30px;
-  background: rgba(13, 22, 40, 0.78);
+  background: var(--theme-card-bg);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(56, 189, 248, 0.4);
+  border: 1px solid var(--theme-card-border);
   color: var(--theme-text-primary);
   font-weight: 700;
   font-size: 0.88rem;
-  box-shadow: 0 8px 24px rgba(3, 8, 18, 0.45);
+  box-shadow: var(--theme-card-shadow);
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
   cursor: pointer;
 }
@@ -2180,15 +2180,15 @@ body[data-theme="light"] .section-astral-6 {
 }
 
 [data-theme="light"] .school-portfolio-oval-btn {
-  background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
   border-color: #d97706 !important;
-  color: #fbbf24 !important;
+  color: #1f2937 !important;
   box-shadow: 0 4px 14px rgba(217, 119, 6, 0.28);
 }
 
 [data-theme="light"] .school-portfolio-oval-btn:hover {
   background: linear-gradient(135deg, #d97706, #b45309) !important;
-  color: #ffffff !important;
+  color: #1f2937 !important;
   border-color: #d97706 !important;
 }
 
