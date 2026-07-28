@@ -3,6 +3,17 @@
  * Ensures atomic operations with validation, logging, and automatic rollback on failure
  */
 class EditorOperation {
+  /**
+   * Create an editor operation
+   * @param {EditorState} editorState - State manager instance
+   * @param {string} operationName - Human-readable operation name
+   * @param {Function} changeFn - Must be PURE (no side effects).
+   *   Called during validation and execution. Any side effects
+   *   will be executed multiple times. Unsafe for DOM mutations,
+   *   global state changes, or I/O operations.
+   * @param {EditorValidator} validator - Optional validator for pre-save checks
+   * @param {EditorErrorHandler} errorHandler - Optional error logger
+   */
   constructor(editorState, operationName, changeFn, validator = null, errorHandler = null) {
     this.editorState = editorState;
     this.operationName = operationName;
@@ -53,8 +64,8 @@ class EditorOperation {
       };
 
     } catch (error) {
-      // Rollback on any error
-      this.editorState.currentState = this.beforeState;
+      // Rollback on any error via API
+      this.editorState.restoreState(this.beforeState);
 
       // Log error if handler available
       if (this.errorHandler) {
@@ -69,7 +80,15 @@ class EditorOperation {
           }
         );
       } else {
-        console.error(`[EditorOperation ${this.operationName}] ${error.message}`, error);
+        console.error(
+          `[EditorOperation ${this.operationName}] ${error.message}`,
+          {
+            code: error.code,
+            validationErrors: error.validationErrors,
+            beforeState: this.beforeState,
+            attemptedState: this.afterState
+          }
+        );
       }
 
       return {
@@ -95,16 +114,18 @@ class EditorOperation {
         return {
           wouldSucceed: validation.canSave,
           errors: validation.errors,
-          warnings: validation.warnings
+          warnings: validation.warnings,
+          hasValidator: true
         };
       }
 
-      return { wouldSucceed: true, errors: [] };
+      return { wouldSucceed: true, errors: [], hasValidator: false };
 
     } catch (error) {
       return {
         wouldSucceed: false,
-        errors: [error.message]
+        errors: [error.message],
+        hasValidator: this.validator !== null
       };
     }
   }

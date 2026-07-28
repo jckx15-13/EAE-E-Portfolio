@@ -230,6 +230,19 @@ class EditorState {
     this.redoStack = [];
     this._notifyListeners('restored', { timestamp: snapshot.timestamp });
   }
+
+  /**
+   * Restore state to a specific state object (for rollback operations)
+   * Clears undo/redo stacks and notifies listeners
+   * @param {object} state - The state to restore to
+   */
+  restoreState(state) {
+    this.currentState = this._deepCopy(state);
+    this.undoStack = [];
+    this.redoStack = [];
+    this._notifyListeners('restored', { timestamp: Date.now() });
+  }
+
 }
 
 // Export for use in script.js

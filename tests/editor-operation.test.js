@@ -97,6 +97,23 @@ function testDurationTracking() {
   console.log('✓ Duration tracking test passed');
 }
 
+
+// Test dry-run side effects warning
+function testDryRunSideEffectsWarning() {
+  let sideEffectCounter = 0;
+  const badChangeFn = () => {
+    sideEffectCounter++;
+    return { data: 'new' };
+  };
+  
+  const state = new EditorState({ data: 'old' });
+  const op = new EditorOperation(state, 'SIDE_EFFECT', badChangeFn);
+  op.dryRun();
+  
+  console.assert(sideEffectCounter === 1, 'Side effect occurs in dryRun (known limitation)');
+  console.log('✓ Dry-run side effects warning documented');
+}
+
 // Run all tests
 function runAllTests() {
   console.log('\n=== EditorOperation Tests ===\n');
@@ -108,6 +125,7 @@ function runAllTests() {
     testDryRun();
     testErrorHandlerIntegration();
     testDurationTracking();
+    testDryRunSideEffectsWarning();
 
     console.log('\n✅ All EditorOperation tests passed!\n');
     process.exit(0);
@@ -126,7 +144,8 @@ if (typeof module !== 'undefined' && module.exports) {
     testValidationBeforeOp,
     testDryRun,
     testErrorHandlerIntegration,
-    testDurationTracking
+    testDurationTracking,
+  testDryRunSideEffectsWarning
   };
 }
 
