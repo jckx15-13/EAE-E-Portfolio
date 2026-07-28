@@ -1,13 +1,6 @@
 import React from 'react'
+import SchoolPage from '../../components/SchoolPage'
 
 export default function S1Term1() {
-  return (
-    <div className="school-page">
-      <h1>Secondary 1 - Term 1</h1>
-      <section>
-        <h2>Projects & Achievements</h2>
-        <p>[Content to be migrated from original HTML export]</p>
-      </section>
-    </div>
-  )
+  return <SchoolPage path="/s1-term-1" />
 }

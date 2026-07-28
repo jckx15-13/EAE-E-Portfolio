@@ -1,2 +1,6 @@
 import React from 'react'
-export default function Personal() { return <div className="school-page"><h1>Personal Projects</h1><p>[Content to be migrated]</p></div> }
+import SchoolPage from '../../components/SchoolPage'
+
+export default function Personal() {
+  return <SchoolPage path="/personal" />
+}

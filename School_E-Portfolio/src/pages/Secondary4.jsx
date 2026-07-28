@@ -1,11 +1,6 @@
 import React from 'react'
+import SchoolPage from '../components/SchoolPage'
 
 export default function Secondary4() {
-  return (
-    <div className="school-page">
-      <h1>Secondary 4</h1>
-      <p>Academic year 2024-2025</p>
-      <p>Explore my work from Secondary 4 by selecting a term.</p>
-    </div>
-  )
+  return <SchoolPage path="/secondary-4" />
 }

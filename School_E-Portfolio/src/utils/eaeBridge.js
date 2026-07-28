@@ -33,6 +33,15 @@ export function routerBasename() {
   return match ? match[1] : '/'
 }
 
+// Media lives in public/school-media and is served from the app's base, so the
+// same reference works in `vite dev` and from /School_E-Portfolio/dist.
+export function mediaUrl(src) {
+  if (!src) return ''
+  if (/^(https?:|data:)/.test(src)) return src
+  const base = routerBasename()
+  return (base === '/' ? '' : base) + '/' + src.replace(/^\/+/, '')
+}
+
 // Back to the vanilla portfolio, landing on the section the visitor left from.
 export function mainPortfolioHref() {
   const handoff = readHandoff()
