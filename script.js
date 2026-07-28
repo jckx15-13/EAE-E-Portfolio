@@ -39,7 +39,7 @@
   const PROJECT_MODE_ORDER = {
     story: [
       'Kodecoon Project Journey',
-      'PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)',
+      'PyCon Hackathon - SkillQuest',
       'Personal Student Portfolio Website',
       'SPD Caregiver & Admin Event Portal Prototype',
       'FLL 2026 Unearthed Robot Design & Planning',
@@ -48,7 +48,7 @@
     timeline: [
       'Kodecoon Project Journey',
       'FLL 2026 Unearthed Robot Design & Planning',
-      'PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)',
+      'PyCon Hackathon - SkillQuest',
       'Personal Student Portfolio Website',
       'SPD Caregiver & Admin Event Portal Prototype',
       '3D Design & Mechanical Prototyping (Thingiverse Creations)',
@@ -1555,13 +1555,13 @@
   let evidenceGridDrawn = false;
   let projectTimelineDrawn = false;
 
-  const EVIDENCE_ALLOWED_VIEWS = new Set(['repository', 'project-timeline', 'evidence-grid']);
+  const EVIDENCE_ALLOWED_VIEWS = new Set(['repository', 'evidence-grid']);
 
-  // Older builds stored 'timeline' / 'projects'; map them onto the new modes so
+  // Older builds stored 'timeline' / 'projects' / 'project-timeline'; map them onto the new modes so
   // returning visitors land on the closest equivalent instead of a reset view.
   function normalizeEvidenceView(view) {
     if (view === 'timeline') return 'repository';
-    if (view === 'projects') return 'evidence-grid';
+    if (view === 'projects' || view === 'project-timeline') return 'evidence-grid';
     return EVIDENCE_ALLOWED_VIEWS.has(view) ? view : 'repository';
   }
 
@@ -1692,7 +1692,6 @@
   function setEvidenceView(view) {
     const island = $('#evidenceIsland');
     const grid = $('#evidenceGridView');
-    const projectTimeline = $('#projectTimelineView');
     // Only the graph itself swaps out. The Reflection Journal lives inside
     // #timeline-content and must stay readable in every view. Scoped to the
     // journey section so the Future Goals timeline never gets hidden with it.
@@ -1700,18 +1699,15 @@
       ...document.querySelectorAll('#timeline-content .timeline-wrap'),
       $('#journeyChapters')
     ].filter(Boolean);
-    if (!island || !grid || !projectTimeline || !graphParts.length) return;
+    if (!island || !grid || !graphParts.length) return;
 
     const safeView = normalizeEvidenceView(view);
     const isRepository = safeView === 'repository';
-    const isProjectTimeline = safeView === 'project-timeline';
     const isEvidenceGrid = safeView === 'evidence-grid';
 
     if (isEvidenceGrid && !evidenceGridDrawn) renderEvidenceGrid();
-    if (isProjectTimeline && !projectTimelineDrawn) renderProjectTimelineView();
 
     graphParts.forEach((part) => { part.hidden = !isRepository; });
-    projectTimeline.hidden = !isProjectTimeline;
     grid.hidden = !isEvidenceGrid;
     document.body.dataset.evidenceView = safeView;
 
@@ -1746,7 +1742,7 @@
       if (!LEGACY_EVIDENCE_SECTIONS.includes(id)) return;
       link.addEventListener('click', (event) => {
         event.preventDefault();
-        setEvidenceView(id === 'projects' ? 'project-timeline' : 'evidence-grid');
+        setEvidenceView('evidence-grid');
         const surface = $('#timeline');
         if (surface) surface.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
@@ -2491,7 +2487,7 @@
           order: 12,
           type: 'project',
           visible: true,
-          linkedProject: 'PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)',
+          linkedProject: 'PyCon Hackathon - SkillQuest',
           summary: 'Built a personalised career and upskilling platform combining software development, data, recommendation logic, and cybersecurity education.'
         },
         {

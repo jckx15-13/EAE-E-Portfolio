@@ -119,7 +119,7 @@
   },
   "profile": {
     "name": "Jaron Chew",
-    "shortName": "EDIT 2: Jaron EAE Portfolio",
+    "shortName": "EAE Portfolio",
     "headline": "A curious builder working toward cybersecurity.",
     "subheadline": "Projects, robotics, and reflections that show how I learn, solve problems, and turn curiosity into practical work.",
     "intro": "I am a secondary school student from Juying Secondary School who learns by making things. Coding, robotics, cybersecurity, and engineering are the places where my curiosity becomes something real.",
@@ -583,7 +583,7 @@
       "optionalVideo": "",
       "image": "images/projects/portfolio_preview.png",
       "carriedForward": {
-        "fromProject": "PyCon Hackathon & SkillQuest (Cybersecurity & Career Education)",
+        "fromProject": "PyCon Hackathon - SkillQuest",
         "lesson": "Used the data-driven design thinking from the hackathon to structure portfolio content as editable, schema-driven data"
       }
     },
@@ -1312,7 +1312,7 @@
     "liveEditorShift": "Shift Sections",
     "liveEditorShiftDesc": "Use Up/Down controls on sections to swap their layout sequence.",
     "liveEditorExport": "Export data.js",
-    "skipLink": "EDIT 1: CTRL+Z TEST Skip to content",
+    "skipLink": "Skip to content",
     "viewCards": "Cards",
     "viewTimeline": "Timeline",
     "viewStory": "Story",
