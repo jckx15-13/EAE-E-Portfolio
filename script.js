@@ -86,8 +86,7 @@
     'robotics',
     'academic-growth',
     'cybersecurity',
-    'projects',
-    'eae-direction'
+    'projects'
   ];
 
   // [selector, data path, fallback] for the copy that comes straight from data.js.
@@ -134,8 +133,7 @@
     robotics: 'robotics',
     'academic-growth': 'academic-growth',
     cybersecurity: 'cybersecurity',
-    projects: 'projects',
-    'eae-direction': 'eae-direction'
+    projects: 'projects'
   };
 
   // `git notes` attach commentary to a specific commit without rewriting it. Each
@@ -165,8 +163,7 @@
     robotics: '#f59e0b',
     'academic-growth': '#a78bfa',
     cybersecurity: '#ef4444',
-    projects: '#06b6d4',
-    'eae-direction': '#ec4899'
+    projects: '#06b6d4'
   };
 
   let modalLastActiveElement = null;
@@ -1173,9 +1170,10 @@
     button.removeAttribute("aria-haspopup");
     button.removeAttribute("aria-controls");
     button.setAttribute("aria-label", "Open School E-Portfolio");
-    // The React school portfolio's built entry. The old Home.html export no
-    // longer exists, which left this button pointing at a 404.
-    button.setAttribute("href", "School_E-Portfolio/dist/index.html");
+    // Links to the student's Google Sites school portfolio export — authentic layout
+    // with blue header, coral sections, and Material Design. Stored locally in
+    // School_E-Portfolio/google-sites-export/ for offline access and portability.
+    button.setAttribute("href", "School_E-Portfolio/google-sites-export/Home.html");
     if (button.dataset.switchBound === "true") return;
     button.dataset.switchBound = "true";
 
@@ -1556,10 +1554,26 @@
 
   // Certificates first, then projects, then hobbies — the order a reviewer reads in:
   // proof of completion, then the work itself, then the curiosity around it.
+  // An achievement whose own category is "Certificate" (e.g. a competition that
+  // awarded a certificate of participation, not a built deliverable) counts as a
+  // certificate here too — it would otherwise sit under "Projects" just because
+  // its data lives in the achievements array.
   const EVIDENCE_GROUPS = [
-    { kinds: ['certificate'], label: 'Certificates', blurb: 'Verified completions and participation records.' },
-    { kinds: ['project', 'achievement'], label: 'Projects', blurb: 'Work I designed, built, and reflected on.' },
-    { kinds: ['hobby'], label: 'Hobbies', blurb: 'Self-directed exploration outside formal programmes.' }
+    {
+      label: 'Certificates',
+      blurb: 'Verified completions and participation records.',
+      match: (node) => node.kind === 'certificate' || (node.kind === 'achievement' && node.category === 'Certificate')
+    },
+    {
+      label: 'Projects',
+      blurb: 'Work I designed, built, and reflected on.',
+      match: (node) => node.kind === 'project' || (node.kind === 'achievement' && node.category !== 'Certificate')
+    },
+    {
+      label: 'Hobbies',
+      blurb: 'Self-directed exploration outside formal programmes.',
+      match: (node) => node.kind === 'hobby'
+    }
   ];
 
   function renderEvidenceGrid() {
@@ -1569,7 +1583,7 @@
 
     const index = buildEvidenceIndex();
     EVIDENCE_GROUPS.forEach((group) => {
-      const nodes = index.filter((node) => group.kinds.includes(node.kind));
+      const nodes = index.filter(group.match);
       if (!nodes.length) return;
 
       const section = create('section', 'evidence-group');
@@ -2485,7 +2499,7 @@
           title: 'EAE Direction',
           message: 'merge: connected coding, robotics, cybersecurity, and academic growth',
           date: 'Current',
-          branch: 'eae-direction',
+          branch: 'main',
           parent: 'commit-spd-portal',
           mergeParents: [
             'commit-fll-robot-design',
@@ -4464,22 +4478,25 @@
     renderGoalList("#shortTermGoals", data.futureGoals?.shortTerm || []);
     renderGoalList("#longTermGoals", data.futureGoals?.longTerm || []);
 
-    // Styled as a continuation of the Learning Repository graph above: a single
-    // rail of "planned commit" cards, dashed to read as not-yet-landed, picking up
-    // from the graph's HEAD terminus rather than the old left/right zigzag layout.
+    // A continuation of the Learning Repository graph above, picking up from its
+    // HEAD terminus: a central spine with milestone cards alternating left/right,
+    // styled with the graph's git-commit-card language (pills, dashed "planned"
+    // border) rather than the graph's own single-lane layout.
     const timelineContainer = $("#futureDirectionTimeline");
     if (timelineContainer && Array.isArray(data.futureGoals?.timelineMilestones)) {
       timelineContainer.replaceChildren();
 
-      const rail = create("div", "future-commit-rail");
-
       const head = create("div", "future-rail-head");
       head.append(create("span", "git-legend-pill future-rail-head-pill", "refs/heads/future"));
-      rail.append(head);
+      timelineContainer.append(head);
+
+      const timelineEl = create("div", "timeline future-vertical-timeline");
 
       (data.futureGoals.timelineMilestones || []).forEach((m, index) => {
-        const row = create("div", "future-commit-row reveal");
-        const card = create("article", "future-commit-card");
+        const item = create("div", `timeline-item ${index % 2 === 0 ? "left" : "right"} reveal`);
+        item.append(create("span", "timeline-dot"));
+
+        const card = create("div", "future-commit-card");
 
         const meta = create("div", "git-commit-meta");
         meta.append(create("span", "git-branch-pill future-branch-pill", m.phase || `Step ${index + 1}`));
@@ -4494,11 +4511,11 @@
 
         card.append(create("p", "git-commit-message", m.description));
 
-        row.append(card);
-        rail.append(row);
+        item.append(card);
+        timelineEl.append(item);
       });
 
-      timelineContainer.append(rail);
+      timelineContainer.append(timelineEl);
     }
   }
 
@@ -5395,31 +5412,6 @@
     });
     quickNavGroup.append(quickJumpRow);
     content.append(quickNavGroup);
-
-    // Visibility: Reflection Journal ("Growth") — lets the presenter fold the
-    // journal away without deleting content. Persists through export/save via
-    // data.sectionVisibility, the same mechanism the other sections use.
-    const reflectionVisGroup = create("div", "editor-control-group");
-    reflectionVisGroup.append(create("h4", "", "Section visibility"));
-    const reflectionSwitch = create("label", "switch-container");
-    reflectionSwitch.append(create("span", "", "Show Reflection Journal"));
-    const reflectionInput = document.createElement("input");
-    reflectionInput.type = "checkbox";
-    reflectionInput.id = "reflectionVisibilityToggle";
-    data.sectionVisibility = data.sectionVisibility || {};
-    reflectionInput.checked = !data.sectionVisibility.reflections;
-    reflectionSwitch.append(reflectionInput, create("span", "switch-slider"));
-    reflectionVisGroup.append(reflectionSwitch);
-    reflectionVisGroup.append(create("p", "control-description", "Hide or show the Reflection Journal (Growth) section. Export or save data.js to keep the setting."));
-    reflectionInput.addEventListener("change", () => {
-      data.sectionVisibility = data.sectionVisibility || {};
-      if (reflectionInput.checked) delete data.sectionVisibility.reflections;
-      else data.sectionVisibility.reflections = true;
-      applySectionVisibility();
-      renderNav();
-      showEditorToast(reflectionInput.checked ? "Reflection Journal shown" : "Reflection Journal hidden");
-    });
-    content.append(reflectionVisGroup);
 
     // A labelled on/off switch. Both editing modes are built from this so the
     // markup contract (.switch-container / .switch-slider) stays identical.

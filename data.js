@@ -740,7 +740,7 @@
       "title": "BuildingBloCS Game Jam (Unity Track)",
       "date": "June 2026",
       "organisation": "BuildingBloCS",
-      "category": "Competition",
+      "category": "Certificate",
       "summary": "Participated in the BuildingBloCS Game Jam (Unity Track), building interactive game logic and visual experiences.",
       "applicantSignal": "Practical experience with the Unity engine, C# scripting, and game development design under workshop conditions.",
       "eaeRelevance": "Demonstrates the ability to adapt to industry-standard development environments like Unity and code solutions to user experiences.",
@@ -1393,12 +1393,6 @@
         "label": "projects",
         "color": "#06b6d4",
         "description": ""
-      },
-      {
-        "id": "eae-direction",
-        "label": "eae-direction",
-        "color": "#ec4899",
-        "description": ""
       }
     ],
     "commits": [
@@ -1622,7 +1616,7 @@
         "title": "EAE Direction",
         "message": "merge: connected coding, robotics, cybersecurity, and academic growth",
         "date": "Current",
-        "branch": "eae-direction",
+        "branch": "main",
         "parent": "commit-spd-portal",
         "mergeParents": [
           "commit-fll-robot-design",

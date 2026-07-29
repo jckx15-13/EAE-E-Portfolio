@@ -2779,6 +2779,13 @@ body[data-cursor="xl"] * {
 }
 
 /* Live Editor Sidebar & Admin Controls */
+/* Visible by default once created — setupLiveEditor() already gates its
+   creation behind authentication, so existing in the DOM means it should be
+   clickable. Its own inline style (set by toggleEditor() in script.js) hides
+   it while the sidebar is open, in favor of the close FAB; this class default
+   must not require body.admin-mode, since that class is only ever added by
+   opening the sidebar — gating the open-button's visibility on already being
+   open made it permanently unreachable by mouse. */
 .live-editor-fab {
   position: fixed;
   bottom: 24px;
@@ -2790,15 +2797,11 @@ body[data-cursor="xl"] * {
   color: #0b1525;
   border: none;
   box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   z-index: var(--z-editor-sidebar);
   font-size: 1.4rem;
-}
-
-body.admin-mode .live-editor-fab {
-  display: flex;
 }
 
 .live-editor-sidebar {
@@ -5005,19 +5008,20 @@ body[data-theme="light"] .git-repo-body::before {
 
 /* ==========================================================================
    FUTURE DIRECTION ROADMAP — a continuation of the Learning Repository graph.
-   The graph above ends at a "HEAD" terminus; this rail picks up as a column of
-   dashed, not-yet-landed "planned commits", sharing the same card shell,
-   pill, and typography tokens as .git-commit-card so the two sections read as
-   one continuous story rather than two unrelated components.
+   The graph above ends at a "HEAD" terminus and merges to a single lane; this
+   picks up on the shared central-spine timeline (.timeline/.timeline-item,
+   also used by the hobby timeline), with milestone cards alternating left and
+   right, styled with the graph's card language (pills, dashed "planned"
+   border) so the two sections still read as one continuous story.
    ========================================================================== */
 
 .future-direction-timeline {
   margin-bottom: 2rem;
 }
 
-/* Bridges the last real commit in the graph above into the planned commits
-   below: same pill language as .git-branch-pill/.git-legend-pill, but framed
-   as a ref rather than a branch, since nothing here has landed yet. */
+/* Bridges the last real commit in the graph above into the planned
+   milestones below: same pill language as .git-branch-pill/.git-legend-pill,
+   but framed as a ref rather than a branch, since nothing here has landed yet. */
 .git-graph-terminus {
   display: flex;
   align-items: center;
@@ -5042,70 +5046,35 @@ body[data-theme="light"] .git-repo-body::before {
   letter-spacing: 0.04em;
 }
 
-.future-commit-rail {
-  --git-graph-col: 12px;
-  position: relative;
-  max-width: 860px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  padding-left: calc(var(--git-graph-col) + var(--space-lg));
-}
-
-/* The dashed rail itself — a direct color continuation of the graph's solid
-   branch lines above, dashed to signal "planned" rather than "landed". */
-.future-commit-rail::before {
-  content: "";
-  position: absolute;
-  top: 0.4rem;
-  bottom: 0.4rem;
-  left: calc(var(--git-graph-col) / 2);
-  width: 0;
-  border-left: 3px dashed;
-  border-image: linear-gradient(180deg, #38bdf8 0%, #a78bfa 100%) 1;
-  opacity: 0.55;
-}
-
+/* Sits centered above the timeline spine, continuing directly from the
+   graph's terminus pill above it. */
 .future-rail-head {
-  position: relative;
-  margin-bottom: 0.2rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.6rem;
 }
 
 .future-rail-head-pill {
   font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
 }
 
-.future-commit-row {
-  position: relative;
-}
-
-/* Node dot on the dashed rail, one per planned commit — the hollow ring reads
-   as "not yet landed" against the graph's solid, filled commit nodes. */
-.future-commit-row::before {
-  content: "";
-  position: absolute;
-  top: 1.3rem;
-  left: calc(var(--git-graph-col) / -2 - var(--space-lg) + var(--git-graph-col) / 2);
-  width: var(--git-graph-col);
-  height: var(--git-graph-col);
-  border-radius: 999px;
-  border: 2px dashed var(--theme-accent-purple);
-  background: var(--theme-bg);
-}
-
-.future-commit-card {
+/* Overrides the generic .timeline-item > div card shell (used by the hobby
+   timeline) with the graph's card language: token-driven, dashed border to
+   signal "planned" rather than "landed", same SRT hover as .git-commit-card. */
+.future-vertical-timeline .timeline-item > .future-commit-card {
   position: relative;
   min-width: 0;
   padding: var(--space-md);
   border: 1px dashed var(--theme-card-border);
+  border-radius: var(--radius);
   background: var(--theme-card-bg);
   box-shadow: var(--theme-card-shadow);
+  backdrop-filter: blur(14px);
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
-.future-commit-row:hover .future-commit-card,
-.future-commit-card:focus-within {
+.future-vertical-timeline .timeline-item:hover > .future-commit-card,
+.future-vertical-timeline .timeline-item > .future-commit-card:focus-within {
   transform: translateY(-6px) perspective(1000px) rotateX(1deg);
   border-color: var(--theme-accent-purple);
   border-style: solid;
@@ -5133,12 +5102,6 @@ body[data-theme="light"] .git-repo-body::before {
 .future-icon {
   font-size: 1.3rem;
   line-height: 1;
-}
-
-@media (max-width: 640px) {
-  .future-commit-rail {
-    padding-left: calc(var(--git-graph-col) + var(--space-md));
-  }
 }
 
 /* Hobbies Icon Header */
