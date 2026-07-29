@@ -61,9 +61,9 @@
         "id": "math",
         "name": "Elementary Mathematics",
         "shortName": "E-Math",
-        "trains": ["Logic", "Patterns", "Precision", "Problem-solving"],
+        "trains": ["Logic", "Patterns", "Precision", "Problem-solving", "Presentation"],
         "usefulIn": "Coding, robotics, algorithms, data, and breaking large problems into smaller parts.",
-        "reflection": "Math trained me to think step by step and solve problems clearly instead of guessing."
+        "reflection": "Math trained me to think step by step and solve problems clearly instead of guessing.Math also taught me how to present my working in structured mathematical notation, such that it is easy to understand and not misunderstood by others."
       },
       {
         "id": "science",
@@ -71,7 +71,7 @@
         "shortName": "Science",
         "trains": ["Observation", "Testing", "Cause and Effect", "Evidence"],
         "usefulIn": "Robotics, engineering, troubleshooting, experimentation, and understanding why things work.",
-        "reflection": "Science taught me to observe carefully, test ideas, and learn from results instead of assumptions."
+        "reflection": "Science taught me to observe carefully, test ideas, learn from results instead of assumptions, and relate maths and break down real world problems."
       },
       {
         "id": "english",
@@ -79,7 +79,7 @@
         "shortName": "English",
         "trains": ["Communication", "Clarity", "Reflection", "Explanation"],
         "usefulIn": "Presentations, documentation, teamwork, writing, and expressing technical ideas clearly.",
-        "reflection": "English helps me turn ideas into something clear, understandable, and useful to others."
+        "reflection": "English helps me turn ideas into something clear, understandable, and useful to others, and even myself. English also allowed me to learn online, where englihs is a dominant english, and many people use it in different ways"
       },
       {
         "id": "humanities",
@@ -87,7 +87,7 @@
         "shortName": "Humanities",
         "trains": ["Context", "Critical Thinking", "Social Awareness", "Judgement"],
         "usefulIn": "Ethical thinking, understanding impact, evaluating information, and seeing the bigger picture.",
-        "reflection": "Humanities reminds me that decisions affect people, and that problems should be understood in their wider context."
+        "reflection": "Humanities reminds me that decisions affect people, and that problems should be understood in their wider context. Social Studies taught me to analyse my data, aswell as its vailidity, and helped me to make accurate and informed decisions and judgement, espscially when learning online. Geography taught me how to make a good field study, Disiaster risk management, which is especialy useful in the case of cyber attacks, and analyse graphs and charts."
       },
       {
         "id": "poa",
@@ -95,7 +95,7 @@
         "shortName": "POA",
         "trains": ["Accuracy", "Accountability", "Organisation", "Structure"],
         "usefulIn": "Planning, managing resources, keeping clear records, and making responsible decisions.",
-        "reflection": "I learned that details matter, and that being careful and accountable with information is important in both work and life."
+        "reflection": "I learned that details matter, and that being careful and accountable with information is important in both work and life. While cybersecurity has no relation in this subjects in terms of monney, they are very alike in which POA secures Money while cybersecurity secures data and the threat-scape. I also learnt about ethics of an accountant, which i find to be very much related to the same ethics in cybersecurity"
       },
       {
         "id": "chinese",
@@ -103,7 +103,7 @@
         "shortName": "Chinese",
         "trains": ["Communication", "Adaptability", "Cultural Awareness", "Expression"],
         "usefulIn": "Connecting with different people, working across contexts, and building stronger communication skills.",
-        "reflection": "Chinese reminds me that learning is also about connecting with people and understanding different perspectives."
+        "reflection": "Chinese taught me adifferent way of communications, through artforms, and why certain languages are good for certain things, like engling for programming, and chinese for art and conversation"
       }
     ],
     "carryForwardTags": [
@@ -139,7 +139,7 @@
     ],
     "journeyMarkers": [],
     "contact": {
-      "email": "jaron.chew.kx@gmail.com",
+      "email": "jaronchewkx@gmail.com",
       "github": "https://github.com/jckx15-13",
       "deployment": "http://jaron-eae-portfolio.local"
     }
@@ -185,7 +185,7 @@
       {
         "label": "First spark",
         "title": "I found confidence through small games",
-        "body": "Scratch introduced me to variables, loops, functions, lists, Boolean logic, and conditionals through projects like Alien Invasion and Treasure Hunter.",
+        "body": "Scratch introduced me to variables, loops, functions, lists, Boolean logic,conditionals through projects like Alien Invasion and Treasure Hunter, and most importantly, sparked my interest in the magic of computing and computational thinking",
         "evidence": "Scratch Coder Course, February 2019 - September 2019"
       },
       {
@@ -202,25 +202,25 @@
       },
       {
         "label": "Purpose",
-        "title": "I like technology more when it helps people understand",
+        "title": "I like technology more when it helps people understand and empowers them to transcend their potential",
         "body": "SkillQuest and the PyCon jobs-and-skills work connect my interest in software with cybersecurity education, skills mapping, and practical guidance.",
         "evidence": "SkillQuest cybersecurity game and PyCon Jobs & Skills track"
       },
       {
         "label": "Growth",
         "title": "I want my improvement to be visible",
-        "body": "My mathematics journey matters because it shows effort over time, not just a final result. It reminds me that ability can be built.",
+        "body": "My mathematics journey matters because it shows effort over time, not just a final result. It shows my ability to learn despite a lack in talent",
         "evidence": "Mathematics growth journey toward A1"
       },
       {
         "label": "Direction",
         "title": "I am building toward polytechnic through evidence",
-        "body": "My EAE direction is supported by projects, coding foundations, robotics planning, reflections, and honest placeholders where details still need confirmation.",
-        "evidence": "Singapore Polytechnic and Ngee Ann Polytechnic target applications"
+        "body": "My EAE direction is supported by projects, coding foundations, robotics planning, reflections.",
+        "evidence": "_"
       }
     ]
   },
-  "eaeSnapshot": {
+  /*"eaeSnapshot": {
     "title": "Top Evidence",
     "intro": "Quick view of my strongest EAE evidence for Singapore Polytechnic and Ngee Ann Polytechnic.",
     "cards": [
@@ -249,8 +249,8 @@
         "projectTitle": "PyCon Hackathon - SkillQuest"
       }
     ]
-  },
-  "evidenceDeck": {
+  },*/
+  /*"evidenceDeck": {
     "title": "Evidence Cards",
     "intro": "Each card translates my work into what it shows about me as an EAE applicant.",
     "cards": [
@@ -317,7 +317,7 @@
       }
     ]
   },
-  "targetApplications": [
+  /*"targetApplications": [
     {
       "institution": "Singapore Polytechnic",
       "shortName": "SP",
@@ -341,7 +341,9 @@
         "The Lab Coder Programme (Intermediate) - Distinction"
       ]
     }
-  ],
+  ],*/
+/*
+
   "about": {
     "learningPattern": [
       {
@@ -399,6 +401,12 @@
       }
     ]
   },
+
+  */
+
+
+
+  /*
   "achievementFlow": {
     "intro": "My achievements make the most sense as a journey through my life. Each stage shows a different side of me: starting small, trying creative tools, taking on competitions, refining technical thinking, and growing through challenges.",
     "steps": [
@@ -468,37 +476,99 @@
       }
     ]
   },
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   "projects": [
     {
-      "title": "SPD Caregiver & Admin Event Portal Prototype",
-      "category": "Web & App Development / Social Impact",
-      "status": "Version 1 Prototype Completed",
-      "snapshotLabel": "Systems",
-      "snapshotTitle": "SPD Caregiver & Admin Portal",
-      "snapshotSummary": "Accessible admin + caregiver flows, reporting dashboards, and pragmatic NGO UX solutions.",
-      "portfolioSignal": "Shows the ability to translate real-world NGO challenges into a full system architecture with customized user roles (admin and caregiver), databases, and analytics dashboards.",
-      "eaeConnection": "Directly aligns with software engineering and cybersecurity by demonstrating how to build secure, accessible systems that manage sensitive data—focusing on role-based access control (RBAC) and data privacy.",
-      "evidenceStatus": "User flow flowcharts completed. Functional prototype logic mapped out.",
-      "problem": "SPD faced severe administrative bottlenecks from manual registration and spreadsheet-based reporting, leading to risks in data integrity and administrative transparency.",
-      "proposedSolution": "A secure Version 1 portal splitting views between Admins (Event/Feedback dashboard, RBAC, report export) and Caregivers (accessible registrations) with NRIC validation and encrypted data handling logic.",
-      "myRole": "System Designer and Lead Developer",
-      "technologiesUsed": "HTML5, CSS3, JavaScript, Draw.io User Flows, RBAC (Role-Based Access Control) Design",
-      "developmentJourney": "Analyzed SPD's calendar of 20+ programmes. Mapped a detailed user flow focusing on data privacy: ensuring caregivers only see their relevant sessions while admins have full visibility. Designed the database schema to handle personally identifiable information (PII) responsibly.",
-      "outcome": "Designed and prototyped a version 1 event-management portal, emphasizing data security and role-based privacy for community support reporting.",
-      "lessonsLearned": "Realized that security is not just an add-on; it must be built into the architecture. Prioritizing role-based access control early prevents unauthorized data exposure in community-facing portals.",
-      "slides": "https://canva.link/4kle5s5l7rnfxqc",
+      "title": "Singapore Informatics League (SIL 2026)",
+      "category": "Competitive Programming / Algorithmic Problem Solving",
+      "status": "69th Place (Completed July 2026)",
+      "snapshotLabel": "Algorithms",
+      "snapshotTitle": "SIL 2026 Competitive Programming",
+      "snapshotSummary": "16/25 competitive programming challenges solved, 106.611 points scored, placing 69th overall.",
+      "portfolioSignal": "Demonstrates advanced computational thinking, algorithm design, data structure selection, and mathematical problem-solving under timed contest conditions.",
+      "eaeConnection": "Directly supports computing, software engineering, and cybersecurity readiness by showing mastery of algorithmic efficiency, logic verification, and problem decomposition under pressure.",
+      "evidenceStatus": "Scoreboard certificate & ranking screenshot verified (106.611 points, 69th place, team untitled,cxx).",
+      "problem": "Solving high-difficulty competitive programming problems spanning dynamic programming, graph traversal, and mathematical optimization within a tight multi-hour contest window.",
+      "proposedSolution": "Formulated optimal C++ / algorithmic solutions, tested edge-case bounds, and prioritized problem completion based on point-yield to maximize overall rank.",
+      "myRole": "Competitive Programmer & Algorithmic Problem Solver (Team untitled,cxx)",
+      "technologiesUsed": "C++, Data Structures, Algorithmic Optimization, Time-Complexity Analysis, Mathematical Logic",
+      "developmentJourney": "Tackled 25 complex algorithmic challenges during SIL 2026. Solved 16 problems with high subtask precision (including 8/8 on problem 4 and 6, and 9/10 on problem 13). Maintained steady score growth to reach 106.611 points and 69th place.",
+      "outcome": "Achieved 69th place (placing in the top 30% silver cutoff zone) out of national-level participants.",
+      "lessonsLearned": "Reinforced the importance of time complexity analysis (O(N log N) vs O(N^2)) and rigorous edge-case testing before submitting solutions.",
       "images": [
-        "images/projects/SPD_User_Flow_Flow_chart.jpg",
-        "images/projects/SPD_User_Flow_Flow_chart_Page_2.jpg"
+        "images/projects/SIL26_Proof_Of_Participation_Ranking.png"
       ],
       "optionalVideo": "",
-      "image": "images/projects/SPD_User_Flow_Flow_chart.jpg",
+      "image": "images/projects/SIL26_Proof_Of_Participation_Ranking.png",
+      "highlighted": true
+    },
+    {
+      "title": "PyCon Hackathon - SkillQuest",
+      "category": "Hackathon / Career Platform / Product Design",
+      "status": "Completed (June 2026)",
+      "snapshotLabel": "Product",
+      "snapshotTitle": "PyCon SkillQuest (Hackathon)",
+      "snapshotSummary": "personalized career discovery and upskilling platform designed to help users move from uncertainty to career readiness through a continuous, guided learning journey.",
+      "portfolioSignal": "Demonstrates strong initiative in designing and developing SkillQuest, a personalised career discovery and upskilling platform that helps users explore career paths, identify skill gaps, follow personalised learning journeys, complete practical quests, and track their progress towards career readiness.",
+      "eaeConnection": "Directly supports my interest in software development, data-driven systems, product design, and technology. SkillQuest demonstrates my ability to identify a real-world problem, design a complete digital solution, develop a functional prototype, and connect user needs with technical systems such as recommendation engines, skill-gap analysis, progress tracking, and personalised learning paths.",
+      "evidenceStatus": "Functional prototype developed with a responsive frontend and Python-based Course Matching Engine. The project includes a complete product and UX architecture covering career discovery, career recommendations, skill-gap analysis, personalised learning paths, practical quests, mastery tracking, career readiness, and AI Mentor guidance. Project prototype and development documentation can be linked as evidence.",
+      "problem": "Many people are unsure about which career path to pursue, what skills they need to develop, or what they should do next. Existing platforms often separate career discovery, skill assessments, online courses, progress tracking, and career guidance. This can make the learning journey feel fragmented and overwhelming.",
+      "proposedSolution": "SkillQuest is a personalised career discovery and upskilling platform that connects the entire journey in one experience. Users can explore potential careers through Explorer Mode or select a target career through Pathfinder Mode. The platform analyses skill gaps, recommends personalised learning paths and courses, converts learning into practical quests, tracks skill mastery and evidence of progress, and shows how each achievement brings the user closer to their career goal.",
+      "myRole": "Lead Software Engineer and Product Developer, responsible for developing the SkillQuest concept, designing the product architecture and user journey, creating the responsive frontend, developing the Python-based Course Matching Engine, and designing the personalised learning, quest, mastery, and career-readiness systems.",
+      "technologiesUsed": "HTML, CSS, JavaScript, Python, Responsive Web Development, REST API Design, Rule-Based Recommendation Systems, Course Matching Algorithms, Skill-Gap Analysis, Gamification Systems, Career Data, Skills Data, and User Progress Tracking.",
+      "developmentJourney": "I designed SkillQuest around a continuous user journey: Career Discovery → Career Recommendation → Skill-Gap Analysis → Personalised Learning Path → Quests → Skill Mastery → Career Readiness. I developed Explorer Mode for users who are unsure about their career direction and Pathfinder Mode for users who already have a specific career goal. I designed the Skill-Gap Engine to compare a user's current skills with the skills required for a target career. I also developed a Python-based Course Matching Engine that considers factors such as skill coverage, time commitment, cost, location, course quality, schedule fit, and potential calendar conflicts. The platform then transforms learning into practical quests that allow users to learn, practise, and demonstrate their progress. The overall system is designed to continuously adapt to the user's interests, goals, schedule, behaviour, and development over time.",
+      "outcome": "Successfully developed a functional SkillQuest prototype that combines career discovery, personalised recommendations, skill-gap analysis, course matching, learning paths, practical quests, progress tracking, and career readiness into one connected platform. The project transformed an initial idea into a structured product concept with a responsive frontend, Python matching engine, defined user journeys, product architecture, and a clear roadmap for future development.",
+      "lessonsLearned": "I learned how to transform a broad problem into a complete digital product by combining user research, product design, software development, recommendation logic, and gamification. Developing SkillQuest taught me the importance of making complex information simple and actionable for users. I also learned that a successful learning platform should not only provide information, but should guide users towards a clear next step, help them see their progress, and show how each completed action contributes to their larger career goal.",
+      "images": [],
+      "optionalVideo": "videos/SkillQuest-demo.webm",
+      "image": "images/projects/group_lobby.jpg",
       "carriedForward": {
-        "fromProject": "Personal Student Portfolio Website",
-        "lesson": "Applied structured HTML/CSS/JS and user flow thinking to solve real-world NGO administrative challenges"
+        "fromProject": "Kodecoon Project Journey",
+        "lesson": "Applied years of coding foundation (Python, OOP, Pygame) to build a real hackathon product under deadline pressure"
       },
-      "highlighted": true,
-      "slidesEmbedUrl": "https://www.canva.com/design/DAHM4xnRXzo/dqwWK6e9zzf3GcKGTFlgSA/view?embed"
+      "highlighted": true
     },
     {
       "title": "FLL 2026 Unearthed Robot Design & Planning",
@@ -534,30 +604,35 @@
       "highlighted": true
     },
     {
-      "title": "PyCon Hackathon - SkillQuest",
-      "category": "Hackathon / Career Platform / Product Design",
-      "status": "Completed (June 2026)",
-      "snapshotLabel": "Product",
-      "snapshotTitle": "PyCon SkillQuest (Hackathon)",
-      "snapshotSummary": "personalized career discovery and upskilling platform designed to help users move from uncertainty to career readiness through a continuous, guided learning journey.",
-      "portfolioSignal": "Demonstrates strong initiative in designing and developing SkillQuest, a personalised career discovery and upskilling platform that helps users explore career paths, identify skill gaps, follow personalised learning journeys, complete practical quests, and track their progress towards career readiness.",
-      "eaeConnection": "Directly supports my interest in software development, data-driven systems, product design, and technology. SkillQuest demonstrates my ability to identify a real-world problem, design a complete digital solution, develop a functional prototype, and connect user needs with technical systems such as recommendation engines, skill-gap analysis, progress tracking, and personalised learning paths.",
-      "evidenceStatus": "Functional prototype developed with a responsive frontend and Python-based Course Matching Engine. The project includes a complete product and UX architecture covering career discovery, career recommendations, skill-gap analysis, personalised learning paths, practical quests, mastery tracking, career readiness, and AI Mentor guidance. Project prototype and development documentation can be linked as evidence.",
-      "problem": "Many people are unsure about which career path to pursue, what skills they need to develop, or what they should do next. Existing platforms often separate career discovery, skill assessments, online courses, progress tracking, and career guidance. This can make the learning journey feel fragmented and overwhelming.",
-      "proposedSolution": "SkillQuest is a personalised career discovery and upskilling platform that connects the entire journey in one experience. Users can explore potential careers through Explorer Mode or select a target career through Pathfinder Mode. The platform analyses skill gaps, recommends personalised learning paths and courses, converts learning into practical quests, tracks skill mastery and evidence of progress, and shows how each achievement brings the user closer to their career goal.",
-      "myRole": "Lead Software Engineer and Product Developer, responsible for developing the SkillQuest concept, designing the product architecture and user journey, creating the responsive frontend, developing the Python-based Course Matching Engine, and designing the personalised learning, quest, mastery, and career-readiness systems.",
-      "technologiesUsed": "HTML, CSS, JavaScript, Python, Responsive Web Development, REST API Design, Rule-Based Recommendation Systems, Course Matching Algorithms, Skill-Gap Analysis, Gamification Systems, Career Data, Skills Data, and User Progress Tracking.",
-      "developmentJourney": "I designed SkillQuest around a continuous user journey: Career Discovery → Career Recommendation → Skill-Gap Analysis → Personalised Learning Path → Quests → Skill Mastery → Career Readiness. I developed Explorer Mode for users who are unsure about their career direction and Pathfinder Mode for users who already have a specific career goal. I designed the Skill-Gap Engine to compare a user's current skills with the skills required for a target career. I also developed a Python-based Course Matching Engine that considers factors such as skill coverage, time commitment, cost, location, course quality, schedule fit, and potential calendar conflicts. The platform then transforms learning into practical quests that allow users to learn, practise, and demonstrate their progress. The overall system is designed to continuously adapt to the user's interests, goals, schedule, behaviour, and development over time.",
-      "outcome": "Successfully developed a functional SkillQuest prototype that combines career discovery, personalised recommendations, skill-gap analysis, course matching, learning paths, practical quests, progress tracking, and career readiness into one connected platform. The project transformed an initial idea into a structured product concept with a responsive frontend, Python matching engine, defined user journeys, product architecture, and a clear roadmap for future development.",
-      "lessonsLearned": "I learned how to transform a broad problem into a complete digital product by combining user research, product design, software development, recommendation logic, and gamification. Developing SkillQuest taught me the importance of making complex information simple and actionable for users. I also learned that a successful learning platform should not only provide information, but should guide users towards a clear next step, help them see their progress, and show how each completed action contributes to their larger career goal.",
-      "images": [],
-      "optionalVideo": "videos/SkillQuest-demo.webm",
-      "image": "images/projects/group_lobby.jpg",
+      "title": "SPD Caregiver & Admin Event Portal Prototype",
+      "category": "Web & App Development / Social Impact",
+      "status": "Version 1 Prototype Completed",
+      "snapshotLabel": "Systems",
+      "snapshotTitle": "SPD Caregiver & Admin Portal",
+      "snapshotSummary": "Accessible admin + caregiver flows, reporting dashboards, and pragmatic NGO UX solutions.",
+      "portfolioSignal": "Shows the ability to translate real-world NGO challenges into a full system architecture with customized user roles (admin and caregiver), databases, and analytics dashboards.",
+      "eaeConnection": "Directly aligns with software engineering and cybersecurity by demonstrating how to build secure, accessible systems that manage sensitive data—focusing on role-based access control (RBAC) and data privacy.",
+      "evidenceStatus": "User flow flowcharts completed. Functional prototype logic mapped out.",
+      "problem": "SPD faced severe administrative bottlenecks from manual registration and spreadsheet-based reporting, leading to risks in data integrity and administrative transparency.",
+      "proposedSolution": "A secure Version 1 portal splitting views between Admins (Event/Feedback dashboard, RBAC, report export) and Caregivers (accessible registrations) with NRIC validation and encrypted data handling logic.",
+      "myRole": "System Designer and Lead Developer",
+      "technologiesUsed": "HTML5, CSS3, JavaScript, Draw.io User Flows, RBAC (Role-Based Access Control) Design",
+      "developmentJourney": "Analyzed SPD's calendar of 20+ programmes. Mapped a detailed user flow focusing on data privacy: ensuring caregivers only see their relevant sessions while admins have full visibility. Designed the database schema to handle personally identifiable information (PII) responsibly.",
+      "outcome": "Designed and prototyped a version 1 event-management portal, emphasizing data security and role-based privacy for community support reporting.",
+      "lessonsLearned": "Realized that security is not just an add-on; it must be built into the architecture. Prioritizing role-based access control early prevents unauthorized data exposure in community-facing portals.",
+      "slides": "https://canva.link/4kle5s5l7rnfxqc",
+      "images": [
+        "images/projects/SPD_User_Flow_Flow_chart.jpg",
+        "images/projects/SPD_User_Flow_Flow_chart_Page_2.jpg"
+      ],
+      "optionalVideo": "",
+      "image": "images/projects/SPD_User_Flow_Flow_chart.jpg",
       "carriedForward": {
-        "fromProject": "Kodecoon Project Journey",
-        "lesson": "Applied years of coding foundation (Python, OOP, Pygame) to build a real hackathon product under deadline pressure"
+        "fromProject": "Personal Student Portfolio Website",
+        "lesson": "Applied structured HTML/CSS/JS and user flow thinking to solve real-world NGO administrative challenges"
       },
-      "highlighted": true
+      "highlighted": true,
+      "slidesEmbedUrl": "https://www.canva.com/design/DAHM4xnRXzo/dqwWK6e9zzf3GcKGTFlgSA/view?embed"
     },
     {
       "title": "Personal Student Portfolio Website",
@@ -598,11 +673,10 @@
       "outcome": "Developed technical versatility across mobile, AR, gaming, and UI frameworks, culminating in intermediate-level OOP game architecture in Python.",
       "lessonsLearned": "Discovered how to transition logic structures from block-based programming to object-oriented programming (classes, functions, events), which accelerated my learning of newer languages.",
       "images": [
-        "images/projects/exhibition_pitch.jpg",
         "images/projects/space_attack_preview.png"
       ],
       "optionalVideo": "",
-      "image": "images/projects/exhibition_pitch.jpg",
+      "image": "images/projects/space_attack_preview.png",
       "carriedForward": {
         "fromProject": "Scratch Coder Course",
         "lesson": "Grew from block-based Scratch projects into text-based Python, Pygame, and AR — building technical versatility over 3 years"
@@ -610,6 +684,20 @@
     }
   ],
   "achievements": [
+    {
+      "title": "Singapore Informatics League (SIL 2026)",
+      "date": "July 2026",
+      "organisation": "Singapore Informatics League",
+      "category": "Competition",
+      "summary": "Achieved 69th place (top 30% silver threshold range) solving algorithmic, competitive programming, and mathematical problem-solving tasks.",
+      "applicantSignal": "Strong competitive programming logic, algorithmic problem solving, and resilience under competition pressure.",
+      "eaeRelevance": "Directly demonstrates high-level computational thinking, algorithm optimization, and data structures proficiency relevant to Infocomm and Cybersecurity.",
+      "fullDescription": "Competed with team 'untitled,cxx' solving 16 out of 25 competitive programming challenges over a timed round, securing 106.611 points and 69th place overall.",
+      "reflection": "Competing in SIL 2026 tested my speed, mathematical precision, and problem-solving strategy under time constraints. It reinforced the importance of algorithmic efficiency and debugging under pressure.",
+      "learningOutcome": "Enhanced competitive algorithmic strategies, math logic execution, and time-bounded problem decomposition.",
+      "image": "images/certificates/SIL26_Proof_Of_Participation_Ranking.png",
+      "certificate": "images/certificates/SIL26_Proof_Of_Participation_Ranking.png"
+    },
     {
       "title": "Mathematics Growth Journey",
       "date": "2021 - 2024",
@@ -1601,15 +1689,15 @@
       {
         "id": "commit-sil-2026",
         "title": "Singapore Informatics League '26 (SIL)",
-        "message": "feat: [Add commit message here]",
-        "date": "[To be confirmed]",
+        "message": "feat: participated in SIL coding competition and problem solving, and learnt competitive programming]",
+        "date": "[July 5th 2026]",
         "branch": "coding",
         "parent": "commit-kodecoon-project-journey",
         "mergeParents": [],
         "order": 14.5,
         "type": "achievement",
         "visible": true,
-        "summary": "[Add details here]"
+        "summary": "[July 5th 2026] Participated in the Singapore Informatics League (SIL) coding competition, solving algorithmic problems and learning competitive programming techniques, while learning to collaborate with others from wildly different backgrounds and skill levels. This experience enhanced my problem-solving skills, coding efficiency, and ability to work under time constraints, preparing me for future coding challenges and competitions."
       },
       {
         "id": "commit-eae-direction",

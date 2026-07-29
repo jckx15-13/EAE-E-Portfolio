@@ -63,19 +63,21 @@
   };
   const PROJECT_MODE_ORDER = {
     story: [
-      'Kodecoon Project Journey',
+      'Singapore Informatics League (SIL 2026)',
       'PyCon Hackathon - SkillQuest',
-      'Personal Student Portfolio Website',
-      'SPD Caregiver & Admin Event Portal Prototype',
       'FLL 2026 Unearthed Robot Design & Planning',
+      'SPD Caregiver & Admin Event Portal Prototype',
+      'Personal Student Portfolio Website',
+      'Kodecoon Project Journey',
       '3D Design & Mechanical Prototyping (Thingiverse Creations)',
     ],
     timeline: [
-      'Kodecoon Project Journey',
-      'FLL 2026 Unearthed Robot Design & Planning',
+      'Singapore Informatics League (SIL 2026)',
       'PyCon Hackathon - SkillQuest',
-      'Personal Student Portfolio Website',
+      'FLL 2026 Unearthed Robot Design & Planning',
       'SPD Caregiver & Admin Event Portal Prototype',
+      'Personal Student Portfolio Website',
+      'Kodecoon Project Journey',
       '3D Design & Mechanical Prototyping (Thingiverse Creations)',
     ],
   };
