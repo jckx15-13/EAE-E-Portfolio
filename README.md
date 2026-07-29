@@ -82,6 +82,7 @@ Built adhering to VibeSec web application security best practices:
 
 | Project / Achievement | Category | Tech Stack / Focus | Key Highlights |
 | :--- | :--- | :--- | :--- |
+| **Singapore Informatics League (SIL 2026)** | Competitive Programming | C++, Algorithms, Data Structures | Solved 16/25 algorithmic challenges, scoring 106.611 points and placing 69th nationally. |
 | **SPD Caregiver & Admin Portal** | Full-Stack Web | HTML5, CSS3, JS, User Access Control | Designed a caregiver event management system for non-profit SPD with role-based security. |
 | **FLL 2026 Unearthed Robot Design** | Robotics Engineering | LEGO Spike Prime, Python, Flowcharts | Engineering flowchart design, multi-sensor attachment mechanisms, strategy optimization. |
 | **PyCon Hackathon & SkillQuest** | Cybersecurity & Coding | Python, Gamified Learning, Cryptography | Built interactive coding challenges and cybersecurity puzzles under timed hackathon conditions. |
@@ -113,20 +114,28 @@ EAE-E-Portfolio/
 ├── data.js                 # Authoritative structured portfolio dataset (projects, evidence, reflections)
 ├── style.css               # Comprehensive CSS custom properties design system & themes
 ├── server.js               # Node.js development server with VibeSec security headers
-├── validate-portfolio.sh   # Integrity validation script for pre-commit checks
-├── CLAUDE.md               # Project guardrails, design system rules, and developer guidance
+├── editor-*.js             # Live Editor subsystem (state, validation, backup, undo/redo)
+├── validate-portfolio.sh   # Integrity validation script for pre-commit checks (local only)
+├── CLAUDE.md                # Project guardrails, design system rules, and developer guidance
 ├── docs/                   # Design guidelines and architecture documentation
 │   └── design_system/
 │       └── DESIGN_GUIDELINES.md
 ├── tests/                  # Headless Puppeteer automated test suite
 │   ├── run_tests.js        # Master test runner
-│   ├── suite_data.js       # Schema & data integrity tests
-│   ├── suite_ui.js         # Navigation & modal viewer tests
-│   ├── suite_a11y.js       # WCAG 2.2 AA & axe-core accessibility audit
-│   ├── suite_security.js   # VibeSec security & XSS sanitization tests
-│   └── suite_responsive.js # Multi-device viewport layout tests
-├── screenshots/            # Visual evidence assets & project screenshots
+│   ├── helpers/test_harness.js
+│   ├── editor-*.test.js    # Live Editor module unit tests
+│   └── suites/             # Puppeteer end-to-end suites
+│       ├── 01_data_integrity.test.js
+│       ├── 02_ui_navigation_modes.test.js
+│       ├── 03_accessibility_a11y.test.js
+│       ├── 04_live_editor_e2e.test.js
+│       ├── 05_security_vibesec.test.js
+│       ├── 06_responsive_viewports.test.js
+│       └── 07_growth_journey.test.js
+├── images/                 # Project, certificate, and robot evidence images
+├── screenshots/            # Visual evidence assets & project screenshots (gitignored, local)
 ├── videos/                 # Demonstration recordings & robotics videos
+├── School_E-Portfolio/     # Static Google Sites export of the school-hosted portfolio
 └── package.json            # Node.js dependencies & npm test scripts
 ```
 
@@ -173,8 +182,10 @@ Run specific test modules:
 npm run test:data        # Data integrity & schema validation
 npm run test:ui          # UI navigation & modal viewer rendering
 npm run test:a11y        # WCAG 2.2 AA axe-core accessibility audit
+npm run test:e2e         # Live Editor end-to-end workflow tests
 npm run test:security    # VibeSec security & XSS sanitization audit
 npm run test:responsive  # Mobile, tablet, and desktop layout audit
+npm run test:journey     # Growth journey / narrative flow tests
 ```
 
 ---

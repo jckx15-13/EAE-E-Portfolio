@@ -563,7 +563,7 @@
       "lessonsLearned": "I learned how to transform a broad problem into a complete digital product by combining user research, product design, software development, recommendation logic, and gamification. Developing SkillQuest taught me the importance of making complex information simple and actionable for users. I also learned that a successful learning platform should not only provide information, but should guide users towards a clear next step, help them see their progress, and show how each completed action contributes to their larger career goal.",
       "images": [],
       "optionalVideo": "videos/SkillQuest-demo.webm",
-      "image": "images/projects/group_lobby.jpg",
+      "image": "images/projects/exhibition_pitch.jpg",
       "carriedForward": {
         "fromProject": "Kodecoon Project Journey",
         "lesson": "Applied years of coding foundation (Python, OOP, Pygame) to build a real hackathon product under deadline pressure"
