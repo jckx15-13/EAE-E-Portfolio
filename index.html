@@ -96,6 +96,11 @@
 
       <a href="School_E-Portfolio/dist/index.html" id="schoolPortfolioBtn" class="school-portfolio-oval-btn" aria-label="Open School E-Portfolio"><span aria-hidden="true">🏫</span> School E-Portfolio <span class="btn-arrow" aria-hidden="true">↗</span></a>
 
+      <button id="adminLoginBtn" class="admin-login-btn" type="button" aria-label="Open portfolio editor login" title="Editor login (device PIN)">
+        <span class="admin-login-icon" aria-hidden="true">🔑</span>
+        <span class="admin-login-text">Log in</span>
+      </button>
+
       <div class="scroll-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <span id="scrollProgressBar"></span>
       </div>
@@ -107,12 +112,10 @@
         <a class="section-tab-pill" href="#philosophy" data-section="philosophy" role="tab" aria-selected="false">Philosophy</a>
         <a class="section-tab-pill" href="#why-cybersecurity" data-section="why-cybersecurity" role="tab" aria-selected="false">Cybersecurity</a>
         <a class="section-tab-pill" href="#timeline" data-section="timeline" role="tab" aria-selected="false">Timeline</a>
-        <a class="section-tab-pill" href="#reflections" data-section="reflections" role="tab" aria-selected="false">Reflections</a>
         <a class="section-tab-pill" href="#projects" data-section="projects" role="tab" aria-selected="false">Projects</a>
         <a class="section-tab-pill" href="#code-showcase" data-section="code-showcase" role="tab" aria-selected="false">Code Showcase</a>
         <a class="section-tab-pill" href="#achievements" data-section="achievements" role="tab" aria-selected="false">Evidence</a>
         <a class="section-tab-pill" href="#hobbies" data-section="hobbies" role="tab" aria-selected="false">Hobbies</a>
-        <a class="section-tab-pill" href="#applications" data-section="applications" role="tab" aria-selected="false">Course Fit</a>
         <a class="section-tab-pill" href="#goals" data-section="goals" role="tab" aria-selected="false">Goals</a>
       </div>
     </nav>
@@ -148,7 +151,7 @@
             <div class="hero-actions">
               <a id="heroBtnPrimary" class="button button-primary" href="#projects">View my projects</a>
               <a id="heroBtnSecondary" class="button button-secondary" href="#timeline">View evidence timeline</a>
-              <a id="heroBtnApplications" class="button button-outline" href="#applications">View EAE direction</a>
+              <a id="heroBtnApplications" class="button button-outline" href="#goals">View EAE direction</a>
             </div>
           </div>
         </div>
@@ -214,19 +217,6 @@
             <div id="achievementTimeline" class="timeline"></div>
           </div>
 
-          <!-- 4b. Reflection Journal — rendered as `git notes` on the repository above -->
-          <section id="reflections" class="timeline-subsection">
-            <div class="section-heading">
-              <p class="section-label">Growth</p>
-              <h2>Reflection Journal</h2>
-              <p class="section-lede">
-                Authentic reflections on challenges, failures, and lessons learned.
-              </p>
-            </div>
-            <div id="reflections-content" class="section-body">
-              <div id="reflectionList" class="reflection-grid git-notes-grid"></div>
-            </div>
-          </section>
         </div>
       </section>
 
@@ -308,22 +298,7 @@
         </div>
       </section>
 
-      <!-- 9. EAE Course Fit -->
-      <section id="applications" class="section section-astral-8">
-        <div class="section-heading">
-          <p class="section-label">Alignment</p>
-          <h2>EAE Course Fit</h2>
-          <p id="applicationsLede" class="section-lede"></p>
-          <p class="section-subheading-link">
-            <a href="#why-cybersecurity" class="link-subtle">← Back to why cybersecurity fits me</a>
-          </p>
-        </div>
-        <div id="applications-content" class="section-body">
-          <div id="applicationsGrid" class="applications-grid"></div>
-        </div>
-      </section>
-
-      <!-- 10. Future Direction -->
+      <!-- 9. Future Direction -->
       <section id="goals" class="section section-astral-9 goals-section">
         <div class="section-heading">
           <p class="section-label">Ambition</p>

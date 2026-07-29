@@ -302,9 +302,7 @@
           "Reflection journal is prepared for honest learning notes",
           "Placeholders keep unconfirmed details visible instead of pretending everything is complete"
         ],
-        "nextStep": "Write the mathematics reflection in your own words so it becomes one of the most human parts of the site.",
-        "linkLabel": "View reflections",
-        "linkTarget": "#reflections"
+        "nextStep": "Write the mathematics reflection in your own words so it becomes one of the most human parts of the site."
       },
       {
         "label": "EAE direction",
@@ -315,9 +313,7 @@
           "Course-specific notes remain placeholders until confirmed",
           "Project evidence supports cybersecurity, software, data, and problem-solving interests"
         ],
-        "nextStep": "Confirm exact course details and add school-specific reasons before submission.",
-        "linkLabel": "View applications",
-        "linkTarget": "#applications"
+        "nextStep": "Confirm exact course details and add school-specific reasons before submission."
       }
     ]
   },
@@ -980,24 +976,6 @@
       "Spent three months refining the flowchart logic and mechanical torque multipliers (1:2.5 ratio) for heavy pushes."
     ]
   },
-  "reflections": [
-    {
-      "title": "Learning through iteration",
-      "body": "During the FLL Unearthed robotics preparation, we spent weeks adjusting mechanical gear ratios. Discovering that a 1:2.5 torque mode worked for heavy pushing while a 1:1 speed mode worked for fast navigation taught me that physical systems require constant trial, measurement, and patience."
-    },
-    {
-      "title": "Competition experiences",
-      "body": "Participating in the BuildingBloCS Game Jam (Unity Track) taught me how to develop under tight constraints. Coding game mechanics with a team under time pressure showed me that clear interface planning is essential to merge code branches successfully."
-    },
-    {
-      "title": "Technical discoveries",
-      "body": "Analyzing the operational requirements for the SPD Caregiver portal was a major eye-opener. Learning to map out user flows and dashboard requirements using Draw.io diagrams before writing code changed how I structure software architectures."
-    },
-    {
-      "title": "Personal growth",
-      "body": "My journey from simple blocks in Scratch to C# scripts in Unity and data structures in Python built my resilience. It showed me that coding isn't about memorizing syntax, but showing up, recognizing problems, and planning solutions."
-    }
-  ],
   "futureGoals": {
     "title": "Future Direction Roadmap",
     "intro": "A structured timeline mapping my transition from secondary education into polytechnic specialization, DIS service, university degree studies, and a career in cybersecurity and software engineering.",

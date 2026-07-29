@@ -6,7 +6,11 @@
 
   // Local editor gate. This is a convenience PIN for the no-code editor on this
   // device, not secure authentication — the portfolio is a static local site.
-  const ADMIN_PIN = "2410";
+  // The default below is only used until the visitor sets their own via the
+  // Live Editor's "Change PIN" control, which stores an override in
+  // localStorage (STORAGE_KEYS.adminPin) — still device-local, still not
+  // secure auth, just changeable without editing source.
+  const ADMIN_PIN_DEFAULT = "2410";
   const ADMIN_AUTH_KEY = "eae_admin_authenticated";
   const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
   const STORAGE_KEYS = {
@@ -16,7 +20,27 @@
     versions: 'eaePortfolioVersions',
     publishedSnapshot: 'eaePublishedSnapshot',
     schoolReturn: 'eaePortfolioReturn',
+    adminPin: 'eae_admin_pin_override',
   };
+
+  function getAdminPin() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.adminPin);
+      // Exactly 4 digits, matching the login overlay's input maxLength — a
+      // longer stored value would be unenterable and lock the visitor out.
+      if (stored && /^\d{4}$/.test(stored)) return stored;
+    } catch (error) { /* storage disabled */ }
+    return ADMIN_PIN_DEFAULT;
+  }
+
+  function setAdminPin(nextPin) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.adminPin, nextPin);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
   const SELECTORS = {
     achievementModal: '#achievementModal',
     modalContent: '#modalContent',
@@ -26,6 +50,7 @@
     navToggle: '.nav-toggle',
     siteNav: '#siteNav',
     themeToggle: '#themeToggle',
+    adminLoginBtn: '#adminLoginBtn',
     scrollProgressBar: '#scrollProgressBar',
     scrollProgress: '.scroll-progress',
     printPortfolio: '#printPortfolio',
@@ -83,7 +108,6 @@
     ["#achievementStoryLede", "uiLabels.achievementStoryLede", "Verifiable proof of participation, competitions, and academic growth."],
     ["#goalsShortTerm", "uiLabels.goalsShortTerm", "Short-term"],
     ["#goalsLongTerm", "uiLabels.goalsLongTerm", "Long-term"],
-    ["#applicationsLede", "uiLabels.applicationsLede", ""],
     ["#footerText", "uiLabels.footerText", "Jaron Chew's EAE portfolio: projects, evidence, reflection, and direction."],
     ["#printPortfolio", "uiLabels.footerPrintBtn", "Print portfolio"],
   ];
@@ -91,7 +115,7 @@
   const HERO_LINK_TARGETS = [
     ["#heroBtnPrimary", "#projects"],
     ["#heroBtnSecondary", "#timeline"],
-    ["#heroBtnApplications", "#applications"],
+    ["#heroBtnApplications", "#goals"],
   ];
 
   // Editor shortcuts, kept in sync with the section order in index.html.
@@ -99,10 +123,8 @@
     ["Hero", "#about"],
     ["Skill mapping", "#learning-useful"],
     ["Technical journey", "#timeline"],
-    ["Reflection journal", "#reflections"],
     ["Projects", "#projects"],
     ["Evidence", "#achievements"],
-    ["Course fit", "#applications"],
   ];
 
   // `main` is my life; every other branch is a direction that life grew in.
@@ -547,11 +569,9 @@
     ["Cybersecurity", "why-cybersecurity"],
     ["Skills", "learning-useful"],
     ["Journey", "timeline"],
-    ["Reflection", "reflections"],
     ["Projects", "projects"],
     ["Library", "achievements"],
     ["Hobbies", "hobbies"],
-    ["Course Fit", "applications"],
     ["Goals", "goals"],
   ];
   const primaryNavIds = new Set([
@@ -560,11 +580,9 @@
     "why-cybersecurity",
     "learning-useful",
     "timeline",
-    "reflections",
     "projects",
     "achievements",
     "hobbies",
-    "applications",
     "goals",
   ]);
 
@@ -974,34 +992,6 @@
   // The reflections themselves are attached to their commits inside the graph, the
   // way `git notes` hang off a commit. This section is the note index — `git notes
   // list` — so the journal stays addressable from the nav without repeating itself.
-  function renderReflections() {
-    const grid = document.getElementById('reflectionList');
-    if (!grid) return;
-    grid.replaceChildren();
-
-    (data.reflections || []).forEach((reflection, index) => {
-      const commitId = reflection.noteOn || REFLECTION_NOTE_ANCHORS[index];
-      const row = create('button', 'git-note-index-row reveal');
-      row.type = 'button';
-      row.dataset.noteOn = commitId || '';
-
-      row.append(create('span', 'git-note-index-ref', `refs/notes/${slugify(reflection.title)}`));
-      row.append(create('span', 'git-note-index-title', reflection.title));
-
-      const commit = (data.learningRepository?.commits || []).find((item) => item.id === commitId);
-      row.append(create('span', 'git-note-index-target', commit ? `attached to ${commit.title}` : 'attached to the journey'));
-
-      row.addEventListener('click', () => {
-        // Highlight without scrolling, then let the note itself own the scroll.
-        if (commitId) focusCommitRow(commitId, { scroll: false });
-        const note = document.getElementById(`reflection-${slugify(reflection.title)}`);
-        if (note) note.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      });
-
-      grid.append(row);
-    });
-  }
-
   // Project ordering still keys off this; the view-mode switcher itself is disabled.
   let currentViewMode = "story";
 
@@ -1551,7 +1541,6 @@
   }
 
   const EVIDENCE_VIEW_KEY = 'eaePortfolioEvidenceView';
-  const GRAPH_VIEW_KEY = 'eaePortfolioGraphView';
   let evidenceGridDrawn = false;
   let projectTimelineDrawn = false;
 
@@ -2245,33 +2234,6 @@
     return strip;
   }
 
-  function renderApplications() {
-    const grid = $("#applicationsGrid");
-    if (!grid) return;
-    grid.replaceChildren();
-    const applications = Array.isArray(data.targetApplications)
-      ? data.targetApplications.filter((application) => application && typeof application === "object")
-      : [];
-    applications.forEach((application) => {
-      const card = create("article", "application-card reveal");
-      const top = create("div", "application-top");
-      top.append(create("span", "application-mark", application.shortName));
-      top.append(create("h3", "", application.institution));
-
-      card.append(top);
-      card.append(create("p", "application-course", application.targetCourse));
-      card.append(create("p", "", application.whyThisSchool));
-
-      const list = create("ul", "compact-list");
-      (application.evidenceToShow || []).filter(Boolean).forEach((item) => {
-        const li = create("li", "", item);
-        list.append(li);
-      });
-      card.append(list);
-      grid.append(card);
-    });
-  }
-
   function renderAchievements() {
     const cards = $("#achievementCards");
     const timeline = $("#achievementTimeline");
@@ -2955,23 +2917,6 @@
       if (row) row.classList.add('is-focus');
     }
 
-    function setGraphViewMode(container, mode) {
-      const safeMode = mode === 'gallery' ? 'gallery' : 'timeline';
-      container.dataset.graphView = safeMode;
-
-      container.querySelectorAll('.git-view-toggle-btn').forEach((btn) => {
-        const active = btn.dataset.graphViewMode === safeMode;
-        btn.classList.toggle('is-active', active);
-        btn.setAttribute('aria-pressed', String(active));
-      });
-
-      try { localStorage.setItem(GRAPH_VIEW_KEY, safeMode); } catch (error) { /* storage disabled */ }
-
-      // Card rows reflow between the two layouts (graph rail vs. plain grid), so
-      // node/line coordinates only make sense once Timeline is visible again.
-      if (safeMode === 'timeline') scheduleGraphPaint(container);
-    }
-
     function scheduleGraphPaint(container) {
       const paint = () => paintLearningGraph(container);
       requestAnimationFrame(() => requestAnimationFrame(paint));
@@ -3095,6 +3040,22 @@
       openModalDialog(dialog);
     }
 
+    // Resolves the real evidence image behind a commit (its linked achievement or
+    // project) so the graph can lead with a photo the way the achievement/evidence
+    // cards do, instead of text-only rows.
+    function findCommitMediaImage(commit) {
+      if (commit.linkedAchievement) {
+        const achievement = (data.achievements || []).find((item) => item.title === commit.linkedAchievement);
+        if (achievement?.image) return { src: achievement.image, alt: achievement.title };
+      }
+      if (commit.linkedProject) {
+        const project = (data.projects || []).find((item) => item.title === commit.linkedProject);
+        const src = project?.image || (Array.isArray(project?.images) && project.images[0]);
+        if (src) return { src, alt: project.title };
+      }
+      return null;
+    }
+
     function createGitCommitCard(commit, repo, tagLabel, colorFor) {
       const card = create('article', 'git-commit-card reveal');
       card.dataset.commitId = commit.id;
@@ -3102,6 +3063,18 @@
 
       const branch = (repo.branches || []).find((item) => item.id === commit.branch);
       const color = colorFor ? colorFor(commit.branch) : (branch?.color || getBranchColor(commit.branch));
+
+      const media = findCommitMediaImage(commit);
+      if (media) {
+        const figure = create('figure', 'git-commit-media');
+        const img = document.createElement('img');
+        img.src = media.src;
+        img.alt = media.alt || '';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        figure.append(img);
+        card.append(figure);
+      }
 
       const meta = create('div', 'git-commit-meta');
 
@@ -3206,33 +3179,16 @@
       container.replaceChildren();
       container.__learningGraph = { rows, laneMap, colorFor, tagAnchors };
 
-      let storedGraphView = 'timeline';
-      try { storedGraphView = localStorage.getItem(GRAPH_VIEW_KEY) || 'timeline'; } catch (error) { /* storage disabled */ }
-      container.dataset.graphView = storedGraphView === 'gallery' ? 'gallery' : 'timeline';
-
+      // The graph always renders in full timeline mode now — the outer
+      // Repository/Gallery switch (#evidenceIsland) is the single control that
+      // decides whether this graph is shown at all; there is no inner sub-mode.
       const toolbar = create('div', 'git-repo-toolbar');
       const titleWrap = create('div', 'git-repo-title-wrap');
       titleWrap.append(create('span', 'git-repo-title', repo.title || 'Learning Repository'));
       titleWrap.append(create('span', 'git-repo-subtitle', repo.intro || 'A Git-style learning history'));
       const count = create('span', 'git-repo-count', `${commits.length} commits`);
 
-      // Timeline shows the branch graph with connector lines; Gallery drops the
-      // graph for a plain responsive card grid — useful for a dense recap slide.
-      const graphViewToggle = create('div', 'git-view-toggle');
-      graphViewToggle.setAttribute('role', 'group');
-      graphViewToggle.setAttribute('aria-label', 'Graph display mode');
-      [['timeline', 'Timeline'], ['gallery', 'Gallery']].forEach(([mode, label]) => {
-        const btn = create('button', 'git-view-toggle-btn', label);
-        btn.type = 'button';
-        btn.dataset.graphViewMode = mode;
-        const active = container.dataset.graphView === mode;
-        btn.classList.toggle('is-active', active);
-        btn.setAttribute('aria-pressed', String(active));
-        btn.addEventListener('click', () => setGraphViewMode(container, mode));
-        graphViewToggle.append(btn);
-      });
-
-      toolbar.append(titleWrap, graphViewToggle, count);
+      toolbar.append(titleWrap, count);
       container.append(toolbar);
 
       const branchLegend = create('div', 'git-branch-legend');
@@ -3267,6 +3223,14 @@
       });
 
       container.append(body);
+
+      // Visual bridge into the Future Direction Roadmap below: the graph's last
+      // real commit is HEAD; the roadmap picks up from there as planned commits.
+      const terminus = create('div', 'git-graph-terminus');
+      terminus.append(create('span', 'git-graph-terminus-pill', 'HEAD'));
+      terminus.append(create('span', 'git-graph-terminus-label', 'Continues in the Future Direction Roadmap ↓'));
+      container.append(terminus);
+
       if (typeof refreshReveal === 'function') refreshReveal(container);
       scheduleGraphPaint(container);
     }
@@ -4500,32 +4464,41 @@
     renderGoalList("#shortTermGoals", data.futureGoals?.shortTerm || []);
     renderGoalList("#longTermGoals", data.futureGoals?.longTerm || []);
 
+    // Styled as a continuation of the Learning Repository graph above: a single
+    // rail of "planned commit" cards, dashed to read as not-yet-landed, picking up
+    // from the graph's HEAD terminus rather than the old left/right zigzag layout.
     const timelineContainer = $("#futureDirectionTimeline");
     if (timelineContainer && Array.isArray(data.futureGoals?.timelineMilestones)) {
       timelineContainer.replaceChildren();
-      const timelineWrap = create("div", "timeline-container timeline-wrap");
-      const timelineEl = create("div", "timeline future-vertical-timeline");
+
+      const rail = create("div", "future-commit-rail");
+
+      const head = create("div", "future-rail-head");
+      head.append(create("span", "git-legend-pill future-rail-head-pill", "refs/heads/future"));
+      rail.append(head);
 
       (data.futureGoals.timelineMilestones || []).forEach((m, index) => {
-        const item = create("div", `timeline-item ${index % 2 === 0 ? "left" : "right"} reveal`);
-        const content = create("div", "timeline-content");
+        const row = create("div", "future-commit-row reveal");
+        const card = create("article", "future-commit-card");
 
-        const top = create("div", "future-roadmap-top");
-        top.append(create("span", "future-step-badge", m.badge || `Step ${index + 1}`));
-        if (m.icon) top.append(create("span", "future-icon", m.icon));
-        content.append(top);
+        const meta = create("div", "git-commit-meta");
+        meta.append(create("span", "git-branch-pill future-branch-pill", m.phase || `Step ${index + 1}`));
+        if (m.badge) meta.append(create("span", "git-tag-pill", m.badge));
+        if (m.date) meta.append(create("span", "git-commit-date", m.date));
+        card.append(meta);
 
-        if (m.date) content.append(create("p", "date-line", m.date));
-        if (m.phase) content.append(create("p", "card-kicker", m.phase));
-        content.append(create("h3", "", m.title));
-        content.append(create("p", "", m.description));
+        const heading = create("div", "future-commit-heading");
+        if (m.icon) heading.append(create("span", "future-icon", m.icon));
+        heading.append(create("h3", "", m.title));
+        card.append(heading);
 
-        item.append(content);
-        timelineEl.append(item);
+        card.append(create("p", "git-commit-message", m.description));
+
+        row.append(card);
+        rail.append(row);
       });
 
-      timelineWrap.append(timelineEl);
-      timelineContainer.append(timelineWrap);
+      timelineContainer.append(rail);
     }
   }
 
@@ -5129,7 +5102,7 @@
   }
 
   function applySectionOrder() {
-    const order = data.sectionOrder || ["about", "philosophy", "why-cybersecurity", "learning-useful", "timeline", "reflections", "projects", "achievements", "hobbies", "applications", "goals"];
+    const order = data.sectionOrder || ["about", "philosophy", "why-cybersecurity", "learning-useful", "timeline", "projects", "achievements", "hobbies", "goals"];
     const main = $("#main");
     if (!main) return;
     // Only top-level sections take part in ordering — nested ones (Reflection Journal
@@ -5272,7 +5245,7 @@
     cancel.type = "button";
 
     function tryUnlock() {
-      if (input.value === ADMIN_PIN) {
+      if (input.value === getAdminPin()) {
         try {
           localStorage.setItem(ADMIN_AUTH_KEY, "true");
         } catch (storageError) { /* storage disabled */ }
@@ -5303,6 +5276,30 @@
     document.body.append(overlay);
 
     setTimeout(() => input.focus(), 0);
+  }
+
+  /**
+   * Wires the visible header "Log in" button as an explicit entry point into
+   * the editor PIN flow. Previously the only way to reach showAdminPinPrompt()
+   * was the `?admin=1` URL param (still supported, unchanged) or already being
+   * authenticated. This button bypasses the URL-param gate directly rather than
+   * modifying validateAdminToken(), so the existing keyboard-shortcut and
+   * URL-param paths keep behaving exactly as before.
+   */
+  function setupAdminLoginButton() {
+    const btn = $(SELECTORS.adminLoginBtn);
+    if (!btn) return;
+
+    btn.addEventListener("click", () => {
+      if (isAdminAuthenticated()) {
+        if (!$(".live-editor-sidebar")) {
+          initializeEditorModules();
+          setupLiveEditor();
+        }
+        return;
+      }
+      showAdminPinPrompt();
+    });
   }
 
   function showEditorToast(message) {
@@ -5483,6 +5480,104 @@
       showEditorToast("Editor locked");
     });
     actions.append(lockEditorBtn);
+
+    // Change PIN — a small inline form, collapsed by default. Requires the
+    // current PIN before accepting a new one, since this is the only gate
+    // in front of the editor and CLAUDE.md forbids describing it as secure
+    // authentication regardless of how it's presented here.
+    const changePinBtn = create("button", "button button-secondary", "Change PIN");
+    changePinBtn.type = "button";
+    changePinBtn.id = "changePinToggleBtn";
+    changePinBtn.style.width = "100%";
+    changePinBtn.style.marginTop = "8px";
+    actions.append(changePinBtn);
+
+    const changePinForm = create("div", "change-pin-form");
+    changePinForm.hidden = true;
+
+    const currentPinLabel = create("label", "", "Current PIN");
+    currentPinLabel.htmlFor = "changePinCurrent";
+    const currentPinInput = document.createElement("input");
+    currentPinInput.type = "password";
+    currentPinInput.inputMode = "numeric";
+    currentPinInput.pattern = "[0-9]*";
+    currentPinInput.maxLength = 4;
+    currentPinInput.id = "changePinCurrent";
+    currentPinInput.className = "admin-pin-input";
+    currentPinInput.placeholder = "••••";
+
+    const newPinLabel = create("label", "", "New PIN (4 digits)");
+    newPinLabel.htmlFor = "changePinNew";
+    const newPinInput = document.createElement("input");
+    newPinInput.type = "password";
+    newPinInput.inputMode = "numeric";
+    newPinInput.pattern = "[0-9]*";
+    newPinInput.maxLength = 4;
+    newPinInput.id = "changePinNew";
+    newPinInput.className = "admin-pin-input";
+    newPinInput.placeholder = "••••";
+
+    const confirmPinLabel = create("label", "", "Confirm new PIN");
+    confirmPinLabel.htmlFor = "changePinConfirm";
+    const confirmPinInput = document.createElement("input");
+    confirmPinInput.type = "password";
+    confirmPinInput.inputMode = "numeric";
+    confirmPinInput.pattern = "[0-9]*";
+    confirmPinInput.maxLength = 4;
+    confirmPinInput.id = "changePinConfirm";
+    confirmPinInput.className = "admin-pin-input";
+    confirmPinInput.placeholder = "••••";
+
+    const changePinError = create("p", "admin-pin-error");
+    changePinError.setAttribute("aria-live", "polite");
+
+    const savePinBtn = create("button", "button button-primary", "Save new PIN");
+    savePinBtn.type = "button";
+    savePinBtn.style.width = "100%";
+    savePinBtn.style.marginTop = "8px";
+
+    function resetChangePinForm() {
+      currentPinInput.value = "";
+      newPinInput.value = "";
+      confirmPinInput.value = "";
+      changePinError.textContent = "";
+    }
+
+    changePinBtn.addEventListener("click", () => {
+      changePinForm.hidden = !changePinForm.hidden;
+      resetChangePinForm();
+      if (!changePinForm.hidden) currentPinInput.focus();
+    });
+
+    savePinBtn.addEventListener("click", () => {
+      if (currentPinInput.value !== getAdminPin()) {
+        changePinError.textContent = "Current PIN is incorrect.";
+        return;
+      }
+      if (!/^\d{4}$/.test(newPinInput.value)) {
+        changePinError.textContent = "New PIN must be exactly 4 digits.";
+        return;
+      }
+      if (newPinInput.value !== confirmPinInput.value) {
+        changePinError.textContent = "New PIN and confirmation don't match.";
+        return;
+      }
+      if (setAdminPin(newPinInput.value)) {
+        changePinForm.hidden = true;
+        resetChangePinForm();
+        showEditorToast("PIN updated");
+      } else {
+        changePinError.textContent = "Couldn't save — local storage is unavailable on this device.";
+      }
+    });
+
+    changePinForm.append(
+      currentPinLabel, currentPinInput,
+      newPinLabel, newPinInput,
+      confirmPinLabel, confirmPinInput,
+      changePinError, savePinBtn
+    );
+    actions.append(changePinForm);
 
     // Templates / Insert Section
     const templatesGroup = create('div', 'editor-control-group');
@@ -6286,6 +6381,7 @@
    * ========================================================================== */
   function render() {
     setupThemeToggle();
+    setupAdminLoginButton();
     renderNav();
     applySectionVisibility();
     renderCustomSections();
@@ -6298,11 +6394,7 @@
     renderJourneyChapters();
     renderProjects();
     renderCodeShowcase();
-    renderApplications();
     renderAchievements();
-    // After renderAchievements(), which materialises data.learningRepository that
-    // the note index reads commit titles from.
-    renderReflections();
     renderHobbies();
     renderGoals();
     renderOptionalSections();
