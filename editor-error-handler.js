@@ -93,7 +93,7 @@ class EditorErrorHandler {
         'Choose which version to keep, then try again'
       ],
       'PARSE_ERROR': [
-        'Your data.js file has a syntax error',
+        'Your data.json file has a syntax error',
         'Click "Restore from Backup" to revert to last known good version',
         'Use the Export feature to download a clean copy'
       ],

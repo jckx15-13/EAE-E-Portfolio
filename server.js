@@ -52,11 +52,10 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       try {
         const data = JSON.parse(body);
-        const filePath = path.join(PUBLIC_DIR, 'data.js');
-        const fileContent = `(function () {\n  window.PORTFOLIO_DATA = ${JSON.stringify(data, null, 2)};\n})();\n`;
-        fs.writeFileSync(filePath, fileContent, 'utf8');
+        const jsonPath = path.join(PUBLIC_DIR, 'data.json');
+        fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2) + '\n', 'utf8');
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: true, message: 'Saved to data.js successfully!' }));
+        res.end(JSON.stringify({ success: true, message: 'Saved to data.json successfully!' }));
       } catch (err) {
         console.error("Save error:", err);
         res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -128,7 +127,7 @@ const server = http.createServer((req, res) => {
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-    // no-cache forces revalidation so edited script.js/data.js never go stale in
+    // no-cache forces revalidation so edited script.js/data.json never go stale in
     // an open tab (the server previously sent no caching headers at all).
     res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': 'no-cache' });
     fs.createReadStream(filePath).pipe(res);

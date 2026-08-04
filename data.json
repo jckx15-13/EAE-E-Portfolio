@@ -1,0 +1,1486 @@
+{
+  "meta": {
+    "title": "Jaron Chew | EAE Portfolio",
+    "description": "A personal EAE portfolio for Jaron Chew, focused on coding, robotics, cybersecurity, projects, evidence, and reflective growth.",
+    "author": "Jaron Chew"
+  },
+  "philosophy": {
+    "intro": "I believe technology should be more than just code; it should be a way to understand, help, and protect. My journey is driven by a curiosity that doesn't wait to be told what to learn.",
+    "quote": "Any sufficiently advanced technology is indistinguishable from magic.",
+    "quoteAuthor": "Arthur C. Clarke",
+    "mindset": [
+      {
+        "title": "Curiosity First",
+        "body": "I learn because I want to know how things work, from the logic of a robot to the vulnerabilities in a network."
+      },
+      {
+        "title": "Lifelong Learning",
+        "body": "Technology never stops moving, and neither do I. I am committed to continuous growth and adapting to new challenges."
+      },
+      {
+        "title": "Stepping Out of Comfort Zone",
+        "body": "The best learning happens when things are difficult. I actively seek projects that push my boundaries."
+      },
+      {
+        "title": "Risk-Aware Experimentation",
+        "body": "I explore systems carefully and ethically, understanding that with power comes responsibility."
+      }
+    ]
+  },
+  "whyCybersecurity": {
+    "intro": "Cybersecurity is the natural destination for my building, coding, and debugging mindset. It connects everything in my portfolio—from robotics planning and software engineering to competitive programming—into a focused mission: investigating how complex systems operate and securing them against evolving threats.",
+    "reasons": [
+      {
+        "title": "OSINT & Threat Intelligence",
+        "body": "I am passionate about Open Source Intelligence (OSINT), learning how publicly available data can be gathered, correlated, and analyzed to map digital footprints and identify security posture vulnerabilities."
+      },
+      {
+        "title": "Reverse Engineering & System Internals",
+        "body": "I enjoy breaking down binary executables and understanding low-level assembly, memory structures, and hardware-software boundaries to uncover how systems work under the hood and how vulnerabilities arise."
+      },
+      {
+        "title": "AI in Cybersecurity",
+        "body": "I actively explore the intersection of artificial intelligence and security—leveraging machine learning for threat detection and automated code audits while analyzing new attack vectors targeting AI systems."
+      },
+      {
+        "title": "Cybersecurity in Emerging Technologies",
+        "body": "As technologies like IoT, cloud infrastructure, and autonomous systems expand, I am driven to explore security roles and defensive frameworks required to safeguard these emerging domains."
+      },
+      {
+        "title": "Systems Thinking & Attacker Mindset",
+        "body": "My experience across app development, FLL robotics, and competitive programming trained me to see connections across hardware, software, and logic flows—giving me the analytical rigor needed to anticipate how systems fail and defend them effectively."
+      }
+    ]
+  },
+  "learningThatStaysUseful": {
+    "title": "Learning That Stays Useful",
+    "intro": [
+      "Not every subject connects directly to a course module, but every subject trains a way of thinking.",
+      "I do not see school subjects as separate boxes, but as different ways of learning how to think, solve problems, and understand the world.",
+      "What I learn in school is not only useful for exams. It becomes valuable when I carry it into how I build, communicate, adapt, and make decisions."
+    ],
+    "subjects": [
+      {
+        "id": "math",
+        "name": "Elementary Mathematics",
+        "shortName": "E-Math",
+        "trains": [
+          "Logic",
+          "Patterns",
+          "Precision",
+          "Problem-solving",
+          "Presentation"
+        ],
+        "usefulIn": "Coding, robotics, algorithms, data, and breaking large problems into smaller parts.",
+        "reflection": "Math trained me to think step by step and solve problems clearly instead of guessing. Math also taught me how to present my working in structured mathematical notation, such that it is easy to understand and not misunderstood by others."
+      },
+      {
+        "id": "science",
+        "name": "Combined Science (Physics & Chemistry)",
+        "shortName": "Science",
+        "trains": [
+          "Observation",
+          "Testing",
+          "Cause and Effect",
+          "Evidence"
+        ],
+        "usefulIn": "Robotics, engineering, troubleshooting, experimentation, and understanding why things work.",
+        "reflection": "Science taught me to observe carefully, test ideas, learn from results instead of assumptions, and relate maths to break down real-world problems."
+      },
+      {
+        "id": "english",
+        "name": "English",
+        "shortName": "English",
+        "trains": [
+          "Communication",
+          "Clarity",
+          "Reflection",
+          "Explanation"
+        ],
+        "usefulIn": "Presentations, documentation, teamwork, writing, and expressing technical ideas clearly.",
+        "reflection": "English helps me turn ideas into something clear, understandable, and useful to others, and even myself. English also allowed me to learn online, where English is the dominant language, and many people use it in different ways."
+      },
+      {
+        "id": "humanities",
+        "name": "Combined Humanities (Geography & Social Studies)",
+        "shortName": "Humanities",
+        "trains": [
+          "Context",
+          "Critical Thinking",
+          "Social Awareness",
+          "Judgement"
+        ],
+        "usefulIn": "Ethical thinking, understanding impact, evaluating information, and seeing the bigger picture.",
+        "reflection": "Humanities reminds me that decisions affect people, and that problems should be understood in their wider context. Social Studies taught me to analyse my data, as well as its validity, and helped me to make accurate and informed decisions and judgements, especially when learning online. Geography taught me how to make a good field study, disaster risk management, which is especially useful in the case of cyber attacks, and analyse graphs and charts."
+      },
+      {
+        "id": "poa",
+        "name": "Principles of Accounting",
+        "shortName": "POA",
+        "trains": [
+          "Accuracy",
+          "Accountability",
+          "Organisation",
+          "Structure"
+        ],
+        "usefulIn": "Planning, managing resources, keeping clear records, and making responsible decisions.",
+        "reflection": "I learned that details matter, and that being careful and accountable with information is important in both work and life. While cybersecurity has no direct relation to this subject in terms of money, they are very alike in that POA secures money while cybersecurity secures data and the threat landscape. I also learnt about the ethics of an accountant, which I find to be very much related to the same ethics in cybersecurity."
+      },
+      {
+        "id": "chinese",
+        "name": "Chinese",
+        "shortName": "Chinese",
+        "trains": [
+          "Communication",
+          "Adaptability",
+          "Cultural Awareness",
+          "Expression"
+        ],
+        "usefulIn": "Connecting with different people, working across contexts, and building stronger communication skills.",
+        "reflection": "Chinese taught me a different way of communicating, through art forms, and why certain languages are good for certain things, like English for programming, and Chinese for art and conversation."
+      }
+    ],
+    "carryForwardTags": [
+      "Logic",
+      "Communication",
+      "Evidence",
+      "Responsibility",
+      "Adaptability",
+      "Critical Thinking",
+      "Precision",
+      "Problem-solving"
+    ]
+  },
+  "profile": {
+    "name": "Jaron Chew",
+    "shortName": "EAE Portfolio",
+    "headline": "A curious builder working toward cybersecurity.",
+    "subheadline": "Projects, robotics, and reflections that show how I learn, solve problems, and turn curiosity into practical work.",
+    "intro": "I am a secondary school student from Juying Secondary School who learns by making things. Coding, robotics, cybersecurity, and engineering are the places where my curiosity becomes something real.",
+    "identityLine": "Curious builder, daring lifelong learner, and practical problem solver.",
+    "personalSignature": "I am still learning, but I keep showing up: noticing problems, building, testing, reflecting, and improving.",
+    "rememberMe": "I am a curious and hardworking lifelong learner who enjoys coding, technology, engineering, and solving problems. I enjoy learning through projects and building useful solutions that improve people's experiences. I believe technology should create positive impact and help others.",
+    "brandStatement": "• Shows how I think and build\n• Shows how I respond to challenges\n• Shows why technology matters in real problems",
+    "profileImage": "images/projects/carnival_water_activity.jpg",
+    "profileImageAlt": "Students presenting a carnival water activity at Juying Secondary School",
+    "heroImage": "images/projects/exhibition_pitch.jpg",
+    "photoCaption": "Jaron Chew, Juying Secondary School",
+    "focusAreas": [
+      "Who I Am",
+      "What Shaped Me",
+      "What I Built",
+      "Where I Am Going"
+    ],
+    "journeyMarkers": [],
+    "contact": {
+      "email": "jaronchewkx@gmail.com",
+      "github": "https://github.com/jckx15-13",
+      "deployment": "http://jaron-eae-portfolio.local"
+    }
+  },
+  "experienceGallery": [],
+  "lifeEntry": {
+    "title": "Technical & Academic Growth Journey",
+    "intro": "A structured outline of the foundational experiences, technical skills, and academic milestones that have shaped my focus on software engineering and cybersecurity.",
+    "doorway": "A systematic progression showing my transition from self-directed exploration into disciplined software development and robotics engineering.",
+    "chapters": [
+      {
+        "title": "Foundational Computational Logic",
+        "anchor": "Logic",
+        "body": "Discovered the fundamentals of programming structure through block-based coding, mastering loops, variables, and conditions in mobile app prototyping."
+      },
+      {
+        "title": "Object-Oriented Development & Game Systems",
+        "anchor": "Programming",
+        "body": "Progressed to text-based coding in Python, building complex OOP architectures, custom event-loops, and multi-level simulations in Pygame."
+      },
+      {
+        "title": "Precision Control & Robotics Engineering",
+        "anchor": "Robotics",
+        "body": "Programmed sensors and configured gears for FLL robotics, engineering physical systems that optimize torque-to-speed ratios under tight deadlines."
+      },
+      {
+        "title": "Applied Problem Solving & Gamified Security",
+        "anchor": "Application",
+        "body": "Built real-world applications under pressure, translating public jobs-and-skills datasets into analysis programs, and gamifying cybersecurity concepts."
+      },
+      {
+        "title": "Academic Resilience & Quantitative Improvement",
+        "anchor": "Resilience",
+        "body": "Focused on persistent growth in quantitative logic and rigorous reasoning, achieving significant, structured performance gains in mathematics."
+      }
+    ]
+  },
+  "personalMap": {
+    "title": "A Map of Me",
+    "intro": "These cards are the simplest way to read my portfolio: not as separate records, but as parts of the same person.",
+    "note": "I want the reader to move through this like a quiet open space, noticing the moments that shaped how I think, build, and keep improving.",
+    "cards": [
+      {
+        "label": "First spark",
+        "title": "I found confidence through small games",
+        "body": "Scratch introduced me to variables, loops, functions, lists, Boolean logic, and conditionals through projects like Alien Invasion and Treasure Hunter, and most importantly, sparked my interest in the magic of computing and computational thinking.",
+        "evidence": "Scratch Coder Course, February 2019 - September 2019"
+      },
+      {
+        "label": "Making things useful",
+        "title": "I turned ideas into apps and interactions",
+        "body": "MIT App Inventor, Spark AR, and Roblox helped me see that technology can become something people use, touch, and experience.",
+        "evidence": "Mpainter, Lucky Draw filter, and SDG 14 Roblox project"
+      },
+      {
+        "label": "Technical discipline",
+        "title": "I learned to slow down and plan logic",
+        "body": "Robotics and The Lab Coder path trained me to think in sequences, flowcharts, sensors, conditions, loops, variables, lists, and functions.",
+        "evidence": "Robotics flowcharts and The Lab Coder Foundation to Intermediate"
+      },
+      {
+        "label": "Purpose",
+        "title": "I like technology more when it helps people understand and empowers them to transcend their potential",
+        "body": "SkillQuest and the PyCon jobs-and-skills work connect my interest in software with cybersecurity education, skills mapping, and practical guidance.",
+        "evidence": "SkillQuest cybersecurity game and PyCon Jobs & Skills track"
+      },
+      {
+        "label": "Growth",
+        "title": "I want my improvement to be visible",
+        "body": "My mathematics journey matters because it shows effort over time, not just a final result. It shows my ability to learn despite a lack of talent.",
+        "evidence": "Mathematics growth journey toward A1"
+      },
+      {
+        "label": "Direction",
+        "title": "I am building toward polytechnic through evidence",
+        "body": "My EAE direction is supported by projects, coding foundations, robotics planning, reflections.",
+        "evidence": "_"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "title": "Singapore Informatics League (SIL 2026)",
+      "category": "Competitive Programming / Algorithmic Problem Solving",
+      "status": "69th Place (Completed July 2026)",
+      "snapshotLabel": "Algorithms",
+      "snapshotTitle": "SIL 2026 Competitive Programming",
+      "snapshotSummary": "16/25 competitive programming challenges solved, 106.611 points scored, placing 69th overall.",
+      "portfolioSignal": "Demonstrates advanced computational thinking, algorithm design, data structure selection, and mathematical problem-solving under timed contest conditions.",
+      "eaeConnection": "Directly supports computing, software engineering, and cybersecurity readiness by showing mastery of algorithmic efficiency, logic verification, and problem decomposition under pressure.",
+      "evidenceStatus": "Scoreboard certificate & ranking screenshot verified (106.611 points, 69th place, team untitled,cxx).",
+      "problem": "Solving high-difficulty competitive programming problems spanning dynamic programming, graph traversal, and mathematical optimization within a tight multi-hour contest window.",
+      "proposedSolution": "Formulated optimal C++ / algorithmic solutions, tested edge-case bounds, and prioritized problem completion based on point-yield to maximize overall rank.",
+      "myRole": "Competitive Programmer & Algorithmic Problem Solver (Team untitled,cxx)",
+      "technologiesUsed": "C++, Data Structures, Algorithmic Optimization, Time-Complexity Analysis, Mathematical Logic",
+      "developmentJourney": "Tackled 25 complex algorithmic challenges during SIL 2026. Solved 16 problems with high subtask precision (including 8/8 on problem 4 and 6, and 9/10 on problem 13). Maintained steady score growth to reach 106.611 points and 69th place.",
+      "outcome": "Achieved 69th place (placing in the top 30% silver cutoff zone) out of national-level participants.",
+      "lessonsLearned": "Reinforced the importance of time complexity analysis (O(N log N) vs O(N^2)) and rigorous edge-case testing before submitting solutions.",
+      "images": [
+        "images/projects/SIL26_Proof_Of_Participation_Ranking.png"
+      ],
+      "optionalVideo": "",
+      "image": "images/projects/SIL26_Proof_Of_Participation_Ranking.png",
+      "highlighted": true
+    },
+    {
+      "title": "PyCon Hackathon - SkillQuest",
+      "category": "Hackathon / Career Platform / Product Design",
+      "status": "Completed (June 2026)",
+      "snapshotLabel": "Product",
+      "snapshotTitle": "PyCon SkillQuest (Hackathon)",
+      "snapshotSummary": "personalized career discovery and upskilling platform designed to help users move from uncertainty to career readiness through a continuous, guided learning journey.",
+      "portfolioSignal": "Demonstrates strong initiative in designing and developing SkillQuest, a personalised career discovery and upskilling platform that helps users explore career paths, identify skill gaps, follow personalised learning journeys, complete practical quests, and track their progress towards career readiness.",
+      "eaeConnection": "Directly supports my interest in software development, data-driven systems, product design, and technology. SkillQuest demonstrates my ability to identify a real-world problem, design a complete digital solution, develop a functional prototype, and connect user needs with technical systems such as recommendation engines, skill-gap analysis, progress tracking, and personalised learning paths.",
+      "evidenceStatus": "Functional prototype developed with a responsive frontend and Python-based Course Matching Engine. The project includes a complete product and UX architecture covering career discovery, career recommendations, skill-gap analysis, personalised learning paths, practical quests, mastery tracking, career readiness, and AI Mentor guidance. Project prototype and development documentation can be linked as evidence.",
+      "problem": "Many people are unsure about which career path to pursue, what skills they need to develop, or what they should do next. Existing platforms often separate career discovery, skill assessments, online courses, progress tracking, and career guidance. This can make the learning journey feel fragmented and overwhelming.",
+      "proposedSolution": "SkillQuest is a personalised career discovery and upskilling platform that connects the entire journey in one experience. Users can explore potential careers through Explorer Mode or select a target career through Pathfinder Mode. The platform analyses skill gaps, recommends personalised learning paths and courses, converts learning into practical quests, tracks skill mastery and evidence of progress, and shows how each achievement brings the user closer to their career goal.",
+      "myRole": "Lead Software Engineer and Product Developer, responsible for developing the SkillQuest concept, designing the product architecture and user journey, creating the responsive frontend, developing the Python-based Course Matching Engine, and designing the personalised learning, quest, mastery, and career-readiness systems.",
+      "technologiesUsed": "HTML, CSS, JavaScript, Python, Responsive Web Development, REST API Design, Rule-Based Recommendation Systems, Course Matching Algorithms, Skill-Gap Analysis, Gamification Systems, Career Data, Skills Data, and User Progress Tracking.",
+      "developmentJourney": "I designed SkillQuest around a continuous user journey: Career Discovery → Career Recommendation → Skill-Gap Analysis → Personalised Learning Path → Quests → Skill Mastery → Career Readiness. I developed Explorer Mode for users who are unsure about their career direction and Pathfinder Mode for users who already have a specific career goal. I designed the Skill-Gap Engine to compare a user's current skills with the skills required for a target career. I also developed a Python-based Course Matching Engine that considers factors such as skill coverage, time commitment, cost, location, course quality, schedule fit, and potential calendar conflicts. The platform then transforms learning into practical quests that allow users to learn, practise, and demonstrate their progress. The overall system is designed to continuously adapt to the user's interests, goals, schedule, behaviour, and development over time.",
+      "outcome": "Successfully developed a functional SkillQuest prototype that combines career discovery, personalised recommendations, skill-gap analysis, course matching, learning paths, practical quests, progress tracking, and career readiness into one connected platform. The project transformed an initial idea into a structured product concept with a responsive frontend, Python matching engine, defined user journeys, product architecture, and a clear roadmap for future development.",
+      "lessonsLearned": "I learned how to transform a broad problem into a complete digital product by combining user research, product design, software development, recommendation logic, and gamification. Developing SkillQuest taught me the importance of making complex information simple and actionable for users. I also learned that a successful learning platform should not only provide information, but should guide users towards a clear next step, help them see their progress, and show how each completed action contributes to their larger career goal.",
+      "images": [],
+      "optionalVideo": "videos/SkillQuest-demo.webm",
+      "image": "images/projects/exhibition_pitch.jpg",
+      "carriedForward": {
+        "fromProject": "Kodecoon Project Journey",
+        "lesson": "Applied years of coding foundation (Python, OOP, Pygame) to build a real hackathon product under deadline pressure"
+      },
+      "highlighted": true
+    },
+    {
+      "title": "FLL 2026 Unearthed Robot Design & Planning",
+      "category": "Robotics / Engineering & Planning",
+      "status": "Participated in FLL 2026 Unearthed",
+      "snapshotLabel": "Engineering",
+      "snapshotTitle": "FLL 2026 Unearthed Robot Design",
+      "snapshotSummary": "Multi-axis robot, gear-ratio planning, and mission flowcharts showing systems-level engineering.",
+      "portfolioSignal": "Shows simultaneous multi-axis movement planning, gear ratio control (torque vs speed), and detailed flowchart-based sequencing. Demonstrates precision engineering and sensor-based feedback systems.",
+      "eaeConnection": "Robotics trained me to debug under strict constraints, similar to cybersecurity troubleshooting where small errors affect the whole system. Proves I can design, monitor, and defend complex interconnected systems.",
+      "evidenceStatus": "Presentation slides, field mission flowcharts, and robot run video demo completed.",
+      "problem": "Navigating complex competitive terrain in FLL 2026 Unearthed and performing delicate missions requires high movement versatility and torque adjustment under strict time limits.",
+      "proposedSolution": "A modular 4-motor robot design with multi-directional drive, 3-axis gear rotation (X, Y, Z simultaneously), and strategic gear ratios (16T, 24T, 40T gears) to toggle between Speed Mode (1:1) and Torque Mode (1:2.5).",
+      "myRole": "Lead Robot Designer & Flowchart Planner",
+      "technologiesUsed": "LEGO Mindstorms / SPIKE Prime, Draw.io flowchart planning, Gear Ratio Control (16T, 24T, 40T), Dual Color Sensors & Gyro Sensor, Multi-Axis Axle Systems",
+      "developmentJourney": "Engineered a modular chassis with independent axle control. Created detailed movement flowcharts to plan arced turns and diagonal cornering without stopping. Programmed specific routines to execute the following missions: (1) M01: Surface Brushing & M02: Map Reveal (lateral sweeps for topsoil pieces); (2) M03: Mineshaft Explorer & M04: Careful Recovery (precise forward alignment to extract the precious artifact without collapsing the upright supports); (3) M07: Heavy Lifting & M12: Salvage Operation (torque-driven arm lift with a 1:2.5 gear ratio to lift the millstone and raise the ship); and (4) M13: Forum (a carry-and-place collection sequence to transport fossils, brushes, and scale pans back to the Forum). Tested and calibrated ultrasonic sensor thresholds to avoid collisions and preserve all 6 Precision Tokens.",
+      "outcome": "Developed a high-efficiency robot capable of simultaneous drive and arm action, reducing steps per mission and lowering failure rates under load.",
+      "lessonsLearned": "Discovered that planning movement sequences with detailed flowcharts reduces trial-and-error debugging, and mechanical gear adjustments are more consistent than simple motor speed controls.",
+      "images": [
+        "images/robots/fll-robot-design.png"
+      ],
+      "optionalVideo": "",
+      "image": "images/robots/fll-robot-design.png",
+      "spreadsheet": "First LEGO League 2026 [FLL]/fll_missions_offline_cache.csv",
+      "developerScreenshots": [
+        "First LEGO League 2026 [FLL]/Screenshot 2026-03-15 115850.png",
+        "First LEGO League 2026 [FLL]/fll_map.png"
+      ],
+      "carriedForward": {
+        "fromProject": "NRC Robotics Competition",
+        "lesson": "Evolved from basic virtual robot pathing into complex multi-axis physical robot design with gear ratio engineering"
+      },
+      "highlighted": true
+    },
+    {
+      "title": "SPD Caregiver & Admin Event Portal Prototype",
+      "category": "Web & App Development / Social Impact",
+      "status": "Version 1 Prototype Completed",
+      "snapshotLabel": "Systems",
+      "snapshotTitle": "SPD Caregiver & Admin Portal",
+      "snapshotSummary": "Accessible admin + caregiver flows, reporting dashboards, and pragmatic NGO UX solutions.",
+      "portfolioSignal": "Shows the ability to translate real-world NGO challenges into a full system architecture with customized user roles (admin and caregiver), databases, and analytics dashboards.",
+      "eaeConnection": "Directly aligns with software engineering and cybersecurity by demonstrating how to build secure, accessible systems that manage sensitive data—focusing on role-based access control (RBAC) and data privacy.",
+      "evidenceStatus": "User flow flowcharts completed. Functional prototype logic mapped out.",
+      "problem": "SPD faced severe administrative bottlenecks from manual registration and spreadsheet-based reporting, leading to risks in data integrity and administrative transparency.",
+      "proposedSolution": "A secure Version 1 portal splitting views between Admins (Event/Feedback dashboard, RBAC, report export) and Caregivers (accessible registrations) with NRIC validation and encrypted data handling logic.",
+      "myRole": "System Designer and Lead Developer",
+      "technologiesUsed": "HTML5, CSS3, JavaScript, Draw.io User Flows, RBAC (Role-Based Access Control) Design",
+      "developmentJourney": "Analyzed SPD's calendar of 20+ programmes. Mapped a detailed user flow focusing on data privacy: ensuring caregivers only see their relevant sessions while admins have full visibility. Designed the database schema to handle personally identifiable information (PII) responsibly.",
+      "outcome": "Designed and prototyped a version 1 event-management portal, emphasizing data security and role-based privacy for community support reporting.",
+      "lessonsLearned": "Realized that security is not just an add-on; it must be built into the architecture. Prioritizing role-based access control early prevents unauthorized data exposure in community-facing portals.",
+      "slides": "https://canva.link/4kle5s5l7rnfxqc",
+      "images": [
+        "images/projects/SPD_User_Flow_Flow_chart.jpg",
+        "images/projects/SPD_User_Flow_Flow_chart_Page_2.jpg"
+      ],
+      "optionalVideo": "",
+      "image": "images/projects/SPD_User_Flow_Flow_chart.jpg",
+      "carriedForward": {
+        "fromProject": "Personal Student Portfolio Website",
+        "lesson": "Applied structured HTML/CSS/JS and user flow thinking to solve real-world NGO administrative challenges"
+      },
+      "highlighted": true,
+      "slidesEmbedUrl": "https://www.canva.com/design/DAHM4xnRXzo/dqwWK6e9zzf3GcKGTFlgSA/view?embed"
+    },
+    {
+      "title": "Personal Student Portfolio Website",
+      "category": "Web Development / EAE Portfolio",
+      "status": "Built as a static portfolio",
+      "portfolioSignal": "Shows that I can design, structure, and build a working web product with editable data and a clear audience. Demonstrates accessible, responsive web design and honest technical presentation.",
+      "eaeConnection": "Building this site helped me practice responsible technical communication, clear documentation, and information design—all critical skills for cybersecurity reporting and security auditing.",
+      "evidenceStatus": "Built locally as a static website. Served using Node.js.",
+      "problem": "An EAE application needs a clear, credible way to show projects, technical interests, growth, and future goals without overstating unconfirmed achievements.",
+      "proposedSolution": "A responsive website with editable content in data.js, project case studies, achievement details, reflections, and target application notes for SP and NP.",
+      "myRole": "Designer and developer of this portfolio",
+      "technologiesUsed": "HTML5, CSS3, JavaScript (Vanilla), Node.js, semantic markup, CSS Grid/Flexbox",
+      "developmentJourney": "Designed the web page layout using clean, semantic HTML5, modern vanilla CSS3 grid/flexbox styles, and dynamic JS state management. Iterated on content structure to focus on authentic builder experiences.",
+      "outcome": "Static portfolio website created and served locally via Node.js.",
+      "lessonsLearned": "Taught me how to design accessible user interfaces, manage dynamic state via vanilla JavaScript arrays, and organize structured project schemas.",
+      "images": [
+        "images/projects/portfolio_preview.png"
+      ],
+      "optionalVideo": "",
+      "image": "images/projects/portfolio_preview.png",
+      "carriedForward": {
+        "fromProject": "PyCon Hackathon - SkillQuest",
+        "lesson": "Used the data-driven design thinking from the hackathon to structure portfolio content as editable, schema-driven data"
+      }
+    },
+    {
+      "title": "Kodecoon Project Journey",
+      "category": "Coding Journey / App and Web Projects",
+      "status": "Completed and Curated",
+      "portfolioSignal": "Shows long-term consistency across many small builds rather than one isolated project. Demonstrates breadth across multiple platforms and frameworks.",
+      "eaeConnection": "Serves as a foundation for all later work, showing progression from block-based logic into OOP systems design. Critical evidence of disciplined, sustained learning over 3+ years.",
+      "evidenceStatus": "Curated portfolio of Pygame screenshots, App Inventor packages, and Roblox Studio configurations.",
+      "problem": "A long learning journey can become hard to understand if every small project is shown at once.",
+      "proposedSolution": "Curated selection of 5 key milestone projects (Mpainter app, ShopBack AR filters, UNSDG 14 Roblox obby, Space Attack and Treasure Hunting Pygame builds) to show progressive coding growth.",
+      "myRole": "Lead programmer and designer",
+      "technologiesUsed": "MIT App Inventor, Spark AR Visual Scripting, Roblox Studio (Lua), Python (Tkinter & Pygame)",
+      "developmentJourney": "Built a robust foundation of 50+ projects spanning 2019-2022. Curated highlights include: 1) Mpainter (MIT App Inventor Appathon 2020) - a mobile drawing utility; 2) ShopBack Lucky Draw Filter (Spark AR Competition 2021) - an interactive nodding-based filter; 3) UNSDG 14 Life Below Water Obby (Roblox Challenge 2021); 4) Space Attack (Pygame) - a fully structured multi-level shooter; and 5) Treasure Hunting (Pygame) - a keyboard-controlled collection game.",
+      "outcome": "Developed technical versatility across mobile, AR, gaming, and UI frameworks, culminating in intermediate-level OOP game architecture in Python.",
+      "lessonsLearned": "Discovered how to transition logic structures from block-based programming to object-oriented programming (classes, functions, events), which accelerated my learning of newer languages.",
+      "images": [
+        "images/projects/space_attack_preview.png"
+      ],
+      "optionalVideo": "",
+      "image": "images/projects/space_attack_preview.png",
+      "carriedForward": {
+        "fromProject": "Scratch Coder Course",
+        "lesson": "Grew from block-based Scratch projects into text-based Python, Pygame, and AR — building technical versatility over 3 years"
+      }
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Singapore Informatics League (SIL 2026)",
+      "date": "July 2026",
+      "organisation": "Singapore Informatics League",
+      "category": "Competition",
+      "summary": "Achieved 69th place (top 30% silver threshold range) solving algorithmic, competitive programming, and mathematical problem-solving tasks.",
+      "applicantSignal": "Strong competitive programming logic, algorithmic problem solving, and resilience under competition pressure.",
+      "eaeRelevance": "Directly demonstrates high-level computational thinking, algorithm optimization, and data structures proficiency relevant to Infocomm and Cybersecurity.",
+      "fullDescription": "Competed with team 'untitled,cxx' solving 16 out of 25 competitive programming challenges over a timed round, securing 106.611 points and 69th place overall.",
+      "reflection": "Competing in SIL 2026 tested my speed, mathematical precision, and problem-solving strategy under time constraints. It reinforced the importance of algorithmic efficiency and debugging under pressure.",
+      "learningOutcome": "Enhanced competitive algorithmic strategies, math logic execution, and time-bounded problem decomposition.",
+      "image": "images/certificates/SIL26_Proof_Of_Participation_Ranking.png",
+      "certificate": "images/certificates/SIL26_Proof_Of_Participation_Ranking.png"
+    },
+    {
+      "title": "Mathematics Growth Journey",
+      "date": "2021 - 2024",
+      "organisation": "Juying Secondary School",
+      "category": "Academic Growth",
+      "summary": "A personal growth story from struggling with mathematics in primary school to achieving an A1 in secondary school.",
+      "applicantSignal": "Resilience, discipline, and willingness to improve through repeated effort.",
+      "eaeRelevance": "This gives the portfolio a human academic growth anchor instead of only showing technical activities.",
+      "fullDescription": "Transformed mathematical understanding through deliberate practice, seeking guidance from instructors, and utilizing feedback loops to diagnose errors.",
+      "reflection": "Struggling with mathematics in primary school was discouraging, but it taught me that understanding doesn't happen overnight. By treating math as a puzzle and practicing daily, I rebuilt my confidence step-by-step.",
+      "learningOutcome": "Achieved an A1 in O-Level Mathematics, proving that discipline, structured review, and persistent effort can overcome early academic limitations.",
+      "image": "",
+      "certificate": ""
+    },
+    {
+      "title": "Python Advanced",
+      "date": "April 2022 - September 2022",
+      "organisation": "Kodecoon",
+      "category": "Coding",
+      "summary": "Advanced Python course focusing on data structures, algorithmic efficiency, and object-oriented architectures.",
+      "applicantSignal": "Evidence of deeper Python progression, complexity scaling, and algorithmic modularization.",
+      "eaeRelevance": "Supports software engineering, AI, and cybersecurity readiness by showing systematic coding principles.",
+      "fullDescription": "Built complex text-based and graphical programs, exploring libraries, error handling, inheritance, and logical modularization in Python.",
+      "reflection": "Stepping into advanced concepts like inheritance, recursion, and search algorithms was challenging but changed how I write code—moving me from simple scripts to clean, maintainable systems.",
+      "learningOutcome": "Learned to structure software logically, write clean object-oriented code, and optimize algorithms for performance.",
+      "image": "",
+      "certificate": "images/certificates/Python_Advanced_Cert.png"
+    },
+    {
+      "title": "Python Coder Course - Intermediate",
+      "date": "October 2021 - March 2022",
+      "organisation": "Kodecoon",
+      "category": "Coding",
+      "summary": "Intermediate Python learning with Pygame, Tkinter, Treasure Collector, Space Invader, and GUI applications.",
+      "applicantSignal": "Ability to move beyond syntax into interactive applications, games, and GUI thinking.",
+      "eaeRelevance": "This supports an EAE story around practical software building and user-facing technical projects.",
+      "fullDescription": "Topics and projects include Intermediate Python, Pygame, Tkinter, Treasure Collector, Space Invader, and GUI applications using lists, buttons, and dropdown menus.",
+      "reflection": "Building games like Treasure Collector and Space Invaders using Pygame and Tkinter made abstract programming concepts tangible. I realized that managing game states and coordinates requires careful design.",
+      "learningOutcome": "Gained competence in event-driven UI development, object-oriented state management, and asset integration in Pygame.",
+      "image": "",
+      "certificate": "images/certificates/Python_Intermediate_Certificate.jpeg"
+    },
+    {
+      "title": "Python Coder Course - Basic",
+      "date": "February 2021 - July 2021",
+      "organisation": "Kodecoon",
+      "category": "Coding",
+      "summary": "Foundation Python learning covering syntax, object-oriented programming, Turtle, recursion, variables, loops, and functions.",
+      "applicantSignal": "Programming foundation, logical thinking, and confidence with core coding concepts.",
+      "eaeRelevance": "This connects early coding fundamentals to later app, game, robotics, and data projects.",
+      "fullDescription": "Topics include Python syntax, object-oriented programming, Python Turtle, recursion, variables, loops, and functions.",
+      "reflection": "Transitioning from block coding to text syntax in Python was a major milestone. Learning to write recursive functions and control turtle movements built my algorithmic thinking.",
+      "learningOutcome": "Mastered basic syntax, loops, conditionals, recursion, and object-oriented fundamentals in Python.",
+      "image": "",
+      "certificate": "images/certificates/Python_Basic_Coder_Certificate.jpeg"
+    },
+    {
+      "title": "YCEP Certificate of Participation",
+      "date": "June 2025",
+      "organisation": "Singapore Polytechnic",
+      "category": "Certificate",
+      "summary": "Participated in the Youth Cyber Exploration Programme (YCEP) camp, learning fundamental concepts of networking and security.",
+      "applicantSignal": "Exposed to practical cybersecurity camps and initial wargames under polytechnic guidance.",
+      "eaeRelevance": "Demonstrates direct early interest in cybersecurity infrastructure and threat landscapes.",
+      "fullDescription": "Exposed to practical wargames, network traffic analysis using Wireshark, system security audits, and forensic file carvers under polytechnic lecturer guidance.",
+      "reflection": "YCEP opened my eyes to the critical role cybersecurity plays in the modern world. Solving CTF challenges showed me how creative threat actors can be and how defensive configurations must be planned.",
+      "learningOutcome": "Understood basic networking protocols (TCP/IP), ethical hacking methodologies, and digital forensics tools.",
+      "image": "",
+      "certificate": "images/certificates/YCEP_Bootcamp_Certificate.jpeg"
+    },
+    {
+      "title": "MIT App Inventor Appathon",
+      "date": "July 2020 - August 2020",
+      "organisation": "MIT App Inventor",
+      "category": "Competition",
+      "summary": "Created Mpainter, an application for drawing on photographs and on a digital whiteboard.",
+      "applicantSignal": "Early app-building initiative and the ability to turn a simple creative idea into an interactive tool.",
+      "eaeRelevance": "This supports the portfolio's theme of learning by building useful, hands-on projects.",
+      "fullDescription": "Project: Mpainter. The application allowed users to draw on photographs and draw on a digital whiteboard.",
+      "reflection": "Designing Mpainter was my first time planning a mobile user interface. I had to think about how screen size affects button layouts and how to handle canvas touch events smoothly.",
+      "learningOutcome": "Developed mobile UX design skills, event-driven block logic, and local file storage handling in mobile applications.",
+      "image": "",
+      "certificate": "images/certificates/App_Inventor_Appathon_Certificate.jpeg"
+    },
+    {
+      "title": "Roblox Global Goal Challenge",
+      "date": "December 2021",
+      "organisation": "Roblox",
+      "category": "Competition",
+      "summary": "Created an underwater Roblox obstacle course inspired by United Nations Sustainable Development Goal 14 - Life Below Water.",
+      "applicantSignal": "Ability to connect a technical build with communication, awareness, and social purpose.",
+      "eaeRelevance": "This strengthens the story that technology can be used to make real-world issues more understandable.",
+      "fullDescription": "The project aimed to teach marine conservation and reducing sea pollution through an underwater obstacle course.",
+      "reflection": "Building an underwater world for UNSDG 14 taught me how to use interactive experiences to communicate serious issues. Gamifying sea pollution made conservation concepts much more memorable.",
+      "learningOutcome": "Learned 3D environment design, obstacle behavior scripting in Lua, and user onboarding flows.",
+      "image": "",
+      "certificate": "images/certificates/Roblox_SDG_Challenge_Certificate.jpeg"
+    },
+    {
+      "title": "NRC Robotics Competition",
+      "date": "September 2021",
+      "organisation": "Amazon, Ducklearning, CoderZ",
+      "category": "Robotics",
+      "summary": "Participated in a virtual robotics competition using CoderZ Hercules robots.",
+      "applicantSignal": "Engineering thinking, sequencing, movement planning, and debugging under challenge conditions.",
+      "eaeRelevance": "This links coding to robotics and shows the kind of structured problem solving needed in technical courses.",
+      "fullDescription": "Challenges included virtual coordinate navigation, obstacle bypass, and precise arm sensor threshold calibration.",
+      "reflection": "Solving virtual challenges in CoderZ using virtual Hercules robots taught me how to translate physical sensor readings (ultrasonic, light) into logical movement loops.",
+      "learningOutcome": "Learned closed-loop feedback systems, proportional path-following algorithms, and sensor threshold calibration.",
+      "image": "",
+      "certificate": "images/certificates/National_Robotics_Competition_Certificate.jpeg"
+    },
+    {
+      "title": "Scratch Coder Course",
+      "date": "February 2019 - September 2019",
+      "organisation": "Kodecoon",
+      "category": "Coding",
+      "summary": "The beginning of the coding journey, covering variables, loops, functions, lists, Boolean logic, and conditionals.",
+      "applicantSignal": "Early curiosity and the starting point of a long technical learning path.",
+      "eaeRelevance": "This helps the reader understand that the current portfolio grew from a consistent interest over several years.",
+      "fullDescription": "Projects include Alien Invasion, Fishing Game with High Score, and Multiplayer Treasure Hunter.",
+      "reflection": "Starting with Scratch alien shooters and treasure hunts taught me the core concepts of variables, loops, and conditions that still guide my Python and C# coding today.",
+      "learningOutcome": "Acquired basic computational logic, event handling, and multi-actor coordinate coordination.",
+      "image": "",
+      "certificate": "images/certificates/Scratch_Coder_Certificate.jpeg"
+    },
+    {
+      "title": "BuildingBloCS Game Jam (Unity Track)",
+      "date": "June 2026",
+      "organisation": "BuildingBloCS",
+      "category": "Certificate",
+      "summary": "Participated in the BuildingBloCS Game Jam (Unity Track), building interactive game logic and visual experiences.",
+      "applicantSignal": "Practical experience with the Unity engine, C# scripting, and game development design under workshop conditions.",
+      "eaeRelevance": "Demonstrates the ability to adapt to industry-standard development environments like Unity and code solutions to user experiences.",
+      "fullDescription": "Collaborated and participated in the Unity Track during the BuildingBloCS event, working on scripting gameplay, asset management, and building game mechanisms.",
+      "reflection": "Learned how to organize code within game engine architecture and handle physics, movement, and visual triggers programmatically.",
+      "learningOutcome": "Gained fundamentals of C# script creation and object management inside the Unity editor.",
+      "image": "",
+      "certificate": "images/certificates/Jaron_Chew_Kai_Xin_Hackathon.png"
+    },
+    {
+      "title": "BuildingBloCS June Jam Workshops",
+      "date": "June 2026",
+      "organisation": "BuildingBloCS",
+      "category": "Certificate",
+      "summary": "Completed a series of intensive game development workshops covering various engines, mechanics, and design workflows.",
+      "applicantSignal": "Broad exposure to game development paradigms and a commitment to learning technical design methodologies.",
+      "eaeRelevance": "Shows a proactive interest in computing outside school hours, specifically in infocomm and media workflows.",
+      "fullDescription": "Participated in the workshops covering coding, game design principles, and collaborative development tools supported by HTX, CSIT, NTU, NIE, MOE, and Jane Street.",
+      "reflection": "Allowed me to understand how different engines (like Unity) process cycles, and how asset pipelines connect with written logic.",
+      "learningOutcome": "Acquired a solid understanding of software design concepts used in game creation.",
+      "image": "",
+      "certificate": "images/certificates/Jaron_Chew_Kai_Xin.png"
+    }
+  ],
+  "competitionJourney": [
+    {
+      "title": "PyCon Hackathon - Jobs & Skills Track",
+      "date": "June 2026",
+      "body": "Developed a career guidance portal using public datasets, providing skill-gap analysis and AI-driven upskilling paths."
+    },
+    {
+      "title": "Kodecoon x ShopBack Spark AR Competition",
+      "date": "May 2021 - August 2021",
+      "organisation": "Kodecoon, ShopBack",
+      "category": "Competition",
+      "body": "Created Instagram filters using Spark AR visual scripting, including a Lucky Draw filter."
+    },
+    {
+      "title": "BuildingBloCS Game Jam",
+      "date": "June 2026",
+      "body": "Collaboratively designed 'Out of Sync' in Unity using C# to gamify cybersecurity training for students."
+    },
+    {
+      "title": "MIT App Inventor Appathon",
+      "date": "July 2020 - August 2020",
+      "body": "Developed Mpainter, a mobile Android canvas paint application with customized and integrated drawing utilities."
+    },
+    {
+      "title": "Roblox Global Goal Challenge",
+      "date": "December 2021",
+      "body": "Built an underwater obstacle course game raising awareness for marine conservation under UNSDG Goal 14."
+    },
+    {
+      "title": "NRC Robotics Competition",
+      "date": "September 2021",
+      "body": "Completed virtual robotics pathing challenges using proportional navigation on CoderZ Hercules robots."
+    }
+  ],
+  "coding": {
+    "summary": "My coding journey started with Scratch and grew through Python, app development, web development, games, GUI projects, robotics logic, and visual scripting. The Lab Coder path below shows the step-by-step foundation behind that growth.",
+    "areas": [
+      {
+        "title": "Python",
+        "body": "Basic, intermediate, and advanced learning path with syntax, OOP, Turtle, recursion, Pygame, Tkinter, and GUI projects."
+      },
+      {
+        "title": "App Development",
+        "body": "Selected work from 25+ MIT App Inventor applications. Add the strongest examples in the project section."
+      },
+      {
+        "title": "Web Development",
+        "body": "Selected work from 22+ BSD Online web development projects. Add chosen projects and screenshots when ready."
+      },
+      {
+        "title": "Creative Coding",
+        "body": "Scratch games, Spark AR visual scripting, and Roblox experiences connected coding to interactive media."
+      }
+    ],
+    "coderProgramme": [
+      {
+        "level": "Foundation",
+        "source": "The Lab Coder Programme Pitchbook 2026",
+        "levels": "4 levels",
+        "summary": "A preparatory stage that built the core technical habits needed before full programming tasks.",
+        "focus": [
+          "Visualisation",
+          "Analysis",
+          "Debugging"
+        ],
+        "modules": [
+          "Assembling provided code blocks to match a target outcome",
+          "Reading written code to predict the result",
+          "Comparing expected output with actual output",
+          "Correcting intentionally buggy challenges"
+        ],
+        "programmingConcepts": [],
+        "problemSolving": [
+          "Step-by-step reasoning",
+          "Output prediction",
+          "Finding mismatches",
+          "Careful checking before changing code"
+        ],
+        "portfolioEvidence": "This is the base of how I learned to slow down, read logic carefully, and debug instead of guessing."
+      },
+      {
+        "level": "Basic",
+        "source": "The Lab Coder Programme Pitchbook 2026",
+        "levels": "2 levels",
+        "summary": "A coding and robotics stage using interactive input/output modules to strengthen practical programming.",
+        "focus": [
+          "Robotic input/output",
+          "Algorithmic sequencing",
+          "Branching logic"
+        ],
+        "modules": [
+          "Raspberry Pi",
+          "Buzzer",
+          "LCD",
+          "Motor",
+          "Ultrasonic distance sensor",
+          "Button sensor",
+          "Colour sensor"
+        ],
+        "programmingConcepts": [
+          "If controls",
+          "Conditional loops",
+          "Logic operators",
+          "Comparison operators",
+          "Random number generator"
+        ],
+        "problemSolving": [
+          "Order recognition",
+          "Pattern recognition",
+          "Flow diagrams",
+          "Code labelling",
+          "Visual analysis",
+          "Tabulated data interpretation"
+        ],
+        "portfolioEvidence": "This connects directly to my robotics flowchart work because it trained me to plan logic before implementing movement."
+      },
+      {
+        "level": "Intermediate",
+        "source": "The Lab Coder Programme Pitchbook 2026",
+        "levels": "2 levels",
+        "summary": "A deeper stage that extended the Basic foundation into dynamic data and structured methods for more complex challenges.",
+        "focus": [
+          "Dynamic data",
+          "Structured methods",
+          "Planning complex tasks"
+        ],
+        "modules": [
+          "Raspberry Pi",
+          "Buzzer",
+          "LCD",
+          "Motor",
+          "Ultrasonic distance sensor",
+          "Button sensor",
+          "Colour sensor"
+        ],
+        "programmingConcepts": [
+          "Count loops",
+          "Variables",
+          "List data structure",
+          "Functions",
+          "Conditional logic"
+        ],
+        "problemSolving": [
+          "Breaking large problems into manageable steps",
+          "Layered logic",
+          "Flowcharts",
+          "Development of practical, fun, and abstract programs"
+        ],
+        "portfolioEvidence": "This shows my progression from simple logic into more structured programming habits that support software, robotics, and cybersecurity learning."
+      }
+    ],
+    "skillsFutureAlignment": [
+      {
+        "title": "Programming and Coding",
+        "source": "SkillsFuture Jobs-Skills dataset",
+        "body": "Developing the ability to understand, design, and write instructions that computers can process as software.",
+        "whyItFits": "Shown through Python, Scratch, App Inventor, web projects, robotics logic, and this portfolio website."
+      },
+      {
+        "title": "Applications Development",
+        "source": "SkillsFuture Jobs-Skills dataset",
+        "body": "Building, testing, debugging, documenting, and improving software components.",
+        "whyItFits": "Shown through app projects, the EAE portfolio site, and project work where features are tested and refined."
+      },
+      {
+        "title": "Data Analysis and Interpretation",
+        "source": "SkillsFuture Jobs-Skills dataset",
+        "body": "Making sense of information so it can support decisions, insights, and practical recommendations.",
+        "whyItFits": "Shown through the PyCon jobs-and-skills project and its role-to-skill mapping idea."
+      },
+      {
+        "title": "Artificial Intelligence Application",
+        "source": "SkillsFuture Jobs-Skills dataset",
+        "body": "Applying AI ideas to solve problems and support users in practical settings.",
+        "whyItFits": "Shown through the AI upskilling planner direction in SkillQuest and my interest in AI-assisted learning tools."
+      },
+      {
+        "title": "Problem Solving",
+        "source": "SkillsFuture Jobs-Skills dataset",
+        "body": "Breaking down complex tasks, finding constraints, testing approaches, and improving solutions.",
+        "whyItFits": "Shown across robotics flowcharts, hackathons, mathematics growth, and debugging-focused coding work."
+      },
+      {
+        "title": "Digital Fluency",
+        "source": "SkillsFuture Jobs-Skills dataset",
+        "body": "Using digital tools confidently to create, communicate, analyse, and build.",
+        "whyItFits": "Shown through web development, Spark AR, Roblox, Unity, Python, and dataset-based projects."
+      },
+      {
+        "title": "Pattern Recognition Systems",
+        "source": "SkillsFuture Jobs-Skills dataset",
+        "body": "Recognising repeated structures or behaviours that can guide technical decisions.",
+        "whyItFits": "Shown through flowchart planning, debugging, algorithmic sequencing, and robotics problem solving."
+      },
+      {
+        "title": "Robotic and Automation Technology Application",
+        "source": "SkillsFuture Jobs-Skills dataset",
+        "body": "Applying robotics and automation technology to complete tasks and respond to inputs.",
+        "whyItFits": "Shown through The Lab Coder robotics modules and my robotics flowchart/pseudocode work."
+      }
+    ]
+  },
+  "robotics": {
+    "summary": "Robotics helped me practice structured thinking, precise planning, iteration, and translating logic into movement.",
+    "highlights": [
+      "Designed and presented a 4-motor modular robot for FLL 2026 Unearthed with 3-axis simultaneous gear rotation.",
+      "Engineered strategic gear ratios using 16T, 24T, and 40T gears to balance speed and force.",
+      "Mapped complex movement routines using detailed flowcharts as pseudocode for arced turns and spin cornering.",
+      "Spent three months refining the flowchart logic and mechanical torque multipliers (1:2.5 ratio) for heavy pushes."
+    ]
+  },
+  "futureGoals": {
+    "title": "Future Direction Roadmap",
+    "intro": "A structured timeline mapping my transition from secondary education into polytechnic specialization, DIS service, university degree studies, and a career in cybersecurity and software engineering.",
+    "shortTerm": [
+      "Build stronger programming skills and algorithmic thinking",
+      "Explore AI, machine learning, and software engineering",
+      "Participate in hackathons, CTFs, and coding competitions",
+      "Prepare for core Networking, Operating Systems, and Security modules"
+    ],
+    "longTerm": [
+      "Serve in the Digital and Intelligence Service (DIS) protecting critical cyber infrastructure",
+      "Pursue a university degree in Mathematics & Cybersecurity or Computer Science",
+      "Become a professional Cybersecurity Specialist, designing resilient systems and safeguarding digital networks"
+    ],
+    "timelineMilestones": [
+      {
+        "date": "2024 – 2026",
+        "phase": "Foundational Base",
+        "title": "O-Level Academic Excellence & Mathematics Foundation",
+        "description": "Strengthening quantitative logic and mathematical reasoning (achieved A1 in O-Level Mathematics) while serving as ALP Champion at Juying Secondary School.",
+        "badge": "Academic Base",
+        "icon": "🎓"
+      },
+      {
+        "date": "2026 – 2029",
+        "phase": "Polytechnic EAE Target",
+        "title": "Diploma in Cybersecurity & Digital Forensics (SP / NP)",
+        "description": "Targeting Singapore Polytechnic and Ngee Ann Polytechnic. Mastering network defense, malware analysis, digital forensics, and participating in live Cyber Wargame Centre simulations.",
+        "badge": "EAE Target",
+        "icon": "🎯"
+      },
+      {
+        "date": "2029 – 2031",
+        "phase": "National Defense Service",
+        "title": "Digital and Intelligence Service (DIS) Service",
+        "description": "Planning to serve in DIS (Digital and Intelligence Service), applying software engineering and security analysis to protect Singapore's digital domain and critical cyber infrastructure.",
+        "badge": "DIS Service",
+        "icon": "🛡️"
+      },
+      {
+        "date": "2031+",
+        "phase": "Higher Education & Degree",
+        "title": "Degree in Mathematics & Cybersecurity / Computer Science",
+        "description": "Pursuing a university degree specializing in Mathematics & Cybersecurity or Computer Science, combining advanced quantitative cryptanalysis with software engineering.",
+        "badge": "University Degree",
+        "icon": "🔬"
+      },
+      {
+        "date": "Long-Term Vision",
+        "phase": "Career Ambition",
+        "title": "Cybersecurity Specialist & Resilient Systems Architect",
+        "description": "Designing secure cloud and software architectures, performing threat auditing, and ensuring digital systems that people rely on remain private, secure, and resilient.",
+        "badge": "Career Vision",
+        "icon": "🚀"
+      }
+    ]
+  },
+  "certifications": [
+    {
+      "title": "BuildingBloCS Game Jam (Unity Track)",
+      "issuer": "BuildingBloCS",
+      "date": "June 2026",
+      "evidence": "images/certificates/Jaron_Chew_Kai_Xin_Hackathon.png"
+    },
+    {
+      "title": "BuildingBloCS June Jam Game Development Workshops",
+      "issuer": "BuildingBloCS",
+      "date": "June 2026",
+      "evidence": "images/certificates/Jaron_Chew_Kai_Xin.png"
+    },
+    {
+      "title": "Python Advanced",
+      "issuer": "Kodecoon",
+      "date": "September 2022",
+      "evidence": "images/certificates/Python_Advanced_Cert.png"
+    },
+    {
+      "title": "Python Coder Course - Intermediate",
+      "issuer": "Kodecoon",
+      "date": "March 2022",
+      "evidence": "images/certificates/Python_Intermediate_Certificate.jpeg"
+    },
+    {
+      "title": "Python Coder Course - Basic",
+      "issuer": "Kodecoon",
+      "date": "July 2021",
+      "evidence": "images/certificates/Python_Basic_Coder_Certificate.jpeg"
+    },
+    {
+      "title": "YCEP Certificate of Participation",
+      "issuer": "Singapore Polytechnic",
+      "date": "June 2025",
+      "evidence": "images/certificates/YCEP_Bootcamp_Certificate.jpeg"
+    },
+    {
+      "title": "Scratch Coder Course",
+      "issuer": "Kodecoon",
+      "date": "September 2019",
+      "evidence": "images/certificates/Scratch_Coder_Certificate.jpeg"
+    },
+    {
+      "title": "RoboRoarZ Robotics Competition",
+      "issuer": "Singapore University of Technology and Design (SUTD)",
+      "date": "March 2025",
+      "evidence": "images/certificates/RoboRoarZ_Certificate.jpeg"
+    },
+    {
+      "title": "Web Creator Course",
+      "issuer": "Kodecoon",
+      "date": "January 2021",
+      "evidence": "images/certificates/Web_Creator_Certificate.jpeg"
+    },
+    {
+      "title": "The Lab Coder Programme (Intermediate) - Distinction",
+      "issuer": "The Lab",
+      "date": "November 2020",
+      "evidence": "images/certificates/The_Lab_Intermediate_Distinction_Certificate.jpeg",
+      "supportingEvidence": [
+        "images/certificates/The_Lab_Intermediate_Certificate.jpeg"
+      ]
+    },
+    {
+      "title": "National Robotics Competition (NRC)",
+      "issuer": "Science Centre Singapore",
+      "date": "September 2021",
+      "evidence": "images/certificates/National_Robotics_Competition_Certificate.jpeg"
+    },
+    {
+      "title": "CoderZ Coding Challenge",
+      "issuer": "CoderZ",
+      "date": "September 2021",
+      "evidence": "images/certificates/CoderZ_Coding_Challenge_Certificate.jpeg"
+    },
+    {
+      "title": "Spark AR Immersive Technology Creator",
+      "issuer": "Kodecoon x Shopback",
+      "date": "August 2021",
+      "evidence": "images/certificates/Spark_AR_Certificate.jpeg"
+    },
+    {
+      "title": "App Creator Course",
+      "issuer": "Kodecoon",
+      "date": "July 2020",
+      "evidence": "images/certificates/App_Creator_Certificate.jpeg"
+    },
+    {
+      "title": "Tynker Angry Birds Holiday Camp",
+      "issuer": "Tynker",
+      "date": "November 2019",
+      "evidence": "images/certificates/Tynker_Angry_Bird_Holiday_Camp_Certificate.jpeg"
+    }
+  ],
+  "hiddenSections": {
+    "leadership": {
+      "title": "School Leadership Roles",
+      "entries": [
+        {
+          "role": "ALP Champion of 4I",
+          "title": "Student Leaders' Investiture 2026",
+          "organisation": "Juying Secondary School",
+          "duration": "2026",
+          "description": "Appointed officially as Applied Learning Programme (ALP) Champion to lead computing and technology projects in class 4I, presenting solutions and assisting peers.",
+          "impact": "Guided classmates in understanding computational concepts and led collaborative group coding initiatives.",
+          "reflection": "Being appointed as ALP Champion challenged me to explain complex technical ideas clearly to others. It taught me that real leadership in technology is about helping my peers succeed and learn together.",
+          "imagePath": "images/certificates/ALP_Champion_Certificate.jpeg"
+        },
+        {
+          "role": "Technology Champion (1-A)",
+          "title": "Certificate of Appointment",
+          "organisation": "Juying Secondary School",
+          "duration": "2023",
+          "description": "Appointed as class Technology Champion to manage and troubleshoot classroom hardware, software, and presentation devices.",
+          "impact": "Maintained class technology setups and resolved daily technical issues for teachers and students.",
+          "reflection": "This first leadership role showed me that technology only works well when someone takes the time to configure and debug it patiently. It sparked my interest in engineering and system management.",
+          "imagePath": "images/certificates/Technology_Champion_Certificate.jpeg"
+        }
+      ]
+    },
+    "communityService": {
+      "title": "Community Service",
+      "entries": []
+    }
+  },
+  "hobbies": {
+    "title": "Personal Tech Explorations & Hobbies",
+    "intro": "Personal stories of self-directed tech exploration outside of school and formal projects—driven by curiosity to understand how software, operating systems, and AI work under the hood.",
+    "entries": [
+      {
+        "id": "hobby-windows-internals",
+        "title": "Exploring Windows Files & System Internals",
+        "category": "OS & File Systems",
+        "description": "Explored Windows file structures, system directories, environment variables, hidden files, registry keys, and PowerShell automation out of pure curiosity to understand how operating systems manage processes and user data.",
+        "tags": [
+          "Windows",
+          "File Systems",
+          "System Internals",
+          "PowerShell"
+        ],
+        "takeaway": "Built a strong mental model of operating system structures, directory organization, and command-line system navigation."
+      },
+      {
+        "id": "hobby-linux-exploration",
+        "title": "Trying Linux & Command Line Environments",
+        "category": "Linux & Systems",
+        "description": "Set up Linux environments, practiced terminal navigation without a GUI, learned bash scripting, file permissions (chmod/chown), and explored system directories like /etc, /var, and /usr.",
+        "tags": [
+          "Linux",
+          "Bash",
+          "CLI",
+          "Terminal"
+        ],
+        "takeaway": "Gained confidence in keyboard-driven system administration, shell commands, and managing files through terminal scripts."
+      },
+      {
+        "id": "hobby-ai-exploration",
+        "title": "Learning About AI & Machine Learning Concepts",
+        "category": "Artificial Intelligence",
+        "description": "Self-studied how modern AI models, neural networks, and LLMs work under the hood. Experimented with prompt engineering, local model execution, and AI-assisted coding to see how AI transforms problem solving.",
+        "tags": [
+          "AI",
+          "Machine Learning",
+          "Prompt Engineering",
+          "LLMs"
+        ],
+        "takeaway": "Developed an understanding of how AI tools process inputs and how to leverage AI ethically to accelerate learning and debugging."
+      },
+      {
+        "id": "hobby-sun-scale-physics",
+        "title": "Calculating the Size of the Sun via Scale Physics",
+        "category": "Physics & Curiosity",
+        "description": "Used pinhole optics, cardboard tube projection, and similar-triangles scale geometry to measure the sun's image diameter and calculate its physical size from first principles purely for fun.",
+        "tags": [
+          "Scale Physics",
+          "Optics",
+          "Geometry",
+          "Curiosity"
+        ],
+        "takeaway": "Proves how simple geometry and physics principles can measure massive real-world astronomical scales without complex equipment."
+      },
+      {
+        "id": "hobby-3d-printing",
+        "title": "3D Printing & Hardware Tinkering",
+        "category": "Engineering",
+        "description": "Designing 3D models in Fusion 360, 3D printing custom parts, and disassembling old electronics to inspect solder paths, chip architectures, and hardware components.",
+        "tags": [
+          "CAD",
+          "3D Printing",
+          "Hardware",
+          "Electronics"
+        ],
+        "takeaway": "Teaches spatial reasoning, physical prototyping, and hardware-level intuition for how devices operate."
+      },
+      {
+        "id": "hobby-youtube-channels",
+        "title": "Tech & Science Media: Fireship, Low Level Learning & Veritasium",
+        "category": "Tech & Science Media",
+        "description": "Regularly study fast-paced technology breakdowns on Fireship, low-level binary, assembly, and reverse engineering deep-dives on Low Level Learning, and physics/mathematics fundamentals on Veritasium to stay curious and conceptually sharp.",
+        "tags": [
+          "Fireship",
+          "Low Level Learning",
+          "Veritasium",
+          "Reverse Engineering",
+          "Computer Science"
+        ],
+        "takeaway": "Keeps me informed on modern web architecture, assembly-level execution, and first-principles scientific inquiry."
+      },
+      {
+        "id": "hobby-favorite-books",
+        "title": "Technical Books & Security Literature",
+        "category": "Books & Literature",
+        "description": "Avid reader of technical and security literature, including POC||GTFO (Proof of Concept or Get The Fuck Out), Chip War, academic research papers, No Starch Press technical titles, the For Dummies series, software engineering classics like The Pragmatic Programmer and Clean Code, as well as Dan Brown novels.",
+        "tags": [
+          "POC||GTFO",
+          "Chip War",
+          "No Starch Press",
+          "Clean Code",
+          "Pragmatic Programmer",
+          "Dan Brown"
+        ],
+        "takeaway": "Builds deep foundational knowledge across system architecture, hacker ethos, chip supply chains, software craft, and analytical reading."
+      }
+    ]
+  },
+  "sectionVisibility": {
+    "code-showcase": true
+  },
+  "uiLabels": {
+    "heroBtnPrimary": "View projects",
+    "heroBtnSecondary": "View learning repository",
+    "navBtnApplications": "View EAE direction",
+    "navHobbies": "Hobbies",
+    "navAbout": "About",
+    "navEvidence": "Evidence",
+    "navProjects": "Projects",
+    "navAchievements": "Achievements",
+    "navApplications": "Goals",
+    "navMore": "More",
+    "heroCta": "Explore my work",
+    "lifeEntryDoorwayStart": "At first it was about...",
+    "lifeEntryDoorwayEnd": "...but now it's about so much more.",
+    "evidenceOverviewTitle": "My Evidence at a Glance",
+    "evidenceOverviewIntro": "• Personal map of goals and proof points\n• Evidence cards explain what each project shows\n• Use the tabs to switch between map and deck",
+    "tabPersonalMap": "Personal Map",
+    "tabEvidenceDeck": "Evidence Deck",
+    "mapTitle": "What I stand for",
+    "deckTitle": "Key activities and proof",
+    "aboutTitle": "Who I am",
+    "aboutStrengthSubtitle": "What I am good at",
+    "aboutPhilosophySubtitle": "How I approach things",
+    "achievementFlowTitle": "How Each Achievement Builds Into the Next",
+    "projectsTitle": "Featured Projects",
+    "projectsIntro": "Curiosity turned into practical, working systems. These projects demonstrate my hands-on problem solving skills.",
+    "projectCategoryLabel": "Category",
+    "projectStatusLabel": "Status",
+    "projectViewLiveBtn": "View live project",
+    "projectSourceBtn": "View source code",
+    "projectVideoBtn": "Watch video",
+    "projectSlidesBtn": "Open slides in a new tab",
+    "projectEvidenceBtn": "View certificate / proof",
+    "projectSignalLabel": "What this shows:",
+    "projectEaeLabel": "EAE relevance:",
+    "projectEvidenceStatusLabel": "Evidence:",
+    "applicationsTitle": "Target EAE Applications",
+    "applicationsIntro": "How my skills align with my goals.",
+    "applicationCourseLabel": "Course:",
+    "applicationWhyLabel": "Why this course:",
+    "achievementsTitle": "What I've done",
+    "achievementsIntro": "Extracurricular proof of my drive and competence.",
+    "achievementCategoryLabel": "Type",
+    "achievementOrgLabel": "Organisation",
+    "achievementSignalLabel": "What this shows about me",
+    "achievementEaeLabel": "Why this matters for EAE",
+    "achievementReflectionTitle": "My Reflection",
+    "achievementOutcomeTitle": "Learning Outcome",
+    "footerCopyright": "EAE Portfolio. Built with curiosity.",
+    "footerBackToTop": "Back to top",
+    "liveEditorBtn": "🛠️",
+    "liveEditorTitle": "Portfolio Editor",
+    "liveEditorTextInline": "Edit Text Inline",
+    "liveEditorTextDesc": "Click and edit text directly on the page. Changes save automatically when you click away.",
+    "liveEditorShift": "Shift Sections",
+    "liveEditorShiftDesc": "Use Up/Down controls on sections to swap their layout sequence.",
+    "liveEditorExport": "Export data.json",
+    "skipLink": "Skip to content",
+    "viewCards": "Cards",
+    "viewTimeline": "Timeline",
+    "viewStory": "Story",
+    "personalQualitiesTitle": "Personal qualities",
+    "journeyMilestonesLabel": "Journey Milestones",
+    "evidenceOverviewLabel": "Evidence Overview",
+    "achievementFlowLabel": "Achievement Flow",
+    "workLabel": "Work",
+    "projectsLede": "• Problem and approach\n• Role and technology used\n• Outcome, lesson, and learning",
+    "evidenceLibraryLabel": "Evidence Library",
+    "achievementStoryTitle": "Achievement Story",
+    "achievementStoryLede": "• Supports the achievement flow\n• Each card includes reflection, outcome, and evidence\n• Open cards for full details",
+    "timelineTitle": "Timeline",
+    "directionLabel": "Direction",
+    "goalsTitle": "Future Goals",
+    "goalsShortTerm": "Short-term",
+    "goalsLongTerm": "Long-term",
+    "applicationsLabel": "Applications",
+    "applicationsLede": "• Editable course notes for target applications\n• Keep claims focused on confirmed skills and evidence\n• Avoid unverified statements",
+    "footerText": "Jaron Chew | EAE Portfolio - projects, evidence, reflection, and a clear direction toward cybersecurity.",
+    "footerPrintBtn": "Print portfolio",
+    "navReflection": "Reflection",
+    "navMindset": "Mindset",
+    "navCybersecurity": "Cybersecurity",
+    "navJourney": "Journey"
+  },
+  "uploadedAssets": [
+    {
+      "id": "asset-mrwe39k4",
+      "name": "test-asset.png",
+      "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAn8B9d3xwQAAAABJRU5ErkJggg=="
+    }
+  ],
+  "codeShowcase": {
+    "title": "Interactive Code Showcase",
+    "subtitle": "Explore, test, and edit real project code snippets live on the page.",
+    "snippets": [
+      {
+        "id": "py-port-scanner",
+        "title": "Multi-Threaded Port Scanner (Pyro Search)",
+        "language": "python",
+        "description": "A lightweight multi-threaded socket scanner built to detect open ports and service banners.",
+        "code": "import socket\nfrom concurrent.futures import ThreadPoolExecutor\n\ndef scan_port(target_ip, port):\n    try:\n        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:\n            s.settimeout(1.0)\n            if s.connect_ex((target_ip, port)) == 0:\n                return f\"[+] Port {port}: OPEN (Service Active)\"\n    except Exception:\n        pass\n    return None\n\ndef main():\n    target = \"127.0.0.1\"\n    ports = [21, 22, 80, 443, 3000, 8080]\n    print(f\"[*] Initializing Pyro Search scanner on target: {target}...\")\n    with ThreadPoolExecutor(max_workers=10) as executor:\n        results = executor.map(lambda p: scan_port(target, p), ports)\n        for r in results:\n            if r: print(r)\n    print(\"[*] Port scan sequence completed.\")\n\nif __name__ == \"__main__\":\n    main()",
+        "simulatedOutput": "[*] Initializing Pyro Search scanner on target: 127.0.0.1...\n[+] Port 22: OPEN (Service Active)\n[+] Port 80: OPEN (Service Active)\n[+] Port 3000: OPEN (Service Active)\n[*] Port scan sequence completed."
+      },
+      {
+        "id": "js-hmac-auth",
+        "title": "HMAC Token Authorization & Access Control",
+        "language": "javascript",
+        "description": "A zero-dependency Node.js HMAC token validator preventing unauthorized API access and timing attacks.",
+        "code": "const crypto = require('crypto');\n\nfunction validateAdminToken(reqToken, secretKey) {\n  if (!reqToken || !secretKey) return false;\n  const hmac = crypto.createHmac('sha256', secretKey);\n  hmac.update(reqToken);\n  const expected = hmac.digest('hex');\n  return crypto.timingSafeEqual(Buffer.from(reqToken), Buffer.from(expected));\n}\n\n// Execution Test\nconst token = \"eae_sec_98f2a1b4\";\nconst secret = \"eae_sec_98f2a1b4\";\nconst isValid = validateAdminToken(token, secret);\nconsole.log(`[*] Request Token: ${token}`);\nconsole.log(`[+] Validation Result: ${isValid ? 'AUTHORIZED ACCESS' : 'ACCESS DENIED'}`);",
+        "simulatedOutput": "[*] Request Token: eae_sec_98f2a1b4\n[+] Validation Result: AUTHORIZED ACCESS"
+      },
+      {
+        "id": "cpp-microbit-robotics",
+        "title": "FLL / Micro:bit Motor & Sensor Controller",
+        "language": "cpp",
+        "description": "Embedded C++ event loop managing ultrasonic sensor readings and dual motor drive outputs for FLL robotics.",
+        "code": "#include <MicroBit.h>\nMicroBit uBit;\n\nvoid onObstacleDetected(MicroBitEvent e) {\n    uBit.display.print(\"!\");\n    uBit.io.P0.setAnalogValue(0);  // Emergency Motor Stop\n    uBit.sleep(500);\n    uBit.io.P1.setAnalogValue(512); // Reverse Motor Turn\n}\n\nint main() {\n    uBit.init();\n    uBit.display.scroll(\"ROBO-READY\");\n    uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onObstacleDetected);\n    release_fiber();\n}",
+        "simulatedOutput": "ROBO-READY\nListening for sensor events on Micro:bit MessageBus...\n[!] Obstacle detected on PIN 0: Emergency Motor Stop triggered."
+      }
+    ]
+  },
+  "learningRepository": {
+    "title": "Learning Repository",
+    "intro": "A Git-style visual history of how my coding, robotics, cybersecurity, academic growth, and EAE direction developed over time.",
+    "branches": [
+      {
+        "id": "main",
+        "label": "main (my life)",
+        "color": "#38bdf8",
+        "description": ""
+      },
+      {
+        "id": "coding",
+        "label": "coding",
+        "color": "#22c55e",
+        "description": ""
+      },
+      {
+        "id": "robotics",
+        "label": "robotics",
+        "color": "#f59e0b",
+        "description": ""
+      },
+      {
+        "id": "academic-growth",
+        "label": "academic-growth",
+        "color": "#a78bfa",
+        "description": ""
+      },
+      {
+        "id": "cybersecurity",
+        "label": "cybersecurity",
+        "color": "#ef4444",
+        "description": ""
+      },
+      {
+        "id": "projects",
+        "label": "projects",
+        "color": "#06b6d4",
+        "description": ""
+      }
+    ],
+    "commits": [
+      {
+        "id": "commit-scratch-coder-course",
+        "title": "Scratch Coder Course",
+        "message": "init: started coding journey with logic blocks",
+        "date": "February 2019 - September 2019",
+        "branch": "main",
+        "parent": null,
+        "mergeParents": [],
+        "order": 1,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Scratch Coder Course",
+        "summary": "The beginning of my coding journey, where I learned variables, loops, functions, lists, Boolean logic, and conditionals."
+      },
+      {
+        "id": "commit-mit-app-inventor",
+        "title": "MIT App Inventor Appathon",
+        "message": "feat: built first mobile app interaction",
+        "date": "July 2020 - August 2020",
+        "branch": "main",
+        "parent": "commit-scratch-coder-course",
+        "mergeParents": [],
+        "order": 2,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "MIT App Inventor Appathon",
+        "summary": "Created Mpainter, an app for drawing on photographs and a digital whiteboard."
+      },
+      {
+        "id": "commit-python-basic",
+        "title": "Python Coder Course - Basic",
+        "message": "branch: moved from block logic into Python syntax",
+        "date": "February 2021 - July 2021",
+        "branch": "coding",
+        "parent": "commit-mit-app-inventor",
+        "mergeParents": [],
+        "order": 3,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Python Coder Course - Basic",
+        "summary": "Transitioned into text-based programming with Python syntax, Turtle, recursion, variables, loops, and functions."
+      },
+      {
+        "id": "commit-robotics-nrc",
+        "title": "NRC Robotics Competition",
+        "message": "branch: applied logic to robotics movement and sensors",
+        "date": "September 2021",
+        "branch": "robotics",
+        "parent": "commit-python-basic",
+        "mergeParents": [],
+        "order": 4,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "NRC Robotics Competition",
+        "summary": "Applied programming logic to virtual robotics, movement planning, sensor thresholds, and debugging."
+      },
+      {
+        "id": "commit-python-intermediate",
+        "title": "Python Coder Course - Intermediate",
+        "message": "feat: built interactive games and GUI systems",
+        "date": "October 2021 - March 2022",
+        "branch": "coding",
+        "parent": "commit-python-basic",
+        "mergeParents": [],
+        "order": 5,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Python Coder Course - Intermediate",
+        "summary": "Built interactive applications using Pygame, Tkinter, game states, GUI logic, and event-driven design."
+      },
+      {
+        "id": "commit-roblox-sdg",
+        "title": "Roblox Global Goal Challenge",
+        "message": "feat: used games to explain real-world issues",
+        "date": "December 2021",
+        "branch": "coding",
+        "parent": "commit-python-intermediate",
+        "mergeParents": [],
+        "order": 6,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Roblox Global Goal Challenge",
+        "summary": "Created an underwater Roblox obstacle course inspired by SDG 14 - Life Below Water."
+      },
+      {
+        "id": "commit-python-advanced",
+        "title": "Python Advanced",
+        "message": "feat: deepened OOP, data structures, and algorithms",
+        "date": "April 2022 - September 2022",
+        "branch": "coding",
+        "parent": "commit-python-intermediate",
+        "mergeParents": [],
+        "order": 7,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Python Advanced",
+        "summary": "Developed stronger software structure through object-oriented programming, algorithms, and modular design."
+      },
+      {
+        "id": "commit-math-growth",
+        "title": "Mathematics Growth Journey",
+        "message": "refactor: strengthened quantitative thinking through resilience",
+        "date": "2021 - 2024",
+        "branch": "academic-growth",
+        "parent": "commit-python-basic",
+        "mergeParents": [],
+        "order": 8,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "Mathematics Growth Journey",
+        "summary": "A personal growth path from struggling with mathematics to building confidence and discipline."
+      },
+      {
+        "id": "commit-ycep",
+        "title": "YCEP Certificate of Participation",
+        "message": "branch: entered cybersecurity through networking and forensics",
+        "date": "June 2025",
+        "branch": "cybersecurity",
+        "parent": "commit-python-advanced",
+        "mergeParents": [],
+        "order": 9,
+        "type": "achievement",
+        "visible": true,
+        "linkedAchievement": "YCEP Certificate of Participation",
+        "summary": "Explored cybersecurity fundamentals, networking, ethical hacking concepts, and digital forensics."
+      },
+      {
+        "id": "commit-fll-robot-design",
+        "title": "FLL 2026 Unearthed Robot Design & Planning",
+        "message": "feat: engineered robot systems with torque and flowchart planning",
+        "date": "2026",
+        "branch": "robotics",
+        "parent": "commit-robotics-nrc",
+        "mergeParents": [],
+        "order": 10,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "FLL 2026 Unearthed Robot Design & Planning",
+        "summary": "Designed a modular robot system using gear ratios, mission planning, movement flowcharts, and sensor logic."
+      },
+      {
+        "id": "commit-kodecoon-project-journey",
+        "title": "Kodecoon Project Journey",
+        "message": "feat: curated long-term coding growth into project evidence",
+        "date": "2019 - 2022",
+        "branch": "coding",
+        "parent": "commit-python-advanced",
+        "mergeParents": [],
+        "order": 11,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "Kodecoon Project Journey",
+        "summary": "Curated long-term coding progress across Scratch, App Inventor, Spark AR, Roblox, Python, Tkinter, and Pygame."
+      },
+      {
+        "id": "commit-skillquest",
+        "title": "PyCon Hackathon & SkillQuest",
+        "message": "merge: combined software, data, AI, and cybersecurity education",
+        "date": "June 2026",
+        "branch": "cybersecurity",
+        "parent": "commit-ycep",
+        "mergeParents": [
+          "commit-kodecoon-project-journey"
+        ],
+        "order": 12,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "PyCon Hackathon - SkillQuest",
+        "summary": "Built a personalised career and upskilling platform combining software development, data, recommendation logic, and cybersecurity education."
+      },
+      {
+        "id": "commit-portfolio-website",
+        "title": "Personal Student Portfolio Website",
+        "message": "docs: organized evidence into a data-driven portfolio",
+        "date": "2026",
+        "branch": "projects",
+        "parent": "commit-kodecoon-project-journey",
+        "mergeParents": [
+          "commit-math-growth"
+        ],
+        "order": 13,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "Personal Student Portfolio Website",
+        "summary": "Built this portfolio as a structured, editable, data-driven website to present projects, achievements, and reflections."
+      },
+      {
+        "id": "commit-spd-portal",
+        "title": "SPD Caregiver & Admin Event Portal Prototype",
+        "message": "feat: designed secure role-based system for real users",
+        "date": "2026",
+        "branch": "projects",
+        "parent": "commit-portfolio-website",
+        "mergeParents": [
+          "commit-skillquest"
+        ],
+        "order": 14,
+        "type": "project",
+        "visible": true,
+        "linkedProject": "SPD Caregiver & Admin Event Portal Prototype",
+        "summary": "Designed an accessible event portal prototype with caregiver/admin flows, reporting dashboards, and role-based thinking."
+      },
+      {
+        "id": "commit-sil-2026",
+        "title": "Singapore Informatics League '26 (SIL)",
+        "message": "feat: participated in SIL coding competition and problem solving, and learnt competitive programming",
+        "date": "July 5th 2026",
+        "branch": "coding",
+        "parent": "commit-kodecoon-project-journey",
+        "mergeParents": [],
+        "order": 14.5,
+        "type": "achievement",
+        "visible": true,
+        "summary": "July 5th 2026: Participated in the Singapore Informatics League (SIL) coding competition, solving algorithmic problems and learning competitive programming techniques, while learning to collaborate with others from wildly different backgrounds and skill levels. This experience enhanced my problem-solving skills, coding efficiency, and ability to work under time constraints, preparing me for future coding challenges and competitions."
+      },
+      {
+        "id": "commit-eae-direction",
+        "title": "EAE Direction",
+        "message": "merge: connected coding, robotics, cybersecurity, and academic growth",
+        "date": "Current",
+        "branch": "main",
+        "parent": "commit-spd-portal",
+        "mergeParents": [
+          "commit-fll-robot-design",
+          "commit-skillquest",
+          "commit-math-growth"
+        ],
+        "order": 15,
+        "type": "milestone",
+        "visible": true,
+        "summary": "My learning paths now converge toward cybersecurity and digital forensics for SP and NP."
+      }
+    ],
+    "commitOverrides": {}
+  }
+}

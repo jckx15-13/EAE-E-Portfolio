@@ -6,17 +6,31 @@ async function runDataIntegrityTests(harness) {
   console.log(`\n--- Running Suite: Data Integrity & Schema ---`);
 
   const projectRoot = path.join(__dirname, '../..');
+  const dataJsonPath = path.join(projectRoot, 'data.json');
   const dataJsPath = path.join(projectRoot, 'data.js');
 
-  // Test 1: data.js file existence & syntax
+  // Test 1: data.json file existence & valid JSON
   const t1 = Date.now();
   try {
-    harness.assert(fs.existsSync(dataJsPath), 'data.js must exist in project root');
-    const dataContent = fs.readFileSync(dataJsPath, 'utf8');
-    harness.assertIncludes(dataContent, 'window.PORTFOLIO_DATA', 'data.js must define window.PORTFOLIO_DATA');
-    harness.logPass('data.js file exists and declares PORTFOLIO_DATA', Date.now() - t1);
+    harness.assert(fs.existsSync(dataJsonPath), 'data.json must exist in project root');
+    const jsonContent = fs.readFileSync(dataJsonPath, 'utf8');
+    const parsed = JSON.parse(jsonContent);
+    harness.assert(typeof parsed === 'object' && parsed !== null, 'data.json must parse to a valid object');
+    harness.logPass('data.json file exists and contains valid JSON', Date.now() - t1);
   } catch (err) {
-    harness.logFail('data.js file exists and declares PORTFOLIO_DATA', err);
+    harness.logFail('data.json file exists and contains valid JSON', err);
+  }
+
+  // Test 1b: data.js loader file existence
+  const t1b = Date.now();
+  try {
+    harness.assert(fs.existsSync(dataJsPath), 'data.js loader must exist in project root');
+    const jsContent = fs.readFileSync(dataJsPath, 'utf8');
+    harness.assertIncludes(jsContent, 'data.json', 'data.js must reference data.json');
+    harness.assertIncludes(jsContent, 'PORTFOLIO_DATA', 'data.js must set PORTFOLIO_DATA');
+    harness.logPass('data.js loader exists and references data.json', Date.now() - t1b);
+  } catch (err) {
+    harness.logFail('data.js loader exists and references data.json', err);
   }
 
   // Test 2: Browser evaluation of PORTFOLIO_DATA schema
@@ -92,6 +106,18 @@ async function runDataIntegrityTests(harness) {
     harness.logPass(`Verified ${imagePaths.length} local image assets exist on disk`, Date.now() - t3);
   } catch (err) {
     harness.logFail('Local Image Asset File Existence', err);
+  }
+
+  // Test 4: data.json and browser PORTFOLIO_DATA consistency
+  const t4 = Date.now();
+  try {
+    const diskData = JSON.parse(fs.readFileSync(dataJsonPath, 'utf8'));
+    const browserKeyCount = await harness.evaluate(`Object.keys(window.PORTFOLIO_DATA || {}).length`);
+    const diskKeyCount = Object.keys(diskData).length;
+    harness.assertEqual(diskKeyCount, browserKeyCount, `data.json has ${diskKeyCount} keys but browser has ${browserKeyCount}`);
+    harness.logPass(`data.json ↔ browser PORTFOLIO_DATA key count matches (${diskKeyCount} keys)`, Date.now() - t4);
+  } catch (err) {
+    harness.logFail('data.json ↔ browser PORTFOLIO_DATA consistency', err);
   }
 }
 

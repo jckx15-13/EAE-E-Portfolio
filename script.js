@@ -2,7 +2,12 @@
   /* ==========================================================================
    * SECTION 1: CONSTANTS, SELECTORS & CONFIGURATION
    * ========================================================================== */
-  const data = window.PORTFOLIO_DATA || {};
+
+  // Portfolio data is loaded by data.js (thin loader). It is available
+  // synchronously when running under file:// (sync XHR) but arrives via
+  // fetch() under HTTP. If the data isn't ready yet, wait for the custom event.
+  function boot() {
+    const data = window.PORTFOLIO_DATA || {};
 
   // Local editor gate. This is a convenience PIN for the no-code editor on this
   // device, not secure authentication — the portfolio is a static local site.
@@ -91,7 +96,7 @@
     'projects'
   ];
 
-  // [selector, data path, fallback] for the copy that comes straight from data.js.
+  // [selector, data path, fallback] for the copy that comes straight from data.json.
   // Every selector here resolves to a real node in index.html — bindings for headings
   // that no longer exist were dropped rather than left as silent no-ops.
   const HERO_TEXT_BINDINGS = [
@@ -2533,7 +2538,7 @@
       const files = [];
       if (commit.linkedProject) {
         files.push({
-          path: 'data.js',
+          path: 'data.json',
           status: 'modified',
           note: `Linked project evidence: ${commit.linkedProject}`
         });
@@ -2545,7 +2550,7 @@
       }
       if (commit.linkedAchievement) {
         files.push({
-          path: 'data.js',
+          path: 'data.json',
           status: 'modified',
           note: `Linked achievement evidence: ${commit.linkedAchievement}`
         });
@@ -5160,7 +5165,7 @@
 
   function saveToServer(changeDesc) {
     if (window.location.protocol === 'file:') {
-      console.log("Running via file protocol, auto-save to disk is disabled. Use the Export data.js button to manually save.");
+      console.log("Running via file protocol, auto-save to disk is disabled. Use the Export data.json button to manually save.");
       return;
     }
     // Same-origin and relative: an absolute http://localhost:3000 URL is blocked by
@@ -5176,7 +5181,7 @@
     .then(res => res.json())
     .then(resData => {
       if (resData.success) {
-        console.log("Changes successfully saved to data.js!");
+        console.log("Changes successfully saved to data.json!");
         showSaveNotification(changeDesc ? `Saved: ${changeDesc}` : "Changes saved directly to disk");
       } else {
         console.error("Server failed to save:", resData.error);
@@ -5452,7 +5457,7 @@
     adminBtn.style.marginTop = "12px";
     actions.append(adminBtn);
 
-    const exportBtn = create("button", "button button-primary", "Export data.js");
+    const exportBtn = create("button", "button button-primary", "Export data.json");
     exportBtn.id = "exportDataBtn";
     exportBtn.style.display = "none";
     exportBtn.style.width = "100%";
@@ -6018,15 +6023,15 @@
     content.replaceChildren();
 
     const header = create("header", "modal-header");
-    header.append(create("h2", "", "Export data.js"));
+    header.append(create("h2", "", "Export data.json"));
 
-    const intro = create("p", "section-lede", "Your live changes have been saved to memory. Copy the exported JavaScript code below and paste it into your data.js file, or click download to save it.");
+    const intro = create("p", "section-lede", "Your live changes have been saved to memory. Copy the exported JSON below and paste it into your data.json file, or click download to save it.");
 
     const textarea = create("textarea", "json-editor");
     textarea.style = "width: 100%; height: 350px; font-family: monospace; font-size: 0.85rem; padding: 12px; margin-top: 12px; background: #ffffff; color: #000000; border: 1px solid var(--blue-500); border-radius: 6px;";
     textarea.spellcheck = false;
 
-    const exportedCode = `(function () {\n  window.PORTFOLIO_DATA = ${JSON.stringify(data, null, 2)};\n})();\n`;
+    const exportedCode = JSON.stringify(data, null, 2) + '\n';
     textarea.value = exportedCode;
 
     const actions = create("div", "admin-actions");
@@ -6040,13 +6045,13 @@
       setTimeout(() => copyBtn.textContent = "Copy to Clipboard", 2000);
     });
 
-    const downloadBtn = create("button", "button button-secondary", "Download data.js");
+    const downloadBtn = create("button", "button button-secondary", "Download data.json");
     downloadBtn.addEventListener("click", () => {
-      const blob = new Blob([textarea.value], { type: 'application/javascript' });
+      const blob = new Blob([textarea.value], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'data.js';
+      a.download = 'data.json';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -6335,7 +6340,9 @@
             "Linux & Systems": "🐧",
             "Artificial Intelligence": "🤖",
             "Physics & Curiosity": "🔭",
-            "Engineering": "⚙️"
+            "Engineering": "⚙️",
+            "Tech & Science Media": "🎥",
+            "Books & Literature": "📚"
           };
           const icon = iconMap[hobby.category] || "🚀";
           const iconHeader = create("div", "hobby-card-icon-header");
@@ -6905,5 +6912,14 @@
     document.addEventListener("DOMContentLoaded", render);
   } else {
     render();
+  }
+  } // end boot()
+
+  // If data.js already loaded the data synchronously (file:// protocol),
+  // PORTFOLIO_DATA is available now. Otherwise, wait for the async fetch.
+  if (window.PORTFOLIO_DATA) {
+    boot();
+  } else {
+    window.addEventListener('portfolio-data-ready', function () { boot(); }, { once: true });
   }
 })();

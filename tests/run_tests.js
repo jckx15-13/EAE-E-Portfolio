@@ -27,35 +27,35 @@ async function runMasterTestSuite() {
   const startTime = Date.now();
   let overallPassed = true;
 
-  // Save original data.js to restore after tests finish
-  const dataJsPath = path.join(__dirname, '../data.js');
-  const originalDataJs = fs.existsSync(dataJsPath) ? fs.readFileSync(dataJsPath, 'utf8') : null;
+  // Save original data.json to restore after tests finish
+  const dataJsonPath = path.join(__dirname, '../data.json');
+  const originalDataJson = fs.existsSync(dataJsonPath) ? fs.readFileSync(dataJsonPath, 'utf8') : null;
 
-  // The live-editor suites drive POST /api/save, which rewrites data.js from
-  // window.PORTFOLIO_DATA and drops the trailing bootstrap block. If the run is
-  // interrupted the `finally` below never fires, the damaged file becomes the next
-  // run's baseline, and the loss is committed. Restore on signals too.
+  // The live-editor suites drive POST /api/save, which rewrites data.json from
+  // window.PORTFOLIO_DATA. If the run is interrupted the `finally` below never
+  // fires, the damaged file becomes the next run's baseline, and the loss is
+  // committed. Restore on signals too.
   let dataRestored = false;
-  const restoreDataJs = () => {
-    if (dataRestored || originalDataJs === null) return;
+  const restoreDataJson = () => {
+    if (dataRestored || originalDataJson === null) return;
     dataRestored = true;
     try {
-      fs.writeFileSync(dataJsPath, originalDataJs, 'utf8');
+      fs.writeFileSync(dataJsonPath, originalDataJson, 'utf8');
     } catch (err) {
-      console.error('Failed to restore data.js:', err.message);
+      console.error('Failed to restore data.json:', err.message);
     }
   };
 
   const onSignal = (signal) => {
-    console.error(`\n[Runner] Received ${signal} — restoring data.js before exit.`);
-    restoreDataJs();
+    console.error(`\n[Runner] Received ${signal} — restoring data.json before exit.`);
+    restoreDataJson();
     process.exit(1);
   };
   process.once('SIGINT', () => onSignal('SIGINT'));
   process.once('SIGTERM', () => onSignal('SIGTERM'));
   process.once('uncaughtException', (err) => {
     console.error('[Runner] Uncaught exception:', err);
-    restoreDataJs();
+    restoreDataJson();
     process.exit(1);
   });
 
@@ -96,7 +96,7 @@ async function runMasterTestSuite() {
     console.error(`\n🔥 [FATAL TEST SUITE ERROR]: ${fatalErr.message || fatalErr}`);
     overallPassed = false;
   } finally {
-    restoreDataJs();
+    restoreDataJson();
     await harness.cleanup();
 
     const totalDuration = Date.now() - startTime;
