@@ -314,7 +314,7 @@
       "snapshotSummary": "Multi-axis robot, gear-ratio planning, and mission flowcharts showing systems-level engineering.",
       "portfolioSignal": "Shows simultaneous multi-axis movement planning, gear ratio control (torque vs speed), and detailed flowchart-based sequencing. Demonstrates precision engineering and sensor-based feedback systems.",
       "eaeConnection": "Robotics trained me to debug under strict constraints, similar to cybersecurity troubleshooting where small errors affect the whole system. Proves I can design, monitor, and defend complex interconnected systems.",
-      "evidenceStatus": "Presentation slides, field mission flowcharts, and robot run video demo completed.",
+      "evidenceStatus": "Presentation slides and field mission flowcharts completed; robot run video pending.",
       "problem": "Navigating complex competitive terrain in FLL 2026 Unearthed and performing delicate missions requires high movement versatility and torque adjustment under strict time limits.",
       "proposedSolution": "A modular 4-motor robot design with multi-directional drive, 3-axis gear rotation (X, Y, Z simultaneously), and strategic gear ratios (16T, 24T, 40T gears) to toggle between Speed Mode (1:1) and Torque Mode (1:2.5).",
       "myRole": "Lead Robot Designer & Flowchart Planner",
