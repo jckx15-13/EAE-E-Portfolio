@@ -28,3 +28,14 @@ screenshots/
 Test and prompting screenshots/
 .odysseusignore
 .odysseusrules
+
+# Raw source materials (originals behind finished site content; kept local)
+docs/source_materials/raw_materials/
+
+# Superseded FLL planning docs (kept local; current CAD/Codes still tracked)
+First LEGO League 2026 [FLL]/Old Documentation/
+First LEGO League 2026 [FLL]/CONTINUATION_PROMPT.md
+First LEGO League 2026 [FLL]/MASTER_DOCUMENT UPDATE 1.md
+First LEGO League 2026 [FLL]/MASTER_DOCUMENT_UPDATE_2.md
+First LEGO League 2026 [FLL]/tactical_action_log.txt
+First LEGO League 2026 [FLL]/fll_missions_offline_cache.csv
